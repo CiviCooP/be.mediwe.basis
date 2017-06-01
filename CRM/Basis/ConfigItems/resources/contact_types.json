@@ -1,0 +1,14 @@
+{
+  "mediwe_klant":
+  {
+    "name": "mediwe_klant",
+    "label":"Klant",
+    "parent_id":3
+  },
+  "mediwe_klant_medewerker":
+  {
+    "name": "mediwe_klant_medewerker",
+    "label":"KlantMedewerker",
+    "parent_id":1
+  }
+}

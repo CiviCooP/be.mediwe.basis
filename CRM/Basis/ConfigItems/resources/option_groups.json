@@ -1,0 +1,37 @@
+{
+  "maf_partners_frequency":{
+    "name":"maf_partners_frequency",
+    "title":"MAF Norge Partners Frequency",
+    "is_active":1,
+    "is_reserved":1,
+    "option_values":{
+      "month":{
+        "name":"month",
+        "value":"1",
+        "label":"Month",
+        "is_active":1,
+        "is_reserved":1
+      },
+      "quarter":{
+        "name":"quarter",
+        "value":"2",
+        "label":"Quarter",
+        "is_active":1,
+        "is_reserved":1
+      },
+      "quarter":{
+        "name":"year",
+        "value":"3",
+        "label":"Year",
+        "is_active":1,
+        "is_reserved":1
+      }
+    }
+  },
+  "maf_partners_campaign":{
+    "name":"maf_partners_campaign",
+    "title":"MAF Norge Partners Campaign",
+    "is_active":1,
+    "is_reserved":1
+  }
+}
