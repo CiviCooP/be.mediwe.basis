@@ -13,9 +13,9 @@ class CRM_Basis_Config {
   static private $_singleton = NULL;
 
   // properties for specific contact sub types
-  private $_klantContactSubType = NULL;
-  private $_klantMedewerkerContactSubType = NULL;
-  private $_controleArtsContactSubType = NULL;
+  private $_klantContactSubType = array();
+  private $_klantMedewerkerContactSubType = array();
+  private $_controleArtsContactSubType = array();
 
   // properties for custom groups
   private $_klantDataCustomGroup = array();
@@ -25,7 +25,7 @@ class CRM_Basis_Config {
    */
   function __construct() {
     $this->setContactSubTypes();
-    $this->setCustomGroups();
+    //$this->setCustomGroups();
   }
 
   /**
@@ -62,16 +62,16 @@ class CRM_Basis_Config {
     try {
       $contactTypes = civicrm_api3('ContactType','get', array(
         'options' => array('limit' => 0)));
-      foreach ($contactTypes['values'] as $contactType) {
+      foreach ($contactTypes['values'] as $contactTypeId => $contactType) {
         switch ($contactType['name']) {
           case 'mediwe_klant':
-            $this->_klantContactSubType = $contactType['id'];
+            $this->_klantContactSubType = $contactType;
             break;
           case 'mediwe_klant_medewerker':
-            $this->_klantMedewerkerContactSubType = $contactType['id'];
+            $this->_klantMedewerkerContactSubType = $contactType;
             break;
           case 'mediwe_controle_arts':
-            $this->_controleArtsContactSubType = $contactType['id'];
+            $this->_controleArtsContactSubType = $contactType;
             break;
         }
       }

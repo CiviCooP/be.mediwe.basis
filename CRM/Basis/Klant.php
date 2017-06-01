@@ -12,12 +12,6 @@ class CRM_Basis_Klant {
   private $_klantId = NULL;
 
   /**
-   * CRM_Basis_Klant constructor.
-   */
-  public function __construct() {
-  }
-
-  /**
    * Method to create a new klant
    *
    * @param $params
@@ -59,14 +53,55 @@ class CRM_Basis_Klant {
     $config = CRM_Basis_Config::singleton();
     $klanten = array();
     // ensure that contact sub type is set
-    $params['contact_sub_type'] = $config->getKlantContactSubType();
+    $klantContactSubType = $config->getKlantContactSubType();
+    $params['contact_sub_type'] = $klantContactSubType['name'];
     try {
       $contacts = civicrm_api3('Contact', 'get', $params);
+      $this->addKlantCustomFields($contacts['values']);
       $klanten = $contacts['values'];
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
     return $klanten;
+  }
+
+  /**
+   * Method to add custom fields to an array of contacts
+   *
+   * @param $contacts
+   */
+  private function addKlantCustomFields(&$contacts) {
+    $config = CRM_Basis_Config::singleton();
+    foreach ($contacts as $arrayRowId => $contact) {
+      if (isset($contact['contact_id'])) {
+        $sql = 'SELECT * FROM '.$config->getKlantGegevensCustomGroup('table_name').' WHERE entity_id = %1';
+        $dao = CRM_Core_DAO::executeQuery($sql, array(
+          1 => array($contact['contact_id'], 'Integer',),
+        ));
+        while ($dao->fetch()) {
+          $contacts[$arrayRowId] = $this->placeKlantCustomFields($dao, $contact);;
+        }
+      }
+    }
+  }
+
+  /**
+   * Method to place the klant custom fields in the contact array based on the
+   *
+   * @param object $contactData (dao)
+   * @param array $contactArray;
+   * @return array
+   */
+  private function placeKlantCustomFields($contactData, $contactArray) {
+    $config = CRM_Basis_Config::singleton();
+    $customFields = $config->getKlantCustomFields();
+    foreach ($customFields as $customFieldId => $customField) {
+      $propertyName = $customField['column_name'];
+      if (isset($contactData->$propertyName)) {
+        $contactArray[$propertyName] = $contactData->$propertyName;
+      }
+    }
+    return $contactArray;
   }
 
   /**
