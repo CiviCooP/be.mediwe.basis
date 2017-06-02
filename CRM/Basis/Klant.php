@@ -9,17 +9,52 @@
  */
 class CRM_Basis_Klant {
 
-  private $_klantId = NULL;
+   private $_klantContactSubTypeName = NULL;
+
+  /**
+   * CRM_Basis_Klant constructor.
+   */
+   public function __construct()
+   {
+     $config = CRM_Basis_Config::singleton();
+     $contactSubType = $config->getKlantContactSubType();
+     $this->_klantContactSubTypeName = $contactSubType['name'];
+   }
 
   /**
    * Method to create a new klant
    *
    * @param $params
    * @return array
+   * @throws API_Exception when error from api Contact Create
    */
   public function create($params) {
-    $klant = array();
-    return $klant;
+    // if id is set, then update
+    if (isset($params['id'])) {
+      $this->update($params);
+    } else {
+      if (!empty($params['organization_name'])) {
+        // ensure contact_type and contact_sub_type are set correctly
+        $params['contact_type'] = 'Organization';
+        $params['contact_sub_type'] = $this->_klantContactSubTypeName;
+      }
+      // check if klant can not be found yet and only create if not
+      if ($this->exists($params) === FALSE) {
+        try {
+          $createdContact = civicrm_api3('Contact', 'create', $params);
+          $this->addKlantCustomFields($createdContact['values']);
+          $klant = $createdContact['values'];
+          return $klant;
+        }
+        catch (CiviCRM_API3_Exception $ex) {
+          throw new API_Exception(ts('Could not create a contact in '.__METHOD__
+            .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
+        }
+
+      } else {
+        // todo maken activity type for DataOnderzoek of iets dergelijks zodat deze gevallen gesignaleerd kunnen worden
+      }
+    }
   }
 
   /**
@@ -50,11 +85,9 @@ class CRM_Basis_Klant {
    * @return array
    */
   public function get($params) {
-    $config = CRM_Basis_Config::singleton();
     $klanten = array();
     // ensure that contact sub type is set
-    $klantContactSubType = $config->getKlantContactSubType();
-    $params['contact_sub_type'] = $klantContactSubType['name'];
+    $params['contact_sub_type'] = $this->_klantContactSubTypeName;
     try {
       $contacts = civicrm_api3('Contact', 'get', $params);
       $this->addKlantCustomFields($contacts['values']);
