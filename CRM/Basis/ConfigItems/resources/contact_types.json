@@ -10,5 +10,11 @@
     "name": "mediwe_klant_medewerker",
     "label":"KlantMedewerker",
     "parent_id":1
+  },
+  "mediwe_controle_arts":
+  {
+    "name":"mediwe_controle_arts",
+    "label":"ControleArts",
+    "parent_id":1
   }
 }

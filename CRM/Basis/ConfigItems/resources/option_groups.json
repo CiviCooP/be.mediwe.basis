@@ -1,37 +1,368 @@
 {
-  "maf_partners_frequency":{
-    "name":"maf_partners_frequency",
-    "title":"MAF Norge Partners Frequency",
+  "sector":{
+    "name":"sector",
+    "title":"Sectoren",
     "is_active":1,
-    "is_reserved":1,
+    "is_reserved":0,
     "option_values":{
-      "month":{
-        "name":"month",
-        "value":"1",
-        "label":"Month",
-        "is_active":1,
-        "is_reserved":1
+      "Afvalrecuperatie - recyclage": {
+        "name": "Afvalrecuperatie - recyclage",
+        "value": "27",
+        "label": "Afvalrecuperatie - recyclage",
+        "is_active": 1,
+        "is_reserved": 0
       },
-      "quarter":{
-        "name":"quarter",
-        "value":"2",
-        "label":"Quarter",
-        "is_active":1,
-        "is_reserved":1
+      "Afvalverzameling, straatreinig": {
+        "name": "Afvalverzameling, straatreinig",
+        "value": "44",
+        "label": "Afvalverzameling, straatreinig",
+        "is_active": 1,
+        "is_reserved": 0
       },
-      "quarter":{
-        "name":"year",
-        "value":"3",
-        "label":"Year",
-        "is_active":1,
-        "is_reserved":1
+      "Audio- video en telecomapp.": {
+        "name": "Audio- video en telecomapp.",
+        "value": "22",
+        "label": "Audio- video en telecomapp.",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Auto's, aanhangwagens": {
+        "name": "Auto's, aanhangwagens",
+        "value": "24",
+        "label": "Auto's, aanhangwagens",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Bouwnijverheid": {
+        "name": "Bouwnijverheid",
+        "value": "29",
+        "label": "Bouwnijverheid",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Chemie": {
+        "name": "Chemie",
+        "value": "14",
+        "label": "Chemie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Delfstoffen": {
+        "name": "Delfstoffen",
+        "value": "6",
+        "label": "Delfstoffen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Diverse verenigingen": {
+        "name": "Diverse verenigingen",
+        "value": "45",
+        "label": "Diverse verenigingen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Electriciteit, gas, water": {
+        "name": "Electriciteit, gas, water",
+        "value": "28",
+        "label": "Electriciteit, gas, water",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Elektrische machines": {
+        "name": "Elektrische machines",
+        "value": "21",
+        "label": "Elektrische machines",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Financiele instellingen": {
+        "name": "Financiele instellingen",
+        "value": "3",
+        "label": "Financiele instellingen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Gezondheidszorg, Maatsch.diens": {
+        "name": "Gezondheidszorg, Maatsch.diens",
+        "value": "43",
+        "label": "Gezondheidszorg, Maatsch.diens",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Groot- en kleinhandel": {
+        "name": "Groot- en kleinhandel",
+        "value": "30",
+        "label": "Groot- en kleinhandel",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Horeca": {
+        "name": "Horeca",
+        "value": "31",
+        "label": "Horeca",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Hout": {
+        "name": "Hout",
+        "value": "11",
+        "label": "Hout",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Informatica en aanverwante": {
+        "name": "Informatica en aanverwante",
+        "value": "39",
+        "label": "Informatica en aanverwante",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Kantoormachines, computers": {
+        "name": "Kantoormachines, computers",
+        "value": "20",
+        "label": "Kantoormachines, computers",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Kleding": {
+        "name": "Kleding",
+        "value": "9",
+        "label": "Kleding",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Landbouw- jacht, bos-": {
+        "name": "Landbouw- jacht, bos-",
+        "value": "4",
+        "label": "Landbouw- jacht, bos-",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Leder": {
+        "name": "Leder",
+        "value": "10",
+        "label": "Leder",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Luchtvaart": {
+        "name": "Luchtvaart",
+        "value": "34",
+        "label": "Luchtvaart",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Machines, apparaten en werktui": {
+        "name": "Machines, apparaten en werktui",
+        "value": "19",
+        "label": "Machines, apparaten en werktui",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Medische apparatuur, optische": {
+        "name": "Medische apparatuur, optische",
+        "value": "23",
+        "label": "Medische apparatuur, optische",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Metallurgie": {
+        "name": "Metallurgie",
+        "value": "17",
+        "label": "Metallurgie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Meubels": {
+        "name": "Meubels",
+        "value": "26",
+        "label": "Meubels",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Niet-metaalhoudende minerale p": {
+        "name": "Niet-metaalhoudende minerale p",
+        "value": "16",
+        "label": "Niet-metaalhoudende minerale p",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Onderhoud": {
+        "name": "Onderhoud",
+        "value": "48",
+        "label": "Onderhoud",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Onderwijs": {
+        "name": "Onderwijs",
+        "value": "42",
+        "label": "Onderwijs",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Openbaar bestuur": {
+        "name": "Openbaar bestuur",
+        "value": "41",
+        "label": "Openbaar bestuur",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Overige transportmiddelen": {
+        "name": "Overige transportmiddelen",
+        "value": "25",
+        "label": "Overige transportmiddelen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Papier en karton": {
+        "name": "Papier en karton",
+        "value": "12",
+        "label": "Papier en karton",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Post- en telecommunicatie": {
+        "name": "Post- en telecommunicatie",
+        "value": "36",
+        "label": "Post- en telecommunicatie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Produkten van metaal": {
+        "name": "Produkten van metaal",
+        "value": "18",
+        "label": "Produkten van metaal",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Recreatie, sport, cultuur": {
+        "name": "Recreatie, sport, cultuur",
+        "value": "46",
+        "label": "Recreatie, sport, cultuur",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Rubber- en kunststof": {
+        "name": "Rubber- en kunststof",
+        "value": "15",
+        "label": "Rubber- en kunststof",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Slecht gedefinieerde act.": {
+        "name": "Slecht gedefinieerde act.",
+        "value": "1",
+        "label": "Slecht gedefinieerde act.",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Tabak": {
+        "name": "Tabak",
+        "value": "8",
+        "label": "Tabak",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Textiel": {
+        "name": "Textiel",
+        "value": "47",
+        "label": "Textiel",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Uitgeverij / drukkerij": {
+        "name": "Uitgeverij / drukkerij",
+        "value": "13",
+        "label": "Uitgeverij / drukkerij",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Verhuur en handel onroer.goed.": {
+        "name": "Verhuur en handel onroer.goed.",
+        "value": "37",
+        "label": "Verhuur en handel onroer.goed.",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Verhuur roerende goederen": {
+        "name": "Verhuur roerende goederen",
+        "value": "38",
+        "label": "Verhuur roerende goederen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Vervoer over water": {
+        "name": "Vervoer over water",
+        "value": "33",
+        "label": "Vervoer over water",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Vervoer te land": {
+        "name": "Vervoer te land",
+        "value": "32",
+        "label": "Vervoer te land",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Vervoerondersteunende act.": {
+        "name": "Vervoerondersteunende act.",
+        "value": "35",
+        "label": "Vervoerondersteunende act.",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Verzekeringen": {
+        "name": "Verzekeringen",
+        "value": "2",
+        "label": "Verzekeringen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Visserij": {
+        "name": "Visserij",
+        "value": "5",
+        "label": "Visserij",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Voeding en drank": {
+        "name": "Voeding en drank",
+        "value": "7",
+        "label": "Voeding en drank",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "Zakelijke dienstverlening": {
+        "name": "Zakelijke dienstverlening",
+        "value": "40",
+        "label": "Zakelijke dienstverlening",
+        "is_active": 1,
+        "is_reserved": 0
       }
     }
   },
-  "maf_partners_campaign":{
-    "name":"maf_partners_campaign",
-    "title":"MAF Norge Partners Campaign",
+  "berekeningswijze_fte":{
+    "name":"berekeningswijze_fte",
+    "title":"Berekeningswijze FTE",
     "is_active":1,
-    "is_reserved":1
+    "is_reserved":0,
+    "option_values": {
+      "uur": {
+        "name": "uur",
+        "value": "uur",
+        "label": "Uren arbeid per week",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "perc": {
+        "name": "perc",
+        "value": "perc",
+        "label": "Percentage",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
   }
 }

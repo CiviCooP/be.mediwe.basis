@@ -39,6 +39,7 @@ class CRM_Basis_ConfigItems_ContactType {
     if (!isset($this->_apiParams['label']) || empty($this->_apiParams['label'])) {
       $this->_apiParams['label'] = CRM_Basis_Utils::buildLabelFromName($this->_apiParams['name']);
     }
+    $this->_apiParams['is_active'] = 1;
     try {
       civicrm_api3('ContactType', 'Create', $this->_apiParams);
       $this->updateNavigationMenuUrl();

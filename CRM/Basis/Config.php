@@ -18,15 +18,75 @@ class CRM_Basis_Config {
   private $_controleArtsContactSubType = array();
 
   // properties for custom groups
-  private $_klantDataCustomGroup = array();
+  private $_klantBoekhoudingCustomGroup = array();
+  private $_klantExpertsysteemCustomGroup = array();
+  private $_klantOrganisatieCustomGroup = array();
+  private $_klantProcedureCustomGroup = array();
 
   /**
    * CRM_Basis_Config constructor.
    */
   function __construct() {
     $this->setContactSubTypes();
-    //$this->setCustomGroups();
+    $this->setKlantCustomGroups();
   }
+
+  /**
+   * Getter for klant boekhouding custom group
+   *
+   * @param string $key
+   * @return mixed|array
+   */
+  public function getKlantBoekhoudingCustomGroup($key = NULL) {
+    if (!empty($key) && isset($this->_klantBoekhoudingCustomGroup[$key])) {
+      return $this->_klantBoekhoudingCustomGroup[$key];
+    } else {
+      return $this->_klantBoekhoudingCustomGroup;
+    }
+  }
+
+  /**
+   * Getter for klant expert systeem custom group
+   *
+   * @param string $key
+   * @return mixed|array
+   */
+  public function getKlantExpertsysteemCustomGroup($key = NULL) {
+    if (!empty($key) && isset($this->_klantExpertsysteemCustomGroup[$key])) {
+      return $this->_klantExpertsysteemCustomGroup[$key];
+    } else {
+      return $this->_klantExpertsysteemCustomGroup;
+    }
+  }
+
+  /**
+   * Getter for klant organisatie custom group
+   *
+   * @param string $key
+   * @return mixed|array
+   */
+  public function getKlantOrganisatieCustomGroup($key = NULL) {
+    if (!empty($key) && isset($this->_klantExpertsysteemCustomGroup[$key])) {
+      return $this->_klantExpertsysteemCustomGroup[$key];
+    } else {
+      return $this->_klantOrganisatieCustomGroup;
+    }
+  }
+
+  /**
+   * Getter for klant organisatie custom group
+   *
+   * @param string $key
+   * @return mixed|array
+   */
+  public function getKlantProcedureCustomGroup($key = NULL) {
+    if (!empty($key) && isset($this->_klantProcedureCustomGroup[$key])) {
+      return $this->_klantProcedureCustomGroup[$key];
+    } else {
+      return $this->_klantProcedureCustomGroup;
+    }
+  }
+
 
   /**
    * Getter for klant contact sub type
@@ -78,6 +138,32 @@ class CRM_Basis_Config {
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
+  }
+
+  private function setKlantCustomGroups() {
+    try {
+      $customGroups = civicrm_api3('CustomGroup','get', array(
+        'options' => array('limit' => 0)));
+      foreach ($customGroups['values'] as $customGroupId => $customGroup) {
+        switch ($customGroup['name']) {
+          case 'boekhouding':
+            $this->_klantBoekhoudingCustomGroup = $customGroup;
+            break;
+          case 'expertsysteem':
+            $this->_klantExpertsysteemCustomGroup = $customGroup;
+            break;
+          case 'organisatie':
+            $this->_klantOrganisatieCustomGroup = $customGroup;
+            break;
+          case 'procedure_klant':
+            $this->_klantProcedureCustomGroup = $customGroup;
+            break;
+        }
+      }
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+    }
+
   }
   /**
    * Function to return singleton object

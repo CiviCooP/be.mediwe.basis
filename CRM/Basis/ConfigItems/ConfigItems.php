@@ -29,9 +29,9 @@ class CRM_Basis_ConfigItems_ConfigItems {
     $this->_resourcesPath = $resourcesPath;
 
     $this->setContactTypes();
-    //$this->setOptionGroups();
+    $this->setOptionGroups();
     // customData as last one because it might need one of the previous ones (option group, relationship types)
-    //$this->setCustomData();
+    $this->setCustomData();
   }
 
   /**
@@ -122,8 +122,8 @@ class CRM_Basis_ConfigItems_ConfigItems {
    * Method to disable configuration items
    */
   public static function disable() {
-    //self::disableCustomData();
-    //self::disableOptionGroups();
+    self::disableCustomData();
+    self::disableOptionGroups();
     self::disableContactTypes();
 
   }
@@ -132,8 +132,8 @@ class CRM_Basis_ConfigItems_ConfigItems {
    * Method to enable configuration items
    */
   public static function enable() {
-    //self::enableCustomData();
-    //self::enableOptionGroups();
+    self::enableCustomData();
+    self::enableOptionGroups();
     self::enableContactTypes();
 
   }
@@ -142,8 +142,8 @@ class CRM_Basis_ConfigItems_ConfigItems {
    * Method to uninstall configuration items
    */
   public static function uninstall() {
-    //self::uninstallCustomData();
-    //self::uninstallOptionGroups();
+    self::uninstallCustomData();
+    self::uninstallOptionGroups();
     self::uninstallContactTypes();
   }
 
