@@ -1,0 +1,49 @@
+{
+  "werkgebied": {
+    "name": "werkgebied",
+    "title": "Werkgebied",
+    "extends": "Contact",
+    "extends_entity_column_value": ["mediwe_controle_arts", "mediwe_inspecteur"],
+    "style": "Tab",
+    "is_multiple": 1,
+    "is_active": 1,
+    "is_reserved": 0,
+    "collapse_display": 0,
+    "table_name": "civicrm_value_werkgebied_30",
+    "fields": {
+      "postcode": {
+        "name": "postcode",
+        "label": "Postcode",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 10
+      },
+      "gemeente": {
+        "name": "gemeente",
+        "label": "Gemeente",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 15
+      },
+      "prioriteit": {
+        "name": "prioriteit",
+        "label": "Prioriteit",
+        "data_type": "Int",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 20
+      }
+    }
+  }
+}

@@ -95,8 +95,8 @@ class CRM_Basis_ConfigItems_ConfigItems {
    * @access protected
    */
   protected function setCustomData() {
-    // read all json files from custom_data dir
-    $customDataPath = $this->_resourcesPath.'custom_data';
+    // read all json files from custom_groups dir
+    $customDataPath = $this->_resourcesPath.'custom_groups';
     if (file_exists($customDataPath) && is_dir($customDataPath)) {
       // get all json files from dir
       $jsonFiles = glob($customDataPath.DIRECTORY_SEPARATOR. "*.json");
@@ -151,9 +151,9 @@ class CRM_Basis_ConfigItems_ConfigItems {
    * Method to uninstall custom data
    */
   private static function uninstallCustomData() {
-    // read all json files from custom_data dir
+    // read all json files from custom_groups dir
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $customDataPath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/custom_data';
+    $customDataPath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/custom_groups';
     if (file_exists($customDataPath) && is_dir($customDataPath)) {
       // get all json files from dir
       $jsonFiles = glob($customDataPath.DIRECTORY_SEPARATOR. "*.json");
@@ -172,9 +172,9 @@ class CRM_Basis_ConfigItems_ConfigItems {
    * Method to enable custom data
    */
   private static function enableCustomData() {
-    // read all json files from custom_data dir
+    // read all json files from custom_groups dir
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $customDataPath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/custom_data';
+    $customDataPath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/custom_groups';
     if (file_exists($customDataPath) && is_dir($customDataPath)) {
       // get all json files from dir
       $jsonFiles = glob($customDataPath.DIRECTORY_SEPARATOR. "*.json");
@@ -193,9 +193,9 @@ class CRM_Basis_ConfigItems_ConfigItems {
    * Method to disable custom data
    */
   private static function disableCustomData() {
-    // read all json files from custom_data dir
+    // read all json files from custom_groups dir
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $customDataPath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/custom_data';
+    $customDataPath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/custom_groups';
     if (file_exists($customDataPath) && is_dir($customDataPath)) {
       // get all json files from dir
       $jsonFiles = glob($customDataPath.DIRECTORY_SEPARATOR. "*.json");

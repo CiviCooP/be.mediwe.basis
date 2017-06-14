@@ -16,6 +16,8 @@ class CRM_Basis_Config {
   private $_klantContactSubType = array();
   private $_klantMedewerkerContactSubType = array();
   private $_controleArtsContactSubType = array();
+  private $_inspecteurContactSubType = array();
+
 
   // properties for custom groups
   private $_klantBoekhoudingCustomGroup = array();
@@ -23,12 +25,79 @@ class CRM_Basis_Config {
   private $_klantOrganisatieCustomGroup = array();
   private $_klantProcedureCustomGroup = array();
 
+  private $_inspecteurLeverancierCustomGroup = array();
+  private $_inspecteurWerkgebiedCustomGroup = array();
+
+  private $_controleArtsLeverancierCustomGroup = array();
+  private $_controleArtsVakantieperiodeCustomGroup = array();
+  private $_controleArtsCommunicatieCustomGroup = array();
+  private $_controleArtsWerkgebiedCustomGroup = array();
+
+  private $_klantMedewerkerExpertsysteemTellersCustomGroup = array();
+
   /**
    * CRM_Basis_Config constructor.
    */
   function __construct() {
     $this->setContactSubTypes();
     $this->setKlantCustomGroups();
+  }
+
+  /**
+   * Method to retrieve custom field from custom group
+   */
+  private function getCustomField($customGroup, $customFieldName) {
+    if (!empty($customGroup) && !empty($customFieldName)) {
+      foreach ($customGroup['custom_fields'] as $customFieldId => $customField) {
+        if ($customField['name'] == $customFieldName) {
+          return $customField;
+        }
+      }
+    }
+  }
+
+  /**
+   * Getter for venice custom field from boekhouding custom group
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getVeniceCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'venice');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
+    } else {
+      return $customField;
+    }
+  }
+
+  /**
+   * Getter for vat custom field from boekhouding custom group
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getVatCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'vat');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
+    } else {
+      return $customField;
+    }
+  }
+
+  /**
+   * Getter for controle arts vakantie periode custom group
+   *
+   * @param string $key
+   * @return mixed|array
+   */
+  public function getControleArtsVakantieperiodeCustomGroup($key = NULL) {
+    if (!empty($key) && isset($this->_controleArtsVakantieperiodeCustomGroup[$key])) {
+      return $this->_controleArtsVakantieperiodeCustomGroup[$key];
+    } else {
+      return $this->_controleArtsVakantieperiodeCustomGroup;
+    }
   }
 
   /**
@@ -74,7 +143,7 @@ class CRM_Basis_Config {
   }
 
   /**
-   * Getter for klant organisatie custom group
+   * Getter for klant procedure custom group
    *
    * @param string $key
    * @return mixed|array
@@ -140,13 +209,20 @@ class CRM_Basis_Config {
     }
   }
 
+  /**
+   * Method to set the klant custom groups and custom fields
+   */
   private function setKlantCustomGroups() {
     try {
       $customGroups = civicrm_api3('CustomGroup','get', array(
         'options' => array('limit' => 0)));
       foreach ($customGroups['values'] as $customGroupId => $customGroup) {
+        $customFields = civicrm_api3('CustomField', 'get', array(
+          'custom_group_id' => $customGroupId,
+          'options' => array('limit' => 0)));
+        $customGroup['custom_fields'] = $customFields['values'];
         switch ($customGroup['name']) {
-          case 'boekhouding':
+          case 'Boekhouding':
             $this->_klantBoekhoudingCustomGroup = $customGroup;
             break;
           case 'expertsysteem':
@@ -155,7 +231,7 @@ class CRM_Basis_Config {
           case 'organisatie':
             $this->_klantOrganisatieCustomGroup = $customGroup;
             break;
-          case 'procedure_klant':
+          case 'Procedure_klant':
             $this->_klantProcedureCustomGroup = $customGroup;
             break;
         }
@@ -163,7 +239,6 @@ class CRM_Basis_Config {
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
-
   }
   /**
    * Function to return singleton object

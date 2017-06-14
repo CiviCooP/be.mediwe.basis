@@ -364,5 +364,121 @@
         "is_reserved": 0
       }
     }
+  },
+  "periode":{
+    "name":"periode",
+    "title":"Periode expertsysteem",
+    "is_active":1,
+    "is_reserved":0,
+    "option_values": {
+      "12m": {
+        "name": "12m",
+        "value": "12m",
+        "label": "12 maand voortschrijdend",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "huidig_kalenderjaar": {
+        "name": "huidig_kalenderjaar",
+        "value": "Y",
+        "label": "Huidig kalenderjaar",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "vorig_kalenderjaar": {
+        "name": "vorig_kalenderjaar",
+        "value": "Y",
+        "label": "vorig kalenderjaar",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "populatie":{
+    "name":"populatie",
+    "title":"Populatie",
+    "is_active":1,
+    "is_reserved":0,
+    "option_values": {
+      "alle": {
+        "name": "alle",
+        "value": "",
+        "label": "Alle",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "arbeiders": {
+        "name": "arbeiders",
+        "value": "A",
+        "label": "Arbeiders",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "bedienden": {
+        "name": "bedienden",
+        "value": "B",
+        "label": "Bedienden",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+      "nieuwelingen": {
+        "name": "nieuwelingen",
+        "value": "N",
+        "label": "Nieuwelingen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+    }
+  },
+  "actie":{
+    "name":"actie",
+    "title":"Actie",
+    "is_active":1,
+    "is_reserved":0,
+    "option_values": {
+      "controle": {
+        "name": "controle",
+        "value": "C",
+        "label": "Controle",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "gesprek": {
+        "name": "gesprek",
+        "value": "G",
+        "label": "Gesprek",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "module_mijn_mediwe": {
+    "name": "module_mijn_mediwe",
+    "title": "Module Mijn Mediwe",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "basis": {
+        "name": "basis",
+        "value": "basis",
+        "label": "Basis",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "extended": {
+        "name": "extended",
+        "value": "extended",
+        "label": "Uitgebreid",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "expert": {
+        "name": "expert",
+        "value": "expert",
+        "label": "Expert",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
   }
 }

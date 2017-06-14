@@ -171,25 +171,69 @@ class CRM_Basis_ConfigItems_CustomGroup {
         $this->_apiParams[$name] = $value;
       }
     }
-    if ($this->_apiParams['extends'] == "Activity") {
-      if (isset($this->_apiParams['extends_entity_column_value']) && !empty($this->_apiParams['extends_entity_column_value'])) {
-        if (is_array($this->_apiParams['extends_entity_column_value'])) {
-          foreach ($this->_apiParams['extends_entity_column_value'] as $extendsValue) {
-            $activityType = new CRM_Basis_ConfigItems_ActivityType();
-            $found = $activityType->getWithNameAndOptionGroupId($extendsValue, $activityType->getOptionGroupId());
-            if (isset($found['value'])) {
-              $this->_apiParams['extends_entity_column_value'][] = $found['value'];
-            }
-            unset ($activityType);
-          }
-        } else {
+    // check for cases where one or more specific activity types are used
+    switch ($this->_apiParams['extends']) {
+      case "Activity":
+        $this->setActivityTypeForCustomGroup();
+        break;
+      case "Individual":
+        $this->setContactTypeForCustomGroup();
+        break;
+      case "Organization":
+        $this->setContactTypeForCustomGroup();
+        break;
+      case "Household":
+        $this->setContactTypeForCustomGroup();
+        break;
+    }
+  }
+
+  /**
+   * Method to set the entity_column_value to specify which activity type to use
+   */
+  private function setActivityTypeForCustomGroup() {
+    if (isset($this->_apiParams['extends_entity_column_value']) && !empty($this->_apiParams['extends_entity_column_value'])) {
+      if (is_array($this->_apiParams['extends_entity_column_value'])) {
+        foreach ($this->_apiParams['extends_entity_column_value'] as $extendsValue) {
           $activityType = new CRM_Basis_ConfigItems_ActivityType();
-          $found = $activityType->getWithNameAndOptionGroupId($this->_apiParams['extends_entity_column_value'], $activityType->getOptionGroupId());
+          $found = $activityType->getWithNameAndOptionGroupId($extendsValue, $activityType->getOptionGroupId());
           if (isset($found['value'])) {
-            $this->_apiParams['extends_entity_column_value'] = $found['value'];
+            $this->_apiParams['extends_entity_column_value'][] = $found['value'];
           }
+          unset ($activityType);
+        }
+      } else {
+        $activityType = new CRM_Basis_ConfigItems_ActivityType();
+        $found = $activityType->getWithNameAndOptionGroupId($this->_apiParams['extends_entity_column_value'], $activityType->getOptionGroupId());
+        if (isset($found['value'])) {
+          $this->_apiParams['extends_entity_column_value'] = $found['value'];
         }
       }
     }
+  }
+
+  /**
+   * Method to set the entity_column_value to specify what contact type to use
+   */
+  private function setContactTypeForCustomGroup() {
+    if (isset($this->_apiParams['extends_entity_column_value']) && !empty($this->_apiParams['extends_entity_column_value'])) {
+      if (is_array($this->_apiParams['extends_entity_column_value'])) {
+        foreach ($this->_apiParams['extends_entity_column_value'] as $extendsValue) {
+          $contactType = new CRM_Basis_ConfigItems_ContactType();
+          $found = $contactType->getWithName($extendsValue);
+          if (isset($found['name'])) {
+            $this->_apiParams['extends_entity_column_value'][] = $found['name'];
+          }
+          unset ($contactType);
+        }
+      } else {
+        $contactType = new CRM_Basis_ConfigItems_ContactType();
+        $found = $contactType->getWithName($this->_apiParams['extends_entity_column_value']);
+        if (isset($found['name'])) {
+          $this->_apiParams['extends_entity_column_value'] = $found['name'];
+        }
+      }
+    }
+
   }
 }

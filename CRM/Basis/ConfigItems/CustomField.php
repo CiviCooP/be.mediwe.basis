@@ -31,7 +31,6 @@ class CRM_Basis_ConfigItems_CustomField {
     }
     $this->_apiParams = $params;
     if (isset($this->_apiParams['option_group'])) {
-      $this->_apiParams['option_type'] = 0;
       $optionGroup = new CRM_Basis_ConfigItems_OptionGroup();
       $found = $optionGroup->getWithName($this->_apiParams['option_group']);
       if (!empty($found)) {
