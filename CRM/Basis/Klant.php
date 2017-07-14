@@ -65,6 +65,18 @@ class CRM_Basis_Klant {
    */
   public function update($params) {
     $klant = array();
+    $params['contact_sub_type'] = $this->_klantContactSubTypeName;
+
+    if ($this->exists($params)) {
+        try {
+            $klant = civicrm_api3('Contact', 'create', $params);
+        }
+        catch (CiviCRM_API3_Exception $ex) {
+            throw new API_Exception(ts('Could not create a contact in '.__METHOD__
+                .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
+        }
+
+    }
     return $klant;
   }
 
@@ -75,7 +87,16 @@ class CRM_Basis_Klant {
    * @return bool
    */
   public function exists($params) {
-    return TRUE;
+      $klant = array();
+      // ensure that contact sub type is set
+      $params['contact_sub_type'] = $this->_klantContactSubTypeName;
+      try {
+          $klant = civicrm_api3('Contact', 'getsingle', $params);
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+          return false;
+      }
+      return true;
   }
 
   /**
@@ -144,7 +165,22 @@ class CRM_Basis_Klant {
    * @return bool (if delete was succesfull or not)
    */
   public function deleteWithId($klantId) {
-    return TRUE;
+      $klant = array();
+
+      // ensure that contact sub type is set
+      $params['contact_sub_type'] = $this->_klantContactSubTypeName;
+      $params['contact_id'] = $klantId;
+      try {
+          if ($this->exists($params)) {
+              $klant = civicrm_api3('Contact', 'delete', $params);
+          }
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+          throw new API_Exception(ts('Could not create a contact in '.__METHOD__
+              .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
+      }
+
+      return $klant;
   }
 
 }

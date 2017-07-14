@@ -1,0 +1,136 @@
+{
+    "control_conditions":{
+    "name":"control_conditions",
+    "title":"Voorwaarden medische controle",
+    "extends": "Membership",
+    "extends_entity_column_value": ["Voorafbetaald", "Maandelijks","Controlearts"],
+    "style":"Tab",
+    "is_multiple":0,
+    "is_active":1,
+    "is_reserved":0,
+    "collapse_display":0,
+    "fields": {
+         "control_conditions_foreseen_number": {
+           "name": "control_conditions_foreseen_number",
+           "label": "Aantal controles",
+           "data_type": "Int",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 11
+         },
+        "control_conditions_pro_rata_number": {
+           "name": "control_conditions_pro_rata_number",
+           "label": "Pro rata",
+           "data_type": "Int",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 12
+         },
+         "control_conditions_unit_price": {
+           "name": "control_conditions_unit_price",
+           "label": "Prijs per controle",
+           "data_type": "Money",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 32
+         },
+         "control_conditions_unit_price_consult": {
+           "name": "control_conditions_unit_price_consult",
+           "label": "Prijs per consultatie",
+           "data_type": "Money",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 54
+         },
+         "control_conditions_supplement_weekend": {
+           "name": "control_conditions_supplement_weekend",
+           "label": "Supplement weekendcontrole",
+           "data_type": "Money",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 74
+         },
+        "control_conditions_supplement_crossborder": {
+           "name": "control_conditions_supplement_crossborder",
+           "label": "Supplement controle in buitenland",
+           "data_type": "Money",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 90
+         },
+        "control_conditions_own_reference": {
+           "name": "control_conditions_own_reference",
+           "label": "Eigen referentie",
+           "data_type": "String",
+           "html_type": "Text",
+           "is_searchable": 0,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 0,
+           "weight": 104
+         },
+        "control_conditions_index": {
+           "name": "control_conditions_index",
+           "label": "Gezondheidsindex",
+           "data_type": "Float",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 0,
+           "weight": 117
+         },
+        "control_conditions_vat": {
+           "name": "control_conditions_vat",
+           "label": "BTW %",
+           "data_type": "Float",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 128
+         },
+        "control_conditions_invoice_accident": {
+           "name": "control_conditions_invoice_accident",
+           "label": "factureer AO",
+           "data_type": "Boolean",
+           "html_type": "Radio",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 136
+         },
+        "control_conditions_global_invoice": {
+           "name": "control_conditions_global_invoice",
+           "label": "1 globale factuur",
+           "data_type": "Boolean",
+           "html_type": "Radio",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 141
+         }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+{
+  "is_klant_via":
+  {
+    "id": 19,
+    "name_a_b": "is_klant_via",
+    "label_a_b":"Is klant via",
+    "name_b_a": "vertegenwoordigt",
+    "label_b_a":"Mijn contract geldt ook voor",
+    "cntact_type_a": "Organization",
+    "cntact_type_b": "Organization",
+    "is_active": 1
+  }
+}

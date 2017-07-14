@@ -1,0 +1,37 @@
+{
+  "holiday": {
+    "name": "holiday",
+    "title": "Vakantieperiode",
+    "extends": "Organization",
+    "extends_entity_column_value": ["mediwe_controle_arts"],
+    "style": "Tab",
+    "is_multiple": 1,
+    "is_active": 1,
+    "is_reserved": 0,
+    "collapse_display": 0,
+    "fields": {
+      "holiday_from": {
+        "name": "holiday_from",
+        "label": "Vakantie van",
+        "data_type": "Date",
+        "html_type": "Select Date",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 11
+      },
+      "holiday_till": {
+        "name": "holiday_till",
+        "label": "Vakantie tot",
+        "data_type": "Date",
+        "html_type": "Select Date",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 12
+      }
+    }
+  }
+}

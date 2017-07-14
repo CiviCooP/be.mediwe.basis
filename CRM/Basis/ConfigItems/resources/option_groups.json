@@ -7,14 +7,14 @@
     "option_values":{
       "Afvalrecuperatie - recyclage": {
         "name": "Afvalrecuperatie - recyclage",
-        "value": "27",
+        "value": 27,
         "label": "Afvalrecuperatie - recyclage",
         "is_active": 1,
         "is_reserved": 0
       },
       "Afvalverzameling, straatreinig": {
         "name": "Afvalverzameling, straatreinig",
-        "value": "44",
+        "value": 44,
         "label": "Afvalverzameling, straatreinig",
         "is_active": 1,
         "is_reserved": 0
@@ -420,14 +420,14 @@
         "label": "Bedienden",
         "is_active": 1,
         "is_reserved": 0
-      }
+      },
       "nieuwelingen": {
         "name": "nieuwelingen",
         "value": "N",
         "label": "Nieuwelingen",
         "is_active": 1,
         "is_reserved": 0
-      },
+      }
     }
   },
   "actie":{

@@ -1,0 +1,81 @@
+{
+    "zorgfonds_conditions":{
+    "name":"zorgfonds_conditions",
+    "title":"Voorwaarden zorgfonds",
+    "extends": "Membership",
+    "extends_entity_column_value": ["Zorgfonds", "Inspecteur"],
+    "style":"Tab",
+    "is_multiple":0,
+    "is_active":1,
+    "is_reserved":0,
+    "collapse_display":0,
+    "fields": {
+         "zorgfonds_conditions_price_per_month": {
+           "name": "zorgfonds_conditions_price_per_month",
+           "label": "Prijs per maand",
+           "data_type": "Money",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 10
+         },
+        "zorgfonds_conditions_price_per_task": {
+            "name": "zorgfonds_conditions_price_per_task",
+            "label": "Prijs per opdracht",
+            "data_type": "Money",
+            "html_type": "Text",
+            "is_searchable": 1,
+            "is_view": 0,
+            "is_active": 1,
+            "is_required": 1,
+            "weight": 20
+        },
+        "zorgfonds_conditions_price_per_task_bzc": {
+            "name": "zorgfonds_conditions_price_per_task_bzc",
+            "label": "Prijs per opdracht BZC",
+            "data_type": "Money",
+            "html_type": "Text",
+            "is_searchable": 1,
+            "is_view": 0,
+            "is_active": 1,
+            "is_required": 1,
+            "weight": 30
+       },
+        "zorgfonds_conditions_own_reference": {
+           "name": "zorgfonds_conditions_own_reference",
+           "label": "Eigen referentie",
+           "data_type": "String",
+           "html_type": "Text",
+           "is_searchable": 0,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 0,
+           "weight": 40
+         },
+        "zorgfonds_conditions_index": {
+           "name": "zorgfonds_conditions_index",
+           "label": "Gezondheidsindex",
+           "data_type": "Float",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 0,
+           "weight": 50
+         },
+        "zorgfonds_conditions_vat": {
+           "name": "zorgfonds_conditions_vat",
+           "label": "BTW %",
+           "data_type": "Float",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 60
+         }
+        }
+    }
+}

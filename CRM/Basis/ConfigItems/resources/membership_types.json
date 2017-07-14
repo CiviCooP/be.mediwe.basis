@@ -1,0 +1,80 @@
+{
+  "Voorafbetaald":
+  {
+    "name": "Voorafbetaald",
+    "description":"Voorafbetaald",
+    "duration_unit": "year",
+    "duration_interval": 1,
+    "period_type": "fixed",
+    "fixed_period_start_day": 101,
+    "fixed_period_rollover_day": 1231,
+    "relationship_type_id": 19,
+    "relationship_direction": "b_a",
+    "is_active": 1
+  },
+  "Mijn Mediwe":
+  {
+    "name": "Mijn Mediwe",
+    "description":"Mijn Mediwe",
+    "duration_unit": "year",
+    "duration_interval": 1,
+    "period_type": "fixed",
+    "fixed_period_start_day": 101,
+    "fixed_period_rollover_day": 1231,
+    "relationship_type_id": 19,
+    "relationship_direction": "b_a",
+    "is_active": 1
+  },
+  "Maandelijks":
+  {
+    "name": "Maandelijks",
+    "description":"Maandelijks",
+    "duration_unit": "year",
+    "duration_interval": 1,
+    "period_type": "fixed",
+    "fixed_period_start_day": 101,
+    "fixed_period_rollover_day": 1231,
+    "relationship_type_id": 19,
+    "relationship_direction": "b_a",
+    "is_active": 1
+  },
+  "Controlearts":
+  {
+    "name": "Controlearts",
+    "description":"Controlearts",
+    "duration_unit": "year",
+    "duration_interval": 1,
+    "period_type": "fixed",
+    "fixed_period_start_day": 101,
+    "fixed_period_rollover_day": 1231,
+    "relationship_type_id": 19,
+    "relationship_direction": "b_a",
+    "is_active": 1
+  },
+  "Zorgfonds":
+  {
+    "name": "Zorgfonds",
+    "description":"Zorgfonds",
+    "duration_unit": "year",
+    "duration_interval": 1,
+    "period_type": "fixed",
+    "fixed_period_start_day": 101,
+    "fixed_period_rollover_day": 1231,
+    "relationship_type_id": 19,
+    "relationship_direction": "b_a",
+    "is_active": 1
+  },
+  "Inspecteur":
+  {
+    "name": "Inspecteur",
+    "description":"Inspecteur",
+    "duration_unit": "year",
+    "duration_interval": 1,
+    "period_type": "fixed",
+    "fixed_period_start_day": 101,
+    "fixed_period_rollover_day": 1231,
+    "relationship_type_id": 19,
+    "relationship_direction": "b_a",
+    "is_active": 1
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "customer_procedure":{
+    "name":"customer_procedure",
+    "title":"Controleprocedure klant",
+    "extends":"Organization",
+    "extends_entity_column_value": ["mediwe_klant"],
+    "style":"Tab",
+    "is_multiple":0,
+    "is_active":1,
+    "is_reserved":0,
+    "collapse_display":0,
+    "fields": {
+      "customer_procedure_remarks": {
+        "name": "customer_procedure_remarks",
+        "label": "Opmerkingen",
+        "data_type": "String",
+        "html_type": "TextArea",
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_view": 0,
+        "is_required":0,
+        "column_name": "klantnummer_venice_1",
+        "weight": 1,
+        "is_active": 1
+      },
+      "customer_procedure_free": {
+        "name": "customer_procedure_free",
+        "label": "Vrij veld",
+        "data_type": "String",
+        "html_type": "TextArea",
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_view": 0,
+        "is_required":0,
+        "weight": 1,
+        "is_active": 1
+      },
+      "customer_procedure_sector": {
+        "name": "customer_procedure_sector",
+        "label": "Sector omschrijving",
+        "data_type": "String",
+        "html_type": "TextArea",
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_view": 0,
+        "is_required":0,
+        "weight": 28,
+        "is_active": 1
+      },
+
+      "customer_procedure_id_sector": {
+        "name": "customer_procedure_id_sector",
+        "label": "Sector identificatie",
+        "data_type": "Int",
+        "html_type": "Select",
+        "option_group": "sector",
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_view": 0,
+        "is_required":0,
+        "weight": 50,
+        "is_active": 1
+      },
+
+      "customer_procedure_fte_calculation_type": {
+        "name": "customer_procedure_fte_calculation_type",
+        "label": "FTE berekeningswijze",
+        "data_type": "String",
+        "html_type": "Select",
+        "option_group": "berekeningswijze_fte",
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_view": 0,
+        "is_required":0,
+        "weight": 72,
+        "is_active": 1
+      },
+
+      "customer_procedure_cao_noexit_from": {
+        "name": "customer_procedure_cao_noexit_from",
+        "label": "Huis niet verlaten van",
+        "data_type": "String",
+        "html_type": "Text",
+        "text_length": 5,
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_view": 0,
+        "is_required":0,
+        "weight": 88,
+        "is_active": 1
+      },
+
+      "customer_procedure_cao_noexit_till": {
+        "name": "customer_procedure_cao_noexit_till",
+        "label": "Huis niet verlaten tot",
+        "data_type": "String",
+        "html_type": "Text",
+        "text_length": 5,
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_view": 0,
+        "is_required":0,
+        "weight": 102,
+        "is_active": 1
+      },
+
+      "customer_procedure": {
+        "name": "customer_procedure",
+        "label": "Controle procedure",
+        "data_type": "String",
+        "html_type": "TextArea",
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_view": 0,
+        "is_required":0,
+        "weight": 115,
+        "is_active": 1
+      },
+
+      "customer_procedure_vision": {
+        "name": "customer_procedure_vision",
+        "label": "Visie op verzuimbeleid",
+        "data_type": "String",
+        "html_type": "TextArea",
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_view": 0,
+        "is_required":0,
+        "weight": 126,
+        "is_active": 1
+      },
+
+      "customer_procedure_goal": {
+        "name": "customer_procedure_goal",
+        "label": "Doel van controles",
+        "data_type": "String",
+        "html_type": "TextArea",
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_view": 0,
+        "is_required":0,
+        "weight": 135,
+        "is_active": 1
+      },
+      "customer_procedure_use_sms": {
+        "name": "customer_procedure_use_sms",
+        "label": "Stuur SMS naar medewerker",
+        "data_type": "Boolean",
+        "html_type": "Radio",
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_view": 0,
+        "is_required":0,
+        "weight": 145,
+        "is_active": 1
+      }
+    }
+  }
+}

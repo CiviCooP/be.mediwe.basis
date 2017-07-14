@@ -6,7 +6,7 @@
  * @date 3 Feb 2016
  * @license AGPL-3.0
  */
-class CRM_Basis_ConfigItems_ContactType {
+class CRM_Basis_ConfigItems_MembershipType {
 
   protected $_apiParams = array();
 
@@ -24,7 +24,7 @@ class CRM_Basis_ConfigItems_ContactType {
   }
 
   /**
-   * Method to create membership type
+   * Method to create contact type
    *
    * @param array $params
    * @return mixed
@@ -44,13 +44,13 @@ class CRM_Basis_ConfigItems_ContactType {
       civicrm_api3('ContactType', 'Create', $this->_apiParams);
       $this->updateNavigationMenuUrl();
     } catch (CiviCRM_API3_Exception $ex) {
-      throw new Exception('Could not create or update membership type with name '.$this->_apiParams['name']
+      throw new Exception('Could not create or update contact type with name '.$this->_apiParams['name']
         .' in '.__METHOD__.', error from API ContactType Create: '.$ex->getMessage());
     }
   }
 
   /**
-   * Method to check if there is a navigation menu option for the membership type
+   * Method to check if there is a navigation menu option for the contact type
    * and if so, update name and url
    *
    * @access private
@@ -62,7 +62,7 @@ class CRM_Basis_ConfigItems_ContactType {
     $label = "New ".$this->_apiParams['label'];
     $dao = CRM_Core_DAO::executeQuery($query, array(1 => array($label, 'String')));
     $validParent = array("New Organization", "New Individual", "New Household");
-    $newUrl = 'civicrm/membership/add&ct=Organization&cst='.$this->_apiParams['name'].'&reset=1';
+    $newUrl = 'civicrm/contact/add&ct=Organization&cst='.$this->_apiParams['name'].'&reset=1';
     $newName = "New ".$this->_apiParams['name'];
     while ($dao->fetch()) {
       // parent should be either New Organization, New Individual or New Household
@@ -83,73 +83,73 @@ class CRM_Basis_ConfigItems_ContactType {
   }
 
   /**
-   * Method to get membership sub type with name
+   * Method to get contact sub type with name
    *
-   * @param string $membershipTypeName
+   * @param string $contactTypeName
    * @return array|bool
    * @access public
    * @static
    */
-  public function getWithName($membershipTypeName) {
+  public function getWithName($contactTypeName) {
     try {
-      return civicrm_api3('ContactType', 'Getsingle', array('name' => $membershipTypeName));
+      return civicrm_api3('ContactType', 'Getsingle', array('name' => $contactTypeName));
     } catch (CiviCRM_API3_Exception $ex) {
       return FALSE;
     }
   }
 
   /**
-   * Method to disable membership type
+   * Method to disable contact type
    *
-   * @param $membershipTypeName
+   * @param $contactTypeName
    */
-  public function disableContactType($membershipTypeName) {
-    if (!empty($membershipTypeName)) {
+  public function disableContactType($contactTypeName) {
+    if (!empty($contactTypeName)) {
       // catch any errors and ignore (disabling can be done manually if problems)
       try {
-        // get membership type with name
-        $membershipTypeId = civicrm_api3('ContactType', 'getvalue', array('name' => $membershipTypeName, 'return' => 'id'));
-        $sqlContactType = "UPDATE civicrm_membership_type SET is_active = %1 WHERE id = %2";
+        // get contact type with name
+        $contactTypeId = civicrm_api3('ContactType', 'getvalue', array('name' => $contactTypeName, 'return' => 'id'));
+        $sqlContactType = "UPDATE civicrm_contact_type SET is_active = %1 WHERE id = %2";
         CRM_Core_DAO::executeQuery($sqlContactType, array(
           1 => array(0, 'Integer'),
-          2 => array($membershipTypeId, 'Integer')));
+          2 => array($contactTypeId, 'Integer')));
       } catch (CiviCRM_API3_Exception $ex) {
       }
     }
   }
 
   /**
-   * Method to enable membership type
+   * Method to enable contact type
    *
-   * @param $membershipTypeName
+   * @param $contactTypeName
    */
-  public function enableContactType($membershipTypeName) {
-    if (!empty($membershipTypeName)) {
+  public function enableContactType($contactTypeName) {
+    if (!empty($contactTypeName)) {
       // catch any errors and ignore (disabling can be done manually if problems)
       try {
-        // get membership type with name
-        $membershipTypeId = civicrm_api3('ContactType', 'getvalue', array('name' => $membershipTypeName, 'return' => 'id'));
-        $sqlContactType = "UPDATE civicrm_membership_type SET is_active = %1 WHERE id = %2";
+        // get contact type with name
+        $contactTypeId = civicrm_api3('ContactType', 'getvalue', array('name' => $contactTypeName, 'return' => 'id'));
+        $sqlContactType = "UPDATE civicrm_contact_type SET is_active = %1 WHERE id = %2";
         CRM_Core_DAO::executeQuery($sqlContactType, array(
           1 => array(1, 'Integer'),
-          2 => array($membershipTypeId, 'Integer')));
+          2 => array($contactTypeId, 'Integer')));
       } catch (CiviCRM_API3_Exception $ex) {
       }
     }
   }
 
   /**
-   * Method to uninstall membership type
+   * Method to uninstall contact type
    *
-   * @param $membershipTypeName
+   * @param $contactTypeName
    */
-  public function uninstallContactType($membershipTypeName) {
-    if (!empty($membershipTypeName)) {
+  public function uninstallContactType($contactTypeName) {
+    if (!empty($contactTypeName)) {
       // catch any errors and ignore (disabling can be done manually if problems)
       try {
-        // get membership type with name
-        $membershipTypeId = civicrm_api3('ContactType', 'getvalue', array('name' => $membershipTypeName, 'return' => 'id'));
-        civicrm_api3('ContactType', 'delete', array('id' => $membershipTypeId,));
+        // get contact type with name
+        $contactTypeId = civicrm_api3('ContactType', 'getvalue', array('name' => $contactTypeName, 'return' => 'id'));
+        civicrm_api3('ContactType', 'delete', array('id' => $contactTypeId,));
       } catch (CiviCRM_API3_Exception $ex) {
       }
     }

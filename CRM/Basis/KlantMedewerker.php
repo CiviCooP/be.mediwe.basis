@@ -10,11 +10,16 @@
 class CRM_Basis_KlantMedewerker {
 
   private $_klantMedewerkerId = NULL;
+  private $_klantMedewerkerContactSubTypeName = NULL;
 
   /**
    * CRM_Basis_KlantMedewerker constructor.
    */
   public function __construct() {
+
+      $config = CRM_Basis_Config::singleton();
+      $contactSubType = $config->getKlantMedewerkerContactSubType();
+      $this->_klantMedewerkerContactSubTypeName = $contactSubType['name'];
   }
 
   /**
@@ -24,8 +29,32 @@ class CRM_Basis_KlantMedewerker {
    * @return array
    */
   public function create($params) {
-    $klantMedewerker = array();
-    return $klantMedewerker;
+      // if id is set, then update
+      if (isset($params['id'])) {
+          $this->update($params);
+      } else {
+          if (!empty($params['name'])) {
+              // ensure contact_type and contact_sub_type are set correctly
+              $params['contact_type'] = 'Individual';
+              $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
+          }
+          // check if klant can not be found yet and only create if not
+          if ($this->exists($params) === FALSE) {
+              try {
+                  $createdContact = civicrm_api3('Contact', 'create', $params);
+                  $this->addKlantCustomFields($createdContact['values']);
+                  $medewerker = $createdContact['values'];
+                  return $medewerker;
+              }
+              catch (CiviCRM_API3_Exception $ex) {
+                  throw new API_Exception(ts('Could not create a contact in '.__METHOD__
+                      .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
+              }
+
+          } else {
+              // todo maken activity type for DataOnderzoek of iets dergelijks zodat deze gevallen gesignaleerd kunnen worden
+          }
+      }
   }
 
   /**
