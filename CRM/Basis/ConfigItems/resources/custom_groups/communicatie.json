@@ -12,7 +12,7 @@
     "table_name": "civicrm_value_communicatie_29",
     "fields": {
       "gebruikt_app": {
-        "name": "gebruikt_app",
+        "name": "gebruikt_applicatie",
         "label": "Gebruikt de app",
         "data_type": "Boolean",
         "html_type": "Radio",
