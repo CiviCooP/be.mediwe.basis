@@ -2,6 +2,31 @@
 
 require_once 'basis.civix.php';
 
+/**
+ * Implements hook_civicrm_searchColumns().
+ *
+ * @param $objectName
+ * @param $headers
+ * @param $values
+ * @param $selector
+ */
+function basis_civicrm_searchColumns( $objectName, &$headers,  &$values, &$selector ) {
+  if ($objectName == 'contribution') {
+    CRM_Basis_Contribution::searchColumns($objectName, $headers, $values);
+  }
+}
+function basis_civicrm_links($op, $objectName, $objectId, &$links, &$mask, &$values) {
+  if ($objectName == 'Contribution') {
+    $links[] = array(
+      'name' => ts('Print'),
+      'url' => 'civicrm/mediwe/printfaktuur',
+      'title' => 'Print Faktuur',
+      'qs' => 'reset=1&id=%%bid%%',
+      'bit' => 'print',
+    );
+    $values['id'] = $objectId;
+  }
+}
 
 /**
  * Implements hook_civicrm_config().
