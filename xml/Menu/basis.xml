@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/mediwe/form/klant</path>
+    <page_callback>CRM_Basis_Form_Klant</page_callback>
+    <title>Klant</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>

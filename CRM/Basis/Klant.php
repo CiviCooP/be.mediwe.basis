@@ -29,6 +29,8 @@ class CRM_Basis_Klant {
    * @throws API_Exception when error from api Contact Create
    */
   public function create($params) {
+    CRM_Core_Error::debug('params', $params);
+    exit();
     // if id is set, then update
     if (isset($params['id'])) {
       $this->update($params);
