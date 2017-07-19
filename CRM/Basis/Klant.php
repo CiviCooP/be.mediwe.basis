@@ -20,7 +20,8 @@ class CRM_Basis_Klant {
      $config = CRM_Basis_Config::singleton();
      $contactSubType = $config->getKlantContactSubType();
      $locationType = $config->getKlantLocationType();
-
+CRM_Core_Error::debug('locationType',$locationType);
+exit();
      $this->_klantContactSubTypeName = $contactSubType['name'];
      $this->_klantAdresLocationType = $locationType['name'];
 
