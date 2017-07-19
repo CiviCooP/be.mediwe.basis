@@ -95,9 +95,17 @@ exit();
    * @param $params
    * @return bool
    */
-  public function exists($params) {
+  public function exists($search_params) {
       $klant = array();
       $params['contact_sub_type'] = $this->_klantContactSubTypeName;
+
+      // take over search params
+      if (isset($search_params['organization_name'])) {
+          $params['organization_name'] = $search_params['organization_name'];
+      }
+      if (isset($search_params['external_id'])) {
+          $params['external_id'] = $search_params['external_id'];
+      }
 
       CRM_Core_Error::debug('exists params', $params);
 
