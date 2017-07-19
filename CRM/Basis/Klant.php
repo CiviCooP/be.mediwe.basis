@@ -100,12 +100,14 @@ exit();
       $params['contact_sub_type'] = $this->_klantContactSubTypeName;
 
       CRM_Core_Error::debug('exists params', $params);
-      
+
       // ensure that contact sub type is set
       try {
           $klant = civicrm_api3('Contact', 'getsingle', $params);
       }
       catch (CiviCRM_API3_Exception $ex) {
+          CRM_Core_Error::debug('exists error', $ex);
+          exit();
           return false;
       }
       CRM_Core_Error::debug('exists klant', $klant);
