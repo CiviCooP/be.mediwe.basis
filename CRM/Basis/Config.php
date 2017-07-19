@@ -17,6 +17,9 @@ class CRM_Basis_Config {
   private $_klantMedewerkerContactSubType = array();
   private $_controleArtsContactSubType = array();
   private $_inspecteurContactSubType = array();
+
+  // properties for address location types
+  private $_klantLocationType = array();
   
   // properties for relationship types
   private $_isKlantViaRelationshipType = array();
@@ -58,6 +61,7 @@ class CRM_Basis_Config {
     $this->setContactSubTypes();
     $this->setRelationshipTypes();
     $this->setMembershipTypes();
+    $this->setKlantLocationTypes();
 
     $this->setKlantCustomGroups();
     $this->setKlantMedewerkerCustomGroups();
@@ -1267,6 +1271,14 @@ class CRM_Basis_Config {
     }
   }
 
+    /**
+     * Getter for klant location type
+     *
+     * @return null
+     */
+    public function getKlantLocationType() {
+        return $this->_klantLocationType;
+    }
 
   /**
    * Getter for klant contact sub type
@@ -1366,7 +1378,26 @@ class CRM_Basis_Config {
     public function getInspecteurMembershipType() {
         return $this->_inspecteurMembershipType;
     }
-    
+
+
+    /**
+     * Method to set the relevant klant location type properties
+     */
+    private function setKlantLocationTypes() {
+        try {
+            $locationTypes = civicrm_api3('ContactType','get', array(
+                'options' => array('limit' => 0)));
+            foreach ($locationTypes['values'] as $locationTypeId => $locationType) {
+                switch ($locationType['name']) {
+                    case 'Billing':
+                        $this->_klantLocationType = $locationType;
+                        break;
+                }
+            }
+        }
+        catch (CiviCRM_API3_Exception $ex) {
+        }
+    }
     
     /**
    * Method to set the relevant contact sub type properties

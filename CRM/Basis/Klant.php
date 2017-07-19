@@ -10,6 +10,7 @@
 class CRM_Basis_Klant {
 
    private $_klantContactSubTypeName = NULL;
+   private $_klantAdresLocationType = NULL;
 
   /**
    * CRM_Basis_Klant constructor.
@@ -18,7 +19,11 @@ class CRM_Basis_Klant {
    {
      $config = CRM_Basis_Config::singleton();
      $contactSubType = $config->getKlantContactSubType();
+     $locationType = $config->getKlantLocationType();
+
      $this->_klantContactSubTypeName = $contactSubType['name'];
+     $this->_klantAdresLocationType = $locationType['name'];
+
    }
 
   /**
@@ -130,13 +135,41 @@ class CRM_Basis_Klant {
     $config = CRM_Basis_Config::singleton();
     foreach ($contacts as $arrayRowId => $contact) {
       if (isset($contact['contact_id'])) {
-        $sql = 'SELECT * FROM '.$config->getKlantGegevensCustomGroup('table_name').' WHERE entity_id = %1';
-        $dao = CRM_Core_DAO::executeQuery($sql, array(
-          1 => array($contact['contact_id'], 'Integer',),
-        ));
-        while ($dao->fetch()) {
-          $contacts[$arrayRowId] = $this->placeKlantCustomFields($dao, $contact);;
-        }
+            //  boekhouding
+            $sql = 'SELECT * FROM '.$config->getKlantGegevensCustomGroup('civicrm_value_boekhouding_1').' WHERE entity_id = %1';
+            $dao = CRM_Core_DAO::executeQuery($sql, array(
+              1 => array($contact['contact_id'], 'Integer',),
+            ));
+            while ($dao->fetch()) {
+              $contacts[$arrayRowId] = $this->placeKlantCustomFields($dao, $contact);;
+            }
+
+          // organisatie klant
+          $sql = 'SELECT * FROM '.$config->getKlantGegevensCustomGroup('civicrm_value_interne_organisatie_22').' WHERE entity_id = %1';
+          $dao = CRM_Core_DAO::executeQuery($sql, array(
+              1 => array($contact['contact_id'], 'Integer',),
+          ));
+          while ($dao->fetch()) {
+              $contacts[$arrayRowId] = $this->placeKlantCustomFields($dao, $contact);;
+          }
+
+          // expert systeem
+          $sql = 'SELECT * FROM '.$config->getKlantGegevensCustomGroup('civicrm_value_expertsysteem_17').' WHERE entity_id = %1';
+          $dao = CRM_Core_DAO::executeQuery($sql, array(
+              1 => array($contact['contact_id'], 'Integer',),
+          ));
+          while ($dao->fetch()) {
+              $contacts[$arrayRowId] = $this->placeKlantCustomFields($dao, $contact);;
+          }
+
+          // contrleprocedure klant
+          $sql = 'SELECT * FROM '.$config->getKlantGegevensCustomGroup('civicrm_value_controleprocedure_klant_16').' WHERE entity_id = %1';
+          $dao = CRM_Core_DAO::executeQuery($sql, array(
+              1 => array($contact['contact_id'], 'Integer',),
+          ));
+          while ($dao->fetch()) {
+              $contacts[$arrayRowId] = $this->placeKlantCustomFields($dao, $contact);;
+          }
       }
     }
   }
@@ -179,7 +212,7 @@ class CRM_Basis_Klant {
       }
       catch (CiviCRM_API3_Exception $ex) {
           throw new API_Exception(ts('Could not create a contact in '.__METHOD__
-              .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
+              .', contact your system administrator! Error from API Contact delete: '.$ex->getMessage()));
       }
 
       return $klant;
