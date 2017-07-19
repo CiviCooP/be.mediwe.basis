@@ -97,6 +97,8 @@ exit();
    */
   public function exists($search_params) {
       $klant = array();
+      $params = array();
+
       $params['contact_sub_type'] = $this->_klantContactSubTypeName;
 
       // take over search params
