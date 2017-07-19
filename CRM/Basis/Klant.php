@@ -34,8 +34,7 @@ class CRM_Basis_Klant {
    * @throws API_Exception when error from api Contact Create
    */
   public function create($params) {
-    CRM_Core_Error::debug('params', $params);
-    exit();
+
     // if id is set, then update
     if (isset($params['id'])) {
       $this->update($params);
@@ -51,6 +50,9 @@ class CRM_Basis_Klant {
           $createdContact = civicrm_api3('Contact', 'create', $params);
           $this->addKlantCustomFields($createdContact['values']);
           $klant = $createdContact['values'];
+CRM_Core_Error::debug('params', $params);
+CRM_Core_Error::debug('klant', $klant);
+exit();
           return $klant;
         }
         catch (CiviCRM_API3_Exception $ex) {
