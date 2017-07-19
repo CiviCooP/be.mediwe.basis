@@ -1385,11 +1385,9 @@ class CRM_Basis_Config {
      */
     private function setKlantLocationTypes() {
         try {
-            $locationTypes = civicrm_api3('ContactType','get', array(
+            $locationTypes = civicrm_api3('LocationType','get', array(
                 'options' => array('limit' => 0)));
 
-            CRM_Core_Error::debug('locationTypes', $locationTypes);
-            
             foreach ($locationTypes['values'] as $locationTypeId => $locationType) {
                 switch ($locationType['name']) {
                     case 'Billing':
