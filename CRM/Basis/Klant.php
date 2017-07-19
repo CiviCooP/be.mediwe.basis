@@ -101,12 +101,12 @@ exit();
       $params['contact_sub_type'] = $this->_klantContactSubTypeName;
       try {
           $klant = civicrm_api3('Contact', 'getsingle', $params);
-          CRM_Core_Error::debug('klant', $klant);
-          exit;
       }
       catch (CiviCRM_API3_Exception $ex) {
           return false;
       }
+      CRM_Core_Error::debug('klant', $klant);
+      exit();
       return true;
   }
 
