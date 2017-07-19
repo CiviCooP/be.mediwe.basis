@@ -50,9 +50,7 @@ class CRM_Basis_Klant {
           $createdContact = civicrm_api3('Contact', 'create', $params);
           $this->addKlantCustomFields($createdContact['values']);
           $klant = $createdContact['values'];
-CRM_Core_Error::debug('params', $params);
-CRM_Core_Error::debug('klant', $klant);
-exit();
+
           return $klant;
         }
         catch (CiviCRM_API3_Exception $ex) {
@@ -154,6 +152,10 @@ exit();
             $dao = CRM_Core_DAO::executeQuery($sql, array(
               1 => array($contact['contact_id'], 'Integer',),
             ));
+
+ CRM_Core_Error::debug('dao boekhouding', $dao);
+ exit();
+
             while ($dao->fetch()) {
               $contacts[$arrayRowId] = $this->placeKlantCustomFields($dao, $contact);;
             }
