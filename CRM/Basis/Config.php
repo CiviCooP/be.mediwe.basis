@@ -1387,6 +1387,9 @@ class CRM_Basis_Config {
         try {
             $locationTypes = civicrm_api3('ContactType','get', array(
                 'options' => array('limit' => 0)));
+
+            CRM_Core_Error::debug('locationTypes', $locationTypes);
+            
             foreach ($locationTypes['values'] as $locationTypeId => $locationType) {
                 switch ($locationType['name']) {
                     case 'Billing':
