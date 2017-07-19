@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Class to process Address in Mediwe
  *
  * @author Erik Hommel (CiviCooP) <erik.hommel@civicoop.org>
  * @date 31 May 2017
@@ -18,6 +19,7 @@ class CRM_Basis_Adres {
    }
 
   /**
+   * Method to create a new address
    *
    * @param $params
    * @return array
@@ -50,6 +52,7 @@ class CRM_Basis_Adres {
   }
 
   /**
+   * Method to update an address
    *
    * @param $params
    * @return array
@@ -71,6 +74,7 @@ class CRM_Basis_Adres {
   }
 
   /**
+   * Method to check if an address exists
    *
    * @param $params
    * @return bool
@@ -115,13 +119,15 @@ class CRM_Basis_Adres {
 
 
   /**
+   * Method to delete an address with id (set to is_deleted in CiviCRM)
    *
+   * @param $addressId
    * @return bool (if delete was succesfull or not)
    */
   public function deleteWithId($addressid) {
       $adres = array();
 
-      $params['contact_id'] = $addressid;
+      $params['id'] = $addressid;
       try {
           if ($this->exists($params)) {
               $adres = civicrm_api3('Address', 'delete', $params);
