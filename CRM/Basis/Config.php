@@ -1251,7 +1251,7 @@ class CRM_Basis_Config {
    */
   public function getKlantOrganisatieCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_klantExpertsysteemCustomGroup[$key])) {
-      return $this->_klantExpertsysteemCustomGroup[$key];
+      return $this->_klantOrganisatieCustomGroup[$key];
     } else {
       return $this->_klantOrganisatieCustomGroup;
     }

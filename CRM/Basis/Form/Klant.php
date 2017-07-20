@@ -15,13 +15,12 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
     $this->add('text', 'street_address', ts('Adres (straat en huisnummer)'), array(), TRUE);
     $this->add('text', 'post_code', ts('Postcode'), array(), TRUE);
     $this->add('text', 'gemeente', ts('Gemeente'), array(), TRUE);
-    $this->add('text', 'btw', ts('BTW nummer'), array(), TRUE);
-    $this->add('text', 'faktuur_rererentie', ts('Eigen referentie'), array(), FALSE);
-    $this->addYesNo('factureer_aov', 'Faktureer arbeidsongevallen?', FALSE, TRUE);
+    $this->add('text', 'customer_vat', ts('BTW nummer'), array(), TRUE);
+    $this->add('text', 'customer_reference', ts('Eigen referentie'), array(), FALSE);
     $this->add('text', 'email_resultaten', ts('Emailadres voor resultaten'), array(), FALSE);
-    $this->add('text', 'omschrijving_niveau_1', ts('Omschrijving niveau 1'), array(), FALSE);
-    $this->add('text', 'omschrijving_niveau_2', ts('Omschrijving niveau 2'), array(), FALSE);
-    $this->add('text', 'omschrijving_niveau_3', ts('Omschrijving niveau 3'), array(), FALSE);
+    $this->add('text', 'org_level1', ts('Omschrijving niveau 1'), array(), FALSE);
+    $this->add('text', 'org_level2', ts('Omschrijving niveau 2'), array(), FALSE);
+    $this->add('text', 'org_level3', ts('Omschrijving niveau 3'), array(), FALSE);
     $this->addButtons(array(
       array('type' => 'next', 'name' => ts('Save'), 'isDefault' => true,),
       array('type' => 'cancel', 'name' => ts('Cancel')),
