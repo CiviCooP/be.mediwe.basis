@@ -48,18 +48,20 @@ class CRM_Basis_Klant {
         $params['contact_sub_type'] = $this->_klantContactSubTypeName;
       }
 
-      // process klant custom fields
-      $this->renameCustomFields($config->getKlantBoekhoudingCustomGroup('custom_fields'), $params);
-      $this->renameCustomFields($config->getKlantExpertsysteemCustomGroup('custom_fields'), $params);
-      $this->renameCustomFields($config->getKlantProcedureCustomGroup('custom_fields'), $params);
-      $this->renameCustomFields($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
-CRM_Core_Error::debug('params na verwerking custom fields', $params);exit();
+      // rename klant custom fields for api
+      $this->_renameCustomFields($config->getKlantBoekhoudingCustomGroup('custom_fields'), $params);
+      $this->_renameCustomFields($config->getKlantExpertsysteemCustomGroup('custom_fields'), $params);
+      $this->_renameCustomFields($config->getKlantProcedureCustomGroup('custom_fields'), $params);
+      $this->_renameCustomFields($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
 
       if ($this->exists($params) === FALSE) {
         try {
           $createdContact = civicrm_api3('Contact', 'create', $params);
           $klant = $createdContact['values'];
 
+          // process address fields
+          $address = $this->_createAddress($klant['id'], $params);
+CRM_Core_Error::debug('adres', $address);exit();
           return $klant;
         }
         catch (CiviCRM_API3_Exception $ex) {
@@ -128,6 +130,22 @@ CRM_Core_Error::debug('params na verwerking custom fields', $params);exit();
       return $klant;
   }
 
+    private function _existsAddress($contact_id, $search_params) {
+        $adres = array();
+        $params = array();
+
+        $params['location_type_id'] = $this->_klantAdresLocationType;
+        $params['contact_id'] = $contact_id;
+
+        try {
+            $adres = civicrm_api3('Contact', 'getsingle', $params);
+        }
+        catch (CiviCRM_API3_Exception $ex) {
+            return false;
+        }
+
+        return $adres;
+    }
   /**
    * Method to get all klanten that meet the selection criteria based on incoming $params
    *
@@ -154,7 +172,7 @@ CRM_Core_Error::debug('params na verwerking custom fields', $params);exit();
    * @param $contacts
    */
 
-  private function renameCustomFields($customFields, &$params) {
+  private function _renameCustomFields($customFields, &$params) {
 
       foreach ($customFields as $field) {
           $fieldName = $field['name'];
@@ -163,6 +181,27 @@ CRM_Core_Error::debug('params na verwerking custom fields', $params);exit();
               $params[$customFieldName] = $params[$fieldName];
           }
       }
+
+  }
+
+  private function _createAddress($contact_id, $params) {
+
+      $adres = $this->_existsAddress($contact_id,$params);
+
+      if (!$adres) {
+          $adres = array();
+          $adres['location_type_id'] = $this->_klantAdresLocationType;
+          $adres['contact_id'] = $contact_id;
+      }
+
+      $adres['street_address'] = $params['street_address'];
+      $adres['supplemental_adress_1'] = $params['supplemental_adress_1'];
+      $adres['postal_code'] = $params['postal_code'];
+      $adres['city'] = $params['city'];
+
+      $createdAddress = civicrm_api3('Contact', 'create', $adres);
+
+      return $createdAddress['values'];
 
   }
 

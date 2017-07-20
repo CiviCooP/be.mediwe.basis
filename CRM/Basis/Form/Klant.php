@@ -11,10 +11,10 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
 
     $this->add('select', 'sector_id', ts('Sector'), $this->_sectorList, TRUE);
     $this->add('text', 'organization_name', ts('Naam organisatie'), array(), TRUE);
-    $this->add('text', 'tweede_lijn', ts('Tweede lijn'), array(), FALSE);
+    $this->add('text', 'supplemental_address_1', ts('Tweede lijn'), array(), FALSE);
     $this->add('text', 'street_address', ts('Adres (straat en huisnummer)'), array(), TRUE);
-    $this->add('text', 'post_code', ts('Postcode'), array(), TRUE);
-    $this->add('text', 'gemeente', ts('Gemeente'), array(), TRUE);
+    $this->add('text', 'postal_code', ts('Postcode'), array(), TRUE);
+    $this->add('text', 'city', ts('Gemeente'), array(), TRUE);
     $this->add('text', 'customer_vat', ts('BTW nummer'), array(), TRUE);
     $this->add('text', 'customer_reference', ts('Eigen referentie'), array(), FALSE);
     $this->add('text', 'email_resultaten', ts('Emailadres voor resultaten'), array(), FALSE);
