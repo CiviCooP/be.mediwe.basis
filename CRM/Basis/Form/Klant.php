@@ -7,6 +7,8 @@
  */
 class CRM_Basis_Form_Klant extends CRM_Core_Form {
   private $_sectorList = array();
+  private $_contactData = array();
+
   public function buildQuickForm() {
 
     $this->add('select', 'sector_id', ts('Sector'), $this->_sectorList, TRUE);
@@ -32,7 +34,9 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
   }
 
   public function preProcess() {
-    $this->setSectorList();}
+    $this->setSectorList();
+    $this->setContactData(25);
+  }
 
   public function postProcess() {
     //CRM_Core_Error::debug('submitValues', $this->_submitValues);
@@ -62,6 +66,14 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
     catch (CiviCRM_API3_Exception $ex) {
     }
     asort($this->_sectorList);
+  }
+
+  private function setContactData($id) {
+      $params = array (
+          'id' => $id,
+      );
+      $this->_contactData = CRM_Basis_Klant::get($params);
+CRM_Core_Error::debug('contact data', $this->_contactData);exit;
   }
 
   /**

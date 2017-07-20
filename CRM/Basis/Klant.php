@@ -187,10 +187,14 @@ class CRM_Basis_Klant {
     $klanten = array();
     // ensure that contact sub type is set
     $params['contact_sub_type'] = $this->_klantContactSubTypeName;
+    $params['sequential'] = 1;
+
     try {
+
       $contacts = civicrm_api3('Contact', 'get', $params);
-      $this->addKlantCustomFields($contacts['values']);
       $klanten = $contacts['values'];
+      $this->_addKlantCustomFields($klanten);
+
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
@@ -242,62 +246,40 @@ class CRM_Basis_Klant {
 
   }
 
-  private function addKlantCustomFields(&$contacts) {
+  private function _addDaoData($customGroup, $contact) {
+      $table_name = $customGroup['table_name'];
+      $fields = $customGroup['custom_fields'];
+      $sql = 'SELECT * FROM '. $table_name . ' WHERE entity_id = %1';
+      $dao = CRM_Core_DAO::executeQuery($sql, array(
+          1 => array($contact['id'], 'Integer',),
+      ));
+
+      if (!$dao->fetch()) {
+          $dao = array();
+          $dao['entity_id'] = $contact['id'];
+          foreach ($fields as $field) {
+              $dao->$field['column_name'] = false;
+          }
+      }
+      return $this->_placeKlantCustomFields($fields, $dao, $contact);
+  }
+
+  private function _addKlantCustomFields(&$contacts) {
     $config = CRM_Basis_Config::singleton();
 
     foreach ($contacts as $arrayRowId => $contact) {
       if (isset($contact['id'])) {
-            //  boekhouding
-
-            $sql = 'SELECT * FROM '. $config->getKlantBoekhoudingCustomGroup('table_name') . ' WHERE entity_id = %1';
-CRM_Core_error::debug('sql', $sql);
-            $dao = CRM_Core_DAO::executeQuery($sql, array(
-              1 => array($contact['id'], 'Integer',),
-            ));
- CRM_Core_error::debug('dao', $dao);
-            $found = false;
-            while ($dao->fetch()) {
-                $found = true;
-                $contacts[$arrayRowId] = $this->placeKlantCustomFields($config->getKlantBoekhoudingCustomGroup['custom_fields'], $dao, $contact);
-            }
-            if (!$found) {
-                $dao = array();
-                $dao['entity_id'] = $contact['id'];
-                $fields = $config->getKlantBoekhoudingCustomGroup('custom_fields');
-                foreach ($fields as $field) {
-                    $dao->$field['column_name'] = false;
-                }
-                $contacts[$arrayRowId] = $this->placeKlantCustomFields($config->getKlantBoekhoudingCustomGroup['custom_fields'], $dao, $contact);
-            }
-CRM_Core_error::debug('contacts', $contacts);
-exit();
+          // boekhouding
+          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantBoekhoudingCustomGroup, $contact );
 
           // organisatie klant
-          $sql = 'SELECT * FROM '.$config->getKlantOrganisatieCustomGroup('table_name').' WHERE entity_id = %1';
-          $dao = CRM_Core_DAO::executeQuery($sql, array(
-              1 => array($contact['id'], 'Integer',),
-          ));
-          while ($dao->fetch()) {
-              $contacts[$arrayRowId] = $this->placeKlantCustomFields($dao, $contact);
-          }
+          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantOrganisatieCustomGroup, $contact );
 
           // expert systeem
-          $sql = 'SELECT * FROM '.$config->getKlantExpertsysteemCustomGroup('table_name').' WHERE entity_id = %1';
-          $dao = CRM_Core_DAO::executeQuery($sql, array(
-              1 => array($contact['id'], 'Integer',),
-          ));
-          while ($dao->fetch()) {
-              $contacts[$arrayRowId] = $this->placeKlantCustomFields($dao, $contact);
-          }
+          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantExpertsysteemCustomGroup, $contact );
 
           // controleprocedure klant
-          $sql = 'SELECT * FROM '.$config->getKlantProcedureCustomGroup('table_name').' WHERE entity_id = %1';
-          $dao = CRM_Core_DAO::executeQuery($sql, array(
-              1 => array($contact['id'], 'Integer',),
-          ));
-          while ($dao->fetch()) {
-              $contacts[$arrayRowId] = $this->placeKlantCustomFields($dao, $contact);
-          }
+          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantProcedureCustomGroup, $contact );
       }
     }
   }
@@ -309,13 +291,14 @@ exit();
    * @param array $contactArray;
    * @return array
    */
-  private function placeKlantCustomFields($fields, $contactData, $contactArray) {
+  private function _placeKlantCustomFields($fields, $daoData, $contactArray) {
     $config = CRM_Basis_Config::singleton();
 
     foreach ($fields as $customFieldId => $customField) {
-      $propertyName = $customField['column_name'];
-      if (isset($contactData->$propertyName)) {
-        $contactArray[$propertyName] = $contactData->$propertyName;
+      $columnName = $customField['column_name'];
+      $fieldName = $customField['name'];
+      if (isset($daoData->$columnName)) {
+        $contactArray[$fieldName] = $daoData->$columnName;
       }
     }
     return $contactArray;
