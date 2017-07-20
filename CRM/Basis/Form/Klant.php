@@ -10,7 +10,6 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
   private $_contactData = array();
 
   public function buildQuickForm() {
-
     $this->add('select', 'sector_id', ts('Sector'), $this->_sectorList, TRUE);
     $this->add('text', 'organization_name', ts('Naam organisatie'), array(), TRUE);
     $this->add('text', 'supplemental_address_1', ts('Tweede lijn'), array(), FALSE);
@@ -69,11 +68,10 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
   }
 
   private function setContactData($id) {
-      $params = array (
-          'id' => $id,
-      );
-      $this->_contactData = CRM_Basis_Klant::get($params);
-CRM_Core_Error::debug('contact data', $this->_contactData);exit;
+      $klant = new CRM_Basis_Klant();
+
+      $this->_contactData = $klant->get(array ( 'id' => $id, ));
+
   }
 
   /**

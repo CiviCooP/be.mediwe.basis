@@ -67,7 +67,6 @@ class CRM_Basis_Klant {
           return $klant;
         }
         catch (CiviCRM_API3_Exception $ex) {
-          CRM_Core_Error::debug('params', $params);
           throw new API_Exception(ts('Could not create a contact in '.__METHOD__
             .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
         }
@@ -171,7 +170,6 @@ class CRM_Basis_Klant {
             $adres = civicrm_api3('Address', 'getsingle', $params);
         }
         catch (CiviCRM_API3_Exception $ex) {
-            CRM_Core_Error::debug('params voor opzoeken adres', $params);
             return false;
         }
 
@@ -193,12 +191,24 @@ class CRM_Basis_Klant {
 
       $contacts = civicrm_api3('Contact', 'get', $params);
       $klanten = $contacts['values'];
-      $this->_addKlantCustomFields($klanten);
 
+      $this->_addKlantAllFields($klanten);
+
+      return $klanten;
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
-    return $klanten;
+
+  }
+
+  public function getByName($organization_name) {
+      $params = array (
+          'sequential' => 1,
+          'organization_name' => $organization_name,
+          'contact_sub_type' => $this->_klantContactSubTypeName,
+      );
+
+      return $this->get($params);
   }
 
   /**
@@ -246,6 +256,34 @@ class CRM_Basis_Klant {
 
   }
 
+  private function _addAddressData(&$contact) {
+
+      $address = array();
+      $params = array (
+          'sequential' => 1,
+          'location_type_id' => $this->_klantAdresLocationType,
+          'contact_id' => $contact['id'],
+      );
+
+      try {
+          $address = civicrm_api3('Address', 'getsingle', $params);
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+
+      }
+
+      // add relevant address data to contact array
+      foreach ($address as $key => $value) {
+          switch ($key) {
+              case 'id':
+                    break;
+              default:
+                    $contact[$key] = $value;
+                    break;
+          }
+      }
+  }
+
   private function _addDaoData($customGroup, $contact) {
       $table_name = $customGroup['table_name'];
       $fields = $customGroup['custom_fields'];
@@ -258,31 +296,37 @@ class CRM_Basis_Klant {
           $dao = array();
           $dao['entity_id'] = $contact['id'];
           foreach ($fields as $field) {
-              $dao->$field['column_name'] = false;
+              $columnName = $field['column_name'];
+              $dao[$columnName] = false;
           }
       }
       return $this->_placeKlantCustomFields($fields, $dao, $contact);
   }
 
-  private function _addKlantCustomFields(&$contacts) {
+  private function _addKlantAllFields(&$contacts) {
     $config = CRM_Basis_Config::singleton();
 
     foreach ($contacts as $arrayRowId => $contact) {
       if (isset($contact['id'])) {
-          // boekhouding
-          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantBoekhoudingCustomGroup, $contact );
+          // boekhouding custom fields
+          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantBoekhoudingCustomGroup(), $contact );
 
-          // organisatie klant
-          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantOrganisatieCustomGroup, $contact );
+          // organisatie klant custom fields
+          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantOrganisatieCustomGroup(), $contact );
 
-          // expert systeem
-          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantExpertsysteemCustomGroup, $contact );
+          // expert systeem custom fields
+          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantExpertsysteemCustomGroup(), $contact );
 
-          // controleprocedure klant
-          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantProcedureCustomGroup, $contact );
+          // controleprocedure klant custom fields
+          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantProcedureCustomGroup(), $contact );
+
+          // klant address fields
+          //$contacts[$arrayRowId] = $this->_addAddressData($contact);
+
       }
     }
   }
+
 
   /**
    * Method to place the klant custom fields in the contact array based on the
