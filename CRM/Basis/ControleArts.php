@@ -398,11 +398,11 @@ class CRM_Basis_ControleArts {
             if (isset($contact['id'])) {
                 if (isset($contact['id'])) {
                     // leverancier custom fields
-                    $contacts[$arrayRowId] = $config->addDaoData($config->getInspecteurLeverancierCustomGroup(), $contact);
+                    $contacts[$arrayRowId] = $config->addDaoData($config->getInspecteurLeverancierCustomGroup(),  $contacts[$arrayRowId]);
                     // werkgebied custom fields
-                    $contacts[$arrayRowId] = $config->addDaoData($config->getInspecteurWerkgebiedCustomGroup(), $contact);
+                    $contacts[$arrayRowId] = $config->addDaoData($config->getInspecteurWerkgebiedCustomGroup(),  $contacts[$arrayRowId]);
                     // vakantiedagen custom fields
-                    $contacts[$arrayRowId] = $config->addDaoData($config->getControleArtsVakantieperiodeCustomGroup(), $contact);
+                    $contacts[$arrayRowId] = $config->addDaoData($config->getControleArtsVakantieperiodeCustomGroup(),  $contacts[$arrayRowId]);
                 }
             }
         }

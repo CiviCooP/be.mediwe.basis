@@ -19,7 +19,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 4
+        "weight": 1
       },
       "employee_personnel_nbr": {
         "name": "employee_personnel_nbr",
@@ -30,7 +30,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 4
+        "weight": 2
       },
       "employee_partner": {
         "name": "employee_partner",
@@ -41,7 +41,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 4
+        "weight": 3
       },
       "employee_level1": {
         "name": "employee_level1",
@@ -63,7 +63,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 30
+        "weight": 5
       },
       "employee_level2": {
         "name": "employee_level2",
@@ -74,7 +74,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 30
+        "weight": 6
       },
       "employee_level3": {
         "name": "employee_level3",
@@ -85,7 +85,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 7
       },
       "employee_function": {
         "name": "employee_function",
@@ -96,7 +96,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 8
       },
       "employee_statute": {
         "name": "employee_statute",
@@ -107,7 +107,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 9
       },
       "employee_contract": {
         "name": "employee_contract",
@@ -118,7 +118,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 10
       },
       "employee_contract_desc": {
         "name": "employee_contract_desc",
@@ -129,7 +129,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 11
       },
       "employee_crew_system": {
         "name": "employee_crew_system",
@@ -140,7 +140,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 12
       },
       "employee_fte": {
         "name": "employee_fte",
@@ -151,7 +151,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 13
       },
       "employee_costcenter": {
         "name": "employee_costcenter",
@@ -162,7 +162,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 14
       },
       "employee_date_in": {
         "name": "employee_date_in",
@@ -173,7 +173,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 15
       },
       "employee_date_out": {
         "name": "employee_date_out",
@@ -184,7 +184,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 16
       },
       "employee_remarks": {
         "name": "employee_remarks",
@@ -195,7 +195,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 17
       },
       "employee_free1": {
         "name": "employee_free1",
@@ -206,7 +206,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 18
       },
       "employee_is_free": {
         "name": "employee_is_free",
@@ -217,7 +217,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 19
       },
       "employee_is_free_till": {
         "name": "employee_is_free_till",
@@ -228,7 +228,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 20
       },
       "employee_is_blacklisted": {
         "name": "employee_is_blacklisted",
@@ -239,7 +239,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 21
       },
       "employee_is_blacklisted_till": {
         "name": "employee_is_blacklisted_till",
@@ -250,7 +250,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 22
       }
     }
   }

@@ -338,7 +338,7 @@ class CRM_Basis_KlantMedewerker {
         foreach ($contacts as $arrayRowId => $contact) {
             if (isset($contact['id'])) {
                 // tellers custom fields
-                $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantMedewerkerExpertsysteemTellersCustomGroup(), $contact );
+                $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantMedewerkerExpertsysteemTellersCustomGroup(), $contacts[$arrayRowId] );
 
             }
         }

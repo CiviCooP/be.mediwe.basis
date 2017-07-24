@@ -175,7 +175,7 @@ class CRM_Basis_Klant {
 
         $params = array(
             'sequential' => 1,
-            'location_type_id' => $this->_klantAdresLocationType,
+            'location_type_id' => $this->_klantLocationType,
             'contact_id' => $contact_id,
         );
 
@@ -274,7 +274,7 @@ class CRM_Basis_Klant {
       $address = array();
       $params = array (
           'sequential' => 1,
-          'location_type_id' => $this->_klantAdresLocationType,
+          'location_type_id' => $this->_klantLocationType,
           'contact_id' => $contact['id'],
       );
 
@@ -302,18 +302,19 @@ class CRM_Basis_Klant {
     $config = CRM_Basis_Config::singleton();
 
     foreach ($contacts as $arrayRowId => $contact) {
+
       if (isset($contact['id'])) {
           // boekhouding custom fields
-          $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantBoekhoudingCustomGroup(), $contact );
+          $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantBoekhoudingCustomGroup(), $contacts[$arrayRowId] );
 
           // organisatie klant custom fields
-          $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantOrganisatieCustomGroup(), $contact );
+          $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantOrganisatieCustomGroup(), $contacts[$arrayRowId] );
 
           // expert systeem custom fields
-          $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantExpertsysteemCustomGroup(), $contact );
+          $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantExpertsysteemCustomGroup(), $contacts[$arrayRowId] );
 
           // controleprocedure klant custom fields
-          $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantProcedureCustomGroup(), $contact );
+          $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantProcedureCustomGroup(), $contacts[$arrayRowId] );
 
           // klant address fields
           //$contacts[$arrayRowId] = $this->_addAddressData($contact);

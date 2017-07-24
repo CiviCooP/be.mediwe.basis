@@ -378,9 +378,9 @@ class CRM_Basis_Inspecteur {
         foreach ($contacts as $arrayRowId => $contact) {
             if (isset($contact['id'])) {
                 // leverancier custom fields
-                $contacts[$arrayRowId] = $config->addDaoData( $config->getInspecteurLeverancierCustomGroup(), $contact );
+                $contacts[$arrayRowId] = $config->addDaoData( $config->getInspecteurLeverancierCustomGroup(),  $contacts[$arrayRowId] );
                 // werkgebied custom fields
-                $contacts[$arrayRowId] = $config->addDaoData( $config->getInspecteurWerkgebiedCustomGroup(), $contact );
+                $contacts[$arrayRowId] = $config->addDaoData( $config->getInspecteurWerkgebiedCustomGroup(),  $contacts[$arrayRowId] );
             }
         }
     }

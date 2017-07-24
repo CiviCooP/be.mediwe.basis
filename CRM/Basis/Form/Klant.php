@@ -10,7 +10,7 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
   private $_contactData = array();
 
   public function buildQuickForm() {
-    $this->add('select', 'sector_id', ts('Sector'), $this->_sectorList, TRUE);
+    $this->add('select', 'customer_procedure_id_sector', ts('Sector'), $this->_sectorList, TRUE);
     $this->add('text', 'organization_name', ts('Naam organisatie'), array(), TRUE);
     $this->add('text', 'supplemental_address_1', ts('Tweede lijn'), array(), FALSE);
     $this->add('text', 'street_address', ts('Adres (straat en huisnummer)'), array(), TRUE);
@@ -29,6 +29,21 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
 
     // export form elements
     $this->assign('elementNames', $this->getRenderableElementNames());
+
+    if (isset($this->_contactData[0])) {
+        // set values to screen
+        $this->getElement('sector_id')->setValue($this->_contactData[0]['sector_id']);
+        $this->getElement('organization_name')->setValue($this->_contactData[0]['organization_name']);
+        $this->getElement('supplemental_address_1')->setValue($this->_contactData[0]['supplemental_address_1']);
+        $this->getElement('street_address')->setValue($this->_contactData[0]['street_address']);
+        $this->getElement('postal_code')->setValue($this->_contactData[0]['postal_code']);
+        $this->getElement('city')->setValue($this->_contactData[0]['city']);
+        $this->getElement('customer_vat')->setValue($this->_contactData[0]['customer_vat']);
+        $this->getElement('customer_reference')->setValue($this->_contactData[0]['customer_reference']);
+        $this->getElement('email_resultaten')->setValue($this->_contactData[0]['email_resultaten']);
+    }
+
+
     parent::buildQuickForm();
   }
 
@@ -38,10 +53,6 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
     $id =   CRM_Utils_Request::retrieve('id', 'Integer');
     if ($id) {
         $this->setContactData($id);
-
-        // set values to screen
-        $organization_name  =& $this->getElement('organization_name');
-        $organization_name->setValue($this->_contactData['organization_name']);
     }
   }
 
