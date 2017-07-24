@@ -1,5 +1,5 @@
 <div class="help-block" id="help">
-  {ts}Geef hier de klant gegevens op voor zover die bekend zijn. Verplichte velden worden aangegeven met een *{/ts}
+  {ts}Geef hier de medewerker gegevens op voor zover die bekend zijn. Verplichte velden worden aangegeven met een *{/ts}
 </div>
 
 {* HEADER *}

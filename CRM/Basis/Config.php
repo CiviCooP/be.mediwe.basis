@@ -1605,6 +1605,35 @@ class CRM_Basis_Config {
     }
   }
 
+
+    /**
+     * Getter for klantmedewerker experst systeem tellers custom group
+     *
+     * @param string $key
+     * @return mixed|array
+     */
+    public function getKlantMedewerkerExpertsysteemTellersCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_klantMedewerkerExpertsysteemTellersCustomGroup[$key])) {
+            return $this->_klantMedewerkerExpertsysteemTellersCustomGroup[$key];
+        } else {
+            return $this->_klantMedewerkerExpertsysteemTellersCustomGroup;
+        }
+    }
+
+    /**
+     * Getter for klantmedewerker medewerker custom group
+     *
+     * @param string $key
+     * @return mixed|array
+     */
+    public function getKlantMedewerkerExpertsysteemTellersCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_klantMedewerkerMedewerkerCustomGroup[$key])) {
+            return $this->_klantMedewerkerMedewerkerCustomGroup[$key];
+        } else {
+            return $this->_klantMedewerkerMedewerkerCustomGroup;
+        }
+    }
+
     /**
      * Getter for klant location type
      *
