@@ -10,7 +10,7 @@
 class CRM_Basis_Klant {
 
    private $_klantContactSubTypeName = NULL;
-   private $_klantAdresLocationType = NULL;
+   private $_klantLocationType = NULL;
 
   /**
    * CRM_Basis_Klant constructor.
@@ -19,11 +19,10 @@ class CRM_Basis_Klant {
    {
      $config = CRM_Basis_Config::singleton();
      $contactSubType = $config->getKlantContactSubType();
-     $locationType = $config->getKlantLocationType();
-
      $this->_klantContactSubTypeName = $contactSubType['name'];
-     $this->_klantAdresLocationType = $locationType['name'];
 
+     $locationType = $config->getKlantLocationType();
+     $this->_klantLocationType = $locationType['name'];
    }
 
   /**
@@ -64,6 +63,14 @@ class CRM_Basis_Klant {
           // process address fields
           $address = $this->_createAddress($klant['id'], $data);
 
+          // process email field
+          if (isset($data['email'])) {
+              $email = $this->_createEmail($klant['id'], $data['email']);
+          }
+
+
+
+
           return $klant;
         }
         catch (CiviCRM_API3_Exception $ex) {
@@ -72,6 +79,7 @@ class CRM_Basis_Klant {
         }
 
     }
+
   }
 
   /**
@@ -116,6 +124,11 @@ class CRM_Basis_Klant {
 
             // process address fields
             $address = $this->_createAddress($klant['id'], $data);
+
+            // process email field
+            if (isset($data['email'])) {
+                $email = $this->_createEmail($klant['id'], $data['email']);
+            }
         }
         catch (CiviCRM_API3_Exception $ex) {
             throw new API_Exception(ts('Could not create a contact in '.__METHOD__
@@ -236,7 +249,7 @@ class CRM_Basis_Klant {
       if (!$adres) {
           $adres = array(
               'sequential' => 1,
-              'location_type_id' => $this->_klantAdresLocationType,
+              'location_type_id' => $this->_klantLocationType,
               'contact_id' => $contact_id,
           );
       }
@@ -284,24 +297,6 @@ class CRM_Basis_Klant {
       }
   }
 
-  private function _addDaoData($customGroup, $contact) {
-      $table_name = $customGroup['table_name'];
-      $fields = $customGroup['custom_fields'];
-      $sql = 'SELECT * FROM '. $table_name . ' WHERE entity_id = %1';
-      $dao = CRM_Core_DAO::executeQuery($sql, array(
-          1 => array($contact['id'], 'Integer',),
-      ));
-
-      if (!$dao->fetch()) {
-          $dao = array();
-          $dao['entity_id'] = $contact['id'];
-          foreach ($fields as $field) {
-              $columnName = $field['column_name'];
-              $dao[$columnName] = false;
-          }
-      }
-      return $this->_placeKlantCustomFields($fields, $dao, $contact);
-  }
 
   private function _addKlantAllFields(&$contacts) {
     $config = CRM_Basis_Config::singleton();
@@ -309,16 +304,16 @@ class CRM_Basis_Klant {
     foreach ($contacts as $arrayRowId => $contact) {
       if (isset($contact['id'])) {
           // boekhouding custom fields
-          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantBoekhoudingCustomGroup(), $contact );
+          $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantBoekhoudingCustomGroup(), $contact );
 
           // organisatie klant custom fields
-          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantOrganisatieCustomGroup(), $contact );
+          $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantOrganisatieCustomGroup(), $contact );
 
           // expert systeem custom fields
-          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantExpertsysteemCustomGroup(), $contact );
+          $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantExpertsysteemCustomGroup(), $contact );
 
           // controleprocedure klant custom fields
-          $contacts[$arrayRowId] = $this->_addDaoData( $config->getKlantProcedureCustomGroup(), $contact );
+          $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantProcedureCustomGroup(), $contact );
 
           // klant address fields
           //$contacts[$arrayRowId] = $this->_addAddressData($contact);
@@ -327,26 +322,44 @@ class CRM_Basis_Klant {
     }
   }
 
+    private function _existsEmail($contact_id) {
+        $email = array();
 
-  /**
-   * Method to place the klant custom fields in the contact array based on the
-   *
-   * @param object $contactData (dao)
-   * @param array $contactArray;
-   * @return array
-   */
-  private function _placeKlantCustomFields($fields, $daoData, $contactArray) {
-    $config = CRM_Basis_Config::singleton();
+        $params = array(
+            'sequential' => 1,
+            'location_type_id' => $this->_klantLocationType,
+            'contact_id' => $contact_id,
+        );
 
-    foreach ($fields as $customFieldId => $customField) {
-      $columnName = $customField['column_name'];
-      $fieldName = $customField['name'];
-      if (isset($daoData->$columnName)) {
-        $contactArray[$fieldName] = $daoData->$columnName;
-      }
+        try {
+            $email = civicrm_api3('Address', 'getsingle', $params);
+        }
+        catch (CiviCRM_API3_Exception $ex) {
+            return false;
+        }
+
+        return $email;
     }
-    return $contactArray;
-  }
+
+    private function _createEmail($contact_id,  $emailaddress) {
+
+        $email = $this->_existsEmail($contact_id);
+
+        if (!$email) {
+            $email = array(
+                'sequential' => 1,
+                'contact_id' => $contact_id,
+                'location_type_id' => $this->_klantLocationType,
+            );
+        }
+
+        $adres['email'] = $emailaddress;
+
+        $createdAddress = civicrm_api3('Email', 'create', $email);
+
+        return $createdAddress['values'];
+
+    }
 
   /**
    * Method to delete klant with id (set to is_deleted in CiviCRM)

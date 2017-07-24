@@ -1,0 +1,257 @@
+{
+  "employee": {
+    "name": "employee",
+    "title": "Medewerker",
+    "extends": "Individual",
+    "extends_entity_column_value": ["mediwe_klant_medewerker"],
+    "style": "Tab",
+    "is_multiple": 0,
+    "is_active": 1,
+    "is_reserved": 0,
+    "collapse_display": 0,
+    "fields": {
+      "employee_national_nbr": {
+        "name": "employee_national_nbr",
+        "label": "Rijksregisternr",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 4
+      },
+      "employee_personnel_nbr": {
+        "name": "employee_personnel_nbr",
+        "label": "Personeelsnummer",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 4
+      },
+      "employee_partner": {
+        "name": "employee_partner",
+        "label": "Partner",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 4
+      },
+      "employee_level1": {
+        "name": "employee_level1",
+        "label": "Niveau 1",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 4
+      },
+      "employee_code_level2": {
+        "name": "employee_code_level2",
+        "label": "Niveau 2 code",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 30
+      },
+      "employee_level2": {
+        "name": "employee_level2",
+        "label": "Niveau 2",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 30
+      },
+      "employee_level3": {
+        "name": "employee_level3",
+        "label": "Niveau 3",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_function": {
+        "name": "employee_function",
+        "label": "Functie",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_statute": {
+        "name": "employee_statute",
+        "label": "Statuut",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_contract": {
+        "name": "employee_contract",
+        "label": "Contract",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_contract_desc": {
+        "name": "employee_contract_desc",
+        "label": "Contract omschrijving",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_crew_system": {
+        "name": "employee_crew_system",
+        "label": "Ploegensysteem",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_fte": {
+        "name": "employee_fte",
+        "label": "Bezetting",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_costcenter": {
+        "name": "employee_costcenter",
+        "label": "Kostenplaats",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_date_in": {
+        "name": "employee_date_in",
+        "label": "Datum in dienst",
+        "data_type": "Date",
+        "html_type": "Select Date",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_date_out": {
+        "name": "employee_date_out",
+        "label": "Datum uit dienst",
+        "data_type": "Date",
+        "html_type": "Select Date",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_remarks": {
+        "name": "employee_remarks",
+        "label": "Opmerkingen",
+        "data_type": "String",
+        "html_type": "TextArea",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_free1": {
+        "name": "employee_free1",
+        "label": "Vrije info 1",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_is_free": {
+        "name": "employee_is_free",
+        "label": "Is controlevrij",
+        "data_type": "Boolean",
+        "html_type": "Radio",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_is_free_till": {
+        "name": "employee_is_free_till",
+        "label": "Is controlevrij tot",
+        "data_type": "Date",
+        "html_type": "Select Date",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_is_blacklisted": {
+        "name": "employee_is_blacklisted",
+        "label": "Controle steeds aangewezen",
+        "data_type": "Boolean",
+        "html_type": "Radio",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      },
+      "employee_is_blacklisted_till": {
+        "name": "employee_is_blacklisted_till",
+        "label": "Controle steeds aangewezen tot",
+        "data_type": "Date",
+        "html_type": "Select Date",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 52
+      }
+    }
+  }
+}

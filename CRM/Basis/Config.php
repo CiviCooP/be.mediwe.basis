@@ -19,8 +19,8 @@ class CRM_Basis_Config {
   private $_inspecteurContactSubType = array();
 
   // properties for address location types
-  private $_klantLocationType = array();
-  
+  private $_klantLocationTypes = array();
+
   // properties for relationship types
   private $_isKlantViaRelationshipType = array();
   
@@ -48,6 +48,7 @@ class CRM_Basis_Config {
   private $_controleArtsWerkgebiedCustomGroup = array();
 
   private $_klantMedewerkerExpertsysteemTellersCustomGroup = array();
+  private $_klantMedewerkerMedewerkerCustomGroup = array();
 
   private $_voorwaardenControleCustomGroup = array();
   private $_voorwaardenMijnMediweCustomGroup = array();
@@ -61,7 +62,8 @@ class CRM_Basis_Config {
     $this->setContactSubTypes();
     $this->setRelationshipTypes();
     $this->setMembershipTypes();
-    $this->setKlantLocationTypes();
+    $this->setklantLocationTypes();
+
 
     $this->setKlantCustomGroups();
     $this->setKlantMedewerkerCustomGroups();
@@ -533,6 +535,338 @@ class CRM_Basis_Config {
             return $customField;
         }
     }
+
+
+    /**
+     * Getter for rijksregisternummer custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerRijksregisterNrCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_national_nbr');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for personeelsnummer custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerPersoneelsNummerCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_personnel_nbr');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_partner custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerPartnerCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_partner');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_level1 custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerLevel1CustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_level1');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_level2 custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerLevel2rCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_level2');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_level3 custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerLevel3CustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_level3');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_code_level2 custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerLevel2CodeCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_code_level2');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_function custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerFunctieCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_function');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_statute custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerStatuutCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_statute');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_contract custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerContractCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_contract');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_contract_desc custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerSubContractCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_contract_desc');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_crew_system custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerPloegenSysteemCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_crew_system');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_fte custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerFTECustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_fte');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_costcenter custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerKostenplaatsCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_costcenter');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_date_in custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerDatumInDienstCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_date_in');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_date_out custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerDatumUitDienstCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_date_out');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_remarks custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerOpmerkingenCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_remarks');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_free1 custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerVrijVeld1CustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_free1');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_is_free custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerIsControlevrijCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_is_free');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_is_free_till custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerIsControlevrijTotCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_is_free_till');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_is_blacklisted custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerIsControleVerplichtCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_is_blacklisted');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
+    /**
+     * Getter for employee_is_blacklisted_till custom field from medewerker custom group
+     *
+     * @param null $key
+     * @return mixed|array
+     */
+    public function getMedewerkerIsControleVerplichtTotCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_is_blacklisted_till');
+        if (!empty($key) && isset($customField[$key])) {
+            return $customField[$key];
+        } else {
+            return $customField;
+        }
+    }
+
 
     /**
      * Getter for Ziekte_op_maandag custom field from expertsysteemtellers custom group
@@ -1276,9 +1610,11 @@ class CRM_Basis_Config {
      *
      * @return null
      */
-    public function getKlantLocationType() {
-        return $this->_klantLocationType;
+    public function getklantLocationType() {
+        return $this->_klantLocationTypes[0];
     }
+
+
 
   /**
    * Getter for klant contact sub type
@@ -1379,11 +1715,10 @@ class CRM_Basis_Config {
         return $this->_inspecteurMembershipType;
     }
 
-
     /**
      * Method to set the relevant klant location type properties
      */
-    private function setKlantLocationTypes() {
+    private function setklantLocationTypes() {
         try {
             $locationTypes = civicrm_api3('LocationType','get', array(
                 'options' => array('limit' => 0)));
@@ -1391,7 +1726,7 @@ class CRM_Basis_Config {
             foreach ($locationTypes['values'] as $locationTypeId => $locationType) {
                 switch ($locationType['name']) {
                     case 'Billing':
-                        $this->_klantLocationType = $locationType;
+                        $this->_klantLocationTypes[] = $locationType;
                         break;
                 }
             }
@@ -1399,7 +1734,8 @@ class CRM_Basis_Config {
         catch (CiviCRM_API3_Exception $ex) {
         }
     }
-    
+
+
     /**
    * Method to set the relevant contact sub type properties
    */
@@ -1562,7 +1898,10 @@ class CRM_Basis_Config {
                 $customGroup['custom_fields'] = $customFields['values'];
                 switch ($customGroup['name']) {
                     case 'counters':
-                        $this->_klantMedewerkerExpertSysteemTellersCustomGroup    = $customGroup;
+                        $this->_klantMedewerkerExpertSysteemTellersCustomGroup = $customGroup;
+                        break;
+                    case 'employee':
+                        $this->_klantMedewerkerMedewerkerCustomGroup = $customGroup;
                         break;
                 }
             }
@@ -1624,6 +1963,52 @@ class CRM_Basis_Config {
         }
         catch (CiviCRM_API3_Exception $ex) {
         }
+    }
+
+    /**
+     * Method to place the custom fields in the entity array based on the
+     *
+     * @param object $customGroup
+     * @param array $entity;
+     * @return array
+     */
+    public function addDaoData($customGroup, $entity) {
+        $table_name = $customGroup['table_name'];
+        $fields = $customGroup['custom_fields'];
+        $sql = 'SELECT * FROM '. $table_name . ' WHERE entity_id = %1';
+        $dao = CRM_Core_DAO::executeQuery($sql, array(
+            1 => array($entity['id'], 'Integer',),
+        ));
+
+        if (!$dao->fetch()) {
+            $dao = array();
+            $dao['entity_id'] = $entity['id'];
+            foreach ($fields as $field) {
+                $columnName = $field['column_name'];
+                $dao[$columnName] = false;
+            }
+        }
+        return $this->_placeEntityCustomFields($fields, $dao, $entity);
+    }
+
+    /**
+     * Method to place the  custom fields in the entity array based on the
+     *
+     * @param object $daoData (dao)
+     * @param array $entityArray;
+     * @return array
+     */
+    private function _placeEntityCustomFields($fields, $daoData, $entityArray) {
+        $config = CRM_Basis_Config::singleton();
+
+        foreach ($fields as $customFieldId => $customField) {
+            $columnName = $customField['column_name'];
+            $fieldName = $customField['name'];
+            if (isset($daoData->$columnName)) {
+                $entityArray[$fieldName] = $daoData->$columnName;
+            }
+        }
+        return $entityArray;
     }
 
   /**
