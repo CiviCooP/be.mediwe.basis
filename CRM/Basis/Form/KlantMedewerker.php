@@ -14,7 +14,7 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
     $this->add('text', 'employee_national_nbr', ts('Rijksregisternummer '), array(), FALSE);
     $this->add('text', 'employee_personnel_nbr', ts('Personeelsnummer'), array(), FALSE);
 
-    $this->add('text', 'name', ts('Naam werknemer'), array(), TRUE);
+    $this->add('text', 'display_name', ts('Naam werknemer'), array(), TRUE);
     $this->add('text', 'supplemental_address_1', ts('Tweede lijn'), array(), FALSE);
     $this->add('text', 'street_address', ts('Adres (straat en huisnummer)'), array(), TRUE);
     $this->add('text', 'postal_code', ts('Postcode'), array(), TRUE);
@@ -53,7 +53,7 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
           // set values to screen
           $this->getElement('employee_national_nbr')->setValue($this->_contactData[0]['employee_national_nbr']);
           $this->getElement('employee_personnel_nbr')->setValue($this->_contactData[0]['employee_personnel_nbr']);
-          $this->getElement('name')->setValue($this->_contactData[0]['name']);
+          $this->getElement('display_name')->setValue($this->_contactData[0]['display_name']);
           $this->getElement('supplemental_address_1')->setValue($this->_contactData[0]['supplemental_address_1']);
           $this->getElement('street_address')->setValue($this->_contactData[0]['street_address']);
           $this->getElement('postal_code')->setValue($this->_contactData[0]['postal_code']);
