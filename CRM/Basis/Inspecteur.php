@@ -66,6 +66,14 @@ class CRM_Basis_Inspecteur {
                   $email_primair = $this->_createEmail($inspecteur['id'], 'Primair', $data['email']);
               }
 
+              // process phone fields
+              if (isset($data['phone']) && strlen($data['phone']) > 5) {
+                  $this->_createPhone($inspecteur['id'], "Primair", "1", $data['phone']);
+              }
+              if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
+                  $this->_createPhone($inspecteur['id'], "Primair", "2", $data['mobile']);
+              }
+
               return $inspecteur;
           }
           catch (CiviCRM_API3_Exception $ex) {
@@ -124,6 +132,15 @@ class CRM_Basis_Inspecteur {
               } else {
                   $email_primair = $this->_createEmail($inspecteur['id'], 'Primair', $data['email']);
               }
+
+              // process phone fields
+              if (isset($data['phone']) && strlen($data['phone']) > 5) {
+                  $this->_createPhone($inspecteur['id'], "Primair", "1", $data['phone']);
+              }
+              if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
+                  $this->_createPhone($inspecteur['id'], "Primair", "2", $data['mobile']);
+              }
+
           }
           catch (CiviCRM_API3_Exception $ex) {
               throw new API_Exception(ts('Could not create a contact in '.__METHOD__
@@ -287,7 +304,7 @@ class CRM_Basis_Inspecteur {
         );
 
         try {
-            $email = civicrm_api3('Address', 'getsingle', $params);
+            $email = civicrm_api3('Email', 'getsingle', $params);
         }
         catch (CiviCRM_API3_Exception $ex) {
             return false;
@@ -308,11 +325,50 @@ class CRM_Basis_Inspecteur {
             );
         }
 
-        $adres['email'] = $emailaddress;
+        $email['email'] = $emailaddress;
 
-        $createdAddress = civicrm_api3('Email', 'create', $email);
+        $createdEmail = civicrm_api3('Email', 'create', $email);
 
-        return $createdAddress['values'];
+        return $createdEmail['values'];
+
+    }
+    private function _existsPhone($contact_id, $location_type) {
+        $phone = array();
+
+        $params = array(
+            'sequential' => 1,
+            'location_type_id' => $location_type,
+            'contact_id' => $contact_id,
+        );
+
+        try {
+            $phone = civicrm_api3('Phone', 'getsingle', $params);
+        }
+        catch (CiviCRM_API3_Exception $ex) {
+            return false;
+        }
+
+        return $phone;
+    }
+
+    private function _createPhone($contact_id, $location_type, $phone_type, $phoneNbr) {
+
+        $phone = $this->_existsPhone($contact_id, $location_type);
+
+        if (!$phone) {
+            $phone = array(
+                'sequential' => 1,
+                'contact_id' => $contact_id,
+                'location_type_id' => $location_type,
+                'phone_type_id' => $phone_type,
+            );
+        }
+
+        $phone['phone'] = $phoneNbr;
+
+        $createdPhone = civicrm_api3('Phone', 'create', $phone);
+
+        return $createdPhone['values'];
 
     }
 

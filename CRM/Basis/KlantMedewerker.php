@@ -61,6 +61,14 @@ class CRM_Basis_KlantMedewerker {
                   $address = $this->_createAddress($medewerker['id'], "Andere", $data);
               }
 
+              // process phone fields
+              if (isset($data['phone']) && strlen($data['phone']) > 5) {
+                  $this->_createPhone($medewerker['id'], "Thuis", "1", $data['phone']);
+              }
+              if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
+                  $this->_createPhone($medewerker['id'], "Thuis", "2", $data['mobile']);
+              }
+
               return $medewerker;
           }
           catch (CiviCRM_API3_Exception $ex) {
@@ -112,6 +120,14 @@ class CRM_Basis_KlantMedewerker {
               $address = $this->_createAddress($medewerker['id'], "Thuis", $data);
               if (isset($data['street_address_residence']) && strlen($data['street_address_residence']) > 3) {
                   $address = $this->_createAddress($medewerker['id'], "Andere", $data);
+              }
+
+              // process phone fields
+              if (isset($data['phone']) && strlen($data['phone']) > 5) {
+                  $this->_createPhone($medewerker['id'], "Thuis", "1", $data['phone']);
+              }
+              if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
+                  $this->_createPhone($medewerker['id'], "Thuis", "2", $data['mobile']);
               }
           }
           catch (CiviCRM_API3_Exception $ex) {
@@ -275,6 +291,47 @@ class CRM_Basis_KlantMedewerker {
     }
 
 
+    private function _existsPhone($contact_id, $location_type) {
+        $phone = array();
+
+        $params = array(
+            'sequential' => 1,
+            'location_type_id' => $location_type,
+            'contact_id' => $contact_id,
+        );
+
+        try {
+            $phone = civicrm_api3('Phone', 'getsingle', $params);
+        }
+        catch (CiviCRM_API3_Exception $ex) {
+            return false;
+        }
+
+        return $phone;
+    }
+
+    private function _createPhone($contact_id, $location_type, $phone_type, $phoneNbr) {
+
+        $phone = $this->_existsPhone($contact_id, $location_type);
+
+        if (!$phone) {
+            $phone = array(
+                'sequential' => 1,
+                'contact_id' => $contact_id,
+                'location_type_id' => $location_type,
+                'phone_type_id' => $phone_type,
+            );
+        }
+
+        $phone['phone'] = $phoneNbr;
+
+        $createdPhone = civicrm_api3('Phone', 'create', $phone);
+
+        return $createdPhone['values'];
+
+    }   
+    
+    
     private function _addKlantMedewerkerAllFields(&$contacts) {
         $config = CRM_Basis_Config::singleton();
 

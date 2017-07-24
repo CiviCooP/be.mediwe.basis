@@ -34,7 +34,15 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
 
   public function preProcess() {
     $this->setSectorList();
-    $this->setContactData(25);
+
+    $id =   CRM_Utils_Request::retrieve('id', 'Integer');
+    if ($id) {
+        $this->setContactData($id);
+
+        // set values to screen
+        $organization_name  =& $this->getElement('organization_name');
+        $organization_name->setValue($this->_contactData['organization_name']);
+    }
   }
 
   public function postProcess() {
