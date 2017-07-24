@@ -19,7 +19,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 4
+        "weight": 1
       },
       "org_level2": {
         "name": "org_level2",
@@ -30,7 +30,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 30
+        "weight": 2
       },
       "org_level3": {
         "name": "org_level3",
@@ -41,7 +41,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 3
       },
       "org_approval_email": {
         "name": "org_approval_email",
@@ -52,7 +52,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 4
       },
       "org_approval_title": {
         "name": "org_approval_title",
@@ -63,7 +63,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 52
+        "weight": 5
       },
       "org_short_period": {
         "name": "org_short_period",
@@ -74,7 +74,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 100
+        "weight": 6
       },
       "org_months_new_employee": {
         "name": "org_months_new_employee",
@@ -85,7 +85,7 @@
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 100
+        "weight": 7
       }
     }
   }
