@@ -1626,7 +1626,7 @@ class CRM_Basis_Config {
      * @param string $key
      * @return mixed|array
      */
-    public function getKlantMedewerkerExpertsysteemTellersCustomGroup($key = NULL) {
+    public function getKlantMedewerkerMedewerkerCustomGroup($key = NULL) {
         if (!empty($key) && isset($this->_klantMedewerkerMedewerkerCustomGroup[$key])) {
             return $this->_klantMedewerkerMedewerkerCustomGroup[$key];
         } else {
