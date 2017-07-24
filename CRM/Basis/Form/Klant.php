@@ -18,7 +18,7 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
     $this->add('text', 'city', ts('Gemeente'), array(), TRUE);
     $this->add('text', 'customer_vat', ts('BTW nummer'), array(), TRUE);
     $this->add('text', 'customer_reference', ts('Eigen referentie'), array(), FALSE);
-    $this->add('text', 'email_resultaten', ts('Emailadres voor resultaten'), array(), FALSE);
+    $this->add('text', 'customer_procedure_email_results', ts('Emailadres voor resultaten'), array(), FALSE);
     $this->add('text', 'org_level1', ts('Omschrijving niveau 1'), array(), FALSE);
     $this->add('text', 'org_level2', ts('Omschrijving niveau 2'), array(), FALSE);
     $this->add('text', 'org_level3', ts('Omschrijving niveau 3'), array(), FALSE);
@@ -32,7 +32,7 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
 
     if (isset($this->_contactData[0])) {
         // set values to screen
-        $this->getElement('sector_id')->setValue($this->_contactData[0]['sector_id']);
+        $this->getElement('customer_procedure_id_sector')->setValue($this->_contactData[0]['customer_procedure_id_sector']);
         $this->getElement('organization_name')->setValue($this->_contactData[0]['organization_name']);
         $this->getElement('supplemental_address_1')->setValue($this->_contactData[0]['supplemental_address_1']);
         $this->getElement('street_address')->setValue($this->_contactData[0]['street_address']);
@@ -40,7 +40,7 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
         $this->getElement('city')->setValue($this->_contactData[0]['city']);
         $this->getElement('customer_vat')->setValue($this->_contactData[0]['customer_vat']);
         $this->getElement('customer_reference')->setValue($this->_contactData[0]['customer_reference']);
-        $this->getElement('email_resultaten')->setValue($this->_contactData[0]['email_resultaten']);
+        $this->getElement('customer_procedure_email_results')->setValue($this->_contactData[0]['customer_procedure_email_results']);
     }
 
 
