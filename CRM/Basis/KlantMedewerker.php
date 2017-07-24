@@ -39,6 +39,7 @@ class CRM_Basis_KlantMedewerker {
           'contact_type' => 'Individual',
           'contact_sub_type' => $this->_klantMedewerkerContactSubTypeName,
           'display_name' => $data['display_name'],
+          'name' => $data['display_name'],
       );
 
       // if id is set, then update
