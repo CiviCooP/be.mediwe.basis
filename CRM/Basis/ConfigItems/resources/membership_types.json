@@ -13,6 +13,7 @@
     "fixed_period_rollover_day": 1231,
     "relationship_type_id": 15,
     "relationship_direction": "b_a",
+    "weight": 1,
     "is_active": 1
   },
   "Mijn Mediwe":
@@ -29,6 +30,7 @@
     "fixed_period_rollover_day": 1231,
     "relationship_type_id": 15,
     "relationship_direction": "b_a",
+    "weight": 2,
     "is_active": 1
   },
   "Maandelijks":
@@ -45,6 +47,7 @@
     "fixed_period_rollover_day": 1231,
     "relationship_type_id": 15,
     "relationship_direction": "b_a",
+    "weight": 3,
     "is_active": 1
   },
   "Controlearts":
@@ -61,6 +64,7 @@
     "fixed_period_rollover_day": 1231,
     "relationship_type_id": 15,
     "relationship_direction": "b_a",
+    "weight": 4,
     "is_active": 1
   },
   "Zorgfonds":
@@ -77,6 +81,7 @@
     "fixed_period_rollover_day": 1231,
     "relationship_type_id": 15,
     "relationship_direction": "b_a",
+    "weight": 5,
     "is_active": 1
   },
   "Inspecteur":
@@ -93,6 +98,7 @@
     "fixed_period_rollover_day": 1231,
     "relationship_type_id": 15,
     "relationship_direction": "b_a",
+    "weight": 6,
     "is_active": 1
   }
 }
