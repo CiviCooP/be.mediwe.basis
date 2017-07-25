@@ -17,7 +17,7 @@ class CRM_Basis_ConfigItems_RelationshipType {
    * @throws Exception when missing mandatory params
    */
   protected function validateCreateParams($params) {
-    if (!isset($params['name']) || empty($params['name'])) {
+    if (!isset($params['name_a_b']) || empty($params['name_a_b'])) {
       throw new Exception('Missing mandatory param name in '.__METHOD__);
     }
     $this->_apiParams = $params;
@@ -32,12 +32,12 @@ class CRM_Basis_ConfigItems_RelationshipType {
    */
   public function create($params) {
     $this->validateCreateParams($params);
-    $existing = $this->getWithName($this->_apiParams['name']);
+    $existing = $this->getWithName($this->_apiParams['name_a_b']);
     if (isset($existing['id'])) {
       $this->_apiParams['id'] = $existing['id'];
     }
-    if (!isset($this->_apiParams['label']) || empty($this->_apiParams['label'])) {
-      $this->_apiParams['label'] = CRM_Basis_Utils::buildLabelFromName($this->_apiParams['name']);
+    if (!isset($this->_apiParams['label_a_b']) || empty($this->_apiParams['label_a_b'])) {
+      $this->_apiParams['label_a_b'] = CRM_Basis_Utils::buildLabelFromName($this->_apiParams['name_a_b']);
     }
     $this->_apiParams['is_active'] = 1;
     try {
