@@ -121,7 +121,7 @@ class CRM_Basis_ConfigItems_MembershipType {
   /**
    * Method to enable membership type
    *
-   * @param $membershipTypeName
+   *    @param $membershipTypeName
    */
   public function enableMembershipType($membershipTypeName) {
     if (!empty($membershipTypeName)) {
