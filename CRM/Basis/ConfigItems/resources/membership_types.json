@@ -3,6 +3,9 @@
   {
     "name": "Voorafbetaald",
     "description":"Voorafbetaald",
+    "domain_id": 1,
+    "member_of_contact_id": 1,
+    "financial_type_id": 2,
     "duration_unit": "year",
     "duration_interval": 1,
     "period_type": "fixed",
@@ -16,6 +19,9 @@
   {
     "name": "Mijn Mediwe",
     "description":"Mijn Mediwe",
+    "domain_id": 1,
+    "member_of_contact_id": 1,
+    "financial_type_id": 2,
     "duration_unit": "year",
     "duration_interval": 1,
     "period_type": "fixed",
@@ -29,6 +35,9 @@
   {
     "name": "Maandelijks",
     "description":"Maandelijks",
+    "domain_id": 1,
+    "member_of_contact_id": 1,
+    "financial_type_id": 2,
     "duration_unit": "year",
     "duration_interval": 1,
     "period_type": "fixed",
@@ -42,6 +51,9 @@
   {
     "name": "Controlearts",
     "description":"Controlearts",
+    "domain_id": 1,
+    "member_of_contact_id": 1,
+    "financial_type_id": 2,
     "duration_unit": "year",
     "duration_interval": 1,
     "period_type": "fixed",
@@ -55,6 +67,9 @@
   {
     "name": "Zorgfonds",
     "description":"Zorgfonds",
+    "domain_id": 1,
+    "member_of_contact_id": 1,
+    "financial_type_id": 2,
     "duration_unit": "year",
     "duration_interval": 1,
     "period_type": "fixed",
@@ -68,6 +83,9 @@
   {
     "name": "Inspecteur",
     "description":"Inspecteur",
+    "domain_id": 1,
+    "member_of_contact_id": 1,
+    "financial_type_id": 2,
     "duration_unit": "year",
     "duration_interval": 1,
     "period_type": "fixed",
