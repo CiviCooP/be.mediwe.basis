@@ -104,10 +104,22 @@ class CRM_Basis_ConfigItems_ConfigItems {
         }
         $relationshipTypesJson = file_get_contents($jsonFile);
         $relationshipTypes = json_decode($relationshipTypesJson, true);
+        $relationshipType = new CRM_Basis_ConfigItems_RelationshipType();
+
         foreach ($relationshipTypes as $name => $relationshipTypeParams) {
-            $relationshipType = new CRM_Basis_ConfigItems_RelationshipType();
             $relationshipType->create($relationshipTypeParams);
         }
+
+        $relationshipType->disableRelationshipType("Child of");
+        $relationshipType->disableRelationshipType("Spouse of");
+        $relationshipType->disableRelationshipType("Sibling of");
+        $relationshipType->disableRelationshipType("Volunteer for");
+        $relationshipType->disableRelationshipType("Head of Household for");
+        $relationshipType->disableRelationshipType("Household Member of");
+        $relationshipType->disableRelationshipType("Homeless Services Coordinator is");
+        $relationshipType->disableRelationshipType("Health Services Coordinator is");
+        $relationshipType->disableRelationshipType("Senior Services Coordinator is");
+        $relationshipType->disableRelationshipType("Benefits Specialist is");
     }
 
     /**
