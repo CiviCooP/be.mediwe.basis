@@ -357,7 +357,7 @@ class CRM_Basis_KlantMedewerker {
         if ($data['employer_id']) {
             $params = array (
                 'sequential' => 1,
-                'relationship_type_id' => $relationshipType,
+                'relationship_type_id' => $relationshipType['id'],
                 'contact_id_a' => $medewerkerId,
                 'contact_id_b' => $data['employer_id'],
             );
