@@ -59,11 +59,11 @@ class CRM_Basis_ConfigItems_RelationshipType {
     // todo check if this is still applicable
     // check if there is a "New <label>" entry in the navigation table
     $query = "SELECT * FROM civicrm_navigation WHERE label = %1";
-    $label = "New ".$this->_apiParams['label'];
+    $label = "New ".$this->_apiParams['label_a_b'];
     $dao = CRM_Core_DAO::executeQuery($query, array(1 => array($label, 'String')));
     $validParent = array("New Organization", "New Individual", "New Household");
-    $newUrl = 'civicrm/relationship/add&ct=Organization&cst='.$this->_apiParams['name'].'&reset=1';
-    $newName = "New ".$this->_apiParams['name'];
+    $newUrl = 'civicrm/relationship/add&ct=Organization&cst='.$this->_apiParams['name_a_b'].'&reset=1';
+    $newName = "New ".$this->_apiParams['name_a_b'];
     while ($dao->fetch()) {
       // parent should be either New Organization, New Individual or New Household
       if (isset($dao->parent_id)) {
