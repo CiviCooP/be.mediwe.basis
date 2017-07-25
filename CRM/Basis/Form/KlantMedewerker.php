@@ -11,6 +11,9 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
 
   public function buildQuickForm() {
 
+    $this->add('text', 'employer_name', ts('Werkgever '), array(), FALSE);
+    $this->add('text', 'employer_vat', ts('BTW nummer '), array(), FALSE);
+
     $this->add('text', 'employee_national_nbr', ts('Rijksregisternummer '), array(), FALSE);
     $this->add('text', 'employee_personnel_nbr', ts('Personeelsnummer'), array(), FALSE);
 
@@ -34,12 +37,9 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
 
     $dateParts     = implode( CRM_Core_DAO::VALUE_SEPARATOR, array( 'Y', 'M' ) );
 
-    $this->add( 'date', 'employee_date_in',
-          ts('Datum in dienst'),
-          CRM_Core_SelectValues::date('custom', 1, 0, $dateParts ) );
-    $this->add( 'date', 'employee_date_out',
-          ts('Datum uit dienst'),
-          CRM_Core_SelectValues::date('custom', 1, 0, $dateParts ) );
+    $this->add( 'datepicker', 'employee_date_in',  ts('Datum in dienst'), array(), FALSE);
+    $this->add( 'datepicker', 'employee_date_out',  ts('Datum uit dienst'), array(), FALSE);
+
 
     $this->addButtons(array(
       array('type' => 'next', 'name' => ts('Save'), 'isDefault' => true,),

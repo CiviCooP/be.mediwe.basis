@@ -9,7 +9,7 @@
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_klant_medewerker_Create_spec(&$spec) {
-  $spec['name']['api.required'] = 1;
+  $spec['display_name']['api.required'] = 1;
 }
 
 /**
@@ -22,6 +22,7 @@ function _civicrm_api3_klant_medewerker_Create_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_klant_medewerker_Create($params) {
+ 
     $klantMedewerker = new CRM_Basis_KlantMedewerker();
     $returnValues = $klantMedewerker->create($params);
     return civicrm_api3_create_success($returnValues, $params, 'KlantMedewerker', 'Create');

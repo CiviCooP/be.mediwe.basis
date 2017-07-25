@@ -29,6 +29,8 @@ class CRM_Basis_ConfigItems_ConfigItems {
     $this->_resourcesPath = $resourcesPath;
 
     $this->setContactTypes();
+    $this->setRelationshipTypes();
+    $this->setMembershipTypes();
     $this->setOptionGroups();
     // customData as last one because it might need one of the previous ones (option group, relationship types)
     $this->setCustomData();
@@ -88,6 +90,46 @@ class CRM_Basis_ConfigItems_ConfigItems {
     }
   }
 
+    /**
+     * Method to create relationship types
+     *
+     * @throws Exception when resource file not found
+     * @access protected
+     */
+    protected function setRelationshipTypes() {
+        $jsonFile = $this->_resourcesPath.'relationship_types.json';
+        if (!file_exists($jsonFile)) {
+            throw new Exception(ts('Could not load contact_types configuration file for extension,
+      contact your system administrator!'));
+        }
+        $relationshipTypesJson = file_get_contents($jsonFile);
+        $relationshipTypes = json_decode($relationshipTypesJson, true);
+        foreach ($relationshipTypes as $name => $relationshipTypeParams) {
+            $relationshipType = new CRM_Basis_ConfigItems_RelationshipType();
+            $relationshipType->create($relationshipTypeParams);
+        }
+    }
+
+    /**
+     * Method to create membership types
+     *
+     * @throws Exception when resource file not found
+     * @access protected
+     */
+    protected function setMembershipTypes() {
+        $jsonFile = $this->_resourcesPath.'membership_types.json';
+        if (!file_exists($jsonFile)) {
+            throw new Exception(ts('Could not load contact_types configuration file for extension,
+      contact your system administrator!'));
+        }
+        $membershipTypesJson = file_get_contents($jsonFile);
+        $membershipTypes = json_decode($membershipTypesJson, true);
+        foreach ($membershipTypes as $name => $membershipTypeParams) {
+            $membershipType = new CRM_Basis_ConfigItems_MembershipType();
+            $membershipType->create($membershipTypeParams);
+        }
+    }
+    
   /**
    * Method to set the custom data groups and fields
    *

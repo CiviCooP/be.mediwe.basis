@@ -23,6 +23,7 @@ class CRM_Basis_Config {
 
   // properties for relationship types
   private $_isKlantViaRelationshipType = array();
+  private $_isWerknemerVanRelationshipType = array();
   
   // properties for membership types
   private $_maandelijksMembershipType = array();
@@ -1691,6 +1692,15 @@ class CRM_Basis_Config {
    }
 
     /**
+     * Getter for is werknemer van relationship type
+     *
+     * @return null
+     */
+    public function getIsWerknemerVanRelationshipType() {
+        return $this->_isWerknemerVanRelationshipType;
+    }
+
+    /**
      * Getter for maandelijks membership type
      *
      * @return null
@@ -1802,6 +1812,9 @@ class CRM_Basis_Config {
                 switch ($relationshipType['name_a_b']) {
                     case 'is_klant_via':
                         $this->_isKlantViaRelationshipType = $relationshipType;
+                        break;
+                    case 'Employee of':
+                        $this->_isWerknemerVanRelationshipType = $relationshipType;
                         break;
                 }
             }

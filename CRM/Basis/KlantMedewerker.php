@@ -70,6 +70,11 @@ class CRM_Basis_KlantMedewerker {
                   $this->_createPhone($medewerker['id'], "Thuis", "2", $data['mobile']);
               }
 
+              // create employer relationship
+              if (isset($data['employer_name'])) {
+                  $this->_createEmployerRelationship($medewerker['id'], $data);
+              }
+
               return $medewerker;
           }
           catch (CiviCRM_API3_Exception $ex) {
@@ -95,7 +100,7 @@ class CRM_Basis_KlantMedewerker {
           'sequential' => 1,
           'contact_type' => 'Individual',
           'contact_sub_type' => $this->_klantMedewerkerContactSubTypeName,
-          'name' => $data['name'],
+          'display_name' => $data['display_name'],
       );
 
       if (isset($data['id'])) {
@@ -130,6 +135,12 @@ class CRM_Basis_KlantMedewerker {
               if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
                   $this->_createPhone($medewerker['id'], "Thuis", "2", $data['mobile']);
               }
+
+              // create employer relationship
+              if (isset($data['employer_name'])) {
+                  $this->_createEmployerRelationship($medewerker['id'], $data);
+              }
+
           }
           catch (CiviCRM_API3_Exception $ex) {
               throw new API_Exception(ts('Could not create a contact in '.__METHOD__
@@ -155,7 +166,7 @@ class CRM_Basis_KlantMedewerker {
 
         // take over search params
         if (isset($search_params['name'])) {
-            $params['name'] = $search_params['name'];
+            $params['display_name'] = $search_params['display_name'];
         }
 
         try {
@@ -292,12 +303,13 @@ class CRM_Basis_KlantMedewerker {
     }
 
 
-    private function _existsPhone($contact_id, $location_type) {
+    private function _existsPhone($contact_id, $location_type, $phone_type) {
         $phone = array();
 
         $params = array(
             'sequential' => 1,
             'location_type_id' => $location_type,
+            'phone_type_id' => $phone_type,
             'contact_id' => $contact_id,
         );
 
@@ -313,7 +325,7 @@ class CRM_Basis_KlantMedewerker {
 
     private function _createPhone($contact_id, $location_type, $phone_type, $phoneNbr) {
 
-        $phone = $this->_existsPhone($contact_id, $location_type);
+        $phone = $this->_existsPhone($contact_id, $location_type, $phone_type);
 
         if (!$phone) {
             $phone = array(
@@ -331,7 +343,96 @@ class CRM_Basis_KlantMedewerker {
         return $createdPhone['values'];
 
     }   
-    
+
+    private function _createEmployerRelationship($medewerkerId, $data) {
+        $config = CRM_Basis_Config::singleton();
+
+        $relationshipType = $config->getIsWerknemerVanRelationshipType();
+
+        // look for the employer
+        if (!isset($data['employer_id'])) {
+            $data['employer_id']  = $this->_searchEmployer($data['employer_name'], $data['employer_vat']);
+        }
+
+        if ($data['employer_id']) {
+            $params = array (
+                'sequential' => 1,
+                'relationship_type_id' => $relationshipType,
+                'contact_id_a' => $medewerkerId,
+                'contact_id_b' => $data['employer_id'],
+            );
+            civicrm_api3( 'Relationship', 'create', $params );
+        }
+    }
+
+    private function _searchEmployer($name, $vat) {
+
+        $config = CRM_Basis_Config::singleton();
+
+        $vatField = 'custom_' . $config->getCustomerVatCustomField()['id'];
+
+        $contactSubType = $config->getKlantContactSubType();
+        $klantContactSubTypeName = $contactSubType['name'];
+
+        $sql = "SELECT 
+                  id 
+                FROM 
+                  civicrm_contact 
+                WHERE 
+                  organization_name LIKE '%" . $name . "%';";
+        $dao = CRM_Core_DAO::executeQuery($sql);
+        while ($dao->fetch()) {
+            $ids[] = $dao->id;
+        }
+
+        if (strlen($vat) > 5) {
+            // use the api to look for vat
+
+            $params = array(
+              'sequential' => 1,
+                'contact_sub_type' => $klantContactSubTypeName,
+              $vatField => $this->_formatVat($vat),
+            );
+            $contactList = civicrm_api3('Contact', 'get', $params);
+            $contacts = $contactList['values'];
+            foreach ($contacts as $contact) {
+                if (in_array($contact['id'], $ids)) {
+                    return $contact['id'];
+                }
+            }
+
+        }
+
+        if (count($ids) == 1) {
+            return $ids[0];
+        }
+
+    }
+
+    private function _formatVat($vat) {
+
+      $string = $vat;
+
+      if (is_numeric($string)) {
+          $string = "BE" . $string;
+      }
+
+      $string = str_replace(" ", "", $string);
+      $string = str_replace (".", "", $string);
+
+      if (strlen($string) == 11) {
+          $string = substr($string, 0, 2) . "0" . substr($string, 2, 999);
+      }
+
+      if (strlen($string) == 12) {
+          $string = substr($string, 0, 2) . " " . substr($string, 2, 4) . "." . substr($string, 6, 3 ) . "." . substr($string, 9, 3);
+      }
+      else {
+          $string = $vat;
+      }
+
+      return $string;
+    }
     
     private function _addKlantMedewerkerAllFields(&$contacts) {
         $config = CRM_Basis_Config::singleton();
