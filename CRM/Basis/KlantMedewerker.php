@@ -359,9 +359,18 @@ class CRM_Basis_KlantMedewerker {
                 'sequential' => 1,
                 'relationship_type_id' => $relationshipType['id'],
                 'contact_id_a' => $medewerkerId,
-                'contact_id_b' => $data['employer_id'],
+               // 'contact_id_b' => $data['employer_id'],
             );
+
+            try {
+                $exists = civicrm_api3( 'Relationship', 'getsingle', $params );
+                $params['id'] = $exists['id'];
+            }
+            catch (CiviCRM_API3_Exception $ex) {
+            }
+            $params['contact_id_b'] = $data['employer_id'];
             civicrm_api3( 'Relationship', 'create', $params );
+
         }
     }
 
