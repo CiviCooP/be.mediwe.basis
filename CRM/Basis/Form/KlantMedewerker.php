@@ -56,6 +56,9 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
 
     if (isset($this->_contactData[0])) {
           // set values to screen
+          $this->getElement('employer_name')->setValue($this->_contactData[0]['employer_name']);
+          $this->getElement('employer_vat')->setValue($this->_contactData[0]['employer_vat']);
+
           $this->getElement('employee_national_nbr')->setValue($this->_contactData[0]['employee_national_nbr']);
           $this->getElement('employee_personnel_nbr')->setValue($this->_contactData[0]['employee_personnel_nbr']);
           $this->getElement('display_name')->setValue($this->_contactData[0]['display_name']);

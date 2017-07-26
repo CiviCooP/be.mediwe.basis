@@ -460,8 +460,18 @@ class CRM_Basis_KlantMedewerker {
 
     private function _getEmployer($contact_id) {
 
+        $config = CRM_Basis_Config::singleton();
+        $invoicingtable = $config->getKlantBoekhoudingCustomGroup()['table_name'];
+        $vatField = $config->getCustomerVatCustomField();
+        $vatFieldName = $vatField['column_name'];
+
+        $employer = array(
+            'employer_id' => false,
+            'employer_name' => '',
+            'employer_vat' => ''
+        );
         $sql = "SELECT 
-                  c.id as employer_id, c.organization_name as emloyer_name 
+                  c.id as employer_id, c.organization_name as employer_name, i.$vatFieldName as employer_vat 
                 FROM 
                   civicrm_contact c
                 INNER JOIN 
@@ -469,21 +479,25 @@ class CRM_Basis_KlantMedewerker {
                 ON  
                   r.contact_id_b = c.id
                 AND 
-                  r.relationship_type_id = 5  
+                  r.relationship_type_id = 5 
+                INNER JOIN
+                  $invoicingtable i
+                ON 
+                  i.entity_id = c.id     
                 WHERE 
                   r.contact_id_a = $contact_id;
                 ";
         $dao = CRM_Core_DAO::executeQuery($sql);
 
-        if (!$dao->fetch()) {
-                return array(
-                    'employer_id' => false,
-                    'employer_name' => ''
-                );
-            }
-        else {
-            return $dao;
+        if ($dao->fetch()) {
+            $employer = array(
+                'employer_id' => $dao->employer_id,
+                'employer_name' => $dao->employer_name,
+                'employer_vat' => $dao->employer_vat
+            );
         }
+
+        return $employer;
     }
 
     private function _addKlantMedewerkerAllFields(&$contacts) {
@@ -525,7 +539,7 @@ class CRM_Basis_KlantMedewerker {
                 $employer = $this->_getEmployer($contact['id']);
                 $contacts[$arrayRowId]['employer_id'] = $employer['employer_id'];
                 $contacts[$arrayRowId]['employer_name'] = $employer['employer_name'];
-
+                $contacts[$arrayRowId]['employer_vat'] = $employer['employer_vat'];
             }
         }
     }
