@@ -40,6 +40,11 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
     $this->add( 'datepicker', 'employee_date_in',  ts('Datum in dienst'), array(), FALSE);
     $this->add( 'datepicker', 'employee_date_out',  ts('Datum uit dienst'), array(), FALSE);
 
+    $this->add('text', 'supplemental_address_1_residence', ts('Tweede lijn (verblijfplaats)'), array(), FALSE);
+    $this->add('text', 'street_address_residence', ts('Adres verblijf (straat en huisnummer)'), array(), TRUE);
+    $this->add('text', 'postal_code_residence', ts('Postcode verblijf'), array(), TRUE);
+    $this->add('text', 'city_residence', ts('Gemeente verblijf'), array(), TRUE);
+
 
     $this->addButtons(array(
       array('type' => 'next', 'name' => ts('Save'), 'isDefault' => true,),
