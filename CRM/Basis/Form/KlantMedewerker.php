@@ -75,6 +75,11 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
           $this->getElement('employee_function')->setValue($this->_contactData[0]['employee_function']);
           $this->getElement('employee_date_in')->setValue($this->_contactData[0]['employee_date_in']);
           $this->getElement('employee_date_out')->setValue($this->_contactData[0]['employee_date_out']);
+
+          $this->getElement('supplemental_address_1_residence')->setValue($this->_contactData[0]['supplemental_address_1_residence']);
+          $this->getElement('street_address_residence')->setValue($this->_contactData[0]['street_address_residence']);
+          $this->getElement('postal_code_residence')->setValue($this->_contactData[0]['postal_code_residence']);
+          $this->getElement('city_residence')->setValue($this->_contactData[0]['city_residence']);
     }
 
 

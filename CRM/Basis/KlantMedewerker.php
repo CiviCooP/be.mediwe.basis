@@ -137,7 +137,7 @@ class CRM_Basis_KlantMedewerker {
               }
 
               // create employer relationship
-              if (isset($data['employer_name'])) {
+              if (isset($data['employer_name']) && strlen($data['employer_name']) > 3) {
                   $this->_createEmployerRelationship($medewerker['id'], $data);
               }
 
@@ -433,16 +433,68 @@ class CRM_Basis_KlantMedewerker {
 
       return $string;
     }
-    
+
+    private function _getPhoneNumbers($contact_id) {
+
+      $params = array(
+        'sequential' => 1,
+        'contact_id' => $contact_id
+      );
+
+      $phones = civicrm_api3('Phone', 'get', $params);
+
+      return $phones['values'];
+    }
+
+    private function _getAddresses($contact_id) {
+
+        $params = array(
+            'sequential' => 1,
+            'contact_id' => $contact_id
+        );
+
+        $addresses = civicrm_api3('Address', 'get', $params);
+
+        return $addresses['values'];
+    }
+
     private function _addKlantMedewerkerAllFields(&$contacts) {
         $config = CRM_Basis_Config::singleton();
 
         foreach ($contacts as $arrayRowId => $contact) {
+
             if (isset($contact['id'])) {
                 // tellers custom fields
                 $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantMedewerkerExpertsysteemTellersCustomGroup(), $contacts[$arrayRowId] );
+                // medewerker custom fields
+                $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantMedewerkerMedewerkerCustomGroup(), $contacts[$arrayRowId] );
 
+                // telefoon nummers
+                $phones = $this->_getPhoneNumbers($contact['id']);
+                foreach ($phones as $phone) {
+                    switch ($phone['phone_type_id']) {
+                        case "2":
+                            $contacts[$arrayRowId]['mobile'] = $phone['phone'];
+                            break;
+                    }
+                }
+
+                // adressen
+                $adressen = $this->_getAddresses($contact['id']);
+                //CRM_Core_Error::debug('adres', $adressen);exit;
+                foreach ($adressen as $adres) {
+
+                    switch ($adres['location_type_id']) {
+                        case "4": // "Andere"
+                            $contacts[$arrayRowId]['street_address_residence'] = $adres['street_address'];
+                            $contacts[$arrayRowId]['supplemental_address_1_residence'] = $adres['supplemental_address_1'];
+                            $contacts[$arrayRowId]['postal_code_residence'] = $adres['postal_code'];
+                            $contacts[$arrayRowId]['city_residence'] = $adres['city'];
+                            break;
+                    }
+                }
             }
         }
     }
 }
+
