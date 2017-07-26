@@ -1938,9 +1938,10 @@ class CRM_Basis_Config {
                     'custom_group_id' => $customGroupId,
                     'options' => array('limit' => 0)));
                 $customGroup['custom_fields'] = $customFields['values'];
+
                 switch ($customGroup['name']) {
                     case 'counters':
-                        $this->_klantMedewerkerExpertSysteemTellersCustomGroup = $customGroup;
+                        $this->_klantMedewerkerExpertsysteemTellersCustomGroup = $customGroup;
                         break;
                     case 'employee':
                         $this->_klantMedewerkerMedewerkerCustomGroup = $customGroup;
