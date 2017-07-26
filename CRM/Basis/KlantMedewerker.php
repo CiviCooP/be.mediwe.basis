@@ -458,6 +458,34 @@ class CRM_Basis_KlantMedewerker {
         return $addresses['values'];
     }
 
+    private function _getEmployer($contact_id) {
+
+        $sql = "SELECT 
+                  c.id as employer_id, c.organization_name as emloyer_name 
+                FROM 
+                  civicrm_contact c
+                INNER JOIN 
+                  civicrm_relationship r
+                ON  
+                  r.contact_id_b = c.id
+                AND 
+                  r.relationship_type_id = 5  
+                WHERE 
+                  r.contact_id_a = $contact_id;
+                ";
+        $dao = CRM_Core_DAO::executeQuery($sql);
+
+        if (!$dao->fetch()) {
+                return array(
+                    'employer_id' => false,
+                    'employer_name' => ''
+                );
+            }
+        else {
+            return $dao;
+        }
+    }
+
     private function _addKlantMedewerkerAllFields(&$contacts) {
         $config = CRM_Basis_Config::singleton();
 
@@ -483,7 +511,6 @@ class CRM_Basis_KlantMedewerker {
                 $adressen = $this->_getAddresses($contact['id']);
                 //CRM_Core_Error::debug('adres', $adressen);exit;
                 foreach ($adressen as $adres) {
-
                     switch ($adres['location_type_id']) {
                         case "4": // "Andere"
                             $contacts[$arrayRowId]['street_address_residence'] = $adres['street_address'];
@@ -493,6 +520,12 @@ class CRM_Basis_KlantMedewerker {
                             break;
                     }
                 }
+
+                // werkgever employer_name, employer_id
+                $employer = $this->_getEmployer($contact['id']);
+                $contacts[$arrayRowId]['employer_id'] = $employer['employer_id'];
+                $contacts[$arrayRowId]['employer_name'] = $employer['employer_name'];
+
             }
         }
     }
