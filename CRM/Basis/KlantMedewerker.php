@@ -31,9 +31,6 @@ class CRM_Basis_KlantMedewerker {
    */
   public function create($data) {
 
-      $config = CRM_Basis_Config::singleton();
-
-      // ensure contact_type and contact_sub_type are set correctly
       // ensure contact_type and contact_sub_type are set correctly
       $params = array(
           'sequential' => 1,
@@ -54,42 +51,7 @@ class CRM_Basis_KlantMedewerker {
       if (isset($data['id']) || $this->exists($params)) {
           $this->update($data);
       } else {
-
-          // rename klant custom fields for api  ($customFields, $data, &$params)
-          $this->_addToParamsCustomFields($config->getKlantMedewerkerExpertsysteemTellersCustomGroup('custom_fields'), $data, $params);
-          $this->_addToParamsCustomFields($config->getKlantMedewerkerMedewerkerCustomGroup('custom_fields'), $data, $params);
-
-          try {
-
-              $createdContact = civicrm_api3('Contact', 'create', $params);
-              $medewerker = $createdContact['values'][0];
-
-              // process address fields
-              $address = $this->_createAddress($medewerker['id'], "Thuis", $data);
-              if (isset($data['street_address_residence']) && strlen($data['street_address_residence']) > 3) {
-                  $address = $this->_createAddress($medewerker['id'], "Andere", $data);
-              }
-
-              // process phone fields
-              if (isset($data['phone']) && strlen($data['phone']) > 5) {
-                  $this->_createPhone($medewerker['id'], "Thuis", "1", $data['phone']);
-              }
-              if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
-                  $this->_createPhone($medewerker['id'], "Thuis", "2", $data['mobile']);
-              }
-
-              // create employer relationship
-              if (isset($data['employer_name'])) {
-                  $this->_createEmployerRelationship($medewerker['id'], $data);
-              }
-
-              return $medewerker;
-          }
-          catch (CiviCRM_API3_Exception $ex) {
-              throw new API_Exception(ts('Could not create a contact in '.__METHOD__
-                  .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
-          }
-
+          return $this->_saveKlantMedewerker($params, $data);
       }
   }
 
@@ -100,8 +62,6 @@ class CRM_Basis_KlantMedewerker {
    * @return array
    */
   public function update($data) {
-      $config = CRM_Basis_Config::singleton();
-      $medewerker = array();
 
       // ensure contact_type and contact_sub_type are set correctly
       $params = array(
@@ -127,43 +87,8 @@ class CRM_Basis_KlantMedewerker {
           $params['name'] = $data['display_name'];
           $params['display_name'] = $data['display_name'];
 
-          // rename klant custom fields for api  ($customFields, $data, &$params)
-          $this->_addToParamsCustomFields($config->getKlantMedewerkerExpertsysteemTellersCustomGroup('custom_fields'), $data, $params);
-          $this->_addToParamsCustomFields($config->getKlantMedewerkerMedewerkerCustomGroup('custom_fields'), $data, $params);
-
-          try {
-
-              $updatedContact = civicrm_api3('Contact', 'create', $params);
-
-              $medewerker = $updatedContact['values'][0];
-
-              // process address fields
-              $address = $this->_createAddress($medewerker['id'], "Thuis", $data);
-              if (isset($data['street_address_residence']) && strlen($data['street_address_residence']) > 3) {
-                  $address = $this->_createAddress($medewerker['id'], "Andere", $data);
-              }
-
-              // process phone fields
-              if (isset($data['phone']) && strlen($data['phone']) > 5) {
-                  $this->_createPhone($medewerker['id'], "Thuis", "1", $data['phone']);
-              }
-              if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
-                  $this->_createPhone($medewerker['id'], "Thuis", "2", $data['mobile']);
-              }
-
-              // create employer relationship
-              if (isset($data['employer_name']) && strlen($data['employer_name']) > 3) {
-                  $this->_createEmployerRelationship($medewerker['id'], $data);
-              }
-
-          }
-          catch (CiviCRM_API3_Exception $ex) {
-              throw new API_Exception(ts('Could not create a contact in '.__METHOD__
-                  .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
-          }
-
+          return $this->_saveKlantMedewerker($params, $data);
       }
-      return $medewerker;
   }
 
   /**
@@ -249,6 +174,47 @@ class CRM_Basis_KlantMedewerker {
 
       return $medewerker;
   }
+
+    private function _saveKlantMedewerker($params, $data) {
+
+        $config = CRM_Basis_Config::singleton();
+
+        // rename klant custom fields for api  ($customFields, $data, &$params)
+        $this->_addToParamsCustomFields($config->getKlantMedewerkerExpertsysteemTellersCustomGroup('custom_fields'), $data, $params);
+        $this->_addToParamsCustomFields($config->getKlantMedewerkerMedewerkerCustomGroup('custom_fields'), $data, $params);
+
+        try {
+
+            $createdContact = civicrm_api3('Contact', 'create', $params);
+            $medewerker = $createdContact['values'][0];
+
+            // process address fields
+            $address = $this->_createAddress($medewerker['id'], "Thuis", $data);
+            if (isset($data['street_address_residence']) && strlen($data['street_address_residence']) > 3) {
+                $address = $this->_createAddress($medewerker['id'], "Andere", $data);
+            }
+
+            // process phone fields
+            if (isset($data['phone']) && strlen($data['phone']) > 5) {
+                $this->_createPhone($medewerker['id'], "Thuis", "1", $data['phone']);
+            }
+            if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
+                $this->_createPhone($medewerker['id'], "Thuis", "2", $data['mobile']);
+            }
+
+            // create employer relationship
+            if (isset($data['employer_name'])) {
+                $this->_createEmployerRelationship($medewerker['id'], $data);
+            }
+
+            return $medewerker;
+        }
+        catch (CiviCRM_API3_Exception $ex) {
+            throw new API_Exception(ts('Could not create a contact in '.__METHOD__
+                .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
+        }
+
+    }
 
     private function _addToParamsCustomFields($customFields, $data, &$params) {
 

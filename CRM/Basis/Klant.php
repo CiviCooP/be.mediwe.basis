@@ -34,52 +34,28 @@ class CRM_Basis_Klant {
    */
   public function create($data) {
 
-    $config = CRM_Basis_Config::singleton();
-
     // ensure contact_type and contact_sub_type are set correctly
     $params = array(
         'sequential' => 1,
         'contact_type' => 'Organization',
         'contact_sub_type' => $this->_klantContactSubTypeName,
-        'organization_name' => $data['organization_name'],
     );
+
+      if (isset($data['id'])) {
+          $params['id'] = $data['id'];
+      }
+      else {
+          $params['organization_name'] = $data['organization_name'];
+          $params['street_address'] = $data['street_address'];
+          $params['postal_code'] = $data['postal_code'];
+      }
 
     // if id is set, then update
     if (isset($data['id']) || $this->exists($params)) {
       $this->update($data);
     } else {
-
-      // rename klant custom fields for api  ($customFields, $data, &$params)
-      $this->_addToParamsCustomFields($config->getKlantBoekhoudingCustomGroup('custom_fields'), $data, $params);
-      $this->_addToParamsCustomFields($config->getKlantExpertsysteemCustomGroup('custom_fields'), $data, $params);
-      $this->_addToParamsCustomFields($config->getKlantProcedureCustomGroup('custom_fields'), $data, $params);
-      $this->_addToParamsCustomFields($config->getKlantOrganisatieCustomGroup('custom_fields'), $data, $params);
-
-        try {
-
-          $createdContact = civicrm_api3('Contact', 'create', $params);
-          $klant = $createdContact['values'][0];
-
-          // process address fields
-          $address = $this->_createAddress($klant['id'], $data);
-
-          // process email field
-          if (isset($data['email'])) {
-              $email = $this->_createEmail($klant['id'], $data['email']);
-          }
-
-
-
-
-          return $klant;
-        }
-        catch (CiviCRM_API3_Exception $ex) {
-          throw new API_Exception(ts('Could not create a contact in '.__METHOD__
-            .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
-        }
-
+          return $this->_saveKlant($params, $data);
     }
-
   }
 
   /**
@@ -90,19 +66,20 @@ class CRM_Basis_Klant {
    */
   public function update($data) {
 
-      $config = CRM_Basis_Config::singleton();
-      $klant = array();
-
       // ensure contact_type and contact_sub_type are set correctly
       $params = array(
           'sequential' => 1,
           'contact_type' => 'Organization',
           'contact_sub_type' => $this->_klantContactSubTypeName,
-          'organization_name' => $data['organization_name'],
       );
 
       if (isset($data['id'])) {
           $params['id'] = $data['id'];
+      }
+      else {
+          $params['organization_name'] = $data['organization_name'];
+          $params['street_address'] = $data['street_address'];
+          $params['postal_code'] = $data['postal_code'];
       }
 
     $exists = $this->exists($params);
@@ -110,33 +87,8 @@ class CRM_Basis_Klant {
     if ($exists) {
 
         $params['id'] = $exists['contact_id'];
-
-        // rename klant custom fields for api  ($customFields, $data, &$params)
-        $this->_addToParamsCustomFields($config->getKlantBoekhoudingCustomGroup('custom_fields'), $data, $params);
-        $this->_addToParamsCustomFields($config->getKlantExpertsysteemCustomGroup('custom_fields'), $data, $params);
-        $this->_addToParamsCustomFields($config->getKlantProcedureCustomGroup('custom_fields'), $data, $params);
-        $this->_addToParamsCustomFields($config->getKlantOrganisatieCustomGroup('custom_fields'), $data, $params);
-
-        try {
-
-            $updatedContact = civicrm_api3('Contact', 'create', $params);
-            $klant = $updatedContact['values'][0];
-
-            // process address fields
-            $address = $this->_createAddress($klant['id'], $data);
-
-            // process email field
-            if (isset($data['email'])) {
-                $email = $this->_createEmail($klant['id'], $data['email']);
-            }
-        }
-        catch (CiviCRM_API3_Exception $ex) {
-            throw new API_Exception(ts('Could not create a contact in '.__METHOD__
-                .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
-        }
-
+        return $this->_saveKlant($params, $data);
     }
-    return $klant;
   }
 
   /**
@@ -146,28 +98,22 @@ class CRM_Basis_Klant {
    * @return bool
    */
   public function exists($search_params) {
+
       $klant = array();
-      $params = array();
 
       // ensure that contact sub type is set
-      $params['contact_sub_type'] = $this->_klantContactSubTypeName;
-
-      // take over search params
-      if (isset($search_params['organization_name'])) {
-          $params['organization_name'] = $search_params['organization_name'];
-      }
-      if (isset($search_params['external_id'])) {
-          $params['external_id'] = $search_params['external_id'];
-      }
+      $search_params['contact_sub_type'] = $this->_klantContactSubTypeName;
 
       try {
-          $klant = civicrm_api3('Contact', 'getsingle', $params);
+          $klant = civicrm_api3('Contact', 'getsingle', $search_params);
       }
       catch (CiviCRM_API3_Exception $ex) {
           return false;
       }
 
       return $klant;
+
+
   }
 
     private function _existsAddress($contact_id, $search_params) {
@@ -229,6 +175,37 @@ class CRM_Basis_Klant {
    *
    * @param $contacts
    */
+
+  private function _saveKlant($params, $data) {
+
+      $config = CRM_Basis_Config::singleton();
+
+      // rename klant custom fields for api  ($customFields, $data, &$params)
+      $this->_addToParamsCustomFields($config->getKlantBoekhoudingCustomGroup('custom_fields'), $data, $params);
+      $this->_addToParamsCustomFields($config->getKlantExpertsysteemCustomGroup('custom_fields'), $data, $params);
+      $this->_addToParamsCustomFields($config->getKlantProcedureCustomGroup('custom_fields'), $data, $params);
+      $this->_addToParamsCustomFields($config->getKlantOrganisatieCustomGroup('custom_fields'), $data, $params);
+
+      try {
+
+          $createdContact = civicrm_api3('Contact', 'create', $params);
+          $klant = $createdContact['values'][0];
+
+          // process address fields
+          $address = $this->_createAddress($klant['id'], $data);
+
+          // process email field
+          if (isset($data['email'])) {
+              $email = $this->_createEmail($klant['id'], $data['email']);
+          }
+
+          return $klant;
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+          throw new API_Exception(ts('Could not create a contact in '.__METHOD__
+              .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
+      }
+  }
 
   private function _addToParamsCustomFields($customFields, $data, &$params) {
 

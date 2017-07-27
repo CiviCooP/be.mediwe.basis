@@ -18,7 +18,7 @@ class CRM_Basis_ControleArts {
 
       $config = CRM_Basis_Config::singleton();
       $contactSubType = $config->getControleArtsContactSubType();
-      $this->_controleArtsContactSubTypeName = $contactSubType['organization_name'];
+      $this->_controleArtsContactSubTypeName = $contactSubType['name'];
 
   }
 
@@ -30,66 +30,27 @@ class CRM_Basis_ControleArts {
    */
   public function create($data) {
 
-      $config = CRM_Basis_Config::singleton();
-
       // ensure contact_type and contact_sub_type are set correctly
       $params = array(
           'sequential' => 1,
           'contact_type' => 'Organization',
           'contact_sub_type' => $this->_controleArtsContactSubTypeName,
-          'organization_name' => $data['organization_name'],
       );
+
+      if (isset($data['id'])) {
+          $params['id'] = $data['id'];
+      }
+      else {
+          $params['organization_name'] = $data['organization_name'];
+          $params['street_address'] = $data['street_address'];
+          $params['postal_code'] = $data['postal_code'];
+      }
 
       // if id is set, then update
       if (isset($data['id']) || $this->exists($params)) {
           $this->update($data);
       } else {
-
-          // rename klant custom fields for api  ($customFields, $data, &$params)
-          $this->_addToParamsCustomFields($config->getControleArtsLeverancierCustomGroup('custom_fields'), $data, $params);
-          $this->_addToParamsCustomFields($config->getControleArtsVakantieperiodeCustomGroup('custom_fields'), $data, $params);
-          $this->_addToParamsCustomFields($config->getControleArtsCommunicatieCustomGroup('custom_fields'), $data, $params);
-          $this->_addToParamsCustomFields($config->getControleArtsWerkgebiedCustomGroup('custom_fields'), $data, $params);
-
-          try {
-
-              $createdContact = civicrm_api3('Contact', 'create', $params);
-              $controlearts = $createdContact['values'][0];
-
-              // process address fields
-              $address = $this->_createAddress($controlearts['id'], $data);
-
-              // process email fields
-              $email = $this->_createEmail($controlearts['id'], 'Billing', $data['email']);
-
-              if (isset($data['email_primair'])) {
-                  $email_primair = $this->_createEmail($controlearts['id'], 'Primair', $data['email_primair']);
-              } else {
-                  $email_primair = $this->_createEmail($controlearts['id'], 'Primair', $data['email']);
-              }
-
-              if (isset($data['email_werk'])) {
-                  $email_werk = $this->_createEmail($controlearts['id'], 'Werk', $data['email_werk']);
-              } else {
-                  $email_werk = $this->_createEmail($controlearts['id'], 'Werk', $data['email']);
-              }
-
-              // process phone fields
-              if (isset($data['phone']) && strlen($data['phone']) > 5) {
-                  $this->_createPhone($controlearts['id'], "Primair", "1", $data['phone']);
-              }
-              if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
-                  $this->_createPhone($controlearts['id'], "Primair", "2", $data['mobile']);
-              }
-
-
-              return $controlearts;
-          }
-          catch (CiviCRM_API3_Exception $ex) {
-              throw new API_Exception(ts('Could not create a contact in '.__METHOD__
-                  .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
-          }
-
+            return $this->_saveControleArts($params,$data);
       }
   }
 
@@ -100,7 +61,7 @@ class CRM_Basis_ControleArts {
    * @return array
    */
   public function update($data) {
-      $config = CRM_Basis_Config::singleton();
+
       $controlearts = array();
 
       // ensure contact_type and contact_sub_type are set correctly
@@ -108,64 +69,24 @@ class CRM_Basis_ControleArts {
           'sequential' => 1,
           'contact_type' => 'Organization',
           'contact_sub_type' => $this->_controleArtsContactSubTypeName,
-          'organization_name' => $data['organization_name'],
       );
 
       if (isset($data['id'])) {
           $params['id'] = $data['id'];
       }
+      else {
+          $params['organization_name'] = $data['organization_name'];
+          $params['street_address'] = $data['street_address'];
+          $params['postal_code'] = $data['postal_code'];
+      }
 
       $exists = $this->exists($params);
 
       if ($exists) {
-
           $params['id'] = $exists['contact_id'];
-
-          // rename klant custom fields for api  ($customFields, $data, &$params)
-          $this->_addToParamsCustomFields($config->getControleArtsLeverancierCustomGroup('custom_fields'), $data, $params);
-          $this->_addToParamsCustomFields($config->getControleArtsVakantieperiodeCustomGroup('custom_fields'), $data, $params);
-          $this->_addToParamsCustomFields($config->getControleArtsCommunicatieCustomGroup('custom_fields'), $data, $params);
-          $this->_addToParamsCustomFields($config->getControleArtsWerkgebiedCustomGroup('custom_fields'), $data, $params);
-          
-          try {
-
-              $updatedContact = civicrm_api3('Contact', 'create', $params);
-              $controlearts = $updatedContact['values'][0];
-
-              // process address fields
-              $address = $this->_createAddress($controlearts['id'], $data);
-
-              // process email fields
-              $email = $this->_createEmail($controlearts['id'], 'Billing', $data['email']);
-
-              if (isset($data['email_primair'])) {
-                  $email_primair = $this->_createEmail($controlearts['id'], 'Primair', $data['email_primair']);
-              } else {
-                  $email_primair = $this->_createEmail($controlearts['id'], 'Primair', $data['email']);
-              }
-
-              if (isset($data['email_werk'])) {
-                  $email_werk = $this->_createEmail($controlearts['id'], 'Werk', $data['email_werk']);
-              } else {
-                  $email_werk = $this->_createEmail($controlearts['id'], 'Werk', $data['email']);
-              }
-
-
-              // process phone fields
-              if (isset($data['phone']) && strlen($data['phone']) > 5) {
-                  $this->_createPhone($controlearts['id'], "Primair", "1", $data['phone']);
-              }
-              if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
-                  $this->_createPhone($controlearts['id'], "Primair", "2", $data['mobile']);
-              }
-
-          }
-          catch (CiviCRM_API3_Exception $ex) {
-              throw new API_Exception(ts('Could not create a contact in '.__METHOD__
-                  .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
-          }
-
+          return $this->_saveControleArts($params, $data);
       }
+
       return $controlearts;
   }
 
@@ -258,6 +179,57 @@ class CRM_Basis_ControleArts {
 
       return $controlearts;
   }
+
+    private function _saveControleArts($params, $data) {
+
+        $config = CRM_Basis_Config::singleton();
+
+        // rename klant custom fields for api  ($customFields, $data, &$params)
+        $this->_addToParamsCustomFields($config->getControleArtsLeverancierCustomGroup('custom_fields'), $data, $params);
+        $this->_addToParamsCustomFields($config->getControleArtsVakantieperiodeCustomGroup('custom_fields'), $data, $params);
+        $this->_addToParamsCustomFields($config->getControleArtsCommunicatieCustomGroup('custom_fields'), $data, $params);
+        $this->_addToParamsCustomFields($config->getControleArtsWerkgebiedCustomGroup('custom_fields'), $data, $params);
+
+        try {
+
+            $createdContact = civicrm_api3('Contact', 'create', $params);
+            $controlearts = $createdContact['values'][0];
+
+            // process address fields
+            $address = $this->_createAddress($controlearts['id'], $data);
+
+            // process email fields
+            $email = $this->_createEmail($controlearts['id'], 'Billing', $data['email']);
+
+            if (isset($data['email_primair'])) {
+                $email_primair = $this->_createEmail($controlearts['id'], 'Primair', $data['email_primair']);
+            } else {
+                $email_primair = $this->_createEmail($controlearts['id'], 'Primair', $data['email']);
+            }
+
+            if (isset($data['email_werk'])) {
+                $email_werk = $this->_createEmail($controlearts['id'], 'Werk', $data['email_werk']);
+            } else {
+                $email_werk = $this->_createEmail($controlearts['id'], 'Werk', $data['email']);
+            }
+
+            // process phone fields
+            if (isset($data['phone']) && strlen($data['phone']) > 5) {
+                $this->_createPhone($controlearts['id'], "Primair", "1", $data['phone']);
+            }
+            if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
+                $this->_createPhone($controlearts['id'], "Primair", "2", $data['mobile']);
+            }
+
+
+            return $controlearts;
+        }
+        catch (CiviCRM_API3_Exception $ex) {
+            throw new API_Exception(ts('Could not create a contact in '.__METHOD__
+                .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
+        }
+
+    }
 
     private function _addToParamsCustomFields($customFields, $data, &$params) {
 
