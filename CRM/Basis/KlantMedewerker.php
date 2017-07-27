@@ -34,13 +34,21 @@ class CRM_Basis_KlantMedewerker {
       $config = CRM_Basis_Config::singleton();
 
       // ensure contact_type and contact_sub_type are set correctly
+      // ensure contact_type and contact_sub_type are set correctly
       $params = array(
           'sequential' => 1,
           'contact_type' => 'Individual',
           'contact_sub_type' => $this->_klantMedewerkerContactSubTypeName,
-          'display_name' => $data['display_name'],
-          'name' => $data['display_name'],
       );
+
+      if (isset($data['id'])) {
+          $params['id'] = $data['id'];
+      }
+      else {
+          $params['display_name'] = $data['display_name'];
+          $params['street_address'] = $data['street_address'];
+          $params['postal_code'] = $data['postal_code'];
+      }
 
       // if id is set, then update
       if (isset($data['id']) || $this->exists($params)) {
@@ -100,11 +108,15 @@ class CRM_Basis_KlantMedewerker {
           'sequential' => 1,
           'contact_type' => 'Individual',
           'contact_sub_type' => $this->_klantMedewerkerContactSubTypeName,
-          'display_name' => $data['display_name'],
       );
 
       if (isset($data['id'])) {
           $params['id'] = $data['id'];
+      }
+      else {
+          $params['display_name'] = $data['display_name'];
+          $params['street_address'] = $data['street_address'];
+          $params['postal_code'] = $data['postal_code'];
       }
 
       $exists = $this->exists($params);

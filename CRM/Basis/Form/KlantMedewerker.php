@@ -11,6 +11,8 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
 
   public function buildQuickForm() {
 
+    $this->add('hidden', 'id', ts('Id '), array(), FALSE);
+
     $this->add('text', 'employer_name', ts('Werkgever '), array(), FALSE);
     $this->add('text', 'employer_vat', ts('BTW nummer '), array(), FALSE);
 
@@ -56,6 +58,11 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
 
     if (isset($this->_contactData[0])) {
           // set values to screen
+
+          if  ($this->_contactData[0]['id'] > 0) {
+              $this->getElement('id')->setValue($this->_contactData[0]['id']);
+          }
+
           $this->getElement('employer_name')->setValue($this->_contactData[0]['employer_name']);
           $this->getElement('employer_vat')->setValue($this->_contactData[0]['employer_vat']);
 
