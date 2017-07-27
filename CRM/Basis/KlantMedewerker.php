@@ -124,6 +124,8 @@ class CRM_Basis_KlantMedewerker {
       if ($exists) {
 
           $params['id'] = $exists['contact_id'];
+          $params['name'] = $data['display_name'];
+          $params['display_name'] = $data['display_name'];
 
           // rename klant custom fields for api  ($customFields, $data, &$params)
           $this->_addToParamsCustomFields($config->getKlantMedewerkerExpertsysteemTellersCustomGroup('custom_fields'), $data, $params);
@@ -132,6 +134,7 @@ class CRM_Basis_KlantMedewerker {
           try {
 
               $updatedContact = civicrm_api3('Contact', 'create', $params);
+
               $medewerker = $updatedContact['values'][0];
 
               // process address fields
@@ -171,18 +174,12 @@ class CRM_Basis_KlantMedewerker {
    */
     public function exists($search_params) {
         $medewerker = array();
-        $params = array();
 
         // ensure that contact sub type is set
-        $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
-
-        // take over search params
-        if (isset($search_params['name'])) {
-            $params['display_name'] = $search_params['display_name'];
-        }
+        $search_params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
 
         try {
-            $medewerker = civicrm_api3('Contact', 'getsingle', $params);
+            $medewerker = civicrm_api3('Contact', 'getsingle', $search_params);
         }
         catch (CiviCRM_API3_Exception $ex) {
             return false;
