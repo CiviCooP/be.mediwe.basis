@@ -116,7 +116,7 @@ class CRM_Basis_Klant {
 
   }
 
-    private function _existsAddress($contact_id, $search_params) {
+    private function _existsAddress($contact_id) {
         $adres = array();
 
         $params = array(
@@ -219,9 +219,50 @@ class CRM_Basis_Klant {
 
   }
 
+  private function _takeoverAddress($for_contact_id, $data) {
+
+      // zoek de "andere" klant op
+      $params = array(
+          'sequential' => 1,
+          'contact_type' => 'Organization',
+          'contact_sub_type' => $this->_klantContactSubTypeName,
+      );
+
+      if (isset($data['id'])) {
+          $params['id'] = $data['id'];
+      }
+      else {
+          $params['organization_name'] = $data['organization_name'];
+      }
+
+      try {
+          $return = civicrm_api3('Contact', 'get', $params);
+          $fromKlant = $return['values'][0];
+
+          $adres = $this->_existsAddress($fromKlant['id']);
+
+          if ($adres) {
+              $adres['master_id'] = $adres['id'];
+              $adres['contact_id'] = $for_contact_id;
+              unset($adres['id']);
+
+              $return = civicrm_api3('Address', 'create', $adres);
+
+              return $return;
+          }
+      }
+      catch (Exception $e) {
+          return false;
+      }
+
+
+
+
+  }
+
   private function _createAddress($contact_id, $data) {
 
-      $adres = $this->_existsAddress($contact_id,$data);
+      $adres = $this->_existsAddress($contact_id);
 
       if (!$adres) {
           $adres = array(

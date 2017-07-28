@@ -126,7 +126,7 @@ class CRM_Basis_ControleArts {
    */
     public function get($params) {
        
-        $controleartss = array();
+        $controlearts = array();
         // ensure that contact sub type is set
         $params['contact_sub_type'] = $this->_controleArtsContactSubTypeName;
         $params['sequential'] = 1;
@@ -134,11 +134,11 @@ class CRM_Basis_ControleArts {
         try {
 
             $contacts = civicrm_api3('Contact', 'get', $params);
-            $controleartss = $contacts['values'];
+            $controlearts = $contacts['values'];
 
-            $this->_addControleArtsAllFields($controleartss);
+            $this->_addControleArtsAllFields($controlearts);
 
-            return $controleartss;
+            return $controlearts;
         }
         catch (CiviCRM_API3_Exception $ex) {
         }
@@ -183,12 +183,15 @@ class CRM_Basis_ControleArts {
     private function _saveControleArts($params, $data) {
 
         $config = CRM_Basis_Config::singleton();
+        $controlearts = array();
 
         // rename klant custom fields for api  ($customFields, $data, &$params)
         $this->_addToParamsCustomFields($config->getControleArtsLeverancierCustomGroup('custom_fields'), $data, $params);
-        $this->_addToParamsCustomFields($config->getControleArtsVakantieperiodeCustomGroup('custom_fields'), $data, $params);
         $this->_addToParamsCustomFields($config->getControleArtsCommunicatieCustomGroup('custom_fields'), $data, $params);
-        $this->_addToParamsCustomFields($config->getControleArtsWerkgebiedCustomGroup('custom_fields'), $data, $params);
+
+        // TODO: What to do with repeating groups?
+        //$this->_addToParamsCustomFields($config->getControleArtsWerkgebiedCustomGroup('custom_fields'), $data, $params);
+        //$this->_addToParamsCustomFields($config->getControleArtsVakantieperiodeCustomGroup('custom_fields'), $data, $params);
 
         try {
 
