@@ -7,6 +7,8 @@
  */
 class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
   private $_sectorList = array();
+
+  private $_languageData = array();
   private $_contactData = array();
 
   public function buildQuickForm() {
@@ -23,16 +25,16 @@ class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
     $this->add('text', 'controlearts_vat', ts('BTW nummer'), array(), TRUE);
     $this->add('text', 'controlearts_riziv', ts('Riziv nummer '), array(), FALSE);
 
-    $this->add('select', 'preferred_language', ts('Taal'), $this->_languageList, TRUE);
+    $this->add('select', 'preferred_language', ts('Taal'), $this->_languageData, TRUE);
     
     $this->add('text', 'phone', ts('Telefoon'), array(), FALSE);
     $this->add('text', 'mobile', ts('GSM'), array(), FALSE);
     $this->add('text', 'email', ts('E-mail'), array(), FALSE);
 
-    $this->addYesNo('arts_gebruikt_app', ts('Gebruikt onze applicatie'), TRUE, TRUE);
+    $this->addYesNo('arts_gebruikt_app', ts('Gebruikt applicatie'), TRUE, TRUE);
 
     $this->addYesNo('arts_bellen_vooraf', ts('Opbellen vooraf'), TRUE, TRUE);
-    $this->addYesNo('arts_bellen_achteraf', ts('Opbellen na toekennen opdracht'), TRUE, TRUE);
+    $this->addYesNo('arts_bellen_achteraf', ts('Opbellen achteraf'), TRUE, TRUE);
     $this->addYesNo('arts_opdracht_fax', ts('Opdrachten via Fax'), TRUE, TRUE);
     $this->addYesNo('arts_opdracht_mail', ts('Opdrachten via e-mail'), TRUE, TRUE);
     $this->addYesNo('arts_overzicht', ts('Wenst een overzicht'), TRUE, TRUE);
@@ -85,12 +87,12 @@ class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
 
   }
 
-    private function setLanguageData($id) {
+    private function setLanguageData() {
         
-        return array(
-          'Nederlands' => 'nl_NL',
-          'Frans' => 'fr_FR'  
-        );
+        $this->_languageData = array(
+                                  'nl_NL' => 'Nederlands',
+                                  'fr_FR' => 'Frans',
+                                );
     }
     
   /**
