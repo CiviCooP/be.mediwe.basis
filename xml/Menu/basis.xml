@@ -13,6 +13,12 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/mediwe/form/controlearts</path>
+    <page_callback>CRM_Basis_Form_ControleArts</page_callback>
+    <title>Controlearts</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/mediwe/printfaktuur</path>
     <page_callback>CRM_Basis_PrintFaktuur</page_callback>
     <title>Klant</title>
