@@ -37,7 +37,8 @@ class CRM_Basis_ControleArts {
           'contact_sub_type' => $this->_controleArtsContactSubTypeName,
       );
 
-      if (isset($data['id'])) {
+
+      if (isset($data['id']) && $data['id'] > 0) {
           $params['id'] = $data['id'];
       }
       else {
@@ -47,10 +48,10 @@ class CRM_Basis_ControleArts {
       }
 
       // if id is set, then update
-      if (isset($data['id']) || $this->exists($params)) {
+      if ( (isset($data['id']) && $data['id'] > 0) || $this->exists($params)) {
           $this->update($data);
       } else {
-            return $this->_saveControleArts($params,$data);
+          return $this->_saveControleArts($params,$data);
       }
   }
 
@@ -96,17 +97,11 @@ class CRM_Basis_ControleArts {
    * @param $params
    * @return bool
    */
-    public function exists($search_params) {
+    public function exists($params) {
         $controlearts = array();
-        $params = array();
 
         // ensure that contact sub type is set
         $params['contact_sub_type'] = $this->_controleArtsContactSubTypeName;
-
-        // take over search params
-        if (isset($search_params['organization_name'])) {
-            $params['organization_name'] = $search_params['organization_name'];
-        }
 
         try {
             $controlearts = civicrm_api3('Contact', 'getsingle', $params);

@@ -13,7 +13,7 @@ class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
 
   public function buildQuickForm() {
 
-    $this->add('hidden', 'id', ts('Id '), array(), FALSE);
+    $this->add('hidden', 'id', false, array(), FALSE);
 
     $this->add('text', 'organization_name', ts('Naam'), array(), TRUE);
 
@@ -53,6 +53,7 @@ class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
     // export form elements
     $this->assign('elementNames', $this->getRenderableElementNames());
 
+    $this->getElement('id')->setValue(FALSE);
 
     parent::buildQuickForm();
   }

@@ -8,7 +8,7 @@
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
-function _civicrm_api3_controlearts_Get_spec(&$spec) {
+function _civicrm_api3_controle_arts_Get_spec(&$spec) {
   $spec['id'] = array(
     'name' => 'id',
     'title' => 'id',
@@ -35,7 +35,7 @@ function _civicrm_api3_controlearts_Get_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_controlearts_Get($params) {
+function civicrm_api3_controle_arts_Get($params) {
   $controlearts = new CRM_Basis_ControleArts();
   return civicrm_api3_create_success($controlearts->get($params), $params, 'ControleArts', 'Get');
 }

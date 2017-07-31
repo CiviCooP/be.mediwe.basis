@@ -1537,19 +1537,47 @@ class CRM_Basis_Config {
 
 
     /**
-   * Getter for controle arts vakantie periode custom group
+     * Getter for controle arts vakantie periode custom group
+     *
+     * @param string $key
+     * @return mixed|array
+     */
+    public function getControleArtsVakantieperiodeCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_controleArtsVakantieperiodeCustomGroup[$key])) {
+            return $this->_controleArtsVakantieperiodeCustomGroup[$key];
+        } else {
+            return $this->_controleArtsVakantieperiodeCustomGroup;
+        }
+    }
+    
+    /**
+   * Getter for controle arts leverancier custom group
    *
    * @param string $key
    * @return mixed|array
    */
-  public function getControleArtsVakantieperiodeCustomGroup($key = NULL) {
-    if (!empty($key) && isset($this->_controleArtsVakantieperiodeCustomGroup[$key])) {
-      return $this->_controleArtsVakantieperiodeCustomGroup[$key];
+  public function getControleArtsLeverancierCustomGroup($key = NULL) {
+    if (!empty($key) && isset($this->_controleArtsLeverancierCustomGroup[$key])) {
+      return $this->_controleArtsLeverancierCustomGroup[$key];
     } else {
-      return $this->_controleArtsVakantieperiodeCustomGroup;
+      return $this->_controleArtsLeverancierCustomGroup;
 }
 }
 
+    /**
+     * Getter for controle arts Communicatie custom group
+     *
+     * @param string $key
+     * @return mixed|array
+     */
+    public function getControleArtsCommunicatieCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_controleArtsCommunicatieCustomGroup[$key])) {
+            return $this->_controleArtsCommunicatieCustomGroup[$key];
+        } else {
+            return $this->_controleArtsCommunicatieCustomGroup;
+        }
+    }
+    
   /**
    * Getter for klant boekhouding custom group
    *

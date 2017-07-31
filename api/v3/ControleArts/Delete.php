@@ -7,7 +7,7 @@
 */
 
 
-function _civicrm_api3_controlearts_Delete_spec(&$spec) {
+function _civicrm_api3_controle_arts_Delete_spec(&$spec) {
     $spec['id']['api.required'] = 1;
 }
 
@@ -21,7 +21,7 @@ function _civicrm_api3_controlearts_Delete_spec(&$spec) {
  * @throws API_Exception
  */
 
-function civicrm_api3_controlearts_Delete($params) {
+function civicrm_api3_controle_arts_Delete($params) {
     $controlearts = new CRM_Basis_ControleArts();
     $returnValues = $controlearts->deleteWithId($params['id']);
     return civicrm_api3_delete_success($returnValues, $params, 'ControleArts', 'Delete');

@@ -6,7 +6,7 @@
  * Time: 23:46
  */
 
-function _civicrm_api3_controlearts_Update_spec(&$spec) {
+function _civicrm_api3_controle_arts_Update_spec(&$spec) {
     $spec['id']['api.required'] = 1;
 }
 
@@ -19,7 +19,7 @@ function _civicrm_api3_controlearts_Update_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_controlearts_Update($params) {
+function civicrm_api3_controle_arts_Update($params) {
     $controlearts = new CRM_Basis_ControleArts();
     $returnValues = $controlearts->update($params);
     return civicrm_api3_update_success($returnValues, $params, 'ControleArts', 'Update');
