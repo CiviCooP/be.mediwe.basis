@@ -113,6 +113,11 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
   }
 
   private function saveKlantMedewerker($formValues) {
+
+    if (!$formValues['id']) {
+        unset($formValues['id']);
+    }
+
     civicrm_api3('KlantMedewerker', 'create', $formValues);
   }
 

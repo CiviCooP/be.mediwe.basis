@@ -15,14 +15,14 @@ class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
 
     $this->add('hidden', 'id', false, array(), FALSE);
 
-    $this->add('text', 'organization_name', ts('Naam'), array(), TRUE);
+    $this->add('text', 'organization_name', ts('Naam op factuur'), array(), TRUE);
+    $this->add('text', 'display_name', ts('Naam controlearts'), array(), TRUE);
 
     $this->add('text', 'supplemental_address_1', ts('Tweede lijn'), array(), FALSE);
     $this->add('text', 'street_address', ts('Adres (straat en huisnummer)'), array(), TRUE);
     $this->add('text', 'postal_code', ts('Postcode'), array(), TRUE);
     $this->add('text', 'city', ts('Gemeente'), array(), TRUE);
 
-    $this->add('text', 'controlearts_vat', ts('BTW nummer'), array(), TRUE);
     $this->add('text', 'controlearts_riziv', ts('Riziv nummer '), array(), FALSE);
 
     $this->add('select', 'preferred_language', ts('Taal'), $this->_languageData, TRUE);
@@ -53,7 +53,43 @@ class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
     // export form elements
     $this->assign('elementNames', $this->getRenderableElementNames());
 
+
     $this->getElement('id')->setValue(FALSE);
+
+    if (isset($this->_contactData[0])) {
+        if  ($this->_contactData[0]['id'] > 0) {
+            $this->getElement('id')->setValue($this->_contactData[0]['id']);
+        }
+
+        $this->getElement('organization_name')->setValue($this->_contactData[0]['organization_name']);
+        $this->getElement('display_name')->setValue($this->_contactData[0]['display_name']);
+
+        $this->getElement('supplemental_address_1')->setValue($this->_contactData[0]['supplemental_address_1']);
+        $this->getElement('street_address')->setValue($this->_contactData[0]['street_address']);
+        $this->getElement('postal_code')->setValue($this->_contactData[0]['postal_code']);
+        $this->getElement('city')->setValue($this->_contactData[0]['city']);
+
+        $this->getElement('preferred_language')->setValue($this->_contactData[0]['preferred_language']);
+
+        $this->getElement('phone')->setValue($this->_contactData[0]['phone']);
+        $this->getElement('mobile')->setValue($this->_contactData[0]['mobile']);
+        $this->getElement('email')->setValue($this->_contactData[0]['email']);
+
+        $this->getElement('arts_bellen_vooraf')->setValue($this->_contactData[0]['arts_bellen_vooraf']);
+        $this->getElement('arts_bellen_achteraf')->setValue($this->_contactData[0]['arts_bellen_achteraf']);
+        $this->getElement('arts_opdracht_fax')->setValue($this->_contactData[0]['arts_opdracht_fax']);
+        $this->getElement('arts_opdracht_mail')->setValue($this->_contactData[0]['arts_opdracht_mail']);
+        $this->getElement('arts_overzicht')->setValue($this->_contactData[0]['arts_overzicht']);
+
+        $this->getElement('arts_opmerkingen')->setValue($this->_contactData[0]['arts_opmerkingen']);
+
+        $this->getElement('supplier_venice')->setValue($this->_contactData[0]['supplier_venice']);
+        $this->getElement('supplier_vat')->setValue($this->_contactData[0]['supplier_vat']);
+        $this->getElement('supplier_account')->setValue($this->_contactData[0]['supplier_account']);
+
+
+    }
+
 
     parent::buildQuickForm();
   }
@@ -77,7 +113,12 @@ class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
   }
 
   private function saveControleArts($formValues) {
+
+    if (!$formValues['id']) {
+        unset($formValues['id']);
+    }
     civicrm_api3('ControleArts', 'create', $formValues);
+
   }
 
 

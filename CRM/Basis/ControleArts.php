@@ -38,7 +38,7 @@ class CRM_Basis_ControleArts {
       );
 
 
-      if (isset($data['id']) && $data['id'] > 0) {
+      if (isset($data['id']) ) {
           $params['id'] = $data['id'];
       }
       else {
@@ -48,7 +48,7 @@ class CRM_Basis_ControleArts {
       }
 
       // if id is set, then update
-      if ( (isset($data['id']) && $data['id'] > 0) || $this->exists($params)) {
+      if ( isset($data['id']) || $this->exists($params)) {
           $this->update($data);
       } else {
           return $this->_saveControleArts($params,$data);
