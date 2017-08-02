@@ -180,6 +180,10 @@ class CRM_Basis_Klant {
 
       $config = CRM_Basis_Config::singleton();
 
+      foreach ($data as $key => $value) {
+          $params[$key] = $value;
+      }
+
       // rename klant custom fields for api  ($customFields, $data, &$params)
       $this->_addToParamsCustomFields($config->getKlantBoekhoudingCustomGroup('custom_fields'), $data, $params);
       $this->_addToParamsCustomFields($config->getKlantExpertsysteemCustomGroup('custom_fields'), $data, $params);

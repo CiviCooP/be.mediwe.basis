@@ -180,6 +180,10 @@ class CRM_Basis_ControleArts {
         $config = CRM_Basis_Config::singleton();
         $controlearts = array();
 
+        foreach ($data as $key => $value) {
+            $params[$key] = $value;
+        }
+
         // rename klant custom fields for api  ($customFields, $data, &$params)
         $this->_addToParamsCustomFields($config->getControleArtsLeverancierCustomGroup('custom_fields'), $data, $params);
         $this->_addToParamsCustomFields($config->getControleArtsCommunicatieCustomGroup('custom_fields'), $data, $params);
@@ -213,10 +217,10 @@ class CRM_Basis_ControleArts {
 
             // process phone fields
             if (isset($data['phone']) && strlen($data['phone']) > 5) {
-                $this->_createPhone($controlearts['id'], "Primair", "1", $data['phone']);
+                $this->_createPhone($controlearts['id'], "Primair", "Phone", $data['phone']);
             }
             if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
-                $this->_createPhone($controlearts['id'], "Primair", "2", $data['mobile']);
+                $this->_createPhone($controlearts['id'], "Primair", "Mobile", $data['mobile']);
             }
 
 
@@ -321,13 +325,14 @@ class CRM_Basis_ControleArts {
 
     }
 
-    private function _existsPhone($contact_id, $location_type) {
+    private function _existsPhone($contact_id, $location_type, $phone_type = "Phone") {
         $phone = array();
 
         $params = array(
             'sequential' => 1,
             'location_type_id' => $location_type,
             'contact_id' => $contact_id,
+            'phone_type_id' => $phone_type,
         );
 
         try {
@@ -342,7 +347,7 @@ class CRM_Basis_ControleArts {
 
     private function _createPhone($contact_id, $location_type, $phone_type, $phoneNbr) {
 
-        $phone = $this->_existsPhone($contact_id, $location_type);
+        $phone = $this->_existsPhone($contact_id, $location_type, $phone_type);
 
         if (!$phone) {
             $phone = array(
@@ -368,11 +373,24 @@ class CRM_Basis_ControleArts {
             if (isset($contact['id'])) {
                 if (isset($contact['id'])) {
                     // leverancier custom fields
-                    $contacts[$arrayRowId] = $config->addDaoData($config->getInspecteurLeverancierCustomGroup(),  $contacts[$arrayRowId]);
+                    $contacts[$arrayRowId] = $config->addDaoData($config->getControleArtsLeverancierCustomGroup(),  $contacts[$arrayRowId]);
+                    // communicatie custom fields
+                    $contacts[$arrayRowId] = $config->addDaoData($config->getControleArtsCommunicatieCustomGroup(),  $contacts[$arrayRowId]);
                     // werkgebied custom fields
-                    $contacts[$arrayRowId] = $config->addDaoData($config->getInspecteurWerkgebiedCustomGroup(),  $contacts[$arrayRowId]);
+                    //$contacts[$arrayRowId] = $config->addDaoData($config->getControleArtsWerkgebiedCustomGroup(),  $contacts[$arrayRowId]);
                     // vakantiedagen custom fields
-                    $contacts[$arrayRowId] = $config->addDaoData($config->getControleArtsVakantieperiodeCustomGroup(),  $contacts[$arrayRowId]);
+                    //$contacts[$arrayRowId] = $config->addDaoData($config->getControleArtsVakantieperiodeCustomGroup(),  $contacts[$arrayRowId]);
+
+                    // get mobile phone
+                    $mobile = $this->_existsPhone($contact['id'], "Primair", "Mobile");
+                    if (!$mobile) {
+                        $contacts[$arrayRowId]['mobile'] = false;
+                    }
+                    else {
+                        $contacts[$arrayRowId]['mobile'] = $mobile['phone'];
+                    }
+
+
                 }
             }
         }

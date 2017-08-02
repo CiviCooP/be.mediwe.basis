@@ -179,6 +179,10 @@ class CRM_Basis_KlantMedewerker {
 
         $config = CRM_Basis_Config::singleton();
 
+        foreach ($data as $key => $value) {
+            $params[$key] = $value;
+        }
+        
         // rename klant custom fields for api  ($customFields, $data, &$params)
         $this->_addToParamsCustomFields($config->getKlantMedewerkerExpertsysteemTellersCustomGroup('custom_fields'), $data, $params);
         $this->_addToParamsCustomFields($config->getKlantMedewerkerMedewerkerCustomGroup('custom_fields'), $data, $params);
