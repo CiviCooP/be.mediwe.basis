@@ -150,6 +150,86 @@ class CRM_Basis_ControleArts {
         return $this->get($params);
     }
 
+    public function getVakantieperiodes($params) {
+
+        $config = CRM_Basis_Config::singleton();
+        $vakantieCustomFields = $config->getControleArtsVakantieperiodeCustomGroup('custom_fields');
+
+        return $this->_getRepeatingData($vakantieCustomFields, $params);
+
+    }
+
+    public function saveVakantiePeriodes($contact_id, $data) {
+        $config = CRM_Basis_Config::singleton();
+        $vakantieCustomFields = $config->getControleArtsVakantieperiodeCustomGroup('custom_fields');
+
+        return $this->_saveRepeatingData($vakantieCustomFields, $contact_id, $data);
+    }
+
+    private function _getRepeatingData($customFields, $params) {
+
+        $my_array = array();
+
+        foreach ($customFields as $field) {
+            $key = 'return.custom_' . $field['id'];
+            $params[$key] = "1";
+        }
+        $values = civicrm_api3('CustomValue', 'get', $params)['values'];
+
+        foreach ($customFields as $field) {
+            foreach ($values[$field['id']] as $key => $value) {
+                if (is_numeric($key)) {
+                    $my_array[$key]['id'] = $key;
+                    $my_array[$key][$field['name']] = $value;
+                }
+            }
+        }
+        return $my_array;
+    }
+
+    private function _saveRepeatingData($customFields, $entity_id, $array) {
+
+        $params = array(
+            'sequential' => 1,
+            'entity_id' => $entity_id,
+        );
+        $newline = -1;
+        foreach ($array as $data) {
+            if (!isset($data['id'])) {
+                $data['id'] = $newline;
+                $newline = $newline - 1;
+            }
+            foreach ($customFields as $field) {
+                if (isset($data[$field['name']])) {
+                    $key = "custom_" . $field['id'] . ":" . $data['id'];
+                    if ($field['data_type'] == 'Date') {
+                        $params[$key] = $this->_apidate($data[$field['name']]);
+                    }
+                    else {
+                        $params[$key] = $data[$field['name']];
+                    }
+                }
+            }
+        }
+
+        return civicrm_api3('CustomValue', 'create', $params);
+
+    }
+
+    private function _apidate($date)
+    {
+        if (substr($date, 0, 4) == 1900 || substr($date, 0, 4) == 0 ) {
+            $rv = "";
+        }
+        else {
+            $rv = str_replace(' ', '', $date);
+            $rv = str_replace(':', '', $rv);
+            $rv = str_replace('-', '', $rv);
+            $rv = str_replace('/', '', $rv);
+        }
+
+        return $rv;
+    }
   /**
    * Method to delete all medewerkers from a klant with klantId (set to is_deleted in CiviCRM)
    *
