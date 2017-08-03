@@ -19,6 +19,12 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/mediwe/form/inspecteur</path>
+    <page_callback>CRM_Basis_Form_Inspecteur</page_callback>
+    <title>Inspecteur</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/mediwe/printfaktuur</path>
     <page_callback>CRM_Basis_PrintFaktuur</page_callback>
     <title>Klant</title>
