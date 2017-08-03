@@ -1549,7 +1549,21 @@ class CRM_Basis_Config {
             return $this->_controleArtsVakantieperiodeCustomGroup;
         }
     }
-    
+
+    /**
+     * Getter for inspecteur leverancier custom group
+     *
+     * @param string $key
+     * @return mixed|array
+     */
+    public function getInspecteurLeverancierCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_controleArtsLeverancierCustomGroup[$key])) {
+            return $this->_controleArtsLeverancierCustomGroup[$key];
+        } else {
+            return $this->_controleArtsLeverancierCustomGroup;
+        }
+    }
+
     /**
    * Getter for controle arts leverancier custom group
    *
@@ -1821,6 +1835,9 @@ class CRM_Basis_Config {
           case 'mediwe_controle_arts':
             $this->_controleArtsContactSubType = $contactType;
             break;
+            case 'mediwe_inspecteur':
+                $this->_inspecteurContactSubType = $contactType;
+                break;
         }
       }
     }
