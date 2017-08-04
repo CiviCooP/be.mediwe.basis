@@ -161,14 +161,14 @@
             },
           "certificate_diagnosis": {
             "name": "certificate_diagnosis",
-            "label": "Reden",
+            "label": "Diagnose op attest",
             "data_type": "String",
             "html_type": "Select",
             "option_group": "mediwe_certificate_diagnosis",
             "is_searchable": 1,
             "is_view": 1,
             "is_active": 1,
-            "is_required": 1
+            "is_required": 0
           },
           "certificate_alternative_work": {
             "name": "certificate_alternative_work",

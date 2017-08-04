@@ -23,7 +23,7 @@
          },
       "illness_presumed_reason": {
         "name": "illness_presumed_reason",
-        "label": "Reden",
+        "label": "Vermoedelijke reden",
         "data_type": "String",
         "html_type": "Select",
         "option_group": "presumed_reason_illness",
