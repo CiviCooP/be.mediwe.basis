@@ -36,13 +36,14 @@ class CRM_Basis_ConfigItems_CaseType {
         if (isset($existing['id'])) {
             $this->_apiParams['id'] = $existing['id'];
         }
-        if (!isset($this->_apiParams['label']) || empty($this->_apiParams['label'])) {
-            $this->_apiParams['label'] = CRM_Basis_Utils::buildLabelFromName($this->_apiParams['name']);
+        if (!isset($this->_apiParams['title']) || empty($this->_apiParams['title'])) {
+            $this->_apiParams['title'] = CRM_Basis_Utils::buildLabelFromName($this->_apiParams['name']);
         }
         $this->_apiParams['is_active'] = 1;
         try {
             civicrm_api3('CaseType', 'Create', $this->_apiParams);
         } catch (CiviCRM_API3_Exception $ex) {
+            CRM_Core_Error::debug('params', $this->_apiParams);
             throw new Exception('Could not create or update case type with name '.$this->_apiParams['name']
                 .' in '.__METHOD__.', error from API CaseType Create: '.$ex->getMessage());
         }
