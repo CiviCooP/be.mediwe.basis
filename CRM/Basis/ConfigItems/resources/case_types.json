@@ -1,47 +1,97 @@
 {
-  "mediwe_ziektemelding": {
-    "id": 100,
-    "name": "mediwe_ziektemelding",
-    "title": "Ziektemelding",
+  "dossier_ziektemelding": {
+    "id": "100",
+    "name": "dossier_ziektemelding",
+    "title": "Dossier Ziektemelding",
+    "is_active": "1",
+    "weight": "1",
     "definition": {
-      "activityTypes": {
-        "Open Case": {
+      "activityTypes": [
+        {
           "name": "Open Case",
           "max_instances": "1"
         },
-        "mediwe_ziekteattest": {
+        {
           "name": "mediwe_ziekteattest",
           "max_instances": "1"
         }
-      }
-    },
-    "mediwe_controle": {
-      "id": 101,
-      "name": "mediwe_controle",
-      "title": "Medische controle",
-      "definition": {
-        "activityTypes": {
-          "mediwe_huisbezoek": {
-            "name": "mediwe_huisbezoek",
-            "max_instances": "1"
-          },
-          "mediwe_convocatie": {
-            "name": "mediwe_convocatie",
-            "max_instances": "1"
-          },
-          "mediwe_hercontrole": {
-            "name": "mediwe_hercontrole",
-            "max_instances": "1"
-          },
-          "mediwe_onderzoek_ao": {
-            "name": "mediwe_onderzoek_ao",
-            "max_instances": "1"
-          }
+      ],
+      "activitySets": [
+        {
+          "name": "standard_timeline",
+          "label": "Standard Timeline",
+          "timeline": "1",
+          "activityTypes": [
+            {
+              "name": "Open Case",
+              "status": "Completed"
+            }
+          ]
         }
-      },
-      "caseRoles": {
-        "name": "Controlearts"
-      }
-    }
+      ],
+      "caseRoles": [
+        {
+          "name": "Case Coordinator",
+          "creator": "1",
+          "manager": "1"
+        }
+      ]
+    },
+    "is_forkable": "1",
+    "is_forked": ""
+  },
+  "dossier_medische_controle": {
+    "id": "101",
+    "name": "dossier_medische_controle",
+    "title": "Dossier Medische Controle",
+    "is_active": "1",
+    "weight": "1",
+    "definition": {
+      "activityTypes": [
+        {
+          "name": "Open Case",
+          "max_instances": "1"
+        },
+        {
+          "name": "mediwe_huisbezoek",
+          "max_instances": "1"
+        },
+        {
+          "name": "mediwe_convocatie",
+          "max_instances": "1"
+        },
+        {
+          "name": "mediwe_hercontrole"
+        },
+        {
+          "name": "mediwe_onderzoek_ao"
+        }
+      ],
+      "activitySets": [
+        {
+          "name": "standard_timeline",
+          "label": "Standard Timeline",
+          "timeline": "1",
+          "activityTypes": [
+            {
+              "name": "Open Case",
+              "status": "Completed"
+            }
+          ]
+        }
+      ],
+      "caseRoles": [
+        {
+          "name": "Case Coordinator",
+          "creator": "1",
+          "manager": "1"
+        },
+        {
+          "name": "Onderzocht door controlearts"
+        }
+      ]
+    },
+    "is_forkable": "1",
+    "is_forked": ""
   }
 }
