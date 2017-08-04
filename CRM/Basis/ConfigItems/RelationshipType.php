@@ -42,9 +42,9 @@ class CRM_Basis_ConfigItems_RelationshipType {
     $this->_apiParams['is_active'] = 1;
     try {
       civicrm_api3('RelationshipType', 'Create', $this->_apiParams);
-      $this->updateNavigationMenuUrl();
+      //$this->updateNavigationMenuUrl();
     } catch (CiviCRM_API3_Exception $ex) {
-      throw new Exception('Could not create or update relationship type with name '.$this->_apiParams['name']
+      throw new Exception('Could not create or update relationship type with name '.$this->_apiParams['label_a_b']
         .' in '.__METHOD__.', error from API RelationshipType Create: '.$ex->getMessage());
     }
   }
