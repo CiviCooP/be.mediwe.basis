@@ -798,8 +798,8 @@
       }
     }
   },
-  "certificate_diagnosis": {
-    "name": "certificate_diagnosis",
+  "mediwe_certificate_diagnosis": {
+    "name": "mediwe_certificate_diagnosis",
     "title": "Diagnose attest",
     "is_active": 1,
     "is_reserved": 0,

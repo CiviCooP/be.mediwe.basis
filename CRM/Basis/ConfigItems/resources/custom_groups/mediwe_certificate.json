@@ -164,7 +164,7 @@
             "label": "Reden",
             "data_type": "String",
             "html_type": "Select",
-            "option_group": "certificate_diagnosis",
+            "option_group": "mediwe_certificate_diagnosis",
             "is_searchable": 1,
             "is_view": 1,
             "is_active": 1,
