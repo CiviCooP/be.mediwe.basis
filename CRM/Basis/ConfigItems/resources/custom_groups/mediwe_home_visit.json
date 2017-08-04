@@ -15,8 +15,7 @@
            "label": "Straat, huisnr en busnr",
            "data_type": "String",
            "html_type": "Text",
-           "is_searchable": 1,
-           "is_view": 1,
+           "is_searchable": 1
            "is_active": 1,
            "is_required": 1
          },
@@ -25,8 +24,7 @@
         "label": "Postcode huisbezoek",
         "data_type": "String",
         "html_type": "Text",
-        "is_searchable": 1,
-        "is_view": 1,
+        "is_searchable": 1
         "is_active": 1,
         "is_required": 1
       },
@@ -35,8 +33,7 @@
         "label": "Gemeente huisbezoek",
         "data_type": "String",
         "html_type": "Text",
-        "is_searchable": 1,
-        "is_view": 1,
+        "is_searchable": 1
         "is_active": 1,
         "is_required": 1
       },
@@ -46,8 +43,7 @@
         "data_type": "String",
         "html_type": "Select",
         "option_group": "mediwe_countries",
-        "is_searchable": 1,
-        "is_view": 1,
+        "is_searchable": 1
         "is_active": 1,
         "is_required": 1
       },
@@ -56,8 +52,7 @@
         "label": "Thuisplicht van",
         "data_type": "String",
         "html_type": "Text",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "visit_home_till": {
@@ -65,8 +60,7 @@
         "label": "Thuisplicht tot",
         "data_type": "String",
         "html_type": "Text",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       }
       }

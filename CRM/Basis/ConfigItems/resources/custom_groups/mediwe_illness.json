@@ -17,9 +17,8 @@
            "html_type": "Select",
            "option_group": "reason_illness",
            "is_searchable": 1,
-           "is_view": 1,
            "is_active": 1,
-           "is_required": 1
+           "is_required": 0
          },
       "illness_presumed_reason": {
         "name": "illness_presumed_reason",
@@ -28,7 +27,6 @@
         "html_type": "Select",
         "option_group": "presumed_reason_illness",
         "is_searchable": 1,
-        "is_view": 1,
         "is_active": 1,
         "is_required": 0
       },
@@ -39,9 +37,8 @@
           "html_type": "Select Date",
           "date_format": "dd/mm/YY",
           "is_searchable": 1,
-          "is_view": 1,
           "is_active": 1,
-          "is_required": 1
+          "is_required": 0
         },
         "illness_date_end": {
           "name": "illness_date_end",
@@ -50,7 +47,6 @@
           "html_type": "Select Date",
           "date_format": "dd/mm/YY",
           "is_searchable": 1,
-          "is_view": 1,
           "is_active": 1,
           "is_required": 0
         },
@@ -61,7 +57,6 @@
         "html_type": "Select Date",
         "date_format": "dd/mm/YY",
         "is_searchable": 1,
-        "is_view": 1,
         "is_active": 1,
         "is_required": 0
       },
@@ -70,8 +65,7 @@
           "label": "Verlenging",
           "data_type": "Boolean",
           "html_type": "Radio",
-           "is_searchable": 0,
-          "is_view": 1,
+          "is_searchable": 0,
           "is_active": 1,
           "is_required": 0
         },
@@ -81,7 +75,6 @@
           "data_type": "Boolean",
           "html_type": "Radio",
           "is_searchable": 0,
-          "is_view": 1,
           "is_active": 1,
           "is_required": 0
         },
@@ -91,7 +84,6 @@
           "data_type": "Boolean",
           "html_type": "Radio",
           "is_searchable": 0,
-          "is_view": 1,
           "is_active": 1,
           "is_required": 0
         },
@@ -101,7 +93,6 @@
           "data_type": "Boolean",
           "html_type": "Radio",
           "is_searchable": 0,
-          "is_view": 1,
           "is_active": 1,
           "is_required": 0
         },
@@ -112,7 +103,6 @@
           "html_type": "Select Date",
           "date_format": "dd/mm/YY",
           "is_searchable": 1,
-          "is_view": 1,
           "is_active": 1,
           "is_required": 0
         },
@@ -123,7 +113,6 @@
           "html_type": "Select Date",
           "date_format": "dd/mm/YY",
           "is_searchable": 1,
-          "is_view": 1,
           "is_active": 1,
           "is_required": 0
         },
@@ -134,7 +123,6 @@
           "html_type": "Text",
           "is_searchable": 1,
           "is_search_range":0,
-          "is_view": 0,
           "is_required":0,
           "is_active": 1
         },
@@ -144,7 +132,6 @@
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1,
         "is_required": 0
       },
@@ -155,7 +142,6 @@
         "html_type": "TextArea",
         "note_rows": 4,
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1,
         "is_required": 0
       }

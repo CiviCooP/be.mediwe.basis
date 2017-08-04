@@ -16,8 +16,7 @@
           "data_type": "String",
           "html_type": "Select",
           "option_group": "mediwe_control_ao_type",
-          "is_searchable": 0,
-          "is_view": 1,
+          "is_searchable": 0
           "is_active": 1
         },
         "control_ao_result_code": {
@@ -25,8 +24,7 @@
           "label": "Heeft de persoon zich aangeboden?",
           "data_type": "Boolean",
           "html_type": "Radio",
-          "is_searchable": 0,
-          "is_view": 1,
+          "is_searchable": 0
           "is_active": 1
         },
         "control_result_ao_datetime": {
@@ -35,8 +33,7 @@
           "data_type": "Date",
           "html_type": "Select",
           "date_format": "dd/mm/YY",
-          "is_searchable": 0,
-          "is_view": 1,
+          "is_searchable": 0
           "is_active": 1
         },
       "control_result_ao_datetime_accident": {
@@ -45,8 +42,7 @@
         "data_type": "Date",
         "html_type": "Select",
         "date_format": "dd/mm/YY",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_description_accident": {
@@ -54,8 +50,7 @@
         "label": "Beschrijving van het ongeval (werknemer)",
         "data_type": "String",
         "html_type": "TextArea",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_injury_original": {
@@ -63,8 +58,7 @@
         "label": "Oorspronkelijke letsels",
         "data_type": "String",
         "html_type": "TextArea",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_injury_actual": {
@@ -72,8 +66,7 @@
         "label": "Huidige letsels",
         "data_type": "String",
         "html_type": "TextArea",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_can_adapt_work": {
@@ -81,8 +74,7 @@
         "label": "Is aangepast werk mogelijk?",
         "data_type": "Boolean",
         "html_type": "Radio",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_adapt_work": {
@@ -90,8 +82,7 @@
         "label": "Aangepast werk",
         "data_type": "String",
         "html_type": "TextArea",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_is_real": {
@@ -99,8 +90,7 @@
         "label": "Reële gebeurenis",
         "data_type": "Boolean",
         "html_type": "Radio",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_is_sudden": {
@@ -108,8 +98,7 @@
         "label": "Plotse gebeurenis",
         "data_type": "Boolean",
         "html_type": "Radio",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_is_external_cause": {
@@ -117,8 +106,7 @@
         "label": "Externe oorzaak",
         "data_type": "Boolean",
         "html_type": "Radio",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_is_causal_link": {
@@ -126,8 +114,7 @@
         "label": "Oorzakelijk verband",
         "data_type": "Boolean",
         "html_type": "Radio",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_is_pre_existant_case": {
@@ -135,8 +122,7 @@
         "label": "Voorafbestaande toestand",
         "data_type": "Boolean",
         "html_type": "Radio",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_description_pre_existant_case": {
@@ -144,8 +130,7 @@
         "label": "Zo ja: omschrijving:",
         "data_type": "String",
         "html_type": "TextArea",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_two_accepted_percentage": {
@@ -153,8 +138,7 @@
         "label": "Aanvaard % TWO",
         "data_type": "Int",
         "html_type": "Text",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_two_accepted_date_begin": {
@@ -163,8 +147,7 @@
         "data_type": "Date",
         "html_type": "Select",
         "date_format": "dd/mm/YY",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_two_accepted_date_end": {
@@ -173,8 +156,7 @@
         "data_type": "Date",
         "html_type": "Select",
         "date_format": "dd/mm/YY",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_two_foreseen_percentage": {
@@ -182,8 +164,7 @@
         "label": "Voorziene % TWO",
         "data_type": "Int",
         "html_type": "Text",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_two_foreseen_date_begin": {
@@ -192,8 +173,7 @@
         "data_type": "Date",
         "html_type": "Select",
         "date_format": "dd/mm/YY",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_two_foreseen_date_end": {
@@ -202,8 +182,7 @@
         "data_type": "Date",
         "html_type": "Select",
         "date_format": "dd/mm/YY",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_date_resume_work": {
@@ -212,8 +191,7 @@
         "data_type": "Date",
         "html_type": "Select",
         "date_format": "dd/mm/YY",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_foreseen_date_resume_work": {
@@ -222,8 +200,7 @@
         "data_type": "Date",
         "html_type": "Select",
         "date_format": "dd/mm/YY",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_imposed_date_resume_work": {
@@ -232,8 +209,7 @@
         "data_type": "Date",
         "html_type": "Select",
         "date_format": "dd/mm/YY",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_ao_is_extension_excluded": {
@@ -241,8 +217,7 @@
         "label": "Verlenging is uitgesloten",
         "data_type": "Boolean",
         "html_type": "Radio",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       }
      }

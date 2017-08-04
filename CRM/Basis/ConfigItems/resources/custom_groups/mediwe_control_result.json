@@ -15,8 +15,7 @@
           "label": "Totaal km opgegeven door arts",
           "data_type": "Int",
           "html_type": "Text",
-          "is_searchable": 0,
-          "is_view": 1,
+          "is_searchable": 0
           "is_active": 1
         },
         "control_result_datetime": {
@@ -25,8 +24,7 @@
           "data_type": "Date",
           "html_type": "Select",
           "date_format": "dd/mm/YY",
-          "is_searchable": 0,
-          "is_view": 1,
+          "is_searchable": 0
           "is_active": 1
         },
       "control_result_info_mediwe": {
@@ -34,8 +32,7 @@
         "label": "Opmerking voor Mediwe",
         "data_type": "String",
         "html_type": "TextArea",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_info": {
@@ -43,8 +40,7 @@
         "label": "Opmerkingen",
         "data_type": "String",
         "html_type": "TextArea",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_step": {
@@ -53,8 +49,7 @@
         "data_type": "String",
         "html_type": "Select",
         "option_group": "mediwe_control_result",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_is_workrelated": {
@@ -62,8 +57,7 @@
         "label": "Is werkgerelateerd",
         "data_type": "Boolean",
         "html_type": "Radio",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_advice_occupational": {
@@ -71,8 +65,7 @@
         "label": "Advies arbeidsgeneesheer",
         "data_type": "Boolean",
         "html_type": "Radio",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_advice_counselor": {
@@ -80,8 +73,7 @@
         "label": "Advies vertrouwenspersoon",
         "data_type": "Boolean",
         "html_type": "Radio",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_can_extension": {
@@ -89,8 +81,7 @@
         "label": "Verlenging is mogelijk?",
         "data_type": "Boolean",
         "html_type": "Radio",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       },
       "control_result_date_resume": {
@@ -99,8 +90,7 @@
         "data_type": "Date",
         "html_type": "Select",
         "date_format": "dd/mm/YY",
-        "is_searchable": 0,
-        "is_view": 1,
+        "is_searchable": 0
         "is_active": 1
       }
      }

@@ -29,7 +29,6 @@
         "html_type": "Select",
         "option_group": "mediwe_control_type",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
         "control_km": {
@@ -38,7 +37,6 @@
           "data_type": "Float",
           "html_type": "Text",
           "is_searchable": 0,
-          "is_view": 1,
           "is_active": 1
         },
         "control_time": {
@@ -47,7 +45,6 @@
           "data_type": "String",
           "html_type": "Text",
           "is_searchable": 0,
-          "is_view": 1,
           "is_active": 1
         },
       "control_job_description": {
@@ -56,7 +53,6 @@
         "data_type": "String",
         "html_type": "TextArea",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_info_mediwe": {
@@ -65,7 +61,6 @@
         "data_type": "String",
         "html_type": "TextArea",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_info_controlearts": {
@@ -74,7 +69,6 @@
         "data_type": "String",
         "html_type": "TextArea",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_info_is_public": {
@@ -83,7 +77,6 @@
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_criterium": {
@@ -93,7 +86,6 @@
         "html_type": "Select",
         "option_group": "mediwe_control_criterium",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_name_contact": {
@@ -102,7 +94,6 @@
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_name_requestor": {
@@ -111,7 +102,6 @@
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_phone_contact": {
@@ -120,7 +110,6 @@
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_email_contact1": {
@@ -129,7 +118,6 @@
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_email_contact2": {
@@ -138,7 +126,6 @@
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_email_contact3": {
@@ -147,7 +134,6 @@
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_email_result1": {
@@ -156,7 +142,6 @@
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_email_result2": {
@@ -165,7 +150,6 @@
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_email_result3": {
@@ -174,7 +158,6 @@
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_purchase_price": {
@@ -183,7 +166,6 @@
         "data_type": "Money",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_purchase_supplement": {
@@ -192,7 +174,6 @@
         "data_type": "Money",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_selling_price": {
@@ -201,7 +182,6 @@
         "data_type": "Money",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_selling_discount": {
@@ -210,7 +190,6 @@
         "data_type": "Money",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_purchase_order": {
@@ -219,7 +198,6 @@
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       },
       "control_result": {
@@ -229,7 +207,6 @@
         "html_type": "Select",
         "option_group": "mediwe_control_result",
         "is_searchable": 0,
-        "is_view": 1,
         "is_active": 1
       }
      }
