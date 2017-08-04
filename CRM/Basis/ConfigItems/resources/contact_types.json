@@ -2,7 +2,7 @@
   "mediwe_klant":
   {
     "name": "mediwe_klant",
-    "label":"Klant",
+    "label":"Mediwe Klant",
     "parent_id":3
   },
   "mediwe_controle_arts":

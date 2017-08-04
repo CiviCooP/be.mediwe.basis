@@ -1,0 +1,32 @@
+{
+  "mediwe_ziekteattest":
+  {
+    "id": 200,
+    "name": "mediwe_ziekteattest",
+    "label":"Ziekte attest"
+  },
+  "mediwe_huisbezoek":
+  {
+    "id": 300,
+    "name": "mediwe_huisbezoek",
+    "label":"Huisbezoek"
+  },
+  "mediwe_convocatie":
+  {
+    "id": 310,
+    "name": "mediwe_convocatie",
+    "label":"Convocatie op kabinet"
+  },
+  "mediwe_hercontrole":
+  {
+    "id": 320,
+    "name": "mediwe_hercontrole",
+    "label":"Hercontrole"
+  },
+  "mediwe_onderzoek_ao":
+  {
+    "id": 400,
+    "name": "mediwe_onderzoek_ao",
+    "label":"Onderzoek arbeidsongeval"
+  }
+}

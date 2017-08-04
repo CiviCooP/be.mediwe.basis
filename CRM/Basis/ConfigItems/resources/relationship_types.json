@@ -8,5 +8,15 @@
     "contact_type_a": "Organization",
     "contact_type_b": "Organization",
     "is_active": 1
+  },
+  "controlearts":
+  {
+    "name_a_b": "Controlearts",
+    "label_a_b":"controlearts",
+    "name_b_a": "onderzocht_door_controlearts",
+    "label_b_a":"Onderzocht door controlearts",
+    "contact_type_a": "Organization",
+    "contact_type_b": "Individual",
+    "is_active": 1
   }
 }

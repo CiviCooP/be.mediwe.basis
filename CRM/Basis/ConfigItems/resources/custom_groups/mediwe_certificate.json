@@ -1,0 +1,186 @@
+{
+    "mediwe_certificate":{
+    "name":"mediwe_certificate",
+    "title":"Medisch attest",
+    "extends": "Activity",
+    "extends_entity_column_value": ["200"],
+    "style":"Inline",
+    "is_multiple":0,
+    "is_active":1,
+    "is_reserved":0,
+    "collapse_display":0,
+    "fields": {
+              "certificate_incoming_date": {
+                "name": "certificate_incoming_date",
+                "label": "Ontvangst datum",
+                "data_type": "Date",
+                "html_type": "Select Date",
+                "date_format": "dd/mm/YY",
+                "is_searchable": 1,
+                "is_view": 1,
+                "is_active": 1,
+                "is_required": 1
+              },
+              "certificate_post_date": {
+                "name": "certificate_post_date",
+                "label": "Poststempel datum",
+                "data_type": "Date",
+                "html_type": "Select Date",
+                "date_format": "dd/mm/YY",
+                "is_searchable": 1,
+                "is_view": 1,
+                "is_active": 1,
+                "is_required": 1
+              },
+              "certificate_is_late": {
+                "name": "certificate_is_late",
+                "label": "Te laat ontvangen",
+                "data_type": "Boolean",
+                "html_type": "Radio",
+                "is_searchable": 0,
+                "is_view": 1,
+                "is_active": 1,
+                "is_required": 0
+              },
+             "certificate_reason": {
+               "name": "certificate_reason",
+               "label": "Reden",
+               "data_type": "String",
+               "html_type": "Select",
+               "option_group": "reason_illness_short",
+               "is_searchable": 1,
+               "is_view": 1,
+               "is_active": 1,
+               "is_required": 1
+             },
+            "certificate_date_begin": {
+              "name": "certificate_date_begin",
+              "label": "Begin datum",
+              "data_type": "Date",
+              "html_type": "Select Date",
+              "date_format": "dd/mm/YY",
+              "is_searchable": 1,
+              "is_view": 1,
+              "is_active": 1,
+              "is_required": 1
+            },
+            "certificate_date_end": {
+              "name": "certificate_date_end",
+              "label": "Eind datum",
+              "data_type": "Date",
+              "html_type": "Select Date",
+              "date_format": "dd/mm/YY",
+              "is_searchable": 1,
+              "is_view": 1,
+              "is_active": 1,
+              "is_required": 0
+            },
+            "certificate_is_extension": {
+              "name": "certificate_is_extension",
+              "label": "Verlenging",
+              "data_type": "Boolean",
+              "html_type": "Radio",
+               "is_searchable": 0,
+              "is_view": 1,
+              "is_active": 1,
+              "is_required": 0
+            },
+            "certificate_is_private_accident": {
+              "name": "certificate_is_private_accident",
+              "label": "Privé ongeval",
+              "data_type": "Boolean",
+              "html_type": "Radio",
+              "is_searchable": 0,
+              "is_view": 1,
+              "is_active": 1,
+              "is_required": 0
+            },
+            "certificate_is_exit_allowed": {
+              "name": "certificate_is_exit_allowed",
+              "label": "Mag het huis verlaten",
+              "data_type": "Boolean",
+              "html_type": "Radio",
+              "is_searchable": 0,
+              "is_view": 1,
+              "is_active": 1,
+              "is_required": 0
+            },
+            "certificate_is_hospitalization": {
+              "name": "certificate_is_hospitalization",
+              "label": "Ziekenhuisopname",
+              "data_type": "Boolean",
+              "html_type": "Radio",
+              "is_searchable": 0,
+              "is_view": 1,
+              "is_active": 1,
+              "is_required": 0
+            },
+            "certificate_date_begin_hospitalization": {
+              "name": "certificate_date_begin_hospitalization",
+              "label": "Begin datum opname",
+              "data_type": "Date",
+              "html_type": "Select Date",
+              "date_format": "dd/mm/YY",
+              "is_searchable": 1,
+              "is_view": 1,
+              "is_active": 1,
+              "is_required": 0
+            },
+            "certificate_date_end_hospitalization": {
+              "name": "certificate_date_end_hospitalization",
+              "label": "Eind datum opname",
+              "data_type": "Date",
+              "html_type": "Select Date",
+              "date_format": "dd/mm/YY",
+              "is_searchable": 1,
+              "is_view": 1,
+              "is_active": 1,
+              "is_required": 0
+            },
+            "certificate_doctor_name": {
+              "name": "certificate_doctor_name",
+              "label": "Behandelende arts",
+              "data_type": "String",
+              "html_type": "Text",
+              "is_searchable": 1,
+              "is_search_range":0,
+              "is_view": 0,
+              "is_required":0,
+              "is_active": 1
+            },
+            "certificate_remarks": {
+              "name": "certificate_remarks",
+              "label": "Opmerkingen",
+              "data_type": "String",
+              "html_type": "TextArea",
+              "note_rows": 4,
+              "is_searchable": 0,
+              "is_view": 1,
+              "is_active": 1,
+              "is_required": 0
+            },
+          "certificate_diagnosis": {
+            "name": "certificate_diagnosis",
+            "label": "Reden",
+            "data_type": "String",
+            "html_type": "Select",
+            "option_group": "certificate_diagnosis",
+            "is_searchable": 1,
+            "is_view": 1,
+            "is_active": 1,
+            "is_required": 1
+          },
+          "certificate_alternative_work": {
+            "name": "certificate_alternative_work",
+            "label": "Aangepast werk",
+            "data_type": "String",
+            "html_type": "TextArea",
+            "note_rows": 4,
+            "is_searchable": 0,
+            "is_view": 1,
+            "is_active": 1,
+            "is_required": 0
+          }
+      }
+    }
+}

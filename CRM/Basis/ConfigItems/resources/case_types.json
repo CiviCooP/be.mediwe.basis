@@ -1,0 +1,50 @@
+{
+  "mediwe_ziektemelding":
+  {
+    "id": 100,
+    "name": "mediwe_ziektemelding",
+    "title":"Ziektemelding",
+    "definition": {
+      "activityTypes": {
+          "Open Case": {
+              "name": "Open Case",
+              "max_instances": "1"
+          },
+          "mediwe_ziekteattest": {
+            "name": "mediwe_ziekteattest",
+            "max_instances": "1"
+          }
+        }
+    }
+  ,
+  "mediwe_controle":
+  {
+    "id": 101,
+    "name": "mediwe_controle",
+    "title":"Medische controle",
+    "definition": {
+      "activityTypes": {
+        "mediwe_huisbezoek": {
+          "name": "mediwe_huisbezoek",
+          "max_instances": "1"
+        },
+        "mediwe_convocatie": {
+          "name": "mediwe_convocatie",
+          "max_instances": "1"
+        },
+        "mediwe_hercontrole": {
+          "name": "mediwe_hercontrole",
+          "max_instances": "1"
+        },
+        "mediwe_onderzoek_ao": {
+          "name": "mediwe_onderzoek_ao",
+          "max_instances": "1"
+        }
+      }
+    },
+    "caseRoles": {
+          "name": "Controlearts"
+    }
+  }
+
+}

@@ -1,10 +1,10 @@
 {
-  "sector":{
-    "name":"sector",
-    "title":"Sectoren",
-    "is_active":1,
-    "is_reserved":0,
-    "option_values":{
+  "sector": {
+    "name": "sector",
+    "title": "Sectoren",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
       "Afvalrecuperatie - recyclage": {
         "name": "Afvalrecuperatie - recyclage",
         "value": 27,
@@ -343,11 +343,11 @@
       }
     }
   },
-  "berekeningswijze_fte":{
-    "name":"berekeningswijze_fte",
-    "title":"Berekeningswijze FTE",
-    "is_active":1,
-    "is_reserved":0,
+  "berekeningswijze_fte": {
+    "name": "berekeningswijze_fte",
+    "title": "Berekeningswijze FTE",
+    "is_active": 1,
+    "is_reserved": 0,
     "option_values": {
       "uur": {
         "name": "uur",
@@ -365,11 +365,11 @@
       }
     }
   },
-  "periode":{
-    "name":"periode",
-    "title":"Periode expertsysteem",
-    "is_active":1,
-    "is_reserved":0,
+  "periode": {
+    "name": "periode",
+    "title": "Periode expertsysteem",
+    "is_active": 1,
+    "is_reserved": 0,
     "option_values": {
       "12m": {
         "name": "12m",
@@ -394,11 +394,11 @@
       }
     }
   },
-  "populatie":{
-    "name":"populatie",
-    "title":"Populatie",
-    "is_active":1,
-    "is_reserved":0,
+  "populatie": {
+    "name": "populatie",
+    "title": "Populatie",
+    "is_active": 1,
+    "is_reserved": 0,
     "option_values": {
       "alle": {
         "name": "alle",
@@ -430,11 +430,11 @@
       }
     }
   },
-  "actie":{
-    "name":"actie",
-    "title":"Actie",
-    "is_active":1,
-    "is_reserved":0,
+  "actie": {
+    "name": "actie",
+    "title": "Actie",
+    "is_active": 1,
+    "is_reserved": 0,
     "option_values": {
       "controle": {
         "name": "controle",
@@ -476,6 +476,1138 @@
         "name": "expert",
         "value": "expert",
         "label": "Expert",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "reason_illness": {
+    "name": "reason_illness",
+    "title": "Reden ziekte",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "ziekte": {
+        "name": "ziekte",
+        "value": "ziekte",
+        "label": "Ziekte",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "ao": {
+        "name": "ao",
+        "value": "ao",
+        "label": "Arbeidsongeval",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "kv": {
+        "name": "kv",
+        "value": "kv",
+        "label": "Klein verlet",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "bl": {
+        "name": "bl",
+        "value": "bl",
+        "label": "Bloed geven",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "dfr": {
+        "name": "dfr",
+        "value": "dfr",
+        "label": "Dwingende familiale redenen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "zw": {
+        "name": "zw",
+        "value": "zw",
+        "label": "Zonder wedde",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "br": {
+        "name": "br",
+        "value": "br",
+        "label": "Bevallingsrust",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "presumed_reason_illness": {
+    "name": "presumed_reason_illness",
+    "title": "Vermoedelijke oorzaak ziekte",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "not_specified": {
+        "name": "not_specified",
+        "value": "0",
+        "label": "(niet vermeld)",
+        "is_active": 1,
+        "is_default": 1,
+        "is_reserved": 0
+      },
+      "illness": {
+        "name": "illness",
+        "value": "1",
+        "label": "Ziekte",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "temporary_situation": {
+        "name": "temporary_situation",
+        "value": "2",
+        "label": "Tijdelijke moeilijke situatie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "life_balance": {
+        "name": "life_balance",
+        "value": "3",
+        "label": "Balans privé-werk",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "lifestyle": {
+        "name": "lifestyle",
+        "value": "4",
+        "label": "Ongezonde levensstijl",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "work_relations": {
+        "name": "work_relations",
+        "value": "5",
+        "label": "Relaties op het werk",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "work_stress": {
+        "name": "work_stress",
+        "value": "6",
+        "label": "Werkbelasting",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "work_other": {
+        "name": "work_other",
+        "value": "7",
+        "label": "Andere werkgerelateerde factoren",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "one_day_out": {
+        "name": "one_day_out",
+        "value": "8",
+        "label": "Baaldag",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "not_ill": {
+        "name": "not_ill",
+        "value": "9",
+        "label": "Zwart verzuim",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "mediwe_countries": {
+    "name": "mediwe_countries",
+    "title": "Land",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "belgie": {
+        "name": "belgie",
+        "value": "B",
+        "label": "België",
+        "is_active": 1,
+        "is_default": 1,
+        "is_reserved": 0
+      },
+      "nederland": {
+        "name": "nederland",
+        "value": "NL",
+        "label": "Nederland",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "frankrijk": {
+        "name": "frankrijk",
+        "value": "F",
+        "label": "Frankrijk",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "luxemburg": {
+        "name": "luxemburg",
+        "value": "L",
+        "label": "Luxemburg",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "mediwe_control_type": {
+    "name": "mediwe_control_type",
+    "title": "Soort controle",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "klassiek": {
+        "name": "klassiek",
+        "value": "1",
+        "label": "Huisbezoek en convocatie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "kabinet": {
+        "name": "kabinet",
+        "value": "2",
+        "label": "Rechtstreekse convocatie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "huisbezoek_tijdsbeperking": {
+        "name": "huisbezoek_tijdsbeperking",
+        "value": "10",
+        "label": "Huisbezoek zonder convocatie indien afwezig binnen periode",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "huisbezoek_binnen_periode": {
+        "name": "huisbezoek_binnen_periode",
+        "value": "11",
+        "label": "Huisbezoek verplicht binnen aangeduide periode",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "huisbezoek_met_hercontrole": {
+        "name": "huisbezoek_met_hercontrole",
+        "value": "20",
+        "label": "Huisbezoek met hercontrole indien afwezig",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "ao": {
+        "name": "ao",
+        "value": "100",
+        "label": "Arbeidsongeval",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "mediwe_control_criterium": {
+    "name": "mediwe_control_criterium",
+    "title": "Criterium voor controle",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "not_specified": {
+        "name": "not_specified",
+        "value": "",
+        "label": "(niet vermeld)",
+        "is_active": 1,
+        "is_default": 1,
+        "is_reserved": 0
+      },
+      "aansluitend_op_vakantie": {
+        "name": "aansluitend_op_vakantie",
+        "value": "1",
+        "label": "Aansluitend op vakantie",
+        "is_active": 1,
+        "is_default": 1,
+        "is_reserved": 0
+      },
+      "brugdag": {
+        "name": "brugdag",
+        "value": "2",
+        "label": "Brugdag",
+        "is_active": 1,
+        "is_default": 1,
+        "is_reserved": 0
+      },
+      "prive_activiteit": {
+        "name": "prive_activiteit",
+        "value": "3",
+        "label": "Privé activiteit tijdens ziekte",
+        "is_active": 1,
+        "is_default": 1,
+        "is_reserved": 0
+      },
+      "aangekondigd": {
+        "name": "aangekondigd",
+        "value": "4",
+        "label": "Aangekondigde ziekte",
+        "is_active": 1,
+        "is_default": 1,
+        "is_reserved": 0
+      },
+      "geen_verlof": {
+        "name": "geen_verlof",
+        "value": "5",
+        "label": "Verlof niet toegestaan",
+        "is_active": 1,
+        "is_default": 1,
+        "is_reserved": 0
+      },
+      "opvallend_patroon": {
+        "name": "opvallend_patroon",
+        "value": "6",
+        "label": "Opvallend ziektepatroon",
+        "is_active": 1,
+        "is_default": 1,
+        "is_reserved": 0
+      },
+      "ad_random": {
+        "name": "ad_random",
+        "value": "7",
+        "label": "Ad random",
+        "is_active": 1,
+        "is_default": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "reason_illness_short": {
+    "name": "reason_illness_short",
+    "title": "Reden ziekte",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "ziekte": {
+        "name": "ziekte",
+        "value": "ziekte",
+        "label": "Ziekte",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "ao": {
+        "name": "ao",
+        "value": "ao",
+        "label": "Arbeidsongeval",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "certificate_diagnosis": {
+    "name": "certificate_diagnosis",
+    "title": "Diagnose attest",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "000_niet_ingevuld": {
+        "name": "000_niet_ingevuld",
+        "value": "000",
+        "label": "000 Niet ingevuld",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "100_heelkundig_ingrijpen": {
+        "name": "100_heelkundig_ingrijpen",
+        "value": "100",
+        "label": "100 Heelkundig ingrijpen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "101_medisch_onderzoek": {
+        "name": "101_medisch_onderzoek",
+        "value": "101",
+        "label": "101 Medisch onderzoek",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "102_postoperatief_herstel": {
+        "name": "102_postoperatief_herstel",
+        "value": "102",
+        "label": "102 Postoperatief herstel",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "150_maligniteit": {
+        "name": "150_maligniteit",
+        "value": "150",
+        "label": "150 Maligniteit",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "160_maligniteit": {
+        "name": "160_maligniteit",
+        "value": "160",
+        "label": "160 Maligniteit",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "162_maligniteit": {
+        "name": "162_maligniteit",
+        "value": "162",
+        "label": "162 Maligniteit",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "173_maligniteit": {
+        "name": "173_maligniteit",
+        "value": "173",
+        "label": "173 Maligniteit",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "174_maligniteit": {
+        "name": "174_maligniteit",
+        "value": "174",
+        "label": "174 Maligniteit",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "180_maligniteit": {
+        "name": "180_maligniteit",
+        "value": "180",
+        "label": "180 Maligniteit",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "192_maligniteit": {
+        "name": "192_maligniteit",
+        "value": "192",
+        "label": "192 Maligniteit",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "194_maligniteit": {
+        "name": "194_maligniteit",
+        "value": "194",
+        "label": "194 Maligniteit",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "199_maligniteit_onbekende_oorsprong": {
+        "name": "199_maligniteit_onbekende_oorsprong",
+        "value": "199",
+        "label": "199 Maligniteit onbekende oorsprong",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "200_maligniteit": {
+        "name": "200_maligniteit",
+        "value": "200",
+        "label": "200 Maligniteit",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "240_schildklierpathologie": {
+        "name": "240_schildklierpathologie",
+        "value": "240",
+        "label": "240 Schildklierpathologie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "250_diabetes": {
+        "name": "250_diabetes",
+        "value": "250",
+        "label": "250 Diabetes",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "258_overige_endoc/metabole_aand.": {
+        "name": "258_overige_endoc/metabole_aand.",
+        "value": "258",
+        "label": "258 Overige endoc/metabole aand.",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "268_cvs_spasmofolie_fibromyalgie": {
+        "name": "268_cvs_spasmofolie_fibromyalgie",
+        "value": "268",
+        "label": "268 CVS, spasmofolie, fibromyalgie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "269_zwakke_lichaamstoestand": {
+        "name": "269_zwakke_lichaamstoestand",
+        "value": "269",
+        "label": "269 Zwakke lichaamstoestand",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "270_hyperventilatie": {
+        "name": "270_hyperventilatie",
+        "value": "270",
+        "label": "270 Hyperventilatie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "274_jicht": {
+        "name": "274_jicht",
+        "value": "274",
+        "label": "274 Jicht",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "280_bloedziekte": {
+        "name": "280_bloedziekte",
+        "value": "280",
+        "label": "280 Bloedziekte ",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "281_allergie": {
+        "name": "281_allergie",
+        "value": "281",
+        "label": "281 Allergie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "282_anemie": {
+        "name": "282_anemie",
+        "value": "282",
+        "label": "282 Anemie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "299_psychotisch_syndroom": {
+        "name": "299_psychotisch_syndroom",
+        "value": "299",
+        "label": "299 Psychotisch syndroom",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "303_abusus_ethyl/medicatie": {
+        "name": "303_abusus_ethyl/medicatie",
+        "value": "303",
+        "label": "303 Abusus ethyl/medicatie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "305_psychosomatische_klachten": {
+        "name": "305_psychosomatische_klachten",
+        "value": "305",
+        "label": "305 Psychosomatische klachten",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "306_stress_zonder_somat._klachten": {
+        "name": "306_stress_zonder_somat._klachten",
+        "value": "306",
+        "label": "306 Stress zonder somat. Klachten",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "307_psychosociale_problematiek": {
+        "name": "307_psychosociale_problematiek",
+        "value": "307",
+        "label": "307 Psychosociale problematiek",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "308_depressief_syndroom": {
+        "name": "308_depressief_syndroom",
+        "value": "308",
+        "label": "308 Depressief syndroom",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "309_overige_stoornissen": {
+        "name": "309_overige_stoornissen",
+        "value": "309",
+        "label": "309 Overige stoornissen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "340_demyeliserende_ziekte": {
+        "name": "340_demyeliserende_ziekte",
+        "value": "340",
+        "label": "340 Demyeliserende ziekte",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "341_commotio_cerebri": {
+        "name": "341_commotio_cerebri",
+        "value": "341",
+        "label": "341 Commotio Cerebri",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "342_extrapyramidale_pathologie": {
+        "name": "342_extrapyramidale_pathologie",
+        "value": "342",
+        "label": "342 Extrapyramidale pathologie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "345_convulsie/epilepsie": {
+        "name": "345_convulsie/epilepsie",
+        "value": "345",
+        "label": "345 Convulsie/epilepsie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "346_migraine": {
+        "name": "346_migraine",
+        "value": "346",
+        "label": "346 Migraine",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "347_vertigo": {
+        "name": "347_vertigo",
+        "value": "347",
+        "label": "347 Vertigo",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "349_overige_patho._centraal_zs": {
+        "name": "349_overige_patho._centraal_zs",
+        "value": "349",
+        "label": "349 Overige patho. Centraal ZS",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "359_ziekte_perifere_zenuwen": {
+        "name": "359_ziekte_perifere_zenuwen",
+        "value": "359",
+        "label": "359 Ziekte perifere zenuwen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "360_oogaandoening": {
+        "name": "360_oogaandoening",
+        "value": "360",
+        "label": "360 Oogaandoening",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "380_buiten_-_middenooraandoening": {
+        "name": "380_buiten_-_middenooraandoening",
+        "value": "380",
+        "label": "380 Buiten - middenooraandoening",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "387_cochleovestibulaire_aandoening": {
+        "name": "387_cochleovestibulaire_aandoening",
+        "value": "387",
+        "label": "387 Cochleovestibulaire aandoening",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "390_hartkleppathologie": {
+        "name": "390_hartkleppathologie",
+        "value": "390",
+        "label": "390 Hartkleppathologie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "400_hypertensie": {
+        "name": "400_hypertensie",
+        "value": "400",
+        "label": "400 Hypertensie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "410_ischemische_hartpathologie": {
+        "name": "410_ischemische_hartpathologie",
+        "value": "410",
+        "label": "410 Ischemische hartpathologie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "420_hypotensie": {
+        "name": "420_hypotensie",
+        "value": "420",
+        "label": "420 Hypotensie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "427_hartsdecompensatie": {
+        "name": "427_hartsdecompensatie",
+        "value": "427",
+        "label": "427 Hartsdecompensatie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "428_hartritmestoornis": {
+        "name": "428_hartritmestoornis",
+        "value": "428",
+        "label": "428 Hartritmestoornis",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "430_cerebrovasculaire_pathologie": {
+        "name": "430_cerebrovasculaire_pathologie",
+        "value": "430",
+        "label": "430 Cerebrovasculaire pathologie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "440_perifeer_arteriële_pathologie": {
+        "name": "440_perifeer_arteriële_pathologie",
+        "value": "440",
+        "label": "440 Perifeer arteriële pathologie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "450_perifeer_veneuse_pathologie": {
+        "name": "450_perifeer_veneuse_pathologie",
+        "value": "450",
+        "label": "450 Perifeer veneuse pathologie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "458_overige_cardiovasculaire_patho": {
+        "name": "458_overige_cardiovasculaire_patho",
+        "value": "458",
+        "label": "458 Overige cardiovasculaire patho",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "460_rhinitis_-_faryngitis_-_tonsillitis": {
+        "name": "460_rhinitis_-_faryngitis_-_tonsillitis",
+        "value": "460",
+        "label": "460 Rhinitis - faryngitis - tonsillitis",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "461_sinusitis": {
+        "name": "461_sinusitis",
+        "value": "461",
+        "label": "461 Sinusitis",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "462_hoofdpijn": {
+        "name": "462_hoofdpijn",
+        "value": "462",
+        "label": "462 Hoofdpijn",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "464_laryngitis": {
+        "name": "464_laryngitis",
+        "value": "464",
+        "label": "464 Laryngitis",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "466_tracheobronchitis": {
+        "name": "466_tracheobronchitis",
+        "value": "466",
+        "label": "466 Tracheobronchitis",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "470_griepsyndroom": {
+        "name": "470_griepsyndroom",
+        "value": "470",
+        "label": "470 Griepsyndroom",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "480_bronchopneumonie": {
+        "name": "480_bronchopneumonie",
+        "value": "480",
+        "label": "480 Bronchopneumonie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "493_obstructieve_longpathologie": {
+        "name": "493_obstructieve_longpathologie",
+        "value": "493",
+        "label": "493 Obstructieve longpathologie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "508_overige_patho_bovenste_luchtw.": {
+        "name": "508_overige_patho_bovenste_luchtw.",
+        "value": "508",
+        "label": "508 Overige patho bovenste luchtw.",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "519_overige_longpathologie": {
+        "name": "519_overige_longpathologie",
+        "value": "519",
+        "label": "519 Overige longpathologie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "530_slokdarm-maag-duodenumpatho": {
+        "name": "530_slokdarm-maag-duodenumpatho",
+        "value": "530",
+        "label": "530 Slokdarm-maag-duodenumpatho",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "531_mondaandoeningen": {
+        "name": "531_mondaandoeningen",
+        "value": "531",
+        "label": "531 Mondaandoeningen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "560_colo-rectale_patho": {
+        "name": "560_colo-rectale_patho",
+        "value": "560",
+        "label": "560 Colo-rectale patho",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "565_anale_patho": {
+        "name": "565_anale_patho",
+        "value": "565",
+        "label": "565 Anale patho",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "570_lever-galwegen-pancreas": {
+        "name": "570_lever-galwegen-pancreas",
+        "value": "570",
+        "label": "570 Lever-galwegen-pancreas",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "578_tandheelkunde": {
+        "name": "578_tandheelkunde",
+        "value": "578",
+        "label": "578 Tandheelkunde",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "579_overige_aandoeningen": {
+        "name": "579_overige_aandoeningen",
+        "value": "579",
+        "label": "579 Overige aandoeningen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "590_urinaire/renale_aandoening": {
+        "name": "590_urinaire/renale_aandoening",
+        "value": "590",
+        "label": "590 Urinaire/renale aandoening",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "609_genitale_pathologie_man": {
+        "name": "609_genitale_pathologie_man",
+        "value": "609",
+        "label": "609 Genitale pathologie man",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "610_dialyse": {
+        "name": "610_dialyse",
+        "value": "610",
+        "label": "610 Dialyse",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "620_gyneacologische_aandoening": {
+        "name": "620_gyneacologische_aandoening",
+        "value": "620",
+        "label": "620 Gyneacologische aandoening",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "630_zwangerschap": {
+        "name": "630_zwangerschap",
+        "value": "630",
+        "label": "630 Zwangerschap",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "631_complicatie_zwangerschap": {
+        "name": "631_complicatie_zwangerschap",
+        "value": "631",
+        "label": "631 Complicatie zwangerschap",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "700_huidziekte": {
+        "name": "700_huidziekte",
+        "value": "700",
+        "label": "700 Huidziekte",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "701_brandwonden": {
+        "name": "701_brandwonden",
+        "value": "701",
+        "label": "701 Brandwonden",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "713_(poly)-artrose": {
+        "name": "713_(poly)-artrose",
+        "value": "713",
+        "label": "713 (poly)-artrose",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "715_(poly)-artritis": {
+        "name": "715_(poly)-artritis",
+        "value": "715",
+        "label": "715 (poly)-artritis",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "718_intra-articulaire_aandoening": {
+        "name": "718_intra-articulaire_aandoening",
+        "value": "718",
+        "label": "718 Intra-articulaire aandoening",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "725_hernia_discalis_wervelzuil": {
+        "name": "725_hernia_discalis_wervelzuil",
+        "value": "725",
+        "label": "725 Hernia discalis wervelzuil",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "728_lumbago_zonder_artrose_/_hernia": {
+        "name": "728_lumbago_zonder_artrose_/_hernia",
+        "value": "728",
+        "label": "728 Lumbago zonder artrose / hernia",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "730_tendinitis_-_bursitis": {
+        "name": "730_tendinitis_-_bursitis",
+        "value": "730",
+        "label": "730 Tendinitis - bursitis",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "735_artrose_wervelzuil": {
+        "name": "735_artrose_wervelzuil",
+        "value": "735",
+        "label": "735 Artrose wervelzuil",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "739_overige_aandoeningen": {
+        "name": "739_overige_aandoeningen",
+        "value": "739",
+        "label": "739 Overige aandoeningen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "800_beendertrauma": {
+        "name": "800_beendertrauma",
+        "value": "800",
+        "label": "800 Beendertrauma",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "801_weke_delen_trauma": {
+        "name": "801_weke_delen_trauma",
+        "value": "801",
+        "label": "801 Weke delen trauma",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "802_polytrauma": {
+        "name": "802_polytrauma",
+        "value": "802",
+        "label": "802 Polytrauma",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "803_letsel_hoofd-hals": {
+        "name": "803_letsel_hoofd-hals",
+        "value": "803",
+        "label": "803 Letsel hoofd-hals",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "804_cervico-dorsaal_letsel": {
+        "name": "804_cervico-dorsaal_letsel",
+        "value": "804",
+        "label": "804 Cervico-dorsaal letsel",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "805_dorso-lumbo-sacraal_letsel": {
+        "name": "805_dorso-lumbo-sacraal_letsel",
+        "value": "805",
+        "label": "805 Dorso-lumbo-sacraal letsel",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "806_letsel_thorax": {
+        "name": "806_letsel_thorax",
+        "value": "806",
+        "label": "806 Letsel thorax",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "807_letsel_abdomen": {
+        "name": "807_letsel_abdomen",
+        "value": "807",
+        "label": "807 Letsel abdomen",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "808_letsel_bekken/onderste_lidmaat": {
+        "name": "808_letsel_bekken/onderste_lidmaat",
+        "value": "808",
+        "label": "808 Letsel bekken/onderste lidmaat",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "809_letsel_schouder/bovenste_lidmaat": {
+        "name": "809_letsel_schouder/bovenste_lidmaat",
+        "value": "809",
+        "label": "809 Letsel schouder/bovenste lidmaat",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "810_polytrauma": {
+        "name": "810_polytrauma",
+        "value": "810",
+        "label": "810 Polytrauma",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "811_overige_letsels": {
+        "name": "811_overige_letsels",
+        "value": "811",
+        "label": "811 Overige letsels",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "812_südeck": {
+        "name": "812_südeck",
+        "value": "812",
+        "label": "812 südeck",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "813_kneus-snijwonde": {
+        "name": "813_kneus-snijwonde",
+        "value": "813",
+        "label": "813 Kneus-snijwonde",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "998_onleesbaar": {
+        "name": "998_onleesbaar",
+        "value": "998",
+        "label": "998 Onleesbaar",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "999_geen_ziekte": {
+        "name": "999_geen_ziekte",
+        "value": "999",
+        "label": "999 Geen ziekte",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "000_niet_ingevuld": {
+        "name": "000_niet_ingevuld",
+        "value": "﻿00",
+        "label": "000 niet ingevuld",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "mediwe_control_ao_type": {
+    "name": "mediwe_control_ao_type",
+    "title": "Type controle AO",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "consultatie": {
+        "name": "consultatie",
+        "value": "C",
+        "label": "Consultatie",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "huisbezoek": {
+        "name": "huisbezoek",
+        "value": "H",
+        "label": "Huisbezoek",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "mediwe_control_result": {
+    "name": "mediwe_control_result",
+    "title": "Controleresultaat",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "wachten": {
+        "name": "wachten",
+        "value": "WWW",
+        "label": "Wachten",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "akkoord": {
+        "name": "akkoord",
+        "value": "001",
+        "label": "Gewettigd",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "vervroegd": {
+        "name": "vervroegd",
+        "value": "002",
+        "label": "Vervroegd hervatten",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "hervatten": {
+        "name": "hervatten",
+        "value": "003",
+        "label": "Hervatten",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "niet_aangeboden": {
+        "name": "niet_aangeboden",
+        "value": "004",
+        "label": "Niet aangeboden op kabinet",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "half_goedgekeurd": {
+        "name": "half_goedgekeurd",
+        "value": "005",
+        "label": "50% goedgekeurd",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "arbitrage": {
+        "name": "arbitrage",
+        "value": "006",
+        "label": "Arbitrage",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "afwezig": {
+        "name": "afwezig",
+        "value": "008",
+        "label": "Afwezig bij huisbezoek",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "niet_arbeidsongeschikt": {
+        "name": "niet_arbeidsongeschikt",
+        "value": "008",
+        "label": "Niet arbeidsongeschikt",
         "is_active": 1,
         "is_reserved": 0
       }

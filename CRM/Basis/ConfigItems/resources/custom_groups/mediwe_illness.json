@@ -1,0 +1,164 @@
+{
+    "mediwe_illness":{
+    "name":"mediwe_illness",
+    "title":"Ziekteperiode",
+    "extends": "Case",
+    "extends_entity_column_value": ["100"],
+    "style":"Inline",
+    "is_multiple":0,
+    "is_active":1,
+    "is_reserved":0,
+    "collapse_display":0,
+    "fields": {
+         "illness_reason": {
+           "name": "illness_reason",
+           "label": "Reden",
+           "data_type": "String",
+           "html_type": "Select",
+           "option_group": "reason_illness",
+           "is_searchable": 1,
+           "is_view": 1,
+           "is_active": 1,
+           "is_required": 1
+         },
+      "illness_presumed_reason": {
+        "name": "illness_presumed_reason",
+        "label": "Reden",
+        "data_type": "String",
+        "html_type": "Select",
+        "option_group": "presumed_reason_illness",
+        "is_searchable": 1,
+        "is_view": 1,
+        "is_active": 1,
+        "is_required": 0
+      },
+        "illness_date_begin": {
+          "name": "illness_date_begin",
+          "label": "Begin datum",
+          "data_type": "Date",
+          "html_type": "Select Date",
+          "date_format": "dd/mm/YY",
+          "is_searchable": 1,
+          "is_view": 1,
+          "is_active": 1,
+          "is_required": 1
+        },
+        "illness_date_end": {
+          "name": "illness_date_end",
+          "label": "Eind datum",
+          "data_type": "Date",
+          "html_type": "Select Date",
+          "date_format": "dd/mm/YY",
+          "is_searchable": 1,
+          "is_view": 1,
+          "is_active": 1,
+          "is_required": 0
+        },
+      "illness_date_resumed": {
+        "name": "illness_date_resumed",
+        "label": "Spontane werkhervatting",
+        "data_type": "Date",
+        "html_type": "Select Date",
+        "date_format": "dd/mm/YY",
+        "is_searchable": 1,
+        "is_view": 1,
+        "is_active": 1,
+        "is_required": 0
+      },
+        "illness_is_extension": {
+          "name": "illness_is_extension",
+          "label": "Verlenging",
+          "data_type": "Boolean",
+          "html_type": "Radio",
+           "is_searchable": 0,
+          "is_view": 1,
+          "is_active": 1,
+          "is_required": 0
+        },
+        "illness_is_private_accident": {
+          "name": "illness_is_private_accident",
+          "label": "Privé ongeval",
+          "data_type": "Boolean",
+          "html_type": "Radio",
+          "is_searchable": 0,
+          "is_view": 1,
+          "is_active": 1,
+          "is_required": 0
+        },
+        "illness_is_exit_allowed": {
+          "name": "illness_is_exit_allowed",
+          "label": "Mag het huis verlaten",
+          "data_type": "Boolean",
+          "html_type": "Radio",
+          "is_searchable": 0,
+          "is_view": 1,
+          "is_active": 1,
+          "is_required": 0
+        },
+        "illness_is_hospitalization": {
+          "name": "illness_is_hospitalization",
+          "label": "Ziekenhuisopname",
+          "data_type": "Boolean",
+          "html_type": "Radio",
+          "is_searchable": 0,
+          "is_view": 1,
+          "is_active": 1,
+          "is_required": 0
+        },
+        "illness_date_begin_hospitalization": {
+          "name": "illness_date_begin_hospitalization",
+          "label": "Begin datum opname",
+          "data_type": "Date",
+          "html_type": "Select Date",
+          "date_format": "dd/mm/YY",
+          "is_searchable": 1,
+          "is_view": 1,
+          "is_active": 1,
+          "is_required": 0
+        },
+        "illness_date_end_hospitalization": {
+          "name": "illness_date_end_hospitalization",
+          "label": "Eind datum opname",
+          "data_type": "Date",
+          "html_type": "Select Date",
+          "date_format": "dd/mm/YY",
+          "is_searchable": 1,
+          "is_view": 1,
+          "is_active": 1,
+          "is_required": 0
+        },
+        "illness_doctor_name": {
+          "name": "illness_doctor_name",
+          "label": "Behandelende arts",
+          "data_type": "String",
+          "html_type": "Text",
+          "is_searchable": 1,
+          "is_search_range":0,
+          "is_view": 0,
+          "is_required":0,
+          "is_active": 1
+        },
+      "illness_no_certificate": {
+        "name": "illness_no_certificate",
+        "label": "Ziekte zonder attest",
+        "data_type": "Boolean",
+        "html_type": "Radio",
+        "is_searchable": 0,
+        "is_view": 1,
+        "is_active": 1,
+        "is_required": 0
+      },
+      "illness_remarks": {
+        "name": "illillness_remarks",
+        "label": "Opmerkingen",
+        "data_type": "String",
+        "html_type": "TextArea",
+        "note_rows": 4,
+        "is_searchable": 0,
+        "is_view": 1,
+        "is_active": 1,
+        "is_required": 0
+      }
+      }
+    }
+}

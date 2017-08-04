@@ -32,7 +32,13 @@ class CRM_Basis_ConfigItems_ConfigItems {
     $this->setRelationshipTypes();
     $this->setMembershipTypes();
     $this->setOptionGroups();
-    // customData as last one because it might need one of the previous ones (option group, relationship types)
+    
+    $this->setActivityTypes();
+
+    // cases after load activities
+    $this->setCaseTypes();
+      
+    // customData as last one because it might need one of the previous ones (option group, relationship types, activity types)
     $this->setCustomData();
   }
 
@@ -121,6 +127,47 @@ class CRM_Basis_ConfigItems_ConfigItems {
         $relationshipType->disableRelationshipType("Senior Services Coordinator is");
         $relationshipType->disableRelationshipType("Benefits Specialist is");
     }
+
+    /**
+     * Method to create activity types
+     *
+     * @throws Exception when resource file not found
+     * @access protected
+     */
+    protected function setActivityTypes() {
+        $jsonFile = $this->_resourcesPath.'activity_types.json';
+        if (!file_exists($jsonFile)) {
+            throw new Exception(ts('Could not load activity_types configuration file for extension,
+      activity your system administrator!'));
+        }
+        $activityTypesJson = file_get_contents($jsonFile);
+        $activityTypes = json_decode($activityTypesJson, true);
+        foreach ($activityTypes as $name => $activityTypeParams) {
+            $activityType = new CRM_Basis_ConfigItems_ActivityType();
+            $activityType->create($activityTypeParams);
+        }
+    }
+
+    /**
+     * Method to create case types
+     *
+     * @throws Exception when resource file not found
+     * @access protected
+     */
+    protected function setCaseTypes() {
+        $jsonFile = $this->_resourcesPath.'case_types.json';
+        if (!file_exists($jsonFile)) {
+            throw new Exception(ts('Could not load case_types configuration file for extension,
+      case your system administrator!'));
+        }
+        $caseTypesJson = file_get_contents($jsonFile);
+        $caseTypes = json_decode($caseTypesJson, true);
+        foreach ($caseTypes as $name => $caseTypeParams) {
+            $caseType = new CRM_Basis_ConfigItems_CaseType();
+            $caseType->create($caseTypeParams);
+        }
+    }
+
 
     /**
      * Method to create membership types
