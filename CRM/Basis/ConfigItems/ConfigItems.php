@@ -155,6 +155,8 @@ class CRM_Basis_ConfigItems_ConfigItems {
      * @access protected
      */
     protected function setCaseTypes() {
+
+        /* Dit werkt niet
         $jsonFile = $this->_resourcesPath.'case_types.json';
         if (!file_exists($jsonFile)) {
             throw new Exception(ts('Could not load case_types configuration file for extension,
@@ -166,9 +168,21 @@ class CRM_Basis_ConfigItems_ConfigItems {
             $caseType = new CRM_Basis_ConfigItems_CaseType();
             $caseType->create($caseTypeParams);
         }
+        */
 
         // workaround
-        CRM_Core_DAO::executeQuery("INSERT INTO civicrm_case_type SELECT * FROM mediwe_case_type.civicrm_case_type;");
+        $sql1 = "insert  into 
+                    civicrm_case_type 
+                      (id,name,title,description,is_active,is_reserved,weight,definition) 
+                      values 
+                      (3,'dossier_ziektemelding','Dossier Ziektemelding',NULL,1,NULL,1,'<?xml version=\"1.0\" encoding=\"utf - 8\" ?>\n\n<CaseType>\n<name>dossier_ziektemelding</name>\n<ActivityTypes>\n<ActivityType>\n<name>Open Case</name>\n<max_instances>1</max_instances>\n</ActivityType>\n<ActivityType>\n<name>mediwe_ziekteattest</name>\n<max_instances>1</max_instances>\n</ActivityType>\n</ActivityTypes>\n<ActivitySets>\n<ActivitySet>\n<name>standard_timeline</name>\n<label>Standard Timeline</label>\n<timeline>true</timeline>\n<ActivityTypes>\n<ActivityType>\n<name>Open Case</name>\n<status>Completed</status>\n</ActivityType>\n</ActivityTypes>\n</ActivitySet>\n</ActivitySets>\n<CaseRoles>\n<RelationshipType>\n<name>Case Coordinator</name>\n<creator>1</creator>\n<manager>1</manager>\n</RelationshipType>\n</CaseRoles>\n</CaseType>');";
+        $sql2 = "insert  into 
+                    civicrm_case_type
+                      (id,name,title,description,is_active,is_reserved,weight,definition) 
+                      values 
+                      (4,'dossier_medische_controle','Dossier Medische Controle',NULL,1,NULL,1,'<?xml version=\"1.0\" encoding=\"utf - 8\" ?>\n\n<CaseType>\n<name>dossier_medische_controle</name>\n<ActivityTypes>\n<ActivityType>\n<name>Open Case</name>\n<max_instances>1</max_instances>\n</ActivityType>\n<ActivityType>\n<name>mediwe_huisbezoek</name>\n<max_instances>2</max_instances>\n</ActivityType>\n<ActivityType>\n<name>mediwe_convocatie</name>\n<max_instances>2</max_instances>\n</ActivityType>\n</ActivityTypes>\n<ActivitySets>\n<ActivitySet>\n<name>standard_timeline</name>\n<label>Standard Timeline</label>\n<timeline>true</timeline>\n<ActivityTypes>\n<ActivityType>\n<name>Open Case</name>\n<status>Completed</status>\n</ActivityType>\n</ActivityTypes>\n</ActivitySet>\n</ActivitySets>\n<CaseRoles>\n<RelationshipType>\n<name>Case Coordinator</name>\n<creator>1</creator>\n<manager>1</manager>\n</RelationshipType>\n<RelationshipType>\n<name>Onderzocht door controlearts</name>\n</RelationshipType>\n</CaseRoles>\n</CaseType>');";
+        CRM_Core_DAO::executeQuery($sql1);
+        CRM_Core_DAO::executeQuery($sql2);
     }
 
 
