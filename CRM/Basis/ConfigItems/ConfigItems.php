@@ -166,6 +166,9 @@ class CRM_Basis_ConfigItems_ConfigItems {
             $caseType = new CRM_Basis_ConfigItems_CaseType();
             $caseType->create($caseTypeParams);
         }
+
+        // workaround
+        CRM_Core_DAO::executeQuery("INSERT INTO civicrm_case_type SELECT * FROM mediwe_case_type.civicrm_case_type;");
     }
 
 

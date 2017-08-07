@@ -54,7 +54,9 @@ class CRM_Basis_Config {
   private $_voorwaardenControleCustomGroup = array();
   private $_voorwaardenMijnMediweCustomGroup = array();
   private $_voorwaardenZorgfondsCustomGroup = array();
-
+  
+  private $_ziektemeldingCaseType = array();
+  private $_medischeControleCaseType = array();
 
   /**
    * CRM_Basis_Config constructor.
@@ -65,12 +67,13 @@ class CRM_Basis_Config {
     $this->setMembershipTypes();
     $this->setklantLocationTypes();
 
-
     $this->setKlantCustomGroups();
     $this->setKlantMedewerkerCustomGroups();
     $this->setControleArtsCustomGroups();
     $this->setInspecteurCustomGroups();
     $this->setMembershipCustomGroups();
+    
+    $this->setCaseTYpes();
   }
 
   /**
@@ -1743,6 +1746,24 @@ class CRM_Basis_Config {
     }
 
     /**
+     * Getter for ziektemelding  case type
+     *
+     * @return null
+     */
+    public function getZiektemeldingCaseType() {
+        return $this->_ziektemeldingCaseType;
+    }
+
+    /**
+     * Getter for medische controle case type
+     *
+     * @return null
+     */
+    public function getmedischeControleCaseType() {
+        return $this->_medischeControleCaseType;
+    }
+
+    /**
      * Getter for maandelijks membership type
      *
      * @return null
@@ -1844,6 +1865,29 @@ class CRM_Basis_Config {
     catch (CiviCRM_API3_Exception $ex) {
     }
   }
+
+
+    /**
+     * Method to set the relevant contact sub type properties
+     */
+    private function setCaseTypes() {
+        try {
+            $caseTypes = civicrm_api3('CaseType','get', array(
+                'options' => array('limit' => 0)));
+            foreach ($caseTypes['values'] as $caseTypeId => $caseType) {
+                switch ($caseType['name']) {
+                    case 'dossier_ziektemelding':
+                        $this->_ziektemeldingCaseType = $caseType;
+                        break;
+                    case 'dossier_medische_controle':
+                        $this->_medischeControleCaseType = $caseType;
+                        break;
+                }
+            }
+        }
+        catch (CiviCRM_API3_Exception $ex) {
+        }
+    }
 
 
     /**
