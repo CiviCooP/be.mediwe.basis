@@ -16,19 +16,6 @@
           "max_instances": "1"
         }
       ],
-      "activitySets": [
-        {
-          "name": "standard_timeline",
-          "label": "Standard Timeline",
-          "timeline": "1",
-          "activityTypes": [
-            {
-              "name": "Open Case",
-              "status": "Completed"
-            }
-          ]
-        }
-      ],
       "caseRoles": [
         {
           "name": "Case Coordinator",
@@ -36,9 +23,7 @@
           "manager": "1"
         }
       ]
-    },
-    "is_forkable": "1",
-    "is_forked": ""
+    }
   },
   "dossier_medische_controle": {
     "id": "101",
@@ -54,30 +39,15 @@
         },
         {
           "name": "mediwe_huisbezoek",
-          "max_instances": "1"
+          "max_instances": "2"
         },
         {
           "name": "mediwe_convocatie",
+          "max_instances": "2"
+        },
+        {
+          "name": "mediwe_onderzoek_ao",
           "max_instances": "1"
-        },
-        {
-          "name": "mediwe_hercontrole"
-        },
-        {
-          "name": "mediwe_onderzoek_ao"
-        }
-      ],
-      "activitySets": [
-        {
-          "name": "standard_timeline",
-          "label": "Standard Timeline",
-          "timeline": "1",
-          "activityTypes": [
-            {
-              "name": "Open Case",
-              "status": "Completed"
-            }
-          ]
         }
       ],
       "caseRoles": [
@@ -88,10 +58,10 @@
         },
         {
           "name": "Onderzocht door controlearts"
+          "creator": "0",
+          "manager": "0"
         }
       ]
-    },
-    "is_forkable": "1",
-    "is_forked": ""
+    }
   }
 }

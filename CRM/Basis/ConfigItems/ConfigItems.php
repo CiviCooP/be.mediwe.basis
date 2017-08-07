@@ -39,7 +39,7 @@ class CRM_Basis_ConfigItems_ConfigItems {
     //$this->setCaseTypes();
       
     // customData as last one because it might need one of the previous ones (option group, relationship types, activity types)
-    $this->setCustomData();
+    //$this->setCustomData();
   }
 
   /**
