@@ -20,13 +20,6 @@
     "name": "mediwe_convocatie",
     "label":"Convocatie op kabinet"
   },
-  "mediwe_hercontrole":
-  {
-    "value": 320,
-    "component_id": 7,
-    "name": "mediwe_hercontrole",
-    "label":"Hercontrole"
-  },
   "mediwe_onderzoek_ao":
   {
     "value": 400,

@@ -44,8 +44,8 @@ class CRM_Basis_ConfigItems_CaseType {
             civicrm_api3('CaseType', 'Create', $this->_apiParams);
         } catch (CiviCRM_API3_Exception $ex) {
             CRM_Core_Error::debug('params', $this->_apiParams);
-            throw new Exception('Could not create or update case type with name '.$this->_apiParams['name']
-                .' in '.__METHOD__.', error from API CaseType Create: '.$ex->getMessage());
+            //throw new Exception('Could not create or update case type with name '.$this->_apiParams['name']
+            //    .' in '.__METHOD__.', error from API CaseType Create: '.$ex->getMessage());
         }
     }
 
