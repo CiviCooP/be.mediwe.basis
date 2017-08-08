@@ -112,9 +112,9 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
   public function preProcess() {
 
       $id =   CRM_Utils_Request::retrieve('id', 'Integer');
-      if ($id) {
-          $this->setReasonData($id);
-      }
+
+      $this->_setReasonData();
+
 
   }
 
@@ -131,10 +131,10 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
   }
 
 
-  private function setReasonData() {
-
+  private function _setReasonData() {
 
       $this->_reasonData = array(
+            ''       => '(niet meegedeeld)',
             'ziekte' => 'Ziekte',
             'ao'     => 'Arbeidsongeval'
           );
