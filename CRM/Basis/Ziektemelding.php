@@ -34,19 +34,20 @@ class CRM_Basis_Ziektemelding {
       $params['case_type_id'] = $this->_ziektemeldingCaseTypeName;
 
       // ensure mandatory data
-      if (!isset($params['contact_id'])) {
-          throw new Exception('Medewerker identificatie ontbreekt!');
-      }
       if (!isset($params['illness_date_begin'])) {
           throw new Exception('Begin datum ziekte ontbreekt!');
       }
 
-      // if id is set, then update
-      if ( isset($params['id']) || $this->exists($params)) {
-          $this->update($params);
-      } else {
+
+      if ($params['id'] == null) {
+          unset($params['id']);
           return $this->_saveZiektemelding($params);
       }
+      else {
+          // if id is set, then update
+          $this->update($params);
+      }
+
   }
 
   /**
@@ -65,6 +66,7 @@ class CRM_Basis_Ziektemelding {
             return $this->_saveZiektemelding($params);
         }
         catch (CiviCRM_API3_Exception $ex) {
+            CRM_Core_Error::debug('function update params', $params);
             throw new API_Exception(ts('Could not create an ziektemelding in '.__METHOD__
                 .', contact your system administrator! Error from API Case create: '.$ex->getMessage()));
         }
@@ -86,6 +88,8 @@ class CRM_Basis_Ziektemelding {
       catch (CiviCRM_API3_Exception $ex) {
           return false;
       }
+
+
       return true;
   }
 
@@ -140,23 +144,30 @@ class CRM_Basis_Ziektemelding {
                 $params[$customFieldName] = $data[$fieldName];
             }
         }
+
+        CRM_Core_Error::debug('params', $params);exit;
   }
+
+
 
   private function _getEmployer($data) {
 
       $params_employer = array();
 
       foreach ($data as $key => $value) {
-          if (substr($key, 0, 8) == "employer"){
-              $params_employer[$key] = $value;
+          if (substr($key, 0, 8) == "employer" && $value){
+              $mykey = substr($key, 9);
+              $params_employer[$mykey] = $value;
           }
       }
+
       $employer = civicrm_api3('Klant', 'Get', $params_employer);
-      if (!$employer) {
+
+      if ($employer['count'] == 0) {
           $employer = civicrm_api3('Klant', 'Create', $params_employer);
       }
 
-      return $employer;
+      return $employer['values'][0];
   }
 
     private function _getEmployee($data) {
@@ -164,16 +175,19 @@ class CRM_Basis_Ziektemelding {
         $params_employee = array();
     
         foreach ($data as $key => $value) {
-            if (substr($key, 0, 8) == "employee"){
-                $params_employee[$key] = $value;
+            if (substr($key, 0, 8) == "employee" && $value ){
+                $mykey = substr($key, 9);
+                $params_employee[$mykey] = $value;
             }
         }
+
         $employee = civicrm_api3('KlantMedewerker', 'Get', $params_employee);
-        if (!$employee) {
+
+        if ($employee['count'] == 0) {
             $employee = civicrm_api3('KlantMedewerker', 'Create', $params_employee);
         }
-    
-        return $employee;
+
+        return $employee['values'][0];
     }
 
     private function _addEmployerRelation($case_id, $data) {
@@ -184,7 +198,7 @@ class CRM_Basis_Ziektemelding {
             'sequential' => 1,
             'contact_id_a' => $data['contact_id'],
             'contact_id_b' => $data['employer_id'],
-            'relationship_type_id' => $config->getIsWerknemerVanRelationshipType(),
+            'relationship_type_id' => $config->getIsWerknemerVanRelationshipType()['id'],
             'case_id' => $case_id,
         ));
 
@@ -201,26 +215,41 @@ class CRM_Basis_Ziektemelding {
       
 
       foreach ($data as $key => $value) {
-          $params[$key] = $value;
+          if ($value) {
+              $params[$key] = $value;
+          }
       }
+
 
       // rename ziektemelding custom fields for api  ($customFields, $data, &$params)
       $this->_addToParamsCustomFields($config->getZiektemeldingZiekteperiodeCustomGroup('custom_fields'), $data, $params);
 
+      if (!$params['id']) {
+          unset($params['id']);
+      }
 
       // get the employer
       $params['employer_id'] = $this->_getEmployer($data)['contact_id'];
-      
+
       // get the employee
+
       $params['contact_id'] = $this->_getEmployee($data)['contact_id'];
-      
+
       try {
 
           // save the illness
+
+          $params['subject'] = "Ziektemelding periode vanaf " . $params['illness_date_begin'];
+          $params['start_date'] =  $params['illness_date_begin'];
+          $params['end_date'] =  $params['illness_date_end'];
+
           $createdCase = civicrm_api3('Case', 'create', $params);
 
           // add/update employer role in this case
-          $this->_addEmployerRelation($createdCase['values'][0]['id'], $data);
+          $params_relation = array();
+          $params_relation['contact_id'] = $params['contact_id'];
+          $params_relation['employer_id'] = $params['employer_id'];
+          $this->_addEmployerRelation($createdCase['id'], $params_relation);
 
 
           return $createdCase['values'][0];

@@ -120,11 +120,12 @@ class CRM_Basis_KlantMedewerker {
    * @return array
    */
     public function get($params) {
-       
+
         $medewerkers = array();
         // ensure that contact sub type is set
         $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
         $params['sequential'] = 1;
+        $this->_addKlantMedewerkerAllFields($params);
 
         try {
 

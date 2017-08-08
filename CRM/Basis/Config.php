@@ -56,6 +56,11 @@ class CRM_Basis_Config {
   private $_voorwaardenZorgfondsCustomGroup = array();
 
   private $_ziektemeldingZiekteperiodeCustomGroup = array();
+  private $_ziektemeldingZiekteAttestCustomGroup = array();
+  private $_medischeControleCustomGroup = array();
+  private $_medischeControleResultaatAoCustomGroup = array();
+  private $_medischeControleResultaatCustomGroup = array();
+  private $_medischeControleHuisbezoekCustomGroup = array();
 
   // properties for case types
   private $_ziektemeldingCaseType = array();
@@ -75,8 +80,9 @@ class CRM_Basis_Config {
     $this->setControleArtsCustomGroups();
     $this->setInspecteurCustomGroups();
     $this->setMembershipCustomGroups();
+    $this->setCasesCustomGroups();
     
-    $this->setCaseTYpes();
+    $this->setCaseTypes();
   }
 
   /**
@@ -1684,16 +1690,72 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for ziekteperiode custom group
-     *
-     * @param string $key
-     * @return mixed|array
-     */
+ * Getter for ziekteperiode custom group
+ *
+ * @param string $key
+ * @return mixed|array
+ */
     public function getZiektemeldingZiekteperiodeCustomGroup($key = NULL) {
         if (!empty($key) && isset($this->_ziektemeldingZiekteperiodeCustomGroup[$key])) {
             return $this->_ziektemeldingZiekteperiodeCustomGroup[$key];
         } else {
             return $this->_ziektemeldingZiekteperiodeCustomGroup;
+        }
+    }
+
+    /**
+     * Getter for medische controle custom group
+     *
+     * @param string $key
+     * @return mixed|array
+     */
+    public function getMedischeControleCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_medischeControleCustomGroup[$key])) {
+            return $this->_medischeControleCustomGroup[$key];
+        } else {
+            return $this->_medischeControleCustomGroup;
+        }
+    }
+
+    /**
+     * Getter for medische controle huisbezoek custom group
+     *
+     * @param string $key
+     * @return mixed|array
+     */
+    public function getMedischeControleHuisbezoekCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_medischeControleHuisbezoekCustomGroup[$key])) {
+            return $this->_medischeControleHuisbezoekCustomGroup[$key];
+        } else {
+            return $this->_medischeControleHuisbezoekCustomGroup;
+        }
+    }
+
+    /**
+     * Getter for medische controle resultaat custom group
+     *
+     * @param string $key
+     * @return mixed|array
+     */
+    public function getMedischeControleResultaatCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_medischeControleResultaatCustomGroup[$key])) {
+            return $this->_medischeControleResultaatCustomGroup[$key];
+        } else {
+            return $this->_medischeControleResultaatCustomGroup;
+        }
+    }
+
+    /**
+     * Getter for medische controle resultaat custom group
+     *
+     * @param string $key
+     * @return mixed|array
+     */
+    public function getMedischeControleResultaatAoCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_medischeControleResultaatAoCustomGroup[$key])) {
+            return $this->_medischeControleResultaatAoCustomGroup[$key];
+        } else {
+            return $this->_medischeControleResultaatAoCustomGroup;
         }
     }
 
@@ -1912,9 +1974,9 @@ class CRM_Basis_Config {
      */
     private function setRelationshipTypes() {
         try {
-            $relaionshipTypes = civicrm_api3('RelationshipType','get', array(
+            $relationshipTypes = civicrm_api3('RelationshipType','get', array(
                 'options' => array('limit' => 0)));
-            foreach ($relaionshipTypes['values'] as $relationshipTypeId => $relationshipType) {
+            foreach ($relationshipTypes['values'] as $relationshipTypeId => $relationshipType) {
                 switch ($relationshipType['name_a_b']) {
                     case 'is_klant_via':
                         $this->_isKlantViaRelationshipType = $relationshipType;
@@ -2114,6 +2176,44 @@ class CRM_Basis_Config {
         }
     }
 
+    /**
+     * Method to set the inspecteur custom groups and custom fields
+     */
+    private function setCasesCustomGroups() {
+        try {
+            $customGroups = civicrm_api3('CustomGroup','get', array(
+                'options' => array('limit' => 0)));
+            foreach ($customGroups['values'] as $customGroupId => $customGroup) {
+                $customFields = civicrm_api3('CustomField', 'get', array(
+                    'custom_group_id' => $customGroupId,
+                    'options' => array('limit' => 0)));
+                $customGroup['custom_fields'] = $customFields['values'];
+                switch ($customGroup['name']) {
+                    case 'mediwe_illness':
+                        $this->_ziektemeldingZiekteperiodeCustomGroup = $customGroup;
+                        break;
+                    case 'mediwe_certificate':
+                        $this->_ziektemeldingZiekteAttestCustomGroup = $customGroup;
+                        break;
+                    case 'mediwe_control':
+                        $this->_medischeControleCustomGroup = $customGroup;
+                        break;
+                    case 'mediwe_home_visit':
+                        $this->_medischeControleHuisbezoekCustomGroup = $customGroup;
+                        break;
+                    case 'mediwe_control_ao_result':
+                        $this->_medischeControleResultaatAoCustomGroup = $customGroup;
+                        break;
+                    case 'mediwe_control_result':
+                        $this->_medischeControleResultaatCustomGroup = $customGroup;
+                        break;
+                }
+            }
+        }
+        catch (CiviCRM_API3_Exception $ex) {
+        }
+    }    
+    
     /**
      * Method to place the custom fields in the entity array based on the
      *

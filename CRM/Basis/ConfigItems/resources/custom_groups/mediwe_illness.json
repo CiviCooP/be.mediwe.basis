@@ -136,7 +136,7 @@
         "is_required": 0
       },
       "illness_remarks": {
-        "name": "illillness_remarks",
+        "name": "illness_remarks",
         "label": "Opmerkingen",
         "data_type": "String",
         "html_type": "TextArea",

@@ -12,23 +12,23 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
   public function buildQuickForm() {
 
     // De werkgever
-    $this->add('text', 'employer_name', ts('Werkgever '), array(), FALSE);
-    $this->add('text', 'employer_vat', ts('BTW nummer '), array(), FALSE);
+    $this->add('text', 'employer_organization_name', ts('Werkgever '), array(), FALSE);
+    $this->add('text', 'employer_customer_vat', ts('BTW nummer '), array(), FALSE);
 
     // De werknemer
-    $this->add('text', 'employee_national_nbr', ts('Rijksregisternummer '), array(), FALSE);
-    $this->add('text', 'employee_personnel_nbr', ts('Personeelsnummer'), array(), FALSE);
+    $this->add('text', 'employee_employee_national_nbr', ts('Rijksregisternummer '), array(), FALSE);
+    $this->add('text', 'employee_employee_personnel_nbr', ts('Personeelsnummer'), array(), FALSE);
 
-    $this->add('text', 'display_name', ts('Naam werknemer'), array(), TRUE);
-    $this->add('text', 'supplemental_address_1', ts('Tweede lijn'), array(), FALSE);
-    $this->add('text', 'street_address', ts('Adres (straat en huisnummer)'), array(), TRUE);
-    $this->add('text', 'postal_code', ts('Postcode'), array(), TRUE);
-    $this->add('text', 'city', ts('Gemeente'), array(), TRUE);
+    $this->add('text', 'employee_display_name', ts('Naam werknemer'), array(), TRUE);
+    $this->add('text', 'employee_supplemental_address_1', ts('Tweede lijn'), array(), FALSE);
+    $this->add('text', 'employee_street_address', ts('Adres (straat en huisnummer)'), array(), TRUE);
+    $this->add('text', 'employee_postal_code', ts('Postcode'), array(), TRUE);
+    $this->add('text', 'employee_city', ts('Gemeente'), array(), TRUE);
 
     $this->add('text', 'employee_partner', ts('Partner'), array(), FALSE);
 
-    $this->add('text', 'phone', ts('Telefoon'), array(), FALSE);
-    $this->add('text', 'mobile', ts('GSM'), array(), FALSE);
+    $this->add('text', 'employee_phone', ts('Telefoon'), array(), FALSE);
+    $this->add('text', 'employee_mobile', ts('GSM'), array(), FALSE);
 
     $this->add('text', 'employee_level1', ts('Niveau 1'), array(), FALSE);
     $this->add('text', 'employee_code_level2', ts('Code Niveau 2'), array(), FALSE);
@@ -43,10 +43,10 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
     $this->add( 'datepicker', 'employee_date_out',  ts('Datum uit dienst'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2010-01-01'));
 
     // Verblijfadres
-    $this->add('text', 'supplemental_address_1_residence', ts('Tweede lijn (verblijfplaats)'), array(), FALSE);
-    $this->add('text', 'street_address_residence', ts('Adres verblijf (straat en huisnummer)'), array(), FALSE);
-    $this->add('text', 'postal_code_residence', ts('Postcode verblijf'), array(), FALSE);
-    $this->add('text', 'city_residence', ts('Gemeente verblijf'), array(), FALSE);
+    $this->add('text', 'employee_supplemental_address_1_residence', ts('Tweede lijn (verblijfplaats)'), array(), FALSE);
+    $this->add('text', 'employee_street_address_residence', ts('Adres verblijf (straat en huisnummer)'), array(), FALSE);
+    $this->add('text', 'employee_postal_code_residence', ts('Postcode verblijf'), array(), FALSE);
+    $this->add('text', 'employee_city_residence', ts('Gemeente verblijf'), array(), FALSE);
 
     // Afwezigheidsgegevens
       $this->add('select', 'illness_reason', ts('Reden'), $this->_reasonData, TRUE);
@@ -71,25 +71,27 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
     if (isset($this->_contactData[0])) {
           // set values to screen
 
+        /*
           if  ($this->_contactData[0]['id'] > 0) {
               $this->add('hidden', 'id', ts('Id '), array(), FALSE);
               $this->getElement('id')->setValue($this->_contactData[0]['id']);
           }
+        */
 
-          $this->getElement('employer_name')->setValue($this->_contactData[0]['employer_name']);
-          $this->getElement('employer_vat')->setValue($this->_contactData[0]['employer_vat']);
+          $this->getElement('employer_organization_name')->setValue($this->_contactData[0]['employer_organization_name']);
+          $this->getElement('employer_customer_vat')->setValue($this->_contactData[0]['employer_customer_vat']);
 
-          $this->getElement('employee_national_nbr')->setValue($this->_contactData[0]['employee_national_nbr']);
-          $this->getElement('employee_personnel_nbr')->setValue($this->_contactData[0]['employee_personnel_nbr']);
-          $this->getElement('display_name')->setValue($this->_contactData[0]['display_name']);
-          $this->getElement('supplemental_address_1')->setValue($this->_contactData[0]['supplemental_address_1']);
-          $this->getElement('street_address')->setValue($this->_contactData[0]['street_address']);
-          $this->getElement('postal_code')->setValue($this->_contactData[0]['postal_code']);
-          $this->getElement('city')->setValue($this->_contactData[0]['city']);
+          $this->getElement('employee_employee_national_nbr')->setValue($this->_contactData[0]['employee_employee_national_nbr']);
+          $this->getElement('employee_employee_personnel_nbr')->setValue($this->_contactData[0]['employee_employee_personnel_nbr']);
+          $this->getElement('employee_display_name')->setValue($this->_contactData[0]['employee_display_name']);
+          $this->getElement('employee_supplemental_address_1')->setValue($this->_contactData[0]['employee_supplemental_address_1']);
+          $this->getElement('employee_street_address')->setValue($this->_contactData[0]['employee_street_address']);
+          $this->getElement('employee_postal_code')->setValue($this->_contactData[0]['employee_postal_code']);
+          $this->getElement('employee_city')->setValue($this->_contactData[0]['employee_city']);
 
           $this->getElement('employee_partner')->setValue($this->_contactData[0]['employee_partner']);
-          $this->getElement('phone')->setValue($this->_contactData[0]['phone']);
-          $this->getElement('mobile')->setValue($this->_contactData[0]['mobile']);
+          $this->getElement('employee_phone')->setValue($this->_contactData[0]['employee_phone']);
+          $this->getElement('employee_mobile')->setValue($this->_contactData[0]['employee_mobile']);
           $this->getElement('employee_level1')->setValue($this->_contactData[0]['employee_level1']);
           $this->getElement('employee_code_level2')->setValue($this->_contactData[0]['employee_code_level2']);
           $this->getElement('employee_level2')->setValue($this->_contactData[0]['employee_level2']);
@@ -99,10 +101,10 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
           $this->getElement('employee_date_in')->setValue($this->_contactData[0]['employee_date_in']);
           $this->getElement('employee_date_out')->setValue($this->_contactData[0]['employee_date_out']);
 
-          $this->getElement('supplemental_address_1_residence')->setValue($this->_contactData[0]['supplemental_address_1_residence']);
-          $this->getElement('street_address_residence')->setValue($this->_contactData[0]['street_address_residence']);
-          $this->getElement('postal_code_residence')->setValue($this->_contactData[0]['postal_code_residence']);
-          $this->getElement('city_residence')->setValue($this->_contactData[0]['city_residence']);
+          $this->getElement('employee_supplemental_address_1_residence')->setValue($this->_contactData[0]['employee_supplemental_address_1_residence']);
+          $this->getElement('employee_street_address_residence')->setValue($this->_contactData[0]['employee_street_address_residence']);
+          $this->getElement('employee_postal_code_residence')->setValue($this->_contactData[0]['employee_postal_code_residence']);
+          $this->getElement('employee_city_residence')->setValue($this->_contactData[0]['employee_city_residence']);
     }
 
 
@@ -121,6 +123,7 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
   public function postProcess() {
     //CRM_Core_Error::debug('submitValues', $this->_submitValues);
     //exit();
+
     $this->saveZiektemelding($this->_submitValues);
     parent::postProcess();
   }

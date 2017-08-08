@@ -9,7 +9,7 @@
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_klant_medewerker_Get_spec(&$spec) {
-  $spec['name']['api.required'] = 1;
+  //$spec['name']['api.required'] = 1;
 }
 
 /**
