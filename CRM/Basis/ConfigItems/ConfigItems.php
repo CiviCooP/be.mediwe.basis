@@ -36,7 +36,7 @@ class CRM_Basis_ConfigItems_ConfigItems {
     $this->setActivityTypes();
 
     // cases after load activities
-    $this->setCaseTypes();
+    //$this->setCaseTypes();
       
     // customData as last one because it might need one of the previous ones (option group, relationship types, activity types)
     $this->setCustomData();
@@ -171,16 +171,101 @@ class CRM_Basis_ConfigItems_ConfigItems {
         */
 
         // workaround
+        $xml1 = "<?xml version=\"1.0\" encoding=\"utf - 8\" ?>
+                        
+                        <CaseType>
+                            <name>dossier_ziektemelding</name>
+                            <ActivityTypes>
+                                <ActivityType>
+                                    <name>Open Case</name>
+                                    <max_instances>1</max_instances>
+                                </ActivityType>
+                                <ActivityType>
+                                    <name>mediwe_ziekteattest</name>
+                                    <max_instances>1</max_instances>
+                                </ActivityType>
+                            </ActivityTypes>
+                            <ActivitySets>
+                                <ActivitySet>
+                                    <name>standard_timeline</name>
+                                    <label>Standard Timeline</label>
+                                    <timeline>true</timeline>
+                                    <ActivityTypes>
+                                            <ActivityType>
+                                                <name>Open Case</name>
+                                                <status>Completed</status>
+                                            </ActivityType>
+                                    </ActivityTypes>
+                                </ActivitySet>
+                            </ActivitySets>
+                            <CaseRoles>
+                                <RelationshipType>
+                                    <name>Case Coordinator</name>
+                                    <creator>1</creator>
+                                    <manager>1</manager>
+                                 </RelationshipType>
+                            </CaseRoles>
+                        </CaseType>
+                        ";
         $sql1 = "insert  into 
-                    civicrm_case_type 
-                      (id,name,title,description,is_active,is_reserved,weight,definition) 
-                      values 
-                      (3,'dossier_ziektemelding','Dossier Ziektemelding',NULL,1,NULL,1,'<?xml version=\"1.0\" encoding=\"utf - 8\" ?>\n\n<CaseType>\n<name>dossier_ziektemelding</name>\n<ActivityTypes>\n<ActivityType>\n<name>Open Case</name>\n<max_instances>1</max_instances>\n</ActivityType>\n<ActivityType>\n<name>mediwe_ziekteattest</name>\n<max_instances>1</max_instances>\n</ActivityType>\n</ActivityTypes>\n<ActivitySets>\n<ActivitySet>\n<name>standard_timeline</name>\n<label>Standard Timeline</label>\n<timeline>true</timeline>\n<ActivityTypes>\n<ActivityType>\n<name>Open Case</name>\n<status>Completed</status>\n</ActivityType>\n</ActivityTypes>\n</ActivitySet>\n</ActivitySets>\n<CaseRoles>\n<RelationshipType>\n<name>Case Coordinator</name>\n<creator>1</creator>\n<manager>1</manager>\n</RelationshipType>\n</CaseRoles>\n</CaseType>');";
+                    civicrm_case_type (id,name,title,description,is_active,is_reserved,weight,definition) 
+                 values 
+                    (3,'dossier_ziektemelding','Dossier Ziektemelding',NULL,1,NULL,1,'$xml1');";
+        $xml2 = "<?xml version=\"1.0\" encoding=\"utf - 8\" ?>
+                        
+                        <CaseType>
+                            <name>dossier_ziektemelding</name>
+                            <ActivityTypes>
+                                <ActivityType>
+                                    <name>Open Case</name>
+                                    <max_instances>1</max_instances>
+                                </ActivityType>
+                                <ActivityType>
+                                    <name>mediwe_huisbezoek</name>
+                                    <max_instances>2</max_instances>
+                                </ActivityType>
+                                <ActivityType>
+                                    <name>mediwe_convocatie</name>
+                                    <max_instances>2</max_instances>
+                                </ActivityType>
+                                <ActivityType>
+                                    <name>mediwe_onderzoek_ao</name>
+                                    <max_instances>1</max_instances>
+                                </ActivityType>
+                            </ActivityTypes>
+                            <ActivitySets>
+                                <ActivitySet>
+                                    <name>standard_timeline</name>
+                                    <label>Standard Timeline</label>
+                                    <timeline>true</timeline>
+                                    <ActivityTypes>
+                                            <ActivityType>
+                                                <name>Open Case</name>
+                                                <status>Completed</status>
+                                            </ActivityType>
+                                    </ActivityTypes>
+                                </ActivitySet>
+                            </ActivitySets>
+                            <CaseRoles>
+                                <RelationshipType>
+                                    <name>Case Coordinator</name>
+                                    <creator>1</creator>
+                                    <manager>1</manager>
+                                 </RelationshipType>
+                                 <RelationshipType>
+		                            <name>onderzocht_door_controlearts</name>
+		                            <creator>0>/creator>
+		                            <manager>0</manager>
+	                             </RelationshipType>
+                            </CaseRoles>
+                        </CaseType>
+                        ";
         $sql2 = "insert  into 
                     civicrm_case_type
                       (id,name,title,description,is_active,is_reserved,weight,definition) 
                       values 
-                      (4,'dossier_medische_controle','Dossier Medische Controle',NULL,1,NULL,1,'<?xml version=\"1.0\" encoding=\"utf - 8\" ?>\n\n<CaseType>\n<name>dossier_medische_controle</name>\n<ActivityTypes>\n<ActivityType>\n<name>Open Case</name>\n<max_instances>1</max_instances>\n</ActivityType>\n<ActivityType>\n<name>mediwe_huisbezoek</name>\n<max_instances>2</max_instances>\n</ActivityType>\n<ActivityType>\n<name>mediwe_convocatie</name>\n<max_instances>2</max_instances>\n</ActivityType>\n</ActivityTypes>\n<ActivitySets>\n<ActivitySet>\n<name>standard_timeline</name>\n<label>Standard Timeline</label>\n<timeline>true</timeline>\n<ActivityTypes>\n<ActivityType>\n<name>Open Case</name>\n<status>Completed</status>\n</ActivityType>\n</ActivityTypes>\n</ActivitySet>\n</ActivitySets>\n<CaseRoles>\n<RelationshipType>\n<name>Case Coordinator</name>\n<creator>1</creator>\n<manager>1</manager>\n</RelationshipType>\n<RelationshipType>\n<name>Onderzocht door controlearts</name>\n</RelationshipType>\n</CaseRoles>\n</CaseType>');";
+                      (4,'dossier_medische_controle','Dossier Medische Controle',NULL,1,NULL,1,'$xml2');
+                  ";
         CRM_Core_DAO::executeQuery($sql1);
         CRM_Core_DAO::executeQuery($sql2);
     }

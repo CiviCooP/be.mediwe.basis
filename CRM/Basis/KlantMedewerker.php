@@ -38,7 +38,7 @@ class CRM_Basis_KlantMedewerker {
           'contact_sub_type' => $this->_klantMedewerkerContactSubTypeName,
       );
 
-      if (isset($data['id'])) {
+      if (isset($data['id']) && is_numeric($data['id'])) {
           $params['id'] = $data['id'];
       }
       else {

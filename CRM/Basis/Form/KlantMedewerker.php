@@ -11,8 +11,6 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
 
   public function buildQuickForm() {
 
-    $this->add('hidden', 'id', ts('Id '), array(), FALSE);
-
     $this->add('text', 'employer_name', ts('Werkgever '), array(), FALSE);
     $this->add('text', 'employer_vat', ts('BTW nummer '), array(), FALSE);
 
@@ -43,9 +41,9 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
     $this->add( 'datepicker', 'employee_date_out',  ts('Datum uit dienst'), array(), FALSE);
 
     $this->add('text', 'supplemental_address_1_residence', ts('Tweede lijn (verblijfplaats)'), array(), FALSE);
-    $this->add('text', 'street_address_residence', ts('Adres verblijf (straat en huisnummer)'), array(), TRUE);
-    $this->add('text', 'postal_code_residence', ts('Postcode verblijf'), array(), TRUE);
-    $this->add('text', 'city_residence', ts('Gemeente verblijf'), array(), TRUE);
+    $this->add('text', 'street_address_residence', ts('Adres verblijf (straat en huisnummer)'), array(), FALSE);
+    $this->add('text', 'postal_code_residence', ts('Postcode verblijf'), array(), FALSE);
+    $this->add('text', 'city_residence', ts('Gemeente verblijf'), array(), FALSE);
 
 
     $this->addButtons(array(
@@ -60,6 +58,7 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
           // set values to screen
 
           if  ($this->_contactData[0]['id'] > 0) {
+              $this->add('hidden', 'id', ts('Id '), array(), FALSE);
               $this->getElement('id')->setValue($this->_contactData[0]['id']);
           }
 
@@ -113,10 +112,6 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
   }
 
   private function saveKlantMedewerker($formValues) {
-
-    if (!$formValues['id']) {
-        unset($formValues['id']);
-    }
 
     civicrm_api3('KlantMedewerker', 'create', $formValues);
   }
