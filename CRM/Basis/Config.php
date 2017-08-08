@@ -54,7 +54,10 @@ class CRM_Basis_Config {
   private $_voorwaardenControleCustomGroup = array();
   private $_voorwaardenMijnMediweCustomGroup = array();
   private $_voorwaardenZorgfondsCustomGroup = array();
-  
+
+  private $_ziektemeldingZiekteperiodeCustomGroup = array();
+
+  // properties for case types
   private $_ziektemeldingCaseType = array();
   private $_medischeControleCaseType = array();
 
@@ -1677,6 +1680,20 @@ class CRM_Basis_Config {
             return $this->_klantMedewerkerMedewerkerCustomGroup[$key];
         } else {
             return $this->_klantMedewerkerMedewerkerCustomGroup;
+        }
+    }
+
+    /**
+     * Getter for ziekteperiode custom group
+     *
+     * @param string $key
+     * @return mixed|array
+     */
+    public function getZiektemeldingZiekteperiodeCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_ziektemeldingZiekteperiodeCustomGroup[$key])) {
+            return $this->_ziektemeldingZiekteperiodeCustomGroup[$key];
+        } else {
+            return $this->_ziektemeldingZiekteperiodeCustomGroup;
         }
     }
 

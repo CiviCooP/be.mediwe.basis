@@ -37,29 +37,16 @@ class CRM_Basis_Ziektemelding {
       if (!isset($params['contact_id'])) {
           throw new Exception('Medewerker identificatie ontbreekt!');
       }
-      if (!isset($params['subject'])) {
-          throw new Exception('Onderwerp van het dossier ontbreekt!');
+      if (!isset($params['illness_date_begin'])) {
+          throw new Exception('Begin datum ziekte ontbreekt!');
       }
 
-        if (isset($params['id'])) {
+      // if id is set, then update
+      if ( isset($params['id']) || $this->exists($params)) {
           $this->update($params);
-        } else {
-          // check if ziektemelding can not be found yet and only create if not
-          if ($this->exists($params) === FALSE) {
-            try {
-              $createdCase = civicrm_api3('Case', 'create', $params);
-              $ziektemelding = $createdCase['values'];
-              return $ziektemelding;
-            }
-            catch (CiviCRM_API3_Exception $ex) {
-              throw new API_Exception(ts('Could not create an ziektemelding in '.__METHOD__
-                .', contact your system administrator! Error from API Case create: '.$ex->getMessage()));
-            }
-
-          } else {
-            // todo maken activity type for DataOnderzoek of iets dergelijks zodat deze gevallen gesignaleerd kunnen worden
-          }
-    }
+      } else {
+          return $this->_saveZiektemelding($params);
+      }
   }
 
   /**
@@ -69,19 +56,19 @@ class CRM_Basis_Ziektemelding {
    * @return array
    */
   public function update($params) {
-    $ziektemelding = array();
 
-    if ($this->exists($params)) {
+    $exists = $this->exists($params);
+
+    if ($exists) {
         try {
-            $ziektemelding = civicrm_api3('Case', 'create', $params);
+            $params['id'] = $exists['id'];
+            return $this->_saveZiektemelding($params);
         }
         catch (CiviCRM_API3_Exception $ex) {
             throw new API_Exception(ts('Could not create an ziektemelding in '.__METHOD__
                 .', contact your system administrator! Error from API Case create: '.$ex->getMessage()));
         }
-
     }
-    return $ziektemelding;
   }
 
   /**
@@ -113,8 +100,7 @@ class CRM_Basis_Ziektemelding {
 ;
     try {
       $ziektemeldinges = civicrm_api3('Case', 'get', $params);
-
-        $ziektemeldingsen = $ziektemeldinges['values'];
+      $ziektemeldingsen = $ziektemeldinges['values'];
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
@@ -126,7 +112,7 @@ class CRM_Basis_Ziektemelding {
    * Method to delete an ziektemelding with id (set to is_deleted in CiviCRM)
    *
    * @param $ziektemeldingId
-   * @return bool (if delete was succesfull or not)
+   * @return array
    */
   public function deleteWithId($ziektemeldingid) {
       $ziektemelding = array();
@@ -143,6 +129,40 @@ class CRM_Basis_Ziektemelding {
       }
 
       return $ziektemelding;
+  }
+
+  private function _addToParamsCustomFields($customFields, $data, &$params) {
+
+        foreach ($customFields as $field) {
+            $fieldName = $field['name'];
+            if (isset($data[$fieldName])) {
+                $customFieldName = 'custom_' . $field['id'];
+                $params[$customFieldName] = $data[$fieldName];
+            }
+        }
+  }
+
+  private function _saveZiektemelding($data) {
+
+      $config = CRM_Basis_Config::singleton();
+
+      foreach ($data as $key => $value) {
+          $params[$key] = $value;
+      }
+
+      // rename ziektemelding custom fields for api  ($customFields, $data, &$params)
+      $this->_addToParamsCustomFields($config->getZiektemeldingZiekteperiodeCustomGroup('custom_fields'), $data, $params);
+
+
+      try {
+
+          $createdCase = civicrm_api3('Case', 'create', $params);
+          return $createdCase['values'][0];
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+          throw new API_Exception(ts('Could not create a contact in '.__METHOD__
+              .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
+      }
   }
 
 }
