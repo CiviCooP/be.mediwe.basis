@@ -35,6 +35,9 @@ class CRM_Basis_Ziektemelding {
       // ensure contact_type and contact_sub_type are set correctly
       $params['case_type_id'] = $this->_ziektemeldingCaseTypeName;
 
+      // get the employee
+      $params['contact_id'] = $this->_getEmployee($params)['contact_id'];
+
       // ensure mandatory data
       if (!isset($params['illness_date_begin'])) {
           throw new Exception('Begin datum ziekte ontbreekt!');
@@ -42,28 +45,18 @@ class CRM_Basis_Ziektemelding {
 
 
       if ($params['id'] == null) {
-          
           // exists looks for overlapping periods for this employee
           $exists = $this->exists($params);
-          if ($exists) {
-              $params['id'] = $exists['id'];
-              if ($exists['start_date'] < $params['illness_date_begin']) {
-                  $params['illness_date_begin'] = $exists['start_date'];
-              }
-              if ($exists['end_date'] > $params['illness_date_end']) {
-                  $params['illness_date_end'] = $exists['end_date'];
-              }
-          }
-          else {
+          if (!$exists) {
               unset($params['id']);
+              return $this->_saveZiektemelding($params);
+          } else {
+              $params['id'] = $exists['id'];
           }
-          
-          return $this->_saveZiektemelding($params);
       }
-      else {
-          // if id is set, then update
-          $this->update($params);
-      }
+
+      $this->update($params);
+
 
   }
 
@@ -75,18 +68,7 @@ class CRM_Basis_Ziektemelding {
    */
   public function update($params) {
 
-    // zoek overlappende periode
-    $exists = $this->exists($params);
-
-    if ($exists) {
-        try {
-            $params['id'] = $exists['id'];
-            if ($exists['start_date'] < $params['illness_date_begin']) {
-                $params['illness_date_begin'] = $exists['start_date'];
-            }
-            if ($exists['end_date'] > $params['illness_date_end']) {
-                $params['illness_date_end'] = $exists['end_date'];
-            }
+       try {
             return $this->_saveZiektemelding($params);
         }
         catch (CiviCRM_API3_Exception $ex) {
@@ -94,7 +76,6 @@ class CRM_Basis_Ziektemelding {
             throw new API_Exception(ts('Could not create an ziektemelding in '.__METHOD__
                 .', contact your system administrator! Error from API Case create: '.$ex->getMessage()));
         }
-    }
   }
 
   /**
@@ -106,13 +87,15 @@ class CRM_Basis_Ziektemelding {
   public function exists($params) {
       $ziektemelding = array();
 
-      // get the employee
-      $params['contact_id'] = $this->_getEmployee($params)['contact_id'];
       if (!isset($params['illness_date_end'])) {
           $params['illness_date_end'] = $params['illness_date_begin'];
       }
 
-      $sql =    "
+      if (isset($params['id'])) {
+          return $params['id'];
+      }
+      else {
+          $sql =    "
                     SELECT 
                       ca.*
                     FROM 
@@ -133,7 +116,8 @@ class CRM_Basis_Ziektemelding {
                        (  ca.end_date >=  '" . $params['illness_date_end'] . "' AND ca.begin_date <=  '" . $params['illness_date_begin'] . "' )
                       )    
                 ";
-      
+      }
+
       $dao = CRM_Core_DAO::executeQuery($sql);
 
       if ($dao->fetch()) {
@@ -232,6 +216,7 @@ class CRM_Basis_Ziektemelding {
             }
         }
 
+
         $employee = civicrm_api3('KlantMedewerker', 'Get', $params_employee);
 
         if ($employee['count'] == 0) {
@@ -245,13 +230,27 @@ class CRM_Basis_Ziektemelding {
 
         $config = CRM_Basis_Config::singleton();
 
-        $result = civicrm_api3('Relationship', 'create', array(
+        $params = array(
             'sequential' => 1,
             'contact_id_a' => $data['contact_id'],
             'contact_id_b' => $data['employer_id'],
             'relationship_type_id' => $config->getIsWerknemerVanRelationshipType()['id'],
             'case_id' => $case_id,
-        ));
+        );
+
+        try {
+            $result = civicrm_api3('Relationship', 'getsingle', array(
+                'sequential' => 1,
+                'relationship_type_id' => $config->getIsWerknemerVanRelationshipType()['id'],
+                'case_id' => $case_id,
+            ));
+            $params['id'] = $result['id'];
+        }
+        catch (Exception $e) {
+           $result = false;
+        }
+
+        $result = civicrm_api3('Relationship', 'create', $params );
 
         return $result;
     }
@@ -282,9 +281,6 @@ class CRM_Basis_Ziektemelding {
       // get the employer
       $params['employer_id'] = $this->_getEmployer($data)['contact_id'];
 
-      // get the employee
-      $params['contact_id'] = $this->_getEmployee($data)['contact_id'];
-
       try {
 
           // save the illness
@@ -300,7 +296,6 @@ class CRM_Basis_Ziektemelding {
           $params_relation['contact_id'] = $params['contact_id'];
           $params_relation['employer_id'] = $params['employer_id'];
           $this->_addEmployerRelation($createdCase['id'], $params_relation);
-
 
           return $createdCase['values'][0];
       }
