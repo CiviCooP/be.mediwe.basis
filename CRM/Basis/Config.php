@@ -2257,6 +2257,7 @@ class CRM_Basis_Config {
                 $entityArray[$fieldName] = $daoData->$columnName;
             }
         }
+
         return $entityArray;
     }
 

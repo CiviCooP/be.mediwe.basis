@@ -58,51 +58,37 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
     // export form elements
     $this->assign('elementNames', $this->getRenderableElementNames());
 
-    if (isset($this->_ziektemeldingData[0])) {
+    if ($this->_ziektemeldingData) {
 
-         $employee_id = $this->_ziektemeldingData[0]['client_id'];
-         $employee = $this->_ziektemeldingData[0]['contacts'][$employee_id];
           // set values to screen
 
-        /*
-          if  ($this->_contactData[0]['id'] > 0) {
-              $this->add('hidden', 'id', ts('Id '), array(), FALSE);
-              $this->getElement('id')->setValue($this->_contactData[0]['id']);
-          }
-        */
+          $this->getElement('employer_organization_name')->setValue($this->_ziektemeldingField('employee_employer_name'));
+          $this->getElement('employer_customer_vat')->setValue($this->_ziektemeldingField('employee_employer_vat'));
 
-          //$this->getElement('employer_organization_name')->setValue($this->_contactData[0]['employer_organization_name']);
-          //$this->getElement('employer_customer_vat')->setValue($this->_contactData[0]['employer_customer_vat']);
+          $this->getElement('employee_employee_national_nbr')->setValue($this->_ziektemeldingField('employee_employee_national_nbr'));
+          $this->getElement('employee_employee_personnel_nbr')->setValue($this->_ziektemeldingField('employee_employee_personnel_nbr'));
+          $this->getElement('employee_display_name')->setValue($this->_ziektemeldingField('employee_display_name'));
 
-          //$this->getElement('employee_employee_national_nbr')->setValue($this->_contactData[0]['employee_employee_national_nbr']);
-          //$this->getElement('employee_employee_personnel_nbr')->setValue($this->_contactData[0]['employee_employee_personnel_nbr']);
-          $this->getElement('employee_display_name')->setValue($employee['display_name']);
+          $this->getElement('employee_partner')->setValue($this->_ziektemeldingField('employee_employee_partner'));
+          $this->getElement('employee_phone')->setValue($this->_ziektemeldingField('employee_phone'));
+          $this->getElement('employee_mobile')->setValue($this->_ziektemeldingField('employee_mobile'));
+          $this->getElement('employee_level1')->setValue($this->_ziektemeldingField('employee_employee_level1'));
+          $this->getElement('employee_code_level2')->setValue($this->_ziektemeldingField('employee_employee_code_level2'));
+          $this->getElement('employee_level2')->setValue($this->_ziektemeldingField('employee_employee_level2'));
+          $this->getElement('employee_level3')->setValue($this->_ziektemeldingField('employee_employee_level3'));
 
-          //$this->getElement('employee_partner')->setValue($this->_contactData[0]['employee_partner']);
-          $this->getElement('employee_phone')->setValue($employee['phone']);
-          //$this->getElement('employee_mobile')->setValue($this->_contactData[0]['employee_mobile']);
-          //$this->getElement('employee_level1')->setValue($this->_contactData[0]['employee_level1']);
-          //$this->getElement('employee_code_level2')->setValue($this->_contactData[0]['employee_code_level2']);
-          //$this->getElement('employee_level2')->setValue($this->_contactData[0]['employee_level2']);
-          //$this->getElement('employee_level3')->setValue($this->_contactData[0]['employee_level3']);
+          $this->getElement('employee_function')->setValue($this->_ziektemeldingField('employee_employee_function'));
+          $this->getElement('employee_date_in')->setValue($this->_ziektemeldingField('employee_employee_date_in'));
+          $this->getElement('employee_date_out')->setValue($this->_ziektemeldingField('employee_employee_date_out'));
 
-          //$this->getElement('employee_function')->setValue($this->_contactData[0]['employee_function']);
-          //$this->getElement('employee_date_in')->setValue($this->_contactData[0]['employee_date_in']);
-          //$this->getElement('employee_date_out')->setValue($this->_contactData[0]['employee_date_out']);
-
-          //$this->getElement('employee_supplemental_address_1_residence')->setValue($this->_contactData[0]['employee_supplemental_address_1_residence']);
-          //$this->getElement('employee_street_address_residence')->setValue($this->_contactData[0]['employee_street_address_residence']);
-          //$this->getElement('employee_postal_code_residence')->setValue($this->_contactData[0]['employee_postal_code_residence']);
-          //$this->getElement('employee_city_residence')->setValue($this->_contactData[0]['employee_city_residence']);
-
-        $this->getElement('illness_reason')->setValue($this->_ziektemeldingData[0]['illness_reason']);
-        $this->getElement('illness_date_begin')->setValue($this->_ziektemeldingData[0]['start_date']);
-        $this->getElement('illness_date_end')->setValue($this->_ziektemeldingData[0]['end_date']);
-        $this->getElement('illness_is_extension')->setValue($this->_ziektemeldingData[0]['illness_is_extension']);
-        $this->getElement('illness_is_private_accident')->setValue($this->_ziektemeldingData[0]['illness_is_private_accident']);
-        $this->getElement('illness_is_exit_allowed')->setValue($this->_ziektemeldingData[0]['illness_is_exit_allowed']);
-        $this->getElement('illness_is_hospitalization')->setValue($this->_ziektemeldingData[0]['illness_is_hospitalization']);
-        $this->getElement('illness_no_certificate')->setValue($this->_ziektemeldingData[0]['illness_no_certificate']);
+        $this->getElement('illness_reason')->setValue($this->_ziektemeldingField('illness_reason'));
+        $this->getElement('illness_date_begin')->setValue($this->_ziektemeldingField('start_date'));
+        $this->getElement('illness_date_end')->setValue($this->_ziektemeldingField('end_date'));
+        $this->getElement('illness_is_extension')->setValue($this->_ziektemeldingField('illness_is_extension'));
+        $this->getElement('illness_is_private_accident')->setValue($this->_ziektemeldingField('illness_is_private_accident'));
+        $this->getElement('illness_is_exit_allowed')->setValue($this->_ziektemeldingField('illness_is_exit_allowed'));
+        $this->getElement('illness_is_hospitalization')->setValue($this->_ziektemeldingField('illness_is_hospitalization'));
+        $this->getElement('illness_no_certificate')->setValue($this->_ziektemeldingField('illness_no_certificate'));
     }
 
 
@@ -134,6 +120,14 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
     civicrm_api3('Ziektemelding', 'create', $formValues);
   }
 
+  private function _ziektemeldingField($key) {
+      if (isset($this->_ziektemeldingData[$key])) {
+          return $this->_ziektemeldingData[$key];
+      }
+      else {
+          return '';
+      }
+  }
 
   private function _setReasonData() {
 
@@ -149,7 +143,7 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
 
         $ziektemelding = new CRM_Basis_Ziektemelding();
 
-        $this->_ziektemeldingData = $ziektemelding->get(array ( 'id' => $id, ));
+        $this->_ziektemeldingData = $ziektemelding->get(array ( 'id' => $id, ))[$id];
 
     }
 

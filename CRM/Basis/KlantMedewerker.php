@@ -530,6 +530,7 @@ class CRM_Basis_KlantMedewerker {
                 $contacts[$arrayRowId]['employer_vat'] = $employer['employer_vat'];
             }
         }
+
     }
 }
 

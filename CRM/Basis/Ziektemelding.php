@@ -151,17 +151,17 @@ class CRM_Basis_Ziektemelding {
    * @return array
    */
   public function get($params) {
-    $ziektemeldingsen = array();
-;
-    try {
-      $ziektemeldinges = civicrm_api3('Case', 'get', $params);
-      $ziektemeldingsen = $ziektemeldinges['values'];
+    $ziektemeldingen = array();
 
-      $this->_addZiektemeldingAllFields();
+    try {
+
+      $ziektemeldingen = civicrm_api3('Case', 'get', $params)['values'];
+      $this->_addZiektemeldingAllFields($ziektemeldingen);
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
-    return $ziektemeldingsen;
+
+    return $ziektemeldingen;
   }
 
 
@@ -197,8 +197,6 @@ class CRM_Basis_Ziektemelding {
                 $params[$customFieldName] = $data[$fieldName];
             }
         }
-
-        CRM_Core_Error::debug('params', $params);exit;
   }
 
 
@@ -321,9 +319,19 @@ class CRM_Basis_Ziektemelding {
             if (isset($ziektemelding['id'])) {
                 // ziekteperiode custom fields
                 $meldingen[$arrayRowId] = $config->addDaoData($config->getZiektemeldingZiekteperiodeCustomGroup(), $meldingen[$arrayRowId]);
+
+                // gegevens werknemer en diens werkgever
+                $medewerker_id = $ziektemelding['client_id'][1];
+
+                $employee = civicrm_api3('KlantMedewerker', 'Get', array('id' => $medewerker_id))['values'][0];
+                foreach ($employee as $key => $value) {
+                    $newkey = "employee_" . $key;
+                    $meldingen[$arrayRowId][$newkey] = $value;
+                }
+
+
             }
         }
-
     }
 
 }
