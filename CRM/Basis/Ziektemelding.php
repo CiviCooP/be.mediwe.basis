@@ -156,6 +156,8 @@ class CRM_Basis_Ziektemelding {
     try {
       $ziektemeldinges = civicrm_api3('Case', 'get', $params);
       $ziektemeldingsen = $ziektemeldinges['values'];
+
+      $this->_addZiektemeldingAllFields();
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
@@ -309,5 +311,19 @@ class CRM_Basis_Ziektemelding {
               .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
       }
   }
+
+    private function _addZiektemeldingAllFields(&$meldingen)
+    {
+        $config = CRM_Basis_Config::singleton();
+
+        foreach ($meldingen as $arrayRowId => $ziektemelding) {
+
+            if (isset($ziektemelding['id'])) {
+                // ziekteperiode custom fields
+                $meldingen[$arrayRowId] = $config->addDaoData($config->getZiektemeldingZiekteperiodeCustomGroup(), $meldingen[$arrayRowId]);
+            }
+        }
+
+    }
 
 }

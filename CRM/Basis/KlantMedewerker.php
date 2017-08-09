@@ -125,7 +125,6 @@ class CRM_Basis_KlantMedewerker {
         // ensure that contact sub type is set
         $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
         $params['sequential'] = 1;
-        $this->_addKlantMedewerkerAllFields($params);
 
         try {
 
