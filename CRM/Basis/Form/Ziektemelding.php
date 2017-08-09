@@ -8,6 +8,7 @@
 class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
 
   private $_reasonData = array();
+  private $_ziektemeldingData = array();
 
   public function buildQuickForm() {
 
@@ -114,6 +115,9 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
   public function preProcess() {
 
       $id =   CRM_Utils_Request::retrieve('id', 'Integer');
+      if ($id) {
+          $this->_getZiektemeldingData($id);
+      }
 
       $this->_setReasonData();
 
@@ -143,6 +147,14 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
           );
 
   }
+
+    private function _getZiektemeldingData($id) {
+
+        $ziektemelding = new CRM_Basis_Ziektemelding();
+
+        $this->_ziektemeldingData = $ziektemelding->get(array ( 'id' => $id, ));
+
+    }
 
   /**
    * Get the fields/elements defined in this form.
