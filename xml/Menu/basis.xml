@@ -31,6 +31,12 @@
     <access_arguments>access CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/mediwe/form/medischecontrole</path>
+    <page_callback>CRM_Basis_Form_MedischeControle</page_callback>
+    <title>Medische controle</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/mediwe/printfaktuur</path>
     <page_callback>CRM_Basis_PrintFaktuur</page_callback>
     <title>Klant</title>

@@ -41,8 +41,8 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
 
         // Afwezigheidsgegevens
         $this->add('select', 'illness_reason', ts('Reden'), $this->_reasonData, TRUE);
-        $this->add( 'datepicker', 'illness_date_begin',  ts('Begindatum'), array(), TRUE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2017-01-01'));
-        $this->add( 'datepicker', 'illness_date_end',  ts('Einddatum'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2017-01-01'));
+        $this->add( 'datepicker', 'start_date',  ts('Begindatum'), array(), TRUE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2017-01-01'));
+        $this->add( 'datepicker', 'end_date',  ts('Einddatum'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2017-01-01'));
         $this->addYesNo('illness_is_extension', ts('Is verlening'), TRUE, FALSE);
         $this->addYesNo('illness_is_private_accident', ts('Is privé ongeval'), TRUE, FALSE);
         $this->addYesNo('illness_is_exit_allowed', ts('Mag het huis verlaten'), TRUE, FALSE);
@@ -87,8 +87,8 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
             $this->getElement('employee_date_out')->setValue($this->_ziektemeldingField('employee_employee_date_out'));
 
             $this->getElement('illness_reason')->setValue($this->_ziektemeldingField('illness_reason'));
-            $this->getElement('illness_date_begin')->setValue($this->_ziektemeldingField('start_date'));
-            $this->getElement('illness_date_end')->setValue($this->_ziektemeldingField('end_date'));
+            $this->getElement('start_date')->setValue($this->_ziektemeldingField('start_date'));
+            $this->getElement('end_date')->setValue($this->_ziektemeldingField('end_date'));
             $this->getElement('illness_is_extension')->setValue($this->_ziektemeldingField('illness_is_extension'));
             $this->getElement('illness_is_private_accident')->setValue($this->_ziektemeldingField('illness_is_private_accident'));
             $this->getElement('illness_is_exit_allowed')->setValue($this->_ziektemeldingField('illness_is_exit_allowed'));

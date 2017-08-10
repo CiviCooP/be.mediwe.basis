@@ -22,6 +22,26 @@
 
            "in_selector": "0"
          },
+      "control_date": {
+        "name": "control_date",
+        "label": "Controledatum",
+        "data_type": "Date",
+        "html_type": "Select Date",
+        "date_format": "dd/mm/yy",
+        "is_searchable": 1,
+        "is_active": 1,
+        "is_required": 0
+      },
+      "control_reason": {
+        "name": "control_reason",
+        "label": "Reden",
+        "data_type": "String",
+        "html_type": "Select",
+        "option_group": "reason_illness_short",
+        "is_searchable": 1,
+        "is_active": 1,
+        "is_required": 0
+      },
       "control_type": {
         "name": "control_type",
         "label": "Type controle",

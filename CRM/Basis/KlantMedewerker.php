@@ -514,7 +514,7 @@ class CRM_Basis_KlantMedewerker {
                 //CRM_Core_Error::debug('adres', $adressen);exit;
                 foreach ($adressen as $adres) {
                     switch ($adres['location_type_id']) {
-                        case "4": // "Andere"
+                        case $config->getKlantMedewerkerVerblijfLocationType()['id']:
                             $contacts[$arrayRowId]['street_address_residence'] = $adres['street_address'];
                             $contacts[$arrayRowId]['supplemental_address_1_residence'] = $adres['supplemental_address_1'];
                             $contacts[$arrayRowId]['postal_code_residence'] = $adres['postal_code'];

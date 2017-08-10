@@ -32,7 +32,7 @@
           "label": "Datum en uur",
           "data_type": "Date",
           "html_type": "Select",
-          "date_format": "dd/mm/YY",
+          "date_format": "dd/mm/yy",
           "is_searchable": 0,
           "is_active": 1
         },
@@ -41,7 +41,7 @@
         "label": "Datum ongeval",
         "data_type": "Date",
         "html_type": "Select",
-        "date_format": "dd/mm/YY",
+        "date_format": "dd/mm/yy",
         "is_searchable": 0,
         "is_active": 1
       },
@@ -146,7 +146,7 @@
         "label": "Aanvaard vanaf",
         "data_type": "Date",
         "html_type": "Select",
-        "date_format": "dd/mm/YY",
+        "date_format": "dd/mm/yy",
         "is_searchable": 0,
         "is_active": 1
       },
@@ -155,7 +155,7 @@
         "label": "Aanvaard tot",
         "data_type": "Date",
         "html_type": "Select",
-        "date_format": "dd/mm/YY",
+        "date_format": "dd/mm/yy",
         "is_searchable": 0,
         "is_active": 1
       },
@@ -172,7 +172,7 @@
         "label": "Voorzien vanaf",
         "data_type": "Date",
         "html_type": "Select",
-        "date_format": "dd/mm/YY",
+        "date_format": "dd/mm/yy",
         "is_searchable": 0,
         "is_active": 1
       },
@@ -181,7 +181,7 @@
         "label": "Voorzien tot",
         "data_type": "Date",
         "html_type": "Select",
-        "date_format": "dd/mm/YY",
+        "date_format": "dd/mm/yy",
         "is_searchable": 0,
         "is_active": 1
       },
@@ -190,7 +190,7 @@
         "label": "Arbeidsgeschikt vanaf",
         "data_type": "Date",
         "html_type": "Select",
-        "date_format": "dd/mm/YY",
+        "date_format": "dd/mm/yy",
         "is_searchable": 0,
         "is_active": 1
       },
@@ -199,7 +199,7 @@
         "label": "Voorziene werkhervatting",
         "data_type": "Date",
         "html_type": "Select",
-        "date_format": "dd/mm/YY",
+        "date_format": "dd/mm/yy",
         "is_searchable": 0,
         "is_active": 1
       },
@@ -208,7 +208,7 @@
         "label": "Opgelegde werkhervatting",
         "data_type": "Date",
         "html_type": "Select",
-        "date_format": "dd/mm/YY",
+        "date_format": "dd/mm/yy",
         "is_searchable": 0,
         "is_active": 1
       },

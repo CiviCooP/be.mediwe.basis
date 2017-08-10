@@ -20,6 +20,7 @@ class CRM_Basis_Config {
 
   // properties for address location types
   private $_klantLocationTypes = array();
+  private $_klantMedewerkerLocationTypes = array();
 
   // properties for relationship types
   private $_isKlantViaRelationshipType = array();
@@ -66,6 +67,12 @@ class CRM_Basis_Config {
   private $_ziektemeldingCaseType = array();
   private $_medischeControleCaseType = array();
 
+  // properties for option groups
+  private $_medischeControleSoortOptionGroup = array();
+  private $_ziekteMeldingRedenKortOptionGroup = array();
+  private $_ziekteMeldingRedenOptionGroup = array();
+  private $_medischeControleCriteriumOptionGroup = array();
+
   /**
    * CRM_Basis_Config constructor.
    */
@@ -73,7 +80,8 @@ class CRM_Basis_Config {
     $this->setContactSubTypes();
     $this->setRelationshipTypes();
     $this->setMembershipTypes();
-    $this->setklantLocationTypes();
+    $this->setLocationTypes();
+    $this->setOptionGroups();
 
     $this->setKlantCustomGroups();
     $this->setKlantMedewerkerCustomGroups();
@@ -84,6 +92,7 @@ class CRM_Basis_Config {
     
     $this->setCaseTypes();
   }
+
 
   /**
    * Method to retrieve custom field from custom group
@@ -1768,6 +1777,14 @@ class CRM_Basis_Config {
         return $this->_klantLocationTypes[0];
     }
 
+    public function getKlantMedewerkerDomicilieLocationType() {
+        return $this->_klantMedewerkerLocationTypes['domicilie'];
+    }
+
+    public function getKlantMedewerkerVerblijfLocationType() {
+        return $this->_klantMedewerkerLocationTypes['verblijf'];
+    }
+
 
 
   /**
@@ -1896,10 +1913,24 @@ class CRM_Basis_Config {
         return $this->_inspecteurMembershipType;
     }
 
+
+    private function getOptions($optionGroup) {
+
+        $list = array();
+
+       foreach($optionGroup['values'] as $option) {
+            $key = $option['value'];
+            $value = $option['label'];
+            $list[$key] = $value;
+        }
+
+        return $list;
+    }
+
     /**
      * Method to set the relevant klant location type properties
      */
-    private function setklantLocationTypes() {
+    private function setLocationTypes() {
         try {
             $locationTypes = civicrm_api3('LocationType','get', array(
                 'options' => array('limit' => 0)));
@@ -1908,6 +1939,12 @@ class CRM_Basis_Config {
                 switch ($locationType['name']) {
                     case 'Billing':
                         $this->_klantLocationTypes[] = $locationType;
+                        break;
+                    case 'Thuis':
+                        $this->_klantMedewerkerLocationTypes['domicilie'] = $locationType;
+                        break;
+                    case 'Andere':
+                        $this->_klantMedewerkerLocationTypes['verblijf'] = $locationType;
                         break;
                 }
             }
@@ -2177,6 +2214,109 @@ class CRM_Basis_Config {
     }
 
     /**
+     * Method to set the  option groups and option fields
+     */
+    private function setOptionGroups() {
+        try {
+            $optionGroups = civicrm_api3('OptionGroup','get', array(
+                'options' => array('limit' => 0)));
+            foreach ($optionGroups['values'] as $optionGroupId => $optionGroup) {
+                $optionValues = civicrm_api3('OptionValue','get', array(
+                    'option_group_id' => $optionGroupId,
+                    'options' => array('limit' => 0)));
+                $optionGroup['option_values'] = $optionValues['values'];
+                switch ($optionGroup['name']) {
+                    case 'mediwe_control_type':
+                        $this->_medischeControleSoortOptionGroup = $optionGroup;
+                        break;
+                    case 'reason_illness_short':
+                        $this->_ziekteMeldingRedenKortOptionGroup = $optionGroup;
+                        break;
+                    case 'reason_illness':
+                        $this->_ziekteMeldingRedenOptionGroup = $optionGroup;
+                        break;
+                    case '$_medischeControleSoortOptionGroup':
+                        $this->_medischeControleCriteriumOptionGroup = $optionGroup;
+                        break;
+                }
+            }
+        }
+        catch (Exception $e) {
+
+        }
+    }
+
+    /**
+     * Method to get the soort controle option group and  option values
+     */
+    public function getMedischeControleSoortOptionGroup($key = NULL) {
+
+        if (!empty($key) && isset($this->_medischeControleSoortOptionGroup[$key])) {
+            if ($key == 'options') {
+                return $this->getOptions($this->_medischeControleSoortOptionGroup);
+            }
+            else {
+                return $this->_medischeControleSoortOptionGroup[$key];
+            }
+
+        } else {
+            return $this->_medischeControleSoortOptionGroup;
+        }
+    }
+
+    /**
+     * Method to get the criterium controle option group and  option values
+     */
+    public function getMedischeControleCriteriumOptionGroup($key = NULL) {
+
+        if (!empty($key) && isset($this->_medischeControleCriteriumOptionGroup[$key])) {
+            if ($key == 'options') {
+                return $this->getOptions($this->_medischeControleCriteriumOptionGroup);
+            }
+            else {
+                return $this->_medischeControleCriteriumOptionGroup[$key];
+            }
+
+        } else {
+            return $this->_medischeControleCriteriumOptionGroup;
+        }
+    }   
+    
+    /**
+     * Method to get the reden ziekte (kort) option group and  option values
+     */
+    public function getZiekteMeldingRedenKortOptionGroup($key = NULL) {
+        if (!empty($key) && isset($this->_ziekteMeldingRedenKortOptionGroup[$key])) {
+            if ($key == 'options') {
+                return $this->getOptions($this->_ziekteMeldingRedenKortOptionGroup);
+            }
+            else {
+                return $this->_ziekteMeldingRedenKortOptionGroup[$key];
+            }
+
+        } else {
+            return $this->_ziekteMeldingRedenKortOptionGroup;
+        }
+    }
+
+    /**
+     * Method to get the reden ziekte option group and  option values
+     */
+    public function getZiekteMeldingRedenOptionGroup($key = NULL) {
+        if (!empty($key) && isset($this->_ziekteMeldingRedenOptionGroup[$key])) {
+            if ($key == 'options') {
+                return $this->getOptions($this->_ziekteMeldingRedenOptionGroup);
+            }
+            else {
+                return $this->_ziekteMeldingRedenOptionGroup[$key];
+            }
+
+        } else {
+            return $this->_ziekteMeldingRedenOptionGroup;
+        }
+    }
+
+    /**
      * Method to set the inspecteur custom groups and custom fields
      */
     private function setCasesCustomGroups() {
@@ -2259,6 +2399,16 @@ class CRM_Basis_Config {
         }
 
         return $entityArray;
+    }
+
+    public function getMedischeControleMinimaleDatum() {
+        if (date('G') < 13) {
+            return date('d-m-Y');
+        }
+        else {
+            $d = new DateTime('+1day');
+            return $d->format('d-m-Y');
+        }
     }
 
   /**

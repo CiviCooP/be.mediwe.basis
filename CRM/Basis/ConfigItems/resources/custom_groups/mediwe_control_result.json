@@ -23,7 +23,7 @@
           "label": "Datum en uur",
           "data_type": "Date",
           "html_type": "Select",
-          "date_format": "dd/mm/YY",
+          "date_format": "dd/mm/yy",
           "is_searchable": 0,
           "is_active": 1
         },
@@ -89,7 +89,7 @@
         "label": "Datum werkhervatting",
         "data_type": "Date",
         "html_type": "Select",
-        "date_format": "dd/mm/YY",
+        "date_format": "dd/mm/yy",
         "is_searchable": 0,
         "is_active": 1
       }

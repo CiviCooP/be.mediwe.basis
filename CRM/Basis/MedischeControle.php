@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Class to process Ziektemelding in Mediwe
+ * Class to process MedischeControle in Mediwe
  *
  * @author Erik Hommel (CiviCooP) <erik.hommel@civicoop.org>
  * @date 31 May 2017
  * @license AGPL-3.0
  */
-class CRM_Basis_Ziektemelding {
+class CRM_Basis_MedischeControle {
 
-    private $_ziektemeldingCaseTypeName = NULL;
-    private $_ziektemeldingCaseTypeId = NULL;
+    private $_medischeControleCaseTypeName = NULL;
+    private $_medischeControleCaseTypeId = NULL;
 
   /**
    * CRM_Basis_Klant constructor.
@@ -18,13 +18,13 @@ class CRM_Basis_Ziektemelding {
    public function __construct()
    {
      $config = CRM_Basis_Config::singleton();
-     $ziektemeldingCaseType = $config->getZiektemeldingCaseType();
-     $this->_ziektemeldingCaseTypeName = $ziektemeldingCaseType['name'];
-     $this->_ziektemeldingCaseTypeId = $ziektemeldingCaseType['id'];
+     $medischeControleCaseType = $config->getMedischeControleCaseType();
+     $this->_medischeControleCaseTypeName = $medischeControleCaseType['name'];
+     $this->_medischeControleCaseTypeId = $medischeControleCaseType['id'];
    }
 
   /**
-   * Method to create a new ziektemelding
+   * Method to create a new medischeControle
    *
    * @param $params
    * @return array
@@ -33,7 +33,7 @@ class CRM_Basis_Ziektemelding {
   public function create($params) {
 
       // ensure contact_type and contact_sub_type are set correctly
-      $params['case_type_id'] = $this->_ziektemeldingCaseTypeName;
+      $params['case_type_id'] = $this->_medischeControleCaseTypeName;
 
       // get the employee
       $params['contact_id'] = $this->_getEmployee($params)['contact_id'];
@@ -49,7 +49,7 @@ class CRM_Basis_Ziektemelding {
           $exists = $this->exists($params);
           if (!$exists) {
               unset($params['id']);
-              return $this->_saveZiektemelding($params);
+              return $this->_saveMedischeControle($params);
           } else {
               $params['id'] = $exists['id'];
           }
@@ -61,7 +61,7 @@ class CRM_Basis_Ziektemelding {
   }
 
   /**
-   * Method to update an ziektemelding
+   * Method to update an medischeControle
    *
    * @param $params
    * @return array
@@ -69,23 +69,23 @@ class CRM_Basis_Ziektemelding {
   public function update($params) {
 
        try {
-            return $this->_saveZiektemelding($params);
+            return $this->_saveMedischeControle($params);
         }
         catch (CiviCRM_API3_Exception $ex) {
             CRM_Core_Error::debug('function update params', $params);
-            throw new API_Exception(ts('Could not create an ziektemelding in '.__METHOD__
+            throw new API_Exception(ts('Could not create an medischeControle in '.__METHOD__
                 .', contact your system administrator! Error from API Case create: '.$ex->getMessage()));
         }
   }
 
   /**
-   * Method to check if an ziektemelding exists
+   * Method to check if an medischeControle exists
    *
    * @param $params
    * @return bool
    */
   public function exists($params) {
-      $ziektemelding = array();
+      $medischeControle = array();
 
       if (!isset($params['end_date'])) {
           $params['end_date'] = $params['start_date'];
@@ -105,7 +105,7 @@ class CRM_Basis_Ziektemelding {
                     ON 
                       ca.id = cc.case_id 
                     WHERE
-                      ca.case_type_id =  " . $this->_ziektemeldingCaseTypeId . " 
+                      ca.case_type_id =  " . $this->_medischeControleCaseTypeId . " 
                     AND
                       cc.contact_id = " . $params['contact_id'] . "
                     AND (
@@ -129,47 +129,47 @@ class CRM_Basis_Ziektemelding {
   }
 
   /**
-   * Method to get all ziektemeldinges that meet the selection criteria based on incoming $params
+   * Method to get all medischeControlees that meet the selection criteria based on incoming $params
    *
    * @param $params
    * @return array
    */
   public function get($params) {
-    $ziektemeldingen = array();
+    $medischeControleen = array();
 
     try {
 
-      $ziektemeldingen = civicrm_api3('Case', 'get', $params)['values'];
-      $this->_addZiektemeldingAllFields($ziektemeldingen);
+      $medischeControleen = civicrm_api3('Case', 'get', $params)['values'];
+      $this->_addMedischeControleAllFields($medischeControleen);
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
 
-    return $ziektemeldingen;
+    return $medischeControleen;
   }
 
 
   /**
-   * Method to delete an ziektemelding with id (set to is_deleted in CiviCRM)
+   * Method to delete an medischeControle with id (set to is_deleted in CiviCRM)
    *
-   * @param $ziektemeldingId
+   * @param $medischeControleId
    * @return array
    */
-  public function deleteWithId($ziektemeldingid) {
-      $ziektemelding = array();
+  public function deleteWithId($medischeControleid) {
+      $medischeControle = array();
 
-      $params['id'] = $ziektemeldingid;
+      $params['id'] = $medischeControleid;
       try {
           if ($this->exists($params)) {
-              $ziektemelding = civicrm_api3('Case', 'delete', $params);
+              $medischeControle = civicrm_api3('Case', 'delete', $params);
           }
       }
       catch (CiviCRM_API3_Exception $ex) {
-          throw new API_Exception(ts('Could not create an ziektemelding in '.__METHOD__
+          throw new API_Exception(ts('Could not create an medischeControle in '.__METHOD__
               .', contact your system administrator! Error from API Case delete: '.$ex->getMessage()));
       }
 
-      return $ziektemelding;
+      return $medischeControle;
   }
 
   private function _addToParamsCustomFields($customFields, $data, &$params) {
@@ -255,7 +255,7 @@ class CRM_Basis_Ziektemelding {
         return $result;
     }
     
-  private function _saveZiektemelding($data) {
+  private function _saveMedischeControle($data) {
 
       $config = CRM_Basis_Config::singleton();
       
@@ -271,8 +271,8 @@ class CRM_Basis_Ziektemelding {
       }
 
 
-      // rename ziektemelding custom fields for api  ($customFields, $data, &$params)
-      $this->_addToParamsCustomFields($config->getZiektemeldingZiekteperiodeCustomGroup('custom_fields'), $data, $params);
+      // rename medischeControle custom fields for api  ($customFields, $data, &$params)
+      $this->_addToParamsCustomFields($config->getMedischeControleCustomGroup('custom_fields'), $data, $params);
 
       if (!$params['id']) {
           unset($params['id']);
@@ -285,9 +285,7 @@ class CRM_Basis_Ziektemelding {
 
           // save the illness
 
-          $params['subject'] = "Ziektemelding periode vanaf " . $params['start_date'];
-
-
+          $params['subject'] = "MedischeControle periode vanaf " . $params['start_date'];
           $createdCase = civicrm_api3('Case', 'create', $params);
 
           // add/update employer role in this case
@@ -304,23 +302,23 @@ class CRM_Basis_Ziektemelding {
       }
   }
 
-    private function _addZiektemeldingAllFields(&$meldingen)
+    private function _addMedischeControleAllFields(&$controles)
     {
         $config = CRM_Basis_Config::singleton();
 
-        foreach ($meldingen as $arrayRowId => $ziektemelding) {
+        foreach ($controles as $arrayRowId => $medischeControle) {
 
-            if (isset($ziektemelding['id'])) {
-                // ziekteperiode custom fields
-                $meldingen[$arrayRowId] = $config->addDaoData($config->getZiektemeldingZiekteperiodeCustomGroup(), $meldingen[$arrayRowId]);
+            if (isset($medischeControle['id'])) {
+                // medische controle custom fields
+                $controles[$arrayRowId] = $config->addDaoData($config->getMedischeControleCustomGroup(), $controles[$arrayRowId]);
 
                 // gegevens werknemer en diens werkgever
-                $medewerker_id = $ziektemelding['client_id'][1];
+                $medewerker_id = $medischeControle['client_id'][1];
 
                 $employee = civicrm_api3('KlantMedewerker', 'Get', array('id' => $medewerker_id))['values'][0];
                 foreach ($employee as $key => $value) {
                     $newkey = "employee_" . $key;
-                    $meldingen[$arrayRowId][$newkey] = $value;
+                    $controles[$arrayRowId][$newkey] = $value;
                 }
 
 

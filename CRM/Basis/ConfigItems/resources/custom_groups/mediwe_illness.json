@@ -30,32 +30,12 @@
         "is_active": 1,
         "is_required": 0
       },
-        "illness_date_begin": {
-          "name": "illness_date_begin",
-          "label": "Begin datum",
-          "data_type": "Date",
-          "html_type": "Select Date",
-          "date_format": "dd/mm/YY",
-          "is_searchable": 1,
-          "is_active": 1,
-          "is_required": 0
-        },
-        "illness_date_end": {
-          "name": "illness_date_end",
-          "label": "Eind datum",
-          "data_type": "Date",
-          "html_type": "Select Date",
-          "date_format": "dd/mm/YY",
-          "is_searchable": 1,
-          "is_active": 1,
-          "is_required": 0
-        },
       "illness_date_resumed": {
         "name": "illness_date_resumed",
         "label": "Spontane werkhervatting",
         "data_type": "Date",
         "html_type": "Select Date",
-        "date_format": "dd/mm/YY",
+        "date_format": "dd/mm/yy",
         "is_searchable": 1,
         "is_active": 1,
         "is_required": 0
@@ -101,7 +81,7 @@
           "label": "Begin datum opname",
           "data_type": "Date",
           "html_type": "Select Date",
-          "date_format": "dd/mm/YY",
+          "date_format": "dd/mm/yy",
           "is_searchable": 1,
           "is_active": 1,
           "is_required": 0
@@ -111,7 +91,7 @@
           "label": "Eind datum opname",
           "data_type": "Date",
           "html_type": "Select Date",
-          "date_format": "dd/mm/YY",
+          "date_format": "dd/mm/yy",
           "is_searchable": 1,
           "is_active": 1,
           "is_required": 0
