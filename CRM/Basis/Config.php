@@ -25,6 +25,8 @@ class CRM_Basis_Config {
   // properties for relationship types
   private $_isKlantViaRelationshipType = array();
   private $_isWerknemerVanRelationshipType = array();
+  private $_ziektemeldingRelationshipType = array();
+  private $_vraagtControleAanRelationshipType = array();
   
   // properties for membership types
   private $_maandelijksMembershipType = array();
@@ -1842,6 +1844,24 @@ class CRM_Basis_Config {
     }
 
     /**
+     * Getter for ziektemelding relationship type
+     *
+     * @return null
+     */
+    public function getZiektemeldingRelationshipType() {
+        return $this->_ziektemeldingRelationshipType;
+    }
+
+    /**
+     * Getter for vraagt controle aan relationship type
+     *
+     * @return null
+     */
+    public function getVraagtControleAanRelationshipType() {
+        return $this->_vraagtControleAanRelationshipType;
+    }
+
+    /**
      * Getter for ziektemelding  case type
      *
      * @return null
@@ -2020,6 +2040,12 @@ class CRM_Basis_Config {
                         break;
                     case 'Employee of':
                         $this->_isWerknemerVanRelationshipType = $relationshipType;
+                        break;
+                    case 'ziektemelding':
+                        $this->_ziektemeldingRelationshipType = $relationshipType;
+                        break;
+                    case 'vraagt_controle_aan':
+                        $this->_vraagtControleAanRelationshipType = $relationshipType;
                         break;
                 }
             }

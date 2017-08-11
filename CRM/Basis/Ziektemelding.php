@@ -234,14 +234,14 @@ class CRM_Basis_Ziektemelding {
             'sequential' => 1,
             'contact_id_a' => $data['contact_id'],
             'contact_id_b' => $data['employer_id'],
-            'relationship_type_id' => $config->getIsWerknemerVanRelationshipType()['id'],
+            'relationship_type_id' => $config->getZiektemeldingRelationshipType()['id'],
             'case_id' => $case_id,
         );
 
         try {
             $result = civicrm_api3('Relationship', 'getsingle', array(
                 'sequential' => 1,
-                'relationship_type_id' => $config->getIsWerknemerVanRelationshipType()['id'],
+                'relationship_type_id' => $config->getZiektemeldingRelationshipType()['id'],
                 'case_id' => $case_id,
             ));
             $params['id'] = $result['id'];

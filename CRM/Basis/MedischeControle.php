@@ -40,11 +40,11 @@ class CRM_Basis_MedischeControle {
 
       // ensure mandatory data
       if (!isset($params['start_date'])) {
-          throw new Exception('Begin datum ziekte ontbreekt!');
+          throw new Exception('Controle datum ontbreekt!');
       }
 
 
-      if ($params['id'] == null) {
+      if (isset($params['id']) && $params['id'] == null) {
           // exists looks for overlapping periods for this employee
           $exists = $this->exists($params);
           if (!$exists) {
@@ -56,7 +56,6 @@ class CRM_Basis_MedischeControle {
       }
 
       $this->update($params);
-
 
   }
 
@@ -87,10 +86,6 @@ class CRM_Basis_MedischeControle {
   public function exists($params) {
       $medischeControle = array();
 
-      if (!isset($params['end_date'])) {
-          $params['end_date'] = $params['start_date'];
-      }
-
       if (isset($params['id'])) {
           return $params['id'];
       }
@@ -108,13 +103,9 @@ class CRM_Basis_MedischeControle {
                       ca.case_type_id =  " . $this->_medischeControleCaseTypeId . " 
                     AND
                       cc.contact_id = " . $params['contact_id'] . "
-                    AND (
-                      (  ca.start_date >=  '" . $params['start_date'] . "' AND ca.start_date <=  '" . $params['end_date'] . "' )
-                      OR
-                      (  ca.end_date >=  '" . $params['start_date'] . "' AND ca.end_date <=  '" . $params['end_date'] . "' )
-                      OR
-                       (  ca.end_date >=  '" . $params['end_date'] . "' AND ca.begin_date <=  '" . $params['start_date'] . "' )
-                      )    
+                    AND 
+                      ca.start_date =  '" . $params['start_date'] . "';  
+                                    
                 ";
       }
 
@@ -129,7 +120,7 @@ class CRM_Basis_MedischeControle {
   }
 
   /**
-   * Method to get all medischeControlees that meet the selection criteria based on incoming $params
+   * Method to get all medische Controlees that meet the selection criteria based on incoming $params
    *
    * @param $params
    * @return array
@@ -233,14 +224,14 @@ class CRM_Basis_MedischeControle {
             'sequential' => 1,
             'contact_id_a' => $data['contact_id'],
             'contact_id_b' => $data['employer_id'],
-            'relationship_type_id' => $config->getIsWerknemerVanRelationshipType()['id'],
+            'relationship_type_id' => $config->getVraagtControleAanRelationshipType()['id'],
             'case_id' => $case_id,
         );
 
         try {
             $result = civicrm_api3('Relationship', 'getsingle', array(
                 'sequential' => 1,
-                'relationship_type_id' => $config->getIsWerknemerVanRelationshipType()['id'],
+                'relationship_type_id' => $config->getVraagtControleAanRelationshipType()['id'],
                 'case_id' => $case_id,
             ));
             $params['id'] = $result['id'];
@@ -269,7 +260,6 @@ class CRM_Basis_MedischeControle {
           }
       }
 
-
       // rename medischeControle custom fields for api  ($customFields, $data, &$params)
       $this->_addToParamsCustomFields($config->getMedischeControleCustomGroup('custom_fields'), $data, $params);
 
@@ -282,9 +272,9 @@ class CRM_Basis_MedischeControle {
 
       try {
 
-          // save the illness
+          // save the medical control
 
-          $params['subject'] = "MedischeControle periode vanaf " . $params['start_date'];
+          $params['subject'] = "Medische controle van " . $params['control_date'];
           $createdCase = civicrm_api3('Case', 'create', $params);
 
           // add/update employer role in this case

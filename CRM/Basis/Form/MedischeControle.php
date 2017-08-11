@@ -45,13 +45,13 @@ class CRM_Basis_Form_MedischeControle extends CRM_Core_Form {
 
         // Controle gegevens
         $this->add('select', 'control_reason', ts('Reden'), $this->_reasonData, TRUE);
-        $this->add( 'datepicker', 'start_date',  ts('Begindatum'), array(), TRUE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2017-01-01'));
-        $this->add( 'datepicker', 'end_date',  ts('Einddatum'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2017-01-01'));
+        $this->add( 'datepicker', 'illness_start_date',  ts('Begindatum'), array(), TRUE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2017-01-01'));
+        $this->add( 'datepicker', 'illness_end_date',  ts('Einddatum'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2017-01-01'));
 
         $this->add('select', 'control_criterium', ts('Criterium voor controle'), $this->_criteriumData, FALSE);
 
         $this->add('select', 'control_type', ts('Type controle'), $this->_soortData, TRUE);
-        $this->add( 'datepicker', 'control_date',  ts('ControleDatum'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => $this->_minDate));
+        $this->add( 'datepicker', 'start_date',  ts('ControleDatum'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => $this->_minDate));
 
         $this->add('select', 'visit_location_type', ts('Soort adres'), $this->_soortAdres, TRUE);
         $this->add('text', 'visit_supplemental_address_1', ts('Tweede lijn'), array(), FALSE);

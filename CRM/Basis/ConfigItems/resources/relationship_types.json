@@ -11,10 +11,30 @@
   },
   "controlearts":
   {
-    "name_a_b": "Controlearts",
-    "label_a_b":"controlearts",
+    "name_a_b": "controlearts",
+    "label_a_b":"Controlearts",
     "name_b_a": "onderzocht_door_controlearts",
     "label_b_a":"Onderzocht door controlearts",
+    "contact_type_a": "Organization",
+    "contact_type_b": "Individual",
+    "is_active": 1
+  },
+  "ziektemelding":
+  {
+    "name_a_b": "ziektemelding",
+    "label_a_b":"Meldt ziekte van",
+    "name_b_a": "ziek_gemeld",
+    "label_b_a":"Werd ziek gemeld door",
+    "contact_type_a": "Organization",
+    "contact_type_b": "Individual",
+    "is_active": 1
+  },
+  "vraagt_controle_aan":
+  {
+    "name_a_b": "vraagt_controle_aan",
+    "label_a_b":"Vraagt medische controle voor",
+    "name_b_a": "wordt_gecontroleerd_voor",
+    "label_b_a":"Wordt gecontroleerd in opdracht van",
     "contact_type_a": "Organization",
     "contact_type_b": "Individual",
     "is_active": 1
