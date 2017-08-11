@@ -148,7 +148,6 @@ class CRM_Basis_MedischeControle {
     return $medischeControleen;
   }
 
-
   /**
    * Method to delete an medischeControle with id (set to is_deleted in CiviCRM)
    *

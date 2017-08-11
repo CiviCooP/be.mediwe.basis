@@ -1914,11 +1914,11 @@ class CRM_Basis_Config {
     }
 
 
-    private function getOptions($optionGroup) {
+    public function getOptions($optionGroup) {
 
         $list = array();
 
-       foreach($optionGroup['values'] as $option) {
+       foreach($optionGroup['option_values'] as $option) {
             $key = $option['value'];
             $value = $option['label'];
             $list[$key] = $value;
@@ -1941,10 +1941,10 @@ class CRM_Basis_Config {
                         $this->_klantLocationTypes[] = $locationType;
                         break;
                     case 'Thuis':
-                        $this->_klantMedewerkerLocationTypes['domicilie'] = $locationType;
+                        $this->_klantMedewerkerLocationTypes['domicilie'] = $locationTypeId;
                         break;
                     case 'Andere':
-                        $this->_klantMedewerkerLocationTypes['verblijf'] = $locationType;
+                        $this->_klantMedewerkerLocationTypes['verblijf'] = $locationTypeId;
                         break;
                 }
             }
@@ -2235,7 +2235,7 @@ class CRM_Basis_Config {
                     case 'reason_illness':
                         $this->_ziekteMeldingRedenOptionGroup = $optionGroup;
                         break;
-                    case '$_medischeControleSoortOptionGroup':
+                    case 'mediwe_control_criterium':
                         $this->_medischeControleCriteriumOptionGroup = $optionGroup;
                         break;
                 }
@@ -2252,13 +2252,7 @@ class CRM_Basis_Config {
     public function getMedischeControleSoortOptionGroup($key = NULL) {
 
         if (!empty($key) && isset($this->_medischeControleSoortOptionGroup[$key])) {
-            if ($key == 'options') {
-                return $this->getOptions($this->_medischeControleSoortOptionGroup);
-            }
-            else {
-                return $this->_medischeControleSoortOptionGroup[$key];
-            }
-
+            return $this->_medischeControleSoortOptionGroup[$key];
         } else {
             return $this->_medischeControleSoortOptionGroup;
         }
@@ -2270,13 +2264,7 @@ class CRM_Basis_Config {
     public function getMedischeControleCriteriumOptionGroup($key = NULL) {
 
         if (!empty($key) && isset($this->_medischeControleCriteriumOptionGroup[$key])) {
-            if ($key == 'options') {
-                return $this->getOptions($this->_medischeControleCriteriumOptionGroup);
-            }
-            else {
                 return $this->_medischeControleCriteriumOptionGroup[$key];
-            }
-
         } else {
             return $this->_medischeControleCriteriumOptionGroup;
         }
@@ -2286,14 +2274,9 @@ class CRM_Basis_Config {
      * Method to get the reden ziekte (kort) option group and  option values
      */
     public function getZiekteMeldingRedenKortOptionGroup($key = NULL) {
-        if (!empty($key) && isset($this->_ziekteMeldingRedenKortOptionGroup[$key])) {
-            if ($key == 'options') {
-                return $this->getOptions($this->_ziekteMeldingRedenKortOptionGroup);
-            }
-            else {
-                return $this->_ziekteMeldingRedenKortOptionGroup[$key];
-            }
 
+        if (!empty($key) && isset($this->_ziekteMeldingRedenKortOptionGroup[$key])) {
+                return $this->_ziekteMeldingRedenKortOptionGroup[$key];
         } else {
             return $this->_ziekteMeldingRedenKortOptionGroup;
         }
@@ -2304,13 +2287,7 @@ class CRM_Basis_Config {
      */
     public function getZiekteMeldingRedenOptionGroup($key = NULL) {
         if (!empty($key) && isset($this->_ziekteMeldingRedenOptionGroup[$key])) {
-            if ($key == 'options') {
-                return $this->getOptions($this->_ziekteMeldingRedenOptionGroup);
-            }
-            else {
                 return $this->_ziekteMeldingRedenOptionGroup[$key];
-            }
-
         } else {
             return $this->_ziekteMeldingRedenOptionGroup;
         }
@@ -2402,12 +2379,12 @@ class CRM_Basis_Config {
     }
 
     public function getMedischeControleMinimaleDatum() {
-        if (date('G') < 13) {
-            return date('d-m-Y');
+        if (date('G') < 11) {
+            return date('Y-m-d');
         }
         else {
             $d = new DateTime('+1day');
-            return $d->format('d-m-Y');
+            return $d->format('Y-m-d');
         }
     }
 

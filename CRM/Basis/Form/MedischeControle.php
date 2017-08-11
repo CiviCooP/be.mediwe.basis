@@ -128,17 +128,24 @@ class CRM_Basis_Form_MedischeControle extends CRM_Core_Form {
 
     public function preProcess() {
 
+        $config = CRM_Basis_Config::singleton();
+
         $id =   CRM_Utils_Request::retrieve('id', 'Integer');
         if ($id) {
             $this->_id = $id;
             $this->_getMedischeControleData($id);
         }
 
-        $this->_setReasonData();
-        $this->_setSoortData();
-        $this->_setCriteriumData();
-        $this->_setSoortAdres();
-        $this->_setMinimalDate();
+        $this->_reasonData = $config->getOptions($config->getZiekteMeldingRedenKortOptionGroup());
+        $this->_soortData = $config->getOptions($config->getMedischeControleSoortOptionGroup());
+        $this->_criteriumData = $config->getOptions($config->getMedischeControleCriteriumOptionGroup());
+
+        $this->_soortAdres = array( ''  => '(niet meegedeeld)');
+        $this->_soortAdres[$config->getKlantMedewerkerDomicilieLocationType()] = 'Domicilie';
+        $this->_soortAdres[$config->getKlantMedewerkerVerblijfLocationType()] = 'Verblijf';
+
+        $this->_minDate = $config->getMedischeControleMinimaleDatum();
+        
     }
 
     public function postProcess() {
@@ -161,39 +168,6 @@ class CRM_Basis_Form_MedischeControle extends CRM_Core_Form {
         else {
             return '';
         }
-    }
-
-    private function _setReasonData() {
-
-        $config =  CRM_Basis_Config()::singleton();
-        $this->_reasonData = $config->getZiekteMeldingRedenKortOptionGroup('options');
-
-    }
-
-    private function _setSoortData() {
-        $config =  CRM_Basis_Config()::singleton();
-        $this->_soortData = $config->getMedischeControleSoortOptionGroup('options');
-    }
-
-    private function _setCriteriumData() {
-        $config =  CRM_Basis_Config()::singleton();
-        $this->_soortData = $config->getMedischeControleCriteriumOptionGroup('options');
-    }
-
-    private function _setSoortAdres()
-    {
-        $config = CRM_Basis_Config()::singleton();
-        $this->_soortAdres = array(
-            ''  => '(niet meegedeeld)',
-            $config->getKlantMedewerkerDomicilieLocationType => 'Domicilie',
-            $config->getKlantMedewerkerVerblijfLocationType => 'Verblijf',
-        );
-    }
-
-    private function _setMinimalDate() {
-        $config = CRM_Basis_Config()::singleton();
-
-        $this->_minDate = $config->getMedischeControleMinimaleDatum();
     }
 
 
