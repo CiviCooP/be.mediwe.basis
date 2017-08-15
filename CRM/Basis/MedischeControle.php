@@ -33,8 +33,8 @@ class CRM_Basis_MedischeControle {
   public function create($params) {
 
       // ensure mandatory data
-      if (!isset($params['start_date'])) {
-          throw new Exception('Begin datum ziekte ontbreekt!');
+      if (!isset($params['control_date'])) {
+          throw new Exception('Controledatum ziekte ontbreekt!');
       }
 
       // create/update ziektemelding
@@ -58,7 +58,7 @@ class CRM_Basis_MedischeControle {
               unset($params['id']);
               return $this->_saveMedischeControle($params);
           } else {
-              $params['id'] = $exists['id'];
+              $params['id'] = $exists->id;
           }
       }
 
@@ -92,10 +92,6 @@ class CRM_Basis_MedischeControle {
   public function exists($params) {
       $medischeControle = array();
 
-      if (!isset($params['end_date'])) {
-          $params['end_date'] = $params['start_date'];
-      }
-
       if (isset($params['id'])) {
           return $params['id'];
       }
@@ -111,6 +107,8 @@ class CRM_Basis_MedischeControle {
                       ca.id = cc.case_id 
                     WHERE
                       ca.case_type_id =  " . $this->_medischeControleCaseTypeId . " 
+                    AND
+                      ca.is_deleted = 0  
                     AND
                       cc.contact_id = " . $params['contact_id'] . "
                     AND 
@@ -135,17 +133,17 @@ class CRM_Basis_MedischeControle {
    * @return array
    */
   public function get($params) {
-    $medischeControleen = array();
+    $medischeControles = array();
 
     try {
 
-      $medischeControleen = civicrm_api3('Case', 'get', $params)['values'];
-      $this->_addMedischeControleAllFields($medischeControleen);
+      $medischeControles = civicrm_api3('Case', 'get', $params)['values'];
+      $this->_addMedischeControleAllFields($medischeControles);
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
 
-    return $medischeControleen;
+    return $medischeControles;
   }
 
   /**
@@ -273,8 +271,8 @@ class CRM_Basis_MedischeControle {
 
         $params = array(
             'sequential' => 1,
-            'contact_id_a' => $data['contact_id'],
-            'contact_id_b' => $data['employer_id'],
+            'contact_id_a' => $data['employer_id'],
+            'contact_id_b' => $data['contact_id'],
             'relationship_type_id' => $config->getVraagtControleAanRelationshipType()['id'],
             'case_id' => $case_id,
         );
@@ -351,7 +349,7 @@ class CRM_Basis_MedischeControle {
           $params_relation['employer_id'] = $params['employer_id'];
           $this->_addEmployerRelation($createdCase['id'], $params_relation);
 
-          return $createdCase['values'][0];
+          return $createdCase['values'];
       }
       catch (CiviCRM_API3_Exception $ex) {
           throw new API_Exception(ts('Could not create a contact in '.__METHOD__
@@ -362,23 +360,28 @@ class CRM_Basis_MedischeControle {
     private function _addMedischeControleAllFields(&$controles)
     {
         $config = CRM_Basis_Config::singleton();
+        $ziektemelding = new CRM_Basis_Ziektemelding();
 
         foreach ($controles as $arrayRowId => $medischeControle) {
 
             if (isset($medischeControle['id'])) {
                 // medische controle custom fields
                 $controles[$arrayRowId] = $config->addDaoData($config->getMedischeControleCustomGroup(), $controles[$arrayRowId]);
+                
+                // gegevens ziektemelding
+                $illness_id = $controles[$arrayRowId]['mediwe_ziekte_id'];
+                $illness = $ziektemelding->get( array ( 'id' => $illness_id ))[$illness_id];
 
-                // gegevens werknemer en diens werkgever
-                $medewerker_id = $medischeControle['client_id'][1];
+                foreach ($illness as $key => $value) {
+                    if (substr($key, 0, 8) != 'employee') {
+                        $newkey = "illness_" . $key;
+                    }
+                    else {
+                        $newkey = $key;
+                    }
 
-                $employee = civicrm_api3('KlantMedewerker', 'Get', array('id' => $medewerker_id))['values'][0];
-                foreach ($employee as $key => $value) {
-                    $newkey = "employee_" . $key;
                     $controles[$arrayRowId][$newkey] = $value;
                 }
-
-
             }
         }
     }

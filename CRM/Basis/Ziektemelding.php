@@ -41,6 +41,12 @@ class CRM_Basis_Ziektemelding {
       // get the employee
       $params['contact_id'] = $this->_getEmployee($params)['id'];
 
+      if (isset($params['illness_start_date'])) {
+          $params['start_date'] = $params['illness_start_date'];
+      }
+      if (isset($params['illness_end_date'])) {
+          $params['end_date'] = $params['illness_end_date'];
+      }
 
       // ensure mandatory data
       if (!isset($params['start_date'])) {
@@ -71,9 +77,20 @@ class CRM_Basis_Ziektemelding {
    */
   public function update($params) {
 
+      if (isset($params['illness_start_date'])) {
+          $params['start_date'] = $params['illness_start_date'];
+      }
+      if (isset($params['illness_end_date'])) {
+          $params['end_date'] = $params['illness_end_date'];
+      }
+
       if (!isset($params['employer_id'])) {
           // get the employer
           $params['employer_id'] = $this->_getEmployer($params)['contact_id'];
+      }
+      if (!$params['contact_id']) {
+          // get the employee
+          $params['contact_id'] = $this->_getEmployee($params)['contact_id'];
       }
 
        try {
@@ -115,6 +132,8 @@ class CRM_Basis_Ziektemelding {
                       ca.id = cc.case_id 
                     WHERE
                       ca.case_type_id =  " . $this->_ziektemeldingCaseTypeId . " 
+                    AND
+                      ca.is_deleted = 0
                     AND
                       cc.contact_id = " . $params['contact_id'] . "
                     AND (
@@ -263,21 +282,40 @@ class CRM_Basis_Ziektemelding {
         $params_employee = array();
     
         foreach ($data as $key => $value) {
-            if (substr($key, 0, 8) == "employee" && $value ){
+            if (substr($key, 0, 8) == "employee" ){
                 $mykey = substr($key, 9);
                 $params_employee[$mykey] = $value;
             }
+            if (substr($key, 0, 8) == "employer" ){
+                $params_employee[$key] = $value;
+            }
         }
 
-        $employee = civicrm_api3('KlantMedewerker', 'Get', $params_employee);
+        $get_params = array( 'display_name' => $params_employee['display_name'] );
+        if (isset($params_employee['employee_national_nbr'])) {
+            $get_params['employee_national_nbr'] = $params_employee['employee_national_nbr'];
+        }
+        if (isset($params_employee['employee_personnel_nbr'])) {
+            $get_params['employee_personnel_nbr'] = $params_employee['employee_personnel_nbr'];
+        }
 
-        if ($employee['count'] == 0) {
-            $employee = civicrm_api3('KlantMedewerker', 'Create', $params_employee);
+        $employee = civicrm_api3('KlantMedewerker', 'Get', $get_params );
+
+        if ($employee['count'] > 0) {
+            $params_employee['id'] = $employee['values'][0]['contact_id'];
+        }
+
+        $employee = civicrm_api3('KlantMedewerker', 'Create', $params_employee);
+
+        if ($employee['count'] > 0) {
             return $employee['values'];
         }
         else {
-            return $employee['values'][0];
+            return $params_employee;
         }
+
+
+
 
 
     }
@@ -288,8 +326,8 @@ class CRM_Basis_Ziektemelding {
 
         $params = array(
             'sequential' => 1,
-            'contact_id_a' => $data['contact_id'],
-            'contact_id_b' => $data['employer_id'],
+            'contact_id_a' => $data['employer_id'],
+            'contact_id_b' => $data['contact_id'],
             'relationship_type_id' => $config->getZiektemeldingRelationshipType()['id'],
             'case_id' => $case_id,
         );
@@ -323,7 +361,7 @@ class CRM_Basis_Ziektemelding {
           }
       }
 
-      if (!$params['id']) {
+      if (isset($params['id']) && !$params['id']) {
           unset($params['id']);
       }
 

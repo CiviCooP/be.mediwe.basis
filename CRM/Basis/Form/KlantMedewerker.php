@@ -11,8 +11,8 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
 
   public function buildQuickForm() {
 
-    $this->add('text', 'employer_name', ts('Werkgever '), array(), FALSE);
-    $this->add('text', 'employer_vat', ts('BTW nummer '), array(), FALSE);
+    $this->add('text', 'employer_organization_name', ts('Werkgever '), array(), FALSE);
+    $this->add('text', 'employer_customer_vat', ts('BTW nummer '), array(), FALSE);
 
     $this->add('text', 'employee_national_nbr', ts('Rijksregisternummer '), array(), FALSE);
     $this->add('text', 'employee_personnel_nbr', ts('Personeelsnummer'), array(), FALSE);

@@ -27,20 +27,20 @@ class CRM_Basis_Form_MedischeControle extends CRM_Core_Form {
 
         $this->add('text', 'employee_display_name', ts('Naam werknemer'), array(), TRUE);
 
-        $this->add('text', 'employee_partner', ts('Partner'), array(), FALSE);
+        $this->add('text', 'employee_employee_partner', ts('Partner'), array(), FALSE);
 
         $this->add('text', 'employee_phone', ts('Telefoon'), array(), FALSE);
         $this->add('text', 'employee_mobile', ts('GSM'), array(), FALSE);
 
-        $this->add('text', 'employee_level1', ts('Niveau 1'), array(), FALSE);
-        $this->add('text', 'employee_code_level2', ts('Code Niveau 2'), array(), FALSE);
-        $this->add('text', 'employee_level2', ts('Niveau 2'), array(), FALSE);
-        $this->add('text', 'employee_level3', ts('Niveau 3'), array(), FALSE);
+        $this->add('text', 'employee_employee_level1', ts('Niveau 1'), array(), FALSE);
+        $this->add('text', 'employee_employee_code_level2', ts('Code Niveau 2'), array(), FALSE);
+        $this->add('text', 'employee_employee_level2', ts('Niveau 2'), array(), FALSE);
+        $this->add('text', 'employee_employee_level3', ts('Niveau 3'), array(), FALSE);
 
-        $this->add('text', 'employee_function', ts('Functie'), array(), FALSE);
+        $this->add('text', 'employee_employee_function', ts('Functie'), array(), FALSE);
 
-        $this->add( 'datepicker', 'employee_date_in',  ts('Datum in dienst'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '1940-01-01'));
-        $this->add( 'datepicker', 'employee_date_out',  ts('Datum uit dienst'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2010-01-01'));
+        $this->add( 'datepicker', 'employee_employee_date_in',  ts('Datum in dienst'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '1940-01-01'));
+        $this->add( 'datepicker', 'employee_employee_date_out',  ts('Datum uit dienst'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2010-01-01'));
 
 
         // Controle gegevens
@@ -51,7 +51,7 @@ class CRM_Basis_Form_MedischeControle extends CRM_Core_Form {
         $this->add('select', 'control_criterium', ts('Criterium voor controle'), $this->_criteriumData, FALSE);
 
         $this->add('select', 'control_type', ts('Type controle'), $this->_soortData, TRUE);
-        $this->add( 'datepicker', 'start_date',  ts('ControleDatum'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => $this->_minDate));
+        $this->add( 'datepicker', 'control_date',  ts('ControleDatum'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => $this->_minDate));
 
         $this->add('select', 'visit_location_type', ts('Soort adres'), $this->_soortAdres, TRUE);
         $this->add('text', 'visit_supplemental_address_1', ts('Tweede lijn'), array(), FALSE);
@@ -100,25 +100,40 @@ class CRM_Basis_Form_MedischeControle extends CRM_Core_Form {
             $this->getElement('employee_employee_personnel_nbr')->setValue($this->_medischeControleField('employee_employee_personnel_nbr'));
             $this->getElement('employee_display_name')->setValue($this->_medischeControleField('employee_display_name'));
 
-            $this->getElement('employee_partner')->setValue($this->_medischeControleField('employee_employee_partner'));
+            $this->getElement('employee_employee_partner')->setValue($this->_medischeControleField('employee_employee_partner'));
             $this->getElement('employee_phone')->setValue($this->_medischeControleField('employee_phone'));
             $this->getElement('employee_mobile')->setValue($this->_medischeControleField('employee_mobile'));
-            $this->getElement('employee_level1')->setValue($this->_medischeControleField('employee_employee_level1'));
-            $this->getElement('employee_code_level2')->setValue($this->_medischeControleField('employee_employee_code_level2'));
-            $this->getElement('employee_level2')->setValue($this->_medischeControleField('employee_employee_level2'));
-            $this->getElement('employee_level3')->setValue($this->_medischeControleField('employee_employee_level3'));
+            $this->getElement('employee_employee_level1')->setValue($this->_medischeControleField('employee_employee_level1'));
+            $this->getElement('employee_employee_code_level2')->setValue($this->_medischeControleField('employee_employee_code_level2'));
+            $this->getElement('employee_employee_level2')->setValue($this->_medischeControleField('employee_employee_level2'));
+            $this->getElement('employee_employee_level3')->setValue($this->_medischeControleField('employee_employee_level3'));
 
-            $this->getElement('employee_function')->setValue($this->_medischeControleField('employee_employee_function'));
-            $this->getElement('employee_date_in')->setValue($this->_medischeControleField('employee_employee_date_in'));
-            $this->getElement('employee_date_out')->setValue($this->_medischeControleField('employee_employee_date_out'));
+            $this->getElement('employee_employee_function')->setValue($this->_medischeControleField('employee_employee_function'));
+            $this->getElement('employee_employee_date_in')->setValue($this->_medischeControleField('employee_employee_date_in'));
+            $this->getElement('employee_employee_date_out')->setValue($this->_medischeControleField('employee_employee_date_out'));
 
             $this->getElement('control_reason')->setValue($this->_medischeControleField('control_reason'));
-            $this->getElement('start_date')->setValue($this->_medischeControleField('start_date'));
-            $this->getElement('end_date')->setValue($this->_medischeControleField('end_date'));
+            $this->getElement('illness_start_date')->setValue($this->_medischeControleField('illness_start_date'));
+            $this->getElement('illness_end_date')->setValue($this->_medischeControleField('illness_end_date'));
 
             // type controle
             $this->getElement('control_type')->setValue($this->_medischeControleField('control_type'));
+            $this->getElement('control_date')->setValue($this->_medischeControleField('control_date'));
 
+            $this->getElement('control_job_description')->setValue($this->_medischeControleField('control_job_description'));
+            $this->getElement('control_info_mediwe')->setValue($this->_medischeControleField('control_info_mediwe'));
+            $this->getElement('control_info_controlearts')->setValue($this->_medischeControleField('control_info_controlearts'));
+            $this->getElement('control_info_is_public')->setValue($this->_medischeControleField('control_info_is_public'));
+            $this->getElement('control_name_requestor')->setValue($this->_medischeControleField('control_name_requestor'));
+            $this->getElement('control_name_contact')->setValue($this->_medischeControleField('control_name_contact'));
+            $this->getElement('control_phone_contact')->setValue($this->_medischeControleField('control_phone_contact'));
+            $this->getElement('control_email_contact1')->setValue($this->_medischeControleField('control_email_contact1'));
+            $this->getElement('control_email_contact2')->setValue($this->_medischeControleField('control_email_contact2'));
+            $this->getElement('control_email_contact3')->setValue($this->_medischeControleField('control_email_contact3'));
+            $this->getElement('control_email_result1')->setValue($this->_medischeControleField('control_email_result1'));
+            $this->getElement('control_email_result2')->setValue($this->_medischeControleField('control_email_result2'));
+            $this->getElement('control_email_result3')->setValue($this->_medischeControleField('control_email_result3'));
+            $this->getElement('control_purchase_order')->setValue($this->_medischeControleField('control_purchase_order'));
 
         }
 
@@ -176,7 +191,7 @@ class CRM_Basis_Form_MedischeControle extends CRM_Core_Form {
         $medische_controle = new CRM_Basis_MedischeControle();
 
         $this->_medischeControleData = $medische_controle->get(array ( 'id' => $id, ))[$id];
-
+        //CRM_Core_Error::debug('data', $this->_medischeControleData);exit;
     }
 
     /**

@@ -207,7 +207,7 @@ class CRM_Basis_KlantMedewerker {
             }
 
             // create employer relationship
-            if (isset($data['employer_name'])) {
+            if (isset($data['employer_organization_name'])) {
                 $this->_createEmployerRelationship($medewerker['id'], $data);
             }
 
@@ -330,7 +330,7 @@ class CRM_Basis_KlantMedewerker {
 
         // look for the employer
         if (!isset($data['employer_id'])) {
-            $data['employer_id']  = $this->_searchEmployer($data['employer_name'], $data['employer_vat']);
+            $data['employer_id']  = $this->_searchEmployer($data['employer_organization_name'], $data['employer_customer_vat']);
         }
 
         if ($data['employer_id']) {
@@ -348,8 +348,10 @@ class CRM_Basis_KlantMedewerker {
             catch (CiviCRM_API3_Exception $ex) {
             }
             $params['contact_id_b'] = $data['employer_id'];
-            civicrm_api3( 'Relationship', 'create', $params );
 
+            $result = civicrm_api3( 'Relationship', 'create', $params );
+
+            //CRM_Core_Error::debug('result', $result);exit;
         }
     }
 
