@@ -35,27 +35,30 @@ class CRM_Basis_Ziektemelding {
       // ensure contact_type and contact_sub_type are set correctly
       $params['case_type_id'] = $this->_ziektemeldingCaseTypeName;
 
+      // get the employer
+      $params['employer_id'] = $this->_getEmployer($params)['id'];
+
       // get the employee
-      $params['contact_id'] = $this->_getEmployee($params)['contact_id'];
+      $params['contact_id'] = $this->_getEmployee($params)['id'];
+
 
       // ensure mandatory data
       if (!isset($params['start_date'])) {
           throw new Exception('Begin datum ziekte ontbreekt!');
       }
 
-
-      if ($params['id'] == null) {
+      if (!isset($params['id'])) {
           // exists looks for overlapping periods for this employee
           $exists = $this->exists($params);
+
           if (!$exists) {
-              unset($params['id']);
               return $this->_saveZiektemelding($params);
           } else {
-              $params['id'] = $exists['id'];
+              $params['id'] = $exists;
           }
       }
 
-      $this->update($params);
+      return $this->update($params);
 
 
   }
@@ -68,8 +71,14 @@ class CRM_Basis_Ziektemelding {
    */
   public function update($params) {
 
+      if (!isset($params['employer_id'])) {
+          // get the employer
+          $params['employer_id'] = $this->_getEmployer($params)['contact_id'];
+      }
+
        try {
-            return $this->_saveZiektemelding($params);
+           $case =  $this->_saveZiektemelding($params);
+           return $case;
         }
         catch (CiviCRM_API3_Exception $ex) {
             CRM_Core_Error::debug('function update params', $params);
@@ -113,7 +122,7 @@ class CRM_Basis_Ziektemelding {
                       OR
                       (  ca.end_date >=  '" . $params['start_date'] . "' AND ca.end_date <=  '" . $params['end_date'] . "' )
                       OR
-                       (  ca.end_date >=  '" . $params['end_date'] . "' AND ca.begin_date <=  '" . $params['start_date'] . "' )
+                       (  ca.end_date >=  '" . $params['end_date'] . "' AND ca.start_date <=  '" . $params['start_date'] . "' )
                       )    
                 ";
       }
@@ -121,7 +130,7 @@ class CRM_Basis_Ziektemelding {
       $dao = CRM_Core_DAO::executeQuery($sql);
 
       if ($dao->fetch()) {
-          return $dao['id]'];
+          return $dao->id;
       }
       else {
           return false;
@@ -172,18 +181,58 @@ class CRM_Basis_Ziektemelding {
       return $ziektemelding;
   }
 
-  private function _addToParamsCustomFields($customFields, $data, &$params) {
+    private function _saveCustomFields($customGroup, $data, $case_id) {
 
-        foreach ($customFields as $field) {
-            $fieldName = $field['name'];
-            if (isset($data[$fieldName])) {
-                $customFieldName = 'custom_' . $field['id'];
-                $params[$customFieldName] = $data[$fieldName];
+        $id = 0;
+
+        // get record
+        $table = $customGroup['table_name'];
+        $sql = "SELECT * FROM $table WHERE entity_id = $case_id";
+
+        $dao = CRM_Core_DAO::executeQuery($sql);
+
+        if ($dao->fetch()) {
+            $id = $dao->id;
+        }
+        else {
+            $sql = "INSERT INTO $table (entity_id) VALUES($case_id);";
+            CRM_Core_DAO::executeQuery($sql);
+            $sql = "SELECT * FROM $table WHERE entity_id = $case_id";
+            $dao = CRM_Core_DAO::executeQuery($sql);
+            if ($dao->fetch()) {
+                $id = $dao->id;
             }
         }
-  }
 
 
+
+        $sql = "UPDATE $table SET ";
+        $count = 0;
+        $customFields = $customGroup['custom_fields'];
+        foreach ($customFields as $field) {
+            $fieldName = $field['column_name'];
+
+            if (isset($data[$field['name']])) {
+                if (isset($data[$field['name']]) ) {
+                    $count += 1;
+                    $value = $data[$field['name']];
+                    if ($value == 'null') {
+                        $sql .= " $fieldName = NULL,";
+                    }
+                    else {
+                        $sql .= " $fieldName = '" . $value . "',";
+                    }
+                }
+            }
+        }
+
+        $sql = substr($sql, 0, -1);
+        if ($count != 0 ) {
+            $sql .= " WHERE id = $id;";
+            CRM_Core_DAO::executeQuery($sql);
+        }
+
+    }
 
   private function _getEmployer($data) {
 
@@ -200,9 +249,13 @@ class CRM_Basis_Ziektemelding {
 
       if ($employer['count'] == 0) {
           $employer = civicrm_api3('Klant', 'Create', $params_employer);
+          return $employer['values'];
+      }
+      else {
+          return $employer['values'][0];
       }
 
-      return $employer['values'][0];
+
   }
 
     private function _getEmployee($data) {
@@ -216,14 +269,17 @@ class CRM_Basis_Ziektemelding {
             }
         }
 
-
         $employee = civicrm_api3('KlantMedewerker', 'Get', $params_employee);
 
         if ($employee['count'] == 0) {
             $employee = civicrm_api3('KlantMedewerker', 'Create', $params_employee);
+            return $employee['values'];
+        }
+        else {
+            return $employee['values'][0];
         }
 
-        return $employee['values'][0];
+
     }
 
     private function _addEmployerRelation($case_id, $data) {
@@ -260,9 +316,6 @@ class CRM_Basis_Ziektemelding {
       $config = CRM_Basis_Config::singleton();
       
       $params = array();
-      $params_employer = array();
-      $params_employee = array();
-      
 
       foreach ($data as $key => $value) {
           if ($value) {
@@ -270,25 +323,18 @@ class CRM_Basis_Ziektemelding {
           }
       }
 
-
-      // rename ziektemelding custom fields for api  ($customFields, $data, &$params)
-      $this->_addToParamsCustomFields($config->getZiektemeldingZiekteperiodeCustomGroup('custom_fields'), $data, $params);
-
       if (!$params['id']) {
           unset($params['id']);
       }
 
-      // get the employer
-      $params['employer_id'] = $this->_getEmployer($data)['contact_id'];
-
       try {
 
           // save the illness
-
           $params['subject'] = "Ziektemelding periode vanaf " . $params['start_date'];
-
-
           $createdCase = civicrm_api3('Case', 'create', $params);
+
+          // save custom data
+          $this->_saveCustomFields($config->getZiektemeldingZiekteperiodeCustomGroup(), $data, $createdCase['id']);
 
           // add/update employer role in this case
           $params_relation = array();
@@ -296,7 +342,11 @@ class CRM_Basis_Ziektemelding {
           $params_relation['employer_id'] = $params['employer_id'];
           $this->_addEmployerRelation($createdCase['id'], $params_relation);
 
-          return $createdCase['values'][0];
+          // add employer and employee ids to case
+          $createdCase['values'][$createdCase['id']]['employer_id'] = $params['employer_id'];
+          $createdCase['values'][$createdCase['id']]['employee_id'] = $params['contact_id'];
+
+          return $createdCase['values'][$createdCase['id']];
       }
       catch (CiviCRM_API3_Exception $ex) {
           throw new API_Exception(ts('Could not create a contact in '.__METHOD__

@@ -32,19 +32,26 @@ class CRM_Basis_MedischeControle {
    */
   public function create($params) {
 
-      // ensure contact_type and contact_sub_type are set correctly
+      // ensure mandatory data
+      if (!isset($params['start_date'])) {
+          throw new Exception('Begin datum ziekte ontbreekt!');
+      }
+
+      // create/update ziektemelding
+      $ziektemelding = new CRM_Basis_Ziektemelding();
+      $melding = $ziektemelding->create($params);
+      $params['mediwe_ziekte_id'] = $melding['id'];
+
+      // ensure case type is set correctly
       $params['case_type_id'] = $this->_medischeControleCaseTypeName;
 
       // get the employee
-      $params['contact_id'] = $this->_getEmployee($params)['contact_id'];
+      $params['contact_id'] = $melding['employee_id'];
 
-      // ensure mandatory data
-      if (!isset($params['start_date'])) {
-          throw new Exception('Controle datum ontbreekt!');
-      }
+      // get the employer
+      $params['employer_id'] = $melding['employer_id'];
 
-
-      if (isset($params['id']) && $params['id'] == null) {
+      if (!isset($params['id'])) {
           // exists looks for overlapping periods for this employee
           $exists = $this->exists($params);
           if (!$exists) {
@@ -56,7 +63,6 @@ class CRM_Basis_MedischeControle {
       }
 
       $this->update($params);
-
   }
 
   /**
@@ -86,6 +92,10 @@ class CRM_Basis_MedischeControle {
   public function exists($params) {
       $medischeControle = array();
 
+      if (!isset($params['end_date'])) {
+          $params['end_date'] = $params['start_date'];
+      }
+
       if (isset($params['id'])) {
           return $params['id'];
       }
@@ -104,15 +114,14 @@ class CRM_Basis_MedischeControle {
                     AND
                       cc.contact_id = " . $params['contact_id'] . "
                     AND 
-                      ca.start_date =  '" . $params['start_date'] . "';  
-                                    
+                        ca.start_date =  '" . $params['control_date'] . "'      
                 ";
       }
 
       $dao = CRM_Core_DAO::executeQuery($sql);
 
       if ($dao->fetch()) {
-          return $dao['id]'];
+          return $dao->id;
       }
       else {
           return false;
@@ -120,7 +129,7 @@ class CRM_Basis_MedischeControle {
   }
 
   /**
-   * Method to get all medische Controlees that meet the selection criteria based on incoming $params
+   * Method to get all medischeControlees that meet the selection criteria based on incoming $params
    *
    * @param $params
    * @return array
@@ -162,16 +171,58 @@ class CRM_Basis_MedischeControle {
       return $medischeControle;
   }
 
-  private function _addToParamsCustomFields($customFields, $data, &$params) {
+    private function _saveCustomFields($customGroup, $data, $case_id) {
 
-        foreach ($customFields as $field) {
-            $fieldName = $field['name'];
-            if (isset($data[$fieldName])) {
-                $customFieldName = 'custom_' . $field['id'];
-                $params[$customFieldName] = $data[$fieldName];
+        $id = 0;
+
+        // get record
+        $table = $customGroup['table_name'];
+
+        $sql = "SELECT * FROM $table WHERE entity_id = $case_id";
+
+        $dao = CRM_Core_DAO::executeQuery($sql);
+        if ($dao->fetch()) {
+            $id = $dao->id;
+        }
+        else {
+            $sql = "INSERT INTO $table (entity_id) VALUES($case_id);";
+            CRM_Core_DAO::executeQuery($sql);
+            $sql = "SELECT * FROM $table WHERE entity_id = $case_id";
+            $dao = CRM_Core_DAO::executeQuery($sql);
+            if ($dao->fetch()) {
+                $id = $dao->id;
             }
         }
-  }
+
+
+
+        $sql = "UPDATE $table SET ";
+        $count = 0;
+        $customFields = $customGroup['custom_fields'];
+        foreach ($customFields as $field) {
+            $fieldName = $field['column_name'];
+
+            if (isset($data[$field['name']])) {
+                if (isset($data[$field['name']]) ) {
+                    $count += 1;
+                    $value = $data[$field['name']];
+                    if ($value == 'null') {
+                        $sql .= " $fieldName = NULL,";
+                    }
+                    else {
+                        $sql .= " $fieldName = '" . $value . "',";
+                    }
+                }
+            }
+        }
+
+        $sql = substr($sql, 0, -1);
+        if ($count != 0 ) {
+            $sql .= " WHERE id = $id;";
+            CRM_Core_DAO::executeQuery($sql);
+        }
+
+    }
 
 
 
@@ -250,9 +301,6 @@ class CRM_Basis_MedischeControle {
       $config = CRM_Basis_Config::singleton();
       
       $params = array();
-      $params_employer = array();
-      $params_employee = array();
-      
 
       foreach ($data as $key => $value) {
           if ($value) {
@@ -260,22 +308,42 @@ class CRM_Basis_MedischeControle {
           }
       }
 
-      // rename medischeControle custom fields for api  ($customFields, $data, &$params)
-      $this->_addToParamsCustomFields($config->getMedischeControleCustomGroup('custom_fields'), $data, $params);
+      // check ziektemelding
+      if (!isset($params['mediwe_ziekte_id'])) {
+
+          $ziektemelding = new CRM_Basis_Ziektemelding();
+          $melding = $ziektemelding->create($params);
+          $params['mediwe_ziekte_id'] = $melding['id'];
+
+          // ensure case type is set correctly
+          $params['case_type_id'] = $this->_medischeControleCaseTypeName;
+
+          // get the employee
+          $params['contact_id'] = $melding['employee_id'];
+
+          // get the employer
+          $params['employer_id'] = $melding['employer_id'];
+
+      }
 
       if (!$params['id']) {
           unset($params['id']);
       }
-
-      // get the employer
-      $params['employer_id'] = $this->_getEmployer($data)['contact_id'];
 
       try {
 
           // save the medical control
 
           $params['subject'] = "Medische controle van " . $params['control_date'];
+          $params['start_date'] = $params['control_date'];
+          if (isset($params['end_date'])) {
+              unset($params['end_date']);
+          }
+
           $createdCase = civicrm_api3('Case', 'create', $params);
+
+          //  custom fields for api  ($customFields, $data, &$params)
+          $this->_saveCustomFields($config->getMedischeControleCustomGroup(), $data, $createdCase['id']);
 
           // add/update employer role in this case
           $params_relation = array();
