@@ -36,8 +36,14 @@ class CRM_Basis_Config {
   private $_zorgfondsMembershipType = array();
   private $_inspecteurMembershipType = array();
 
+  // properties for activity types
+  private $_huisbezoekActivityType = array();
+  private $_consultatieActivityType = array();
+  private $_consultatieAoActivityType = array();
+  private $_ziekteattestActivityType = array();
 
-  // properties for custom groups
+
+    // properties for custom groups
   private $_klantBoekhoudingCustomGroup = array();
   private $_klantExpertsysteemCustomGroup = array();
   private $_klantOrganisatieCustomGroup = array();
@@ -81,6 +87,7 @@ class CRM_Basis_Config {
   function __construct() {
     $this->setContactSubTypes();
     $this->setRelationshipTypes();
+    $this->setActivityTypes();
     $this->setMembershipTypes();
     $this->setLocationTypes();
     $this->setOptionGroups();
@@ -1861,6 +1868,44 @@ class CRM_Basis_Config {
         return $this->_vraagtControleAanRelationshipType;
     }
 
+
+    /**
+     * Getter for ziekte attest activity type
+     *
+     * @return null
+     */
+    public function getZiekteattestActivityType() {
+        return $this->_ziekteattestActivityType;
+    }
+
+    /**
+     * Getter for consultatie AO activity type
+     *
+     * @return null
+     */
+    public function getConsultatieAoActivityType() {
+        return $this->_consultatieAoActivityType;
+    }
+
+    /**
+     * Getter for huisbezoek activity type
+     *
+     * @return null
+     */
+    public function getHuisbezoekActivityType() {
+        return $this->_huisbezoekActivityType;
+    }
+
+    /**
+     * Getter for consultatie activity type
+     *
+     * @return null
+     */
+    public function getConsultatieActivityType() {
+        return $this->_consultatieAoActivityType;
+    }
+
+
     /**
      * Getter for ziektemelding  case type
      *
@@ -2054,6 +2099,37 @@ class CRM_Basis_Config {
         }
     }
 
+    /**
+     * Method to set the relevant relationship type properties
+     */
+    private function setActivityTypes() {
+        try {
+            $activityTypes = civicrm_api3('OptionValue', 'get', array(
+                'option_group_id' => "activity_type",
+                'component_id' => "CiviCase",
+                'options' => array('limit' => 0)));
+            foreach ($activityTypes['values'] as $activityTypeId => $activityType) {
+                switch ($activityType['name']) {
+                    case "mediwe_ziekteattest":
+                        $this->_ziekteattestActivityType = $activityType;
+                        break;
+                    case "mediwe_huisbezoek":
+                        $this->_huisbezoekActivityType = $activityType;
+                        break;
+                    case "mediwe_convocatie":
+                        $this->_consultatieActivityType = $activityType;
+                        break;
+                    case "mediwe_onderzoek_ao":
+                        $this->_consultatieAoActivityType = $activityType;
+                        break;
+                }
+            }
+        }
+        catch (CiviCRM_API3_Exception $ex) {
+        }
+    }
+    
+    
     /**
      * Method to set the relevant membership type properties
      */

@@ -119,6 +119,7 @@ class CRM_Basis_Form_MedischeControle extends CRM_Core_Form {
             // type controle
             $this->getElement('control_type')->setValue($this->_medischeControleField('control_type'));
             $this->getElement('control_date')->setValue($this->_medischeControleField('control_date'));
+            $this->getElement('control_criterium')->setValue($this->_medischeControleField('control_criterium'));
 
             $this->getElement('control_job_description')->setValue($this->_medischeControleField('control_job_description'));
             $this->getElement('control_info_mediwe')->setValue($this->_medischeControleField('control_info_mediwe'));

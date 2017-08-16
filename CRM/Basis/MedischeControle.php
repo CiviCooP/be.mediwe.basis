@@ -239,9 +239,13 @@ class CRM_Basis_MedischeControle {
 
       if ($employer['count'] == 0) {
           $employer = civicrm_api3('Klant', 'Create', $params_employer);
+          return $employer['values'];
+      }
+      else {
+          return $employer['values'][0];
       }
 
-      return $employer['values'][0];
+
   }
 
     private function _getEmployee($data) {
@@ -260,9 +264,11 @@ class CRM_Basis_MedischeControle {
 
         if ($employee['count'] == 0) {
             $employee = civicrm_api3('KlantMedewerker', 'Create', $params_employee);
+            return $employee['values'];
         }
-
-        return $employee['values'][0];
+        else {
+            return $employee['values'][0];
+        }
     }
 
     private function _addEmployerRelation($case_id, $data) {
@@ -367,7 +373,7 @@ class CRM_Basis_MedischeControle {
             if (isset($medischeControle['id'])) {
                 // medische controle custom fields
                 $controles[$arrayRowId] = $config->addDaoData($config->getMedischeControleCustomGroup(), $controles[$arrayRowId]);
-                
+
                 // gegevens ziektemelding
                 $illness_id = $controles[$arrayRowId]['mediwe_ziekte_id'];
                 $illness = $ziektemelding->get( array ( 'id' => $illness_id ))[$illness_id];

@@ -111,7 +111,6 @@ class CRM_Basis_Ziektemelding {
    * @return bool
    */
   public function exists($params) {
-      $ziektemelding = array();
 
       if (!isset($params['end_date'])) {
           $params['end_date'] = $params['start_date'];
@@ -147,6 +146,7 @@ class CRM_Basis_Ziektemelding {
       }
 
       $dao = CRM_Core_DAO::executeQuery($sql);
+
 
       if ($dao->fetch()) {
           return $dao->id;
@@ -303,21 +303,12 @@ class CRM_Basis_Ziektemelding {
 
         if ($employee['count'] > 0) {
             $params_employee['id'] = $employee['values'][0]['contact_id'];
-        }
-
-        $employee = civicrm_api3('KlantMedewerker', 'Create', $params_employee);
-
-        if ($employee['count'] > 0) {
-            return $employee['values'];
+            return $employee['values'][0];
         }
         else {
-            return $params_employee;
+            $employee = civicrm_api3('KlantMedewerker', 'Create', $params_employee);
+            return $employee['values'];
         }
-
-
-
-
-
     }
 
     private function _addEmployerRelation($case_id, $data) {

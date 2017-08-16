@@ -17,7 +17,8 @@
            "html_type": "Text",
            "is_searchable": 1,
            "is_active": 1,
-           "is_required": 1
+           "is_required": 1,
+           "weight": 1
          },
       "visit_postal_code": {
         "name": "visit_postal_code",
@@ -26,7 +27,8 @@
         "html_type": "Text",
         "is_searchable": 1,
         "is_active": 1,
-        "is_required": 1
+        "is_required": 1,
+        "weight": 2
       },
       "visit_city": {
         "name": "visit_city",
@@ -35,7 +37,8 @@
         "html_type": "Text",
         "is_searchable": 1,
         "is_active": 1,
-        "is_required": 1
+        "is_required": 1,
+        "weight": 3
       },
       "visit_country": {
         "name": "visit_country",
@@ -45,7 +48,8 @@
         "option_group": "mediwe_countries",
         "is_searchable": 1,
         "is_active": 1,
-        "is_required": 1
+        "is_required": 1,
+        "weight": 4
       },
       "visit_home_from": {
         "name": "visit_home_from",
@@ -53,7 +57,8 @@
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_active": 1
+        "is_active": 1,
+        "weight": 5
       },
       "visit_home_till": {
         "name": "visit_home_till",
@@ -61,7 +66,8 @@
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
-        "is_active": 1
+        "is_active": 1,
+        "weight": 6
       }
       }
     }
