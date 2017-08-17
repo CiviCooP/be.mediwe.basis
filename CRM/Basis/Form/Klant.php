@@ -8,6 +8,7 @@
 class CRM_Basis_Form_Klant extends CRM_Core_Form {
   private $_sectorList = array();
   private $_contactData = array();
+  private $_addressData = array();
 
   public function buildQuickForm() {
     $this->add('select', 'customer_procedure_id_sector', ts('Sector'), $this->_sectorList, TRUE);
@@ -30,17 +31,19 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
     // export form elements
     $this->assign('elementNames', $this->getRenderableElementNames());
 
-    if (isset($this->_contactData[0])) {
+    if (isset($this->_contactData['id'])) {
         // set values to screen
-        $this->getElement('customer_procedure_id_sector')->setValue($this->_contactData[0]['customer_procedure_id_sector']);
-        $this->getElement('organization_name')->setValue($this->_contactData[0]['organization_name']);
-        $this->getElement('supplemental_address_1')->setValue($this->_contactData[0]['supplemental_address_1']);
-        $this->getElement('street_address')->setValue($this->_contactData[0]['street_address']);
-        $this->getElement('postal_code')->setValue($this->_contactData[0]['postal_code']);
-        $this->getElement('city')->setValue($this->_contactData[0]['city']);
-        $this->getElement('customer_vat')->setValue($this->_contactData[0]['customer_vat']);
-        $this->getElement('customer_reference')->setValue($this->_contactData[0]['customer_reference']);
-        $this->getElement('customer_procedure_email_results')->setValue($this->_contactData[0]['customer_procedure_email_results']);
+        $this->getElement('customer_procedure_id_sector')->setValue($this->_data($this->_contactData, 'customer_procedure_id_sector'));
+        $this->getElement('organization_name')->setValue($this->_data($this->_contactData,'organization_name'));
+        $this->getElement('customer_vat')->setValue($this->_data($this->_contactData,'customer_vat'));
+        $this->getElement('customer_reference')->setValue($this->_data($this->_contactData,'customer_reference'));
+        $this->getElement('customer_procedure_email_results')->setValue($this->_data($this->_contactData,'customer_procedure_email_results'));
+
+        // adresgegevens
+        $this->getElement('supplemental_address_1')->setValue($this->_data($this->_addressData,'supplemental_address_1'));
+        $this->getElement('street_address')->setValue($this->_data($this->_addressData,'street_address'));
+        $this->getElement('postal_code')->setValue($this->_data($this->_addressData,'postal_code'));
+        $this->getElement('city')->setValue($this->_data($this->_addressData,'city'));
     }
 
 
@@ -63,19 +66,37 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
     parent::postProcess();
   }
 
+  private function _data($data_array, $element) {
+      if (isset($data_array[$element])) {
+          return $data_array[$element];
+      }
+      else {
+          return false;
+      }
+
+  }
+
   private function saveKlant($formValues) {
 
       $klant = array();
+      $adres = array();
+
+      // klantgegevens
+      if (isset($this->_contactData['id'])) {
+          $formValues['id'] = $this->_contactData['id'];
+      }
 
       try {
           $klant = civicrm_api3('Klant', 'create', $formValues);
-
-          // add adres data
-
       }
       catch (CiviCRM_API3_Exception $ex) {
-
+          throw new API_Exception(ts('Could not create a Mediwe Klant in '.__METHOD__
+              .', contact your system administrator! Error from API Klant create: '.$ex->getMessage()));
       }
+
+      // Adresgegevens
+
+
   }
 
   /**
@@ -98,10 +119,17 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
   }
 
   private function setContactData($id) {
-      $klant = new CRM_Basis_Klant();
 
-      $this->_contactData = $klant->get(array ( 'id' => $id, ));
-CRM_Core_Error::debug('contactData', $$this->_contactData);exit;
+      $config = CRM_Basis_Config::singleton();
+      $locationtype = $config->getKlantLocationType()['name'];
+
+      $this->_contactData = reset(civicrm_api3('Klant', 'get', array('id' => $id))['values']);
+      $this->_addressData = reset(
+          civicrm_api3('Adres', 'get', array (
+            'contact_id' => $id,
+            'location_type_id' => $locationtype,
+          ))['values']
+      );
   }
 
   /**
