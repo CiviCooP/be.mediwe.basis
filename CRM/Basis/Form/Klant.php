@@ -64,7 +64,18 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
   }
 
   private function saveKlant($formValues) {
-    civicrm_api3('Klant', 'create', $formValues);
+
+      $klant = array();
+
+      try {
+          $klant = civicrm_api3('Klant', 'create', $formValues);
+
+          // add adres data
+
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+
+      }
   }
 
   /**
@@ -90,7 +101,7 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
       $klant = new CRM_Basis_Klant();
 
       $this->_contactData = $klant->get(array ( 'id' => $id, ));
-
+CRM_Core_Error::debug('contactData', $$this->_contactData);exit;
   }
 
   /**

@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Class to process Address in Mediwe
+ * Class to process Email in Mediwe
  *
  * @author Erik Hommel (CiviCooP) <erik.hommel@civicoop.org>
  * @date 31 May 2017
  * @license AGPL-3.0
  */
-class CRM_Basis_Adres {
+class CRM_Basis_Mail {
 
 
   /**
@@ -23,7 +23,7 @@ class CRM_Basis_Adres {
    *
    * @param $params
    * @return array
-   * @throws API_Exception when error from api Address Create
+   * @throws API_Exception when error from api Email Create
    */
   public function create($params) {
     //CRM_Core_Error::debug('params', $params);
@@ -33,16 +33,16 @@ class CRM_Basis_Adres {
     if (isset($params['id'])) {
       return $this->update($params);
     } else {
-      // check if adres can not be found yet and only create if not
+      // check if email can not be found yet and only create if not
       if ($this->exists($params) === FALSE) {
         try {
-          $createdAddress = civicrm_api3('Address', 'create', $params);
-          $adres = $createdAddress['values'];
-          return $adres;
+          $createdEmail = civicrm_api3('Email', 'create', $params);
+          $email = $createdEmail['values'];
+          return $email;
         }
         catch (CiviCRM_API3_Exception $ex) {
-          throw new API_Exception(ts('Could not create an address in '.__METHOD__
-            .', contact your system administrator! Error from API Address create: '.$ex->getMessage()));
+          throw new API_Exception(ts('Could not create a mail address in '.__METHOD__
+            .', contact your system administrator! Error from API Mail create: '.$ex->getMessage()));
         }
 
       } else {
@@ -58,19 +58,19 @@ class CRM_Basis_Adres {
    * @return array
    */
   public function update($params) {
-    $adres = array();
+    $email = array();
 
     if ($this->exists($params)) {
         try {
-            $adres = civicrm_api3('Address', 'create', $params);
+            $email = civicrm_api3('Email', 'create', $params);
         }
         catch (CiviCRM_API3_Exception $ex) {
             throw new API_Exception(ts('Could not create an address in '.__METHOD__
-                .', contact your system administrator! Error from API Address create: '.$ex->getMessage()));
+                .', contact your system administrator! Error from API Email create: '.$ex->getMessage()));
         }
 
     }
-    return $adres;
+    return $email;
   }
 
   /**
@@ -80,17 +80,17 @@ class CRM_Basis_Adres {
    * @return bool
    */
   public function exists($params) {
-      $adres = array();
+      $email = array();
 
       if (!isset($params['contact_id'])) {
           throw new Exception('Klant identificatie ontbreekt!');
       }
       if (!isset($params['location_type_id'])) {
-          throw new Exception('Soort adres ontbreekt!');
+          throw new Exception('Soort email ontbreekt!');
       }
 
       try {
-          $adres = civicrm_api3('Address', 'getsingle', $params);
+          $email = civicrm_api3('Email', 'getsingle', $params);
       }
       catch (CiviCRM_API3_Exception $ex) {
           return false;
@@ -105,16 +105,16 @@ class CRM_Basis_Adres {
    * @return array
    */
   public function get($params) {
-    $adressen = array();
+    $emailsen = array();
 ;
     try {
-      $addresses = civicrm_api3('Address', 'get', $params);
+      $addresses = civicrm_api3('Email', 'get', $params);
 
-        $adressen = $addresses['values'];
+        $emailsen = $addresses['values'];
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
-    return $adressen;
+    return $emailsen;
   }
 
 
@@ -125,59 +125,20 @@ class CRM_Basis_Adres {
    * @return bool (if delete was succesfull or not)
    */
   public function deleteWithId($addressid) {
-      $adres = array();
+      $email = array();
 
       $params['id'] = $addressid;
       try {
           if ($this->exists($params)) {
-              $adres = civicrm_api3('Address', 'delete', $params);
+              $email = civicrm_api3('Email', 'delete', $params);
           }
       }
       catch (CiviCRM_API3_Exception $ex) {
           throw new API_Exception(ts('Could not create an address in '.__METHOD__
-              .', contact your system administrator! Error from API Address delete: '.$ex->getMessage()));
+              .', contact your system administrator! Error from API Email delete: '.$ex->getMessage()));
       }
 
-      return $adres;
+      return $email;
   }
 
-  /*
-    public function takeoverAddress($for_contact_id, $data) {
-
-        // zoek de "andere" klant op
-        $params = array(
-            'sequential' => 1,
-            'contact_type' => 'Organization',
-            'contact_sub_type' => $this->_klantContactSubTypeName,
-        );
-
-        if (isset($data['id'])) {
-            $params['id'] = $data['id'];
-        }
-        else {
-            $params['organization_name'] = $data['organization_name'];
-        }
-
-        try {
-            $return = civicrm_api3('Contact', 'get', $params);
-            $fromKlant = $return['values'][0];
-
-            $adres = $this->_existsAddress($fromKlant['id']);
-
-            if ($adres) {
-                $adres['master_id'] = $adres['id'];
-                $adres['contact_id'] = $for_contact_id;
-                unset($adres['id']);
-
-                $return = civicrm_api3('Address', 'create', $adres);
-
-                return $return;
-            }
-        }
-        catch (Exception $e) {
-            return false;
-        }
-
-    }
-    */
 }

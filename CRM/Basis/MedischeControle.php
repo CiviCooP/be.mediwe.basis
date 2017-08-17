@@ -62,7 +62,7 @@ class CRM_Basis_MedischeControle {
           }
       }
 
-      $this->update($params);
+      return $this->update($params);
   }
 
   /**
@@ -72,6 +72,8 @@ class CRM_Basis_MedischeControle {
    * @return array
    */
   public function update($params) {
+
+
 
        try {
             return $this->_saveMedischeControle($params);

@@ -182,12 +182,11 @@ class CRM_Basis_Form_MedischeControle extends CRM_Core_Form {
 
         $medische_controle = array();
         $huisbezoek = array();
+        $return = array();
 
-        $medische_controle = civicrm_api3('MedischeControle', 'create', $formValues);
+        $return = civicrm_api3('MedischeControle', 'create', $formValues)['values'];
 
-        if (!isset($formValues['id'])) {
-            $formValues['id'] = $medische_controle['id'];
-        }
+        $formValues['case_id'] = reset($medische_controle)['id'];
 
         $huisbezoek = civicrm_api3('Huisbezoek', 'create', $formValues);
 
