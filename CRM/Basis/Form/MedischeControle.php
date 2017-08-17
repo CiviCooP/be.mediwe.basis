@@ -165,16 +165,32 @@ class CRM_Basis_Form_MedischeControle extends CRM_Core_Form {
     }
 
     public function postProcess() {
+
         //CRM_Core_Error::debug('submitValues', $this->_submitValues);
         //exit();
 
+
+
         $this->saveMedischeControle($this->_submitValues);
+
+
+
         parent::postProcess();
     }
 
     private function saveMedischeControle($formValues) {
 
-        civicrm_api3('MedischeControle', 'create', $formValues);
+        $medische_controle = array();
+        $huisbezoek = array();
+
+        $medische_controle = civicrm_api3('MedischeControle', 'create', $formValues);
+
+        if (!isset($formValues['id'])) {
+            $formValues['id'] = $medische_controle['id'];
+        }
+
+        $huisbezoek = civicrm_api3('Huisbezoek', 'create', $formValues);
+
     }
 
     private function _medischeControleField($key) {
