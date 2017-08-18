@@ -6,8 +6,11 @@
  * @see https://wiki.civicrm.org/confluence/display/CRMDOC/QuickForm+Reference
  */
 class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
-  private $_sectorList = array();
+
   private $_contactData = array();
+  private $_domicilieAdres = array();
+  private $_verblijfAdres = array();
+
 
   public function buildQuickForm() {
 
@@ -18,10 +21,10 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
     $this->add('text', 'employee_personnel_nbr', ts('Personeelsnummer'), array(), FALSE);
 
     $this->add('text', 'display_name', ts('Naam werknemer'), array(), TRUE);
-    $this->add('text', 'supplemental_address_1', ts('Tweede lijn'), array(), FALSE);
-    $this->add('text', 'street_address', ts('Adres (straat en huisnummer)'), array(), TRUE);
-    $this->add('text', 'postal_code', ts('Postcode'), array(), TRUE);
-    $this->add('text', 'city', ts('Gemeente'), array(), TRUE);
+    $this->add('text', 'domicilie_supplemental_address_1', ts('Tweede lijn'), array(), FALSE);
+    $this->add('text', 'domicilie_street_address', ts('Adres (straat en huisnummer)'), array(), TRUE);
+    $this->add('text', 'domicilie_postal_code', ts('Postcode'), array(), TRUE);
+    $this->add('text', 'domicilie_city', ts('Gemeente'), array(), TRUE);
 
     $this->add('text', 'employee_partner', ts('Partner'), array(), FALSE);
 
@@ -40,10 +43,10 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
     $this->add( 'datepicker', 'employee_date_in',  ts('Datum in dienst'), array(), FALSE);
     $this->add( 'datepicker', 'employee_date_out',  ts('Datum uit dienst'), array(), FALSE);
 
-    $this->add('text', 'supplemental_address_1_residence', ts('Tweede lijn (verblijfplaats)'), array(), FALSE);
-    $this->add('text', 'street_address_residence', ts('Adres verblijf (straat en huisnummer)'), array(), FALSE);
-    $this->add('text', 'postal_code_residence', ts('Postcode verblijf'), array(), FALSE);
-    $this->add('text', 'city_residence', ts('Gemeente verblijf'), array(), FALSE);
+    $this->add('text', 'verblijf_supplemental_address_1', ts('Tweede lijn (verblijfplaats)'), array(), FALSE);
+    $this->add('text', 'verblijf_street_address', ts('Adres verblijf (straat en huisnummer)'), array(), FALSE);
+    $this->add('text', 'verblijf_postal_code', ts('Postcode verblijf'), array(), FALSE);
+    $this->add('text', 'verblijf_city', ts('Gemeente verblijf'), array(), FALSE);
 
 
     $this->addButtons(array(
@@ -54,41 +57,36 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
     // export form elements
     $this->assign('elementNames', $this->getRenderableElementNames());
 
-    if (isset($this->_contactData[0])) {
+    if (isset($this->_contactData['id'])) {
           // set values to screen
+        
+          $this->getElement('employer_name')->setValue($this->_data($this->_contactData, 'employer_name'));
+          $this->getElement('employer_vat')->setValue($this->_data($this->_contactData,'employer_vat'));
 
-          if  ($this->_contactData[0]['id'] > 0) {
-              $this->add('hidden', 'id', ts('Id '), array(), FALSE);
-              $this->getElement('id')->setValue($this->_contactData[0]['id']);
-          }
+          $this->getElement('employee_national_nbr')->setValue($this->_data($this->_contactData,'employee_national_nbr'));
+          $this->getElement('employee_personnel_nbr')->setValue($this->_data($this->_contactData,'employee_personnel_nbr'));
+          $this->getElement('display_name')->setValue($this->_data($this->_contactData,'display_name'));
+          $this->getElement('domicilie_supplemental_address_1')->setValue($this->_data($this->_domicilieAdres,'supplemental_address_1'));
+          $this->getElement('domicilie_street_address')->setValue($this->_data($this->_domicilieAdres,'street_address'));
+          $this->getElement('domicilie_postal_code')->setValue($this->_data($this->_domicilieAdres,'postal_code'));
+          $this->getElement('domicilie_city')->setValue($this->_data($this->_domicilieAdres,'city'));
 
-          $this->getElement('employer_name')->setValue($this->_contactData[0]['employer_name']);
-          $this->getElement('employer_vat')->setValue($this->_contactData[0]['employer_vat']);
+          $this->getElement('employee_partner')->setValue($this->_data($this->_contactData,'employee_partner'));
+          $this->getElement('phone')->setValue($this->_data($this->_contactData, 'phone'));
+          $this->getElement('mobile')->setValue($this->_data($this->_contactData, 'mobile'));
+          $this->getElement('employee_level1')->setValue($this->_data($this->_contactData, 'employee_level1'));
+          $this->getElement('employee_code_level2')->setValue($this->_data($this->_contactData, 'employee_code_level2'));
+          $this->getElement('employee_level2')->setValue($this->_data($this->_contactData, 'employee_level2'));
+          $this->getElement('employee_level3')->setValue($this->_data($this->_contactData, 'employee_level3'));
 
-          $this->getElement('employee_national_nbr')->setValue($this->_contactData[0]['employee_national_nbr']);
-          $this->getElement('employee_personnel_nbr')->setValue($this->_contactData[0]['employee_personnel_nbr']);
-          $this->getElement('display_name')->setValue($this->_contactData[0]['display_name']);
-          $this->getElement('supplemental_address_1')->setValue($this->_contactData[0]['supplemental_address_1']);
-          $this->getElement('street_address')->setValue($this->_contactData[0]['street_address']);
-          $this->getElement('postal_code')->setValue($this->_contactData[0]['postal_code']);
-          $this->getElement('city')->setValue($this->_contactData[0]['city']);
+          $this->getElement('employee_function')->setValue($this->_data($this->_contactData, 'employee_function'));
+          $this->getElement('employee_date_in')->setValue($this->_data($this->_contactData, 'employee_date_in'));
+          $this->getElement('employee_date_out')->setValue($this->_data($this->_contactData, 'employee_date_out'));
 
-          $this->getElement('employee_partner')->setValue($this->_contactData[0]['employee_partner']);
-          $this->getElement('phone')->setValue($this->_contactData[0]['phone']);
-          $this->getElement('mobile')->setValue($this->_contactData[0]['mobile']);
-          $this->getElement('employee_level1')->setValue($this->_contactData[0]['employee_level1']);
-          $this->getElement('employee_code_level2')->setValue($this->_contactData[0]['employee_code_level2']);
-          $this->getElement('employee_level2')->setValue($this->_contactData[0]['employee_level2']);
-          $this->getElement('employee_level3')->setValue($this->_contactData[0]['employee_level3']);
-
-          $this->getElement('employee_function')->setValue($this->_contactData[0]['employee_function']);
-          $this->getElement('employee_date_in')->setValue($this->_contactData[0]['employee_date_in']);
-          $this->getElement('employee_date_out')->setValue($this->_contactData[0]['employee_date_out']);
-
-          $this->getElement('supplemental_address_1_residence')->setValue($this->_contactData[0]['supplemental_address_1_residence']);
-          $this->getElement('street_address_residence')->setValue($this->_contactData[0]['street_address_residence']);
-          $this->getElement('postal_code_residence')->setValue($this->_contactData[0]['postal_code_residence']);
-          $this->getElement('city_residence')->setValue($this->_contactData[0]['city_residence']);
+          $this->getElement('verblijf_supplemental_address_1')->setValue($this->_data($this->_verblijfAdres, 'supplemental_address_1_residence'));
+          $this->getElement('verblijf_street_address')->setValue($this->_data($this->_verblijfAdres, 'street_address_residence'));
+          $this->getElement('verblijf_postal_code')->setValue($this->_data($this->_verblijfAdres, 'postal_code_residence'));
+          $this->getElement('verblijf_city')->setValue($this->_data($this->_verblijfAdres, 'city_residence'));
     }
 
 
@@ -113,15 +111,79 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
 
   private function saveKlantMedewerker($formValues) {
 
-    civicrm_api3('KlantMedewerker', 'create', $formValues);
+    $config = CRM_Basis_Config::singleton();
+
+    if (isset($this->_contactData['id'])) {
+        $formValues['id'] = $this->_contactData['id'];
+    }
+    $medewerker = civicrm_api3('KlantMedewerker', 'create', $formValues);
+
+    foreach ($formValues as $key => $value) {
+
+        switch (substr($key, 0, 9)) {
+            case "domicilie":
+                $newkey = substr($key, 10);
+                $this->_domicilieAdres[$newkey] = $value;
+                break;
+            case "verblijf_":
+                $newkey = substr($key, 9);
+                $this->_verblijfAdres[$newkey] = $value;
+                break;
+        }
+    }
+
+      $this->_domicilieAdres['location_type_id'] = $config->getKlantMedewerkerDomicilieLocationType()['name'];
+      $this->_domicilieAdres['contact_id'] = $medewerker['id'];
+
+      $this->_verblijfAdres['location_type_id'] = $config->getKlantMedewerkerVerblijfLocationType()['name'];
+      $this->_verblijfAdres['contact_id'] = $medewerker['id'];
+
+      civicrm_api3('Adres', 'create', $this->_domicilieAdres);
+      civicrm_api3('Adres', 'create', $this->_verblijfAdres);
+
   }
 
 
   private function setContactData($id) {
-      $medewerker = new CRM_Basis_KlantMedewerker();
 
-      $this->_contactData = $medewerker->get(array ( 'id' => $id, ));
+      $config = CRM_Basis_Config::singleton();
 
+      $domicilie_locationtype = $config->getKlantMedewerkerDomicilieLocationType()['name'];
+      $verblijf_locationtype = $config->getKlantMedewerkerVerblijfLocationType()['name'];
+
+      $this->_contactData = reset(civicrm_api3('KlantMedewerker', 'get', array('id' => $id)));
+
+      $this->_domicilieAdres = reset(
+          civicrm_api3('Adres', 'get', array (
+              'contact_id' => $id,
+              'location_type_id' => $domicilie_locationtype,
+          ))['values']
+      );
+
+      $this->_verblijfAdres = reset(
+          civicrm_api3('Adres', 'get', array (
+              'contact_id' => $id,
+              'location_type_id' => $verblijf_locationtype,
+          ))['values']
+      );
+
+      $this->_telefoon = reset(
+          civicrm_api3('Telefoon', 'get',
+                array (
+                    'contact_id' => $id,
+                    'phone_type_id' => '1',
+                )
+              )
+      );
+
+      $this->_mobile = reset(
+          civicrm_api3('Telefoon', 'get',
+              array (
+                  'contact_id' => $id,
+                  'phone_type_id' => '2',
+              )
+          )
+      );
   }
 
   /**
@@ -144,5 +206,14 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
     }
     return $elementNames;
   }
+
+    private function _data($data_array, $element) {
+        if (isset($data_array[$element])) {
+            return $data_array[$element];
+        }
+        else {
+            return false;
+        }
+    }
 
 }

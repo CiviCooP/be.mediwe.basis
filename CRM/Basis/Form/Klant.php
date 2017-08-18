@@ -73,13 +73,12 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
       else {
           return false;
       }
-
   }
 
   private function saveKlant($formValues) {
 
-      $klant = array();
       $adres = array();
+      $config = CRM_Basis_Config::singleton();
 
       // klantgegevens
       if (isset($this->_contactData['id'])) {
@@ -95,7 +94,21 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
       }
 
       // Adresgegevens
+      $adres['id'] = $this->_data($this->_addressData, 'id');
+      $adres['contact_id'] = $klant['id'];
+      $adres['location_type_id'] = $config->getKlantLocationType()['name'];
+      $adres['street_address'] = $formValues['street_address'];
+      $adres['supplemental_address_1'] = $formValues['supplemental_address_1'];
+      $adres['postal_code'] = $formValues['postal_code'];
+      $adres['city'] = $formValues['city'];
 
+      try {
+          civicrm_api3('Adres', 'create', $adres);
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+          throw new API_Exception(ts('Could not create a Mediwe adres in '.__METHOD__
+              .', contact your system administrator! Error from API Adres create: '.$ex->getMessage()));
+      }
 
   }
 
