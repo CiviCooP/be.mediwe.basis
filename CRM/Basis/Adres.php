@@ -90,11 +90,12 @@ class CRM_Basis_Adres {
       }
 
       try {
-          $adres = civicrm_api3('Address', 'getsingle', $params);
+          $adres = civicrm_api3('Address', 'get', $params);
       }
       catch (CiviCRM_API3_Exception $ex) {
           return false;
       }
+
       return true;
   }
 

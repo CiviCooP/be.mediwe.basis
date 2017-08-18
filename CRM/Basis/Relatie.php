@@ -94,7 +94,7 @@ class CRM_Basis_Relatie {
 
       
       try {
-          $relationship = civicrm_api3('Relationship', 'getsingle', $params);
+          $relationship = civicrm_api3('Relationship', 'get', $params);
       }
       catch (CiviCRM_API3_Exception $ex) {
           return false;

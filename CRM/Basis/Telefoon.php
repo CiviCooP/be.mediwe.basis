@@ -82,15 +82,18 @@ class CRM_Basis_Telefoon {
   public function exists($params) {
       $phone = array();
 
-      if (!isset($params['contact_id'])) {
-          throw new Exception('Klant identificatie ontbreekt!');
+      if (!isset($params['id'])) {
+          if (!isset($params['contact_id'])) {
+              throw new Exception('Klant identificatie ontbreekt!');
+          }
+          if (!isset($params['location_type_id'])) {
+              throw new Exception('Soort telefoon ontbreekt!');
+          }
+          if (!isset($params['phone_type_id'])) {
+              throw new Exception('Type telefoon ontbreekt!');
+          }
       }
-      if (!isset($params['location_type_id'])) {
-          throw new Exception('Soort telefoon ontbreekt!');
-      }
-      if (!isset($params['phone_type_id'])) {
-          throw new Exception('Type telefoon ontbreekt!');
-      }
+
       
       try {
           $phone = civicrm_api3('Phone', 'getsingle', $params);

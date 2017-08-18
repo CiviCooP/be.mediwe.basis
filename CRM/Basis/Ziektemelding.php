@@ -394,13 +394,13 @@ class CRM_Basis_Ziektemelding {
                 $meldingen[$arrayRowId] = $config->addDaoData($config->getZiektemeldingZiekteperiodeCustomGroup(), $meldingen[$arrayRowId]);
 
                 // gegevens werknemer en diens werkgever
-                $medewerker_id = $ziektemelding['client_id'][1];
+                //$medewerker_id = $ziektemelding['client_id'][1];
 
-                $employee = civicrm_api3('KlantMedewerker', 'Get', array('id' => $medewerker_id))['values'][0];
-                foreach ($employee as $key => $value) {
-                    $newkey = "employee_" . $key;
-                    $meldingen[$arrayRowId][$newkey] = $value;
-                }
+                //$employee = civicrm_api3('KlantMedewerker', 'Get', array('id' => $medewerker_id))['values'][0];
+                //foreach ($employee as $key => $value) {
+                //    $newkey = "employee_" . $key;
+                //    $meldingen[$arrayRowId][$newkey] = $value;
+                //}
 
 
             }

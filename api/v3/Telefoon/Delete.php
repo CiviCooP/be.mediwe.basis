@@ -24,5 +24,6 @@ function _civicrm_api3_telefoon_Delete_spec(&$spec) {
 function civicrm_api3_telefoon_Delete($params) {
     $telefoon = new CRM_Basis_Telefoon();
     $returnValues = $telefoon->deleteWithId($params['id']);
-    return civicrm_api3_delete_success($returnValues, $params, 'Telefoon', 'Delete');
+    return civicrm_api3_create_success($returnValues, $params, 'Telefoon', 'Delete');
+    //return civicrm_api3_delete_success($returnValues, $params, 'Telefoon', 'Delete');
 }
