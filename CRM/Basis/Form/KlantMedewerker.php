@@ -10,6 +10,10 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
   private $_contactData = array();
   private $_domicilieAdres = array();
   private $_verblijfAdres = array();
+  private $_telefoon = array();
+  private $_mobile = array();
+  private $_employerId = array();
+  private $_employer = array();
 
 
   public function buildQuickForm() {
@@ -150,8 +154,26 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
 
       $domicilie_locationtype = $config->getKlantMedewerkerDomicilieLocationType()['name'];
       $verblijf_locationtype = $config->getKlantMedewerkerVerblijfLocationType()['name'];
+      $relatietype = $config->getIsWerknemerVanRelationshipType()['name'];
 
-      $this->_contactData = reset(civicrm_api3('KlantMedewerker', 'get', array('id' => $id)));
+      $this->_contactData = reset(
+          civicrm_api3('KlantMedewerker', 'get',
+              array(
+                  'id' => $id
+              )
+          )['values']
+      );
+
+      $this->_employerId = reset(
+          civicrm_api3('Relatie', 'get',
+              array(
+                  'contact_id_a' => $id,
+                  'relation_type_id' => $relatietype,
+              )
+          )['values']
+      );
+
+      var_dump($this->_employerId);exit;
 
       $this->_domicilieAdres = reset(
           civicrm_api3('Adres', 'get', array (
@@ -173,7 +195,7 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
                     'contact_id' => $id,
                     'phone_type_id' => '1',
                 )
-              )
+              )['values']
       );
 
       $this->_mobile = reset(
@@ -182,8 +204,9 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
                   'contact_id' => $id,
                   'phone_type_id' => '2',
               )
-          )
+          )['values']
       );
+
   }
 
   /**
