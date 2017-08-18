@@ -8,7 +8,7 @@
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
-function _civicrm_api3_telefoon_Get_spec(&$spec) {
+function _civicrm_api3_relatie_Get_spec(&$spec) {
 /*  $spec['id'] = array(
     'name' => 'id',
     'title' => 'id',
@@ -41,7 +41,7 @@ function _civicrm_api3_telefoon_Get_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_telefoon_Get($params) {
-  $telefoon = new CRM_Basis_Relatie();
-  return civicrm_api3_create_success($telefoon->get($params), $params, 'Relatie', 'Get');
+function civicrm_api3_relatie_Get($params) {
+  $relatie = new CRM_Basis_Relatie();
+  return civicrm_api3_create_success($relatie->get($params), $params, 'Relatie', 'Get');
 }

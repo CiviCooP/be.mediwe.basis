@@ -7,7 +7,7 @@
 */
 
 
-function _civicrm_api3_telefoon_Delete_spec(&$spec) {
+function _civicrm_api3_relatie_Delete_spec(&$spec) {
     $spec['id']['api.required'] = 1;
 }
 
@@ -21,8 +21,8 @@ function _civicrm_api3_telefoon_Delete_spec(&$spec) {
  * @throws API_Exception
  */
 
-function civicrm_api3_telefoon_Delete($params) {
-    $telefoon = new CRM_Basis_Relatie();
-    $returnValues = $telefoon->deleteWithId($params['id']);
+function civicrm_api3_relatie_Delete($params) {
+    $relatie = new CRM_Basis_Relatie();
+    $returnValues = $relatie->deleteWithId($params['id']);
     return civicrm_api3_delete_success($returnValues, $params, 'Relatie', 'Delete');
 }
