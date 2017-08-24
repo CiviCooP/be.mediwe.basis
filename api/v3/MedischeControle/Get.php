@@ -21,11 +21,8 @@ function _civicrm_api3_medische_controle_Get_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_ziekmelding_Get($params) {
-
+function civicrm_api3_medische_controle_Get($params) {
     $medische_controle = new CRM_Basis_MedischeControle();
     $returnValues = $medische_controle->get($params);
     return civicrm_api3_create_success($returnValues, $params, 'MedischeControle', 'Get');
-
-
 }

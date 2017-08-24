@@ -92,7 +92,7 @@ class CRM_Basis_ConfigItems_RelationshipType {
    */
   public function getWithName($relationshipTypeName) {
     try {
-      return civicrm_api3('RelationshipType', 'Getsingle', array('name' => $relationshipTypeName));
+      return civicrm_api3('RelationshipType', 'getsingle', array('name_a_b' => $relationshipTypeName));
     } catch (CiviCRM_API3_Exception $ex) {
       return FALSE;
     }
@@ -108,7 +108,7 @@ class CRM_Basis_ConfigItems_RelationshipType {
       // catch any errors and ignore (disabling can be done manually if problems)
       try {
         // get relationship type with name
-        $relationshipTypeId = civicrm_api3('RelationshipType', 'getvalue', array('name' => $relationshipTypeName, 'return' => 'id'));
+        $relationshipTypeId = civicrm_api3('RelationshipType', 'getvalue', array('name_a_b' => $relationshipTypeName, 'return' => 'id'));
         $sqlRelationshipType = "UPDATE civicrm_relationship_type SET is_active = %1 WHERE id = %2";
         CRM_Core_DAO::executeQuery($sqlRelationshipType, array(
           1 => array(0, 'Integer'),
@@ -128,7 +128,7 @@ class CRM_Basis_ConfigItems_RelationshipType {
       // catch any errors and ignore (disabling can be done manually if problems)
       try {
         // get relationship type with name
-        $relationshipTypeId = civicrm_api3('RelationshipType', 'getvalue', array('name' => $relationshipTypeName, 'return' => 'id'));
+        $relationshipTypeId = civicrm_api3('RelationshipType', 'getvalue', array('name_a_b' => $relationshipTypeName, 'return' => 'id'));
         $sqlRelationshipType = "UPDATE civicrm_relationship_type SET is_active = %1 WHERE id = %2";
         CRM_Core_DAO::executeQuery($sqlRelationshipType, array(
           1 => array(1, 'Integer'),
@@ -148,7 +148,7 @@ class CRM_Basis_ConfigItems_RelationshipType {
       // catch any errors and ignore (disabling can be done manually if problems)
       try {
         // get relationship type with name
-        $relationshipTypeId = civicrm_api3('RelationshipType', 'getvalue', array('name' => $relationshipTypeName, 'return' => 'id'));
+        $relationshipTypeId = civicrm_api3('RelationshipType', 'getvalue', array('name_a_b' => $relationshipTypeName, 'return' => 'id'));
         civicrm_api3('RelationshipType', 'delete', array('id' => $relationshipTypeId,));
       } catch (CiviCRM_API3_Exception $ex) {
       }

@@ -8,7 +8,7 @@
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
-function _civicrm_api3_ziektemelding_Get_spec(&$spec) {
+function _civicrm_api3_ziektemelding_get_spec(&$spec) {
   //$spec['magicword']['api.required'] = 1;
 }
 
@@ -21,7 +21,7 @@ function _civicrm_api3_ziektemelding_Get_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_ziekmelding_Get($params) {
+function civicrm_api3_ziektemelding_get($params) {
 
     $ziektemelding = new CRM_Basis_Ziektemelding();
     $returnValues = $ziektemelding->get($params);

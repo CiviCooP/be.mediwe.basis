@@ -109,7 +109,6 @@ class CRM_Basis_Huisbezoek {
             return $this->_saveHuisbezoek($params);
         }
         catch (CiviCRM_API3_Exception $ex) {
-            CRM_Core_Error::debug('function update params', $params);
             throw new API_Exception(ts('Could not create an huisbezoek in '.__METHOD__
                 .', contact your system administrator! Error from API Case create: '.$ex->getMessage()));
         }

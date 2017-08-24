@@ -222,7 +222,9 @@ class CRM_Basis_ConfigItems_CustomGroup {
           $contactType = new CRM_Basis_ConfigItems_ContactType();
           $found = $contactType->getWithName($extendsValue);
           if (isset($found['name'])) {
-            $this->_apiParams['extends_entity_column_value'][] = $found['name'];
+            if (!in_array($found['name'], $this->_apiParams['extends_entity_column_value'])) {
+              $this->_apiParams['extends_entity_column_value'][] = $found['name'];
+            }
           }
           unset ($contactType);
         }
