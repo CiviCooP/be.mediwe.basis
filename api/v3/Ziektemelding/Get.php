@@ -21,11 +21,8 @@ function _civicrm_api3_ziektemelding_Get_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_ziekmelding_Get($params) {
-
+function civicrm_api3_ziektemelding_Get($params) {
     $ziektemelding = new CRM_Basis_Ziektemelding();
-    $returnValues = $ziektemelding->get($params);
-    return civicrm_api3_create_success($returnValues, $params, 'Ziektemelding', 'Get');
-
-
+    return civicrm_api3_create_success($ziektemelding->get($params), $params, 'Ziektemelding', 'Get');
 }
+

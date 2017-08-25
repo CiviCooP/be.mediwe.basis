@@ -163,9 +163,16 @@ class CRM_Basis_Ziektemelding {
    * @return array
    */
   public function get($params) {
+
+      // ensure contact_type and contact_sub_type are set correctly
+      $params['case_type_id'] = $this->_ziektemeldingCaseTypeName;
+      $params['is_deleted'] = 0;
+
     $ziektemeldingen = array();
 
     try {
+
+      // ensure the right case type is selected
 
       $ziektemeldingen = civicrm_api3('Case', 'get', $params)['values'];
       $this->_addZiektemeldingAllFields($ziektemeldingen);
@@ -394,13 +401,13 @@ class CRM_Basis_Ziektemelding {
                 $meldingen[$arrayRowId] = $config->addDaoData($config->getZiektemeldingZiekteperiodeCustomGroup(), $meldingen[$arrayRowId]);
 
                 // gegevens werknemer en diens werkgever
-                //$medewerker_id = $ziektemelding['client_id'][1];
+                $medewerker_id = $ziektemelding['client_id'][1];
 
-                //$employee = civicrm_api3('KlantMedewerker', 'Get', array('id' => $medewerker_id))['values'][0];
-                //foreach ($employee as $key => $value) {
-                //    $newkey = "employee_" . $key;
-                //    $meldingen[$arrayRowId][$newkey] = $value;
-                //}
+                $employee = civicrm_api3('KlantMedewerker', 'Get', array('id' => $medewerker_id))['values'][0];
+                foreach ($employee as $key => $value) {
+                    $newkey = "employee_" . $key;
+                    $meldingen[$arrayRowId][$newkey] = $value;
+                }
 
 
             }

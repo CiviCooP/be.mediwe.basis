@@ -42,4 +42,16 @@
     <title>Klant</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/basis/page/testbasis</path>
+    <page_callback>CRM_Basis_Page_TestBasis</page_callback>
+    <title>TestBasis</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/basis/page/ziektemelding</path>
+    <page_callback>CRM_Basis_Page_Ziektemelding</page_callback>
+    <title>Ziektemelding</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

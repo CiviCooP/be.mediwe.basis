@@ -9,26 +9,13 @@
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_adres_Get_spec(&$spec) {
-  $spec['id'] = array(
+  /*
+    $spec['id'] = array(
     'name' => 'id',
     'title' => 'id',
     'type' => CRM_Utils_Type::T_INT
   );
-  $spec['organization_name'] = array(
-    'name' => 'organization_name',
-    'title' => 'organization_name',
-    'type' => CRM_Utils_Type::T_STRING
-  );
-  $spec['legal_name'] = array(
-    'name' => 'legal_name',
-    'title' => 'legal_name',
-    'type' => CRM_Utils_Type::T_STRING
-  );
-  $spec['is_active'] = array(
-    'name' => 'is_active',
-    'title' => 'is_active',
-    'type' => CRM_Utils_Type::T_INT
-  );
+  */
 }
 
 /**

@@ -33,9 +33,11 @@ class CRM_Basis_Adres {
     if (isset($params['id'])) {
       return $this->update($params);
     } else {
+
       // check if adres can not be found yet and only create if not
       if ($this->exists($params) === FALSE) {
         try {
+
           $createdAddress = civicrm_api3('Address', 'create', $params);
           $adres = $createdAddress['values'];
           return $adres;
@@ -81,16 +83,24 @@ class CRM_Basis_Adres {
    */
   public function exists($params) {
       $adres = array();
+      $search_params = array();
 
       if (!isset($params['contact_id'])) {
           throw new Exception('Klant identificatie ontbreekt!');
       }
+      else {
+          $search_params['contact_id'] =  $params['contact_id'];
+      }
       if (!isset($params['location_type_id'])) {
           throw new Exception('Soort adres ontbreekt!');
       }
+      else {
+          $search_params['location_type_id'] =  $params['location_type_id'];
+      }
 
       try {
-          $adres = civicrm_api3('Address', 'get', $params);
+          $adres = civicrm_api3('Address', 'getsingle', $search_params);
+
       }
       catch (CiviCRM_API3_Exception $ex) {
           return false;
@@ -106,16 +116,12 @@ class CRM_Basis_Adres {
    * @return array
    */
   public function get($params) {
-    $adressen = array();
-;
     try {
-      $addresses = civicrm_api3('Address', 'get', $params);
-
-        $adressen = $addresses['values'];
+        return civicrm_api3('Address', 'getsingle', $params);
     }
     catch (CiviCRM_API3_Exception $ex) {
+        return false;
     }
-    return $adressen;
   }
 
 

@@ -1,19 +1,19 @@
 <?php
 
 /**
- * Adres.Create API specification (optional)
+ * Klant.Create API specification (optional)
  * This is used for documentation and validation.
  *
  * @param array $spec description of fields supported by this API call
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
-function _civicrm_api3_adres_Create_spec(&$spec) {
+function _civicrm_api3_klant_medewerker_migrate_spec(&$spec) {
   //$spec['organization_name']['api.required'] = 1;
 }
 
 /**
- * Adres.Create API
+ * Klant.Create API
  *
  * @param array $params
  * @return array API result descriptor
@@ -21,9 +21,8 @@ function _civicrm_api3_adres_Create_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_adres_Create($params) {
-  $adres = new CRM_Basis_Adres();
-  $returnValues = $adres->create($params);
-
-  return civicrm_api3_create_success($returnValues, $params, 'Adres', 'Create');
+function civicrm_api3_klant_medewerker_migrate($params) {
+  $klant_medewerker = new CRM_Basis_KlantMedewerker();
+  $returnValues = $klant_medewerker->migrate($params);
+  return civicrm_api3_create_success($returnValues, $params, 'KlantMedewerker', 'Migrate');
 }
