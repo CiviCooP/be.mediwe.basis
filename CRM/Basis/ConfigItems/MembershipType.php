@@ -44,7 +44,6 @@ class CRM_Basis_ConfigItems_MembershipType {
       civicrm_api3('MembershipType', 'Create', $this->_apiParams);
       //$this->updateNavigationMenuUrl();
     } catch (CiviCRM_API3_Exception $ex) {
-      CRM_Core_Error::debug('params', $this->_apiParams);
       throw new Exception('Could not create or update membership type with name '.$this->_apiParams['name']
         .' in '.__METHOD__.', error from API MembershipType Create: '.$ex->getMessage());
     }

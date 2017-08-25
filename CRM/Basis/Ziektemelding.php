@@ -98,7 +98,6 @@ class CRM_Basis_Ziektemelding {
            return $case;
         }
         catch (CiviCRM_API3_Exception $ex) {
-            CRM_Core_Error::debug('function update params', $params);
             throw new API_Exception(ts('Could not create an ziektemelding in '.__METHOD__
                 .', contact your system administrator! Error from API Case create: '.$ex->getMessage()));
         }
