@@ -98,6 +98,17 @@
         "is_required": 0,
         "weight": 60
       }
+      "arts_percentage_akkoord": {
+        "name": "arts_percentage_akkoord",
+        "label": "Percentage akkoord",
+        "data_type": "Int",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 80
+      }
     }
   }
 }
