@@ -105,8 +105,8 @@ class CRM_Basis_ConfigItems_ConfigItems {
     protected function setRelationshipTypes() {
         $jsonFile = $this->_resourcesPath.'relationship_types.json';
         if (!file_exists($jsonFile)) {
-            throw new Exception(ts('Could not load contact_types configuration file for extension,
-      contact your system administrator!'));
+            throw new Exception(ts('Could not load relationship_types configuration file for extension, 
+            contact your system administrator!'));
         }
         $relationshipTypesJson = file_get_contents($jsonFile);
         $relationshipTypes = json_decode($relationshipTypesJson, true);

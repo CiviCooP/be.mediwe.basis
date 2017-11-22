@@ -1,6 +1,6 @@
 {
-  "sector": {
-    "name": "sector",
+  "mediwe_sector_indeling": {
+    "name": "mediwe_sector_indeling",
     "title": "Sectoren",
     "is_active": 1,
     "is_reserved": 0,
@@ -343,8 +343,8 @@
       }
     }
   },
-  "berekeningswijze_fte": {
-    "name": "berekeningswijze_fte",
+  "mediwe_berekeningswijze_fte": {
+    "name": "mediwe_berekeningswijze_fte",
     "title": "Berekeningswijze FTE",
     "is_active": 1,
     "is_reserved": 0,
@@ -365,8 +365,8 @@
       }
     }
   },
-  "periode": {
-    "name": "periode",
+  "mediwe_periode_expertsysteem": {
+    "name": "mediwe_periode_expertsysteem",
     "title": "Periode expertsysteem",
     "is_active": 1,
     "is_reserved": 0,
@@ -394,8 +394,8 @@
       }
     }
   },
-  "populatie": {
-    "name": "populatie",
+  "mediwe_populatie": {
+    "name": "mediwe_populatie",
     "title": "Populatie",
     "is_active": 1,
     "is_reserved": 0,
@@ -430,8 +430,8 @@
       }
     }
   },
-  "actie": {
-    "name": "actie",
+  "mediwe_actie_expertsysteem": {
+    "name": "mediwe_actie_expertsysteem",
     "title": "Actie",
     "is_active": 1,
     "is_reserved": 0,
@@ -481,8 +481,8 @@
       }
     }
   },
-  "reason_illness": {
-    "name": "reason_illness",
+  "mediwe_reden_ziekte": {
+    "name": "mediwe_reden_ziekte",
     "title": "Reden ziekte",
     "is_active": 1,
     "is_reserved": 0,
@@ -538,78 +538,78 @@
       }
     }
   },
-  "presumed_reason_illness": {
-    "name": "presumed_reason_illness",
+  "vermoedelijke_oorzaak_ziekte": {
+    "name": "vermoedelijke_oorzaak_ziekte",
     "title": "Vermoedelijke oorzaak ziekte",
     "is_active": 1,
     "is_reserved": 0,
     "option_values": {
-      "not_specified": {
-        "name": "not_specified",
+      "niet_vermeld": {
+        "name": "niet_vermeld",
         "value": "0",
         "label": "(niet vermeld)",
         "is_active": 1,
         "is_default": 1,
         "is_reserved": 0
       },
-      "illness": {
-        "name": "illness",
+      "ziekte": {
+        "name": "ziekte",
         "value": "1",
         "label": "Ziekte",
         "is_active": 1,
         "is_reserved": 0
       },
-      "temporary_situation": {
-        "name": "temporary_situation",
+      "tijdelijke_moeilijke_situatie": {
+        "name": "tijdelijke_moeilijke_situatie",
         "value": "2",
         "label": "Tijdelijke moeilijke situatie",
         "is_active": 1,
         "is_reserved": 0
       },
-      "life_balance": {
-        "name": "life_balance",
+      "balans_prive_werk": {
+        "name": "balans_prive_werk",
         "value": "3",
         "label": "Balans privé-werk",
         "is_active": 1,
         "is_reserved": 0
       },
-      "lifestyle": {
-        "name": "lifestyle",
+      "ongezonde_levensstijl": {
+        "name": "ongezonde_levensstijl",
         "value": "4",
         "label": "Ongezonde levensstijl",
         "is_active": 1,
         "is_reserved": 0
       },
-      "work_relations": {
-        "name": "work_relations",
+      "relaties_werk": {
+        "name": "relaties_werk",
         "value": "5",
         "label": "Relaties op het werk",
         "is_active": 1,
         "is_reserved": 0
       },
-      "work_stress": {
-        "name": "work_stress",
+      "werkbelasting": {
+        "name": "werkbelasting",
         "value": "6",
         "label": "Werkbelasting",
         "is_active": 1,
         "is_reserved": 0
       },
-      "work_other": {
-        "name": "work_other",
+      "andere_werkgerelateerd": {
+        "name": "andere_werkgerelateerd",
         "value": "7",
         "label": "Andere werkgerelateerde factoren",
         "is_active": 1,
         "is_reserved": 0
       },
-      "one_day_out": {
-        "name": "one_day_out",
+      "baaldag": {
+        "name": "baaldag",
         "value": "8",
         "label": "Baaldag",
         "is_active": 1,
         "is_reserved": 0
       },
-      "not_ill": {
-        "name": "not_ill",
+      "zwart_verzuim": {
+        "name": "zwart_verzuim",
         "value": "9",
         "label": "Zwart verzuim",
         "is_active": 1,
@@ -617,8 +617,8 @@
       }
     }
   },
-  "mediwe_countries": {
-    "name": "mediwe_countries",
+  "mediwe_landen": {
+    "name": "mediwe_landen",
     "title": "Land",
     "is_active": 1,
     "is_reserved": 0,
@@ -654,8 +654,8 @@
       }
     }
   },
-  "mediwe_control_type": {
-    "name": "mediwe_control_type",
+  "mediwe_soort_controle": {
+    "name": "mediwe_soort_controle",
     "title": "Soort controle",
     "is_active": 1,
     "is_reserved": 0,
@@ -704,8 +704,8 @@
       }
     }
   },
-  "mediwe_control_criterium": {
-    "name": "mediwe_control_criterium",
+  "mediwe_controle_criterium": {
+    "name": "mediwe_controle_criterium",
     "title": "Criterium voor controle",
     "is_active": 1,
     "is_reserved": 0,
@@ -776,8 +776,8 @@
       }
     }
   },
-  "reason_illness_short": {
-    "name": "reason_illness_short",
+  "mediwe_reden_ziekte_kort": {
+    "name": "mediwe_reden_ziekte_kort",
     "title": "Reden ziekte",
     "is_active": 1,
     "is_reserved": 0,
@@ -798,8 +798,8 @@
       }
     }
   },
-  "mediwe_certificate_diagnosis": {
-    "name": "mediwe_certificate_diagnosis",
+  "mediwe_diagnose_attest": {
+    "name": "mediwe_diagnose_attest",
     "title": "Diagnose attest",
     "is_active": 1,
     "is_reserved": 0,
@@ -1520,8 +1520,8 @@
       }
     }
   },
-  "mediwe_control_ao_type": {
-    "name": "mediwe_control_ao_type",
+  "mediwe_type_controle_ao": {
+    "name": "mediwe_type_controle_ao",
     "title": "Type controle AO",
     "is_active": 1,
     "is_reserved": 0,
@@ -1542,8 +1542,8 @@
       }
     }
   },
-  "mediwe_control_result": {
-    "name": "mediwe_control_result",
+  "mediwe_controle_resultaat": {
+    "name": "mediwe_controle_resultaat",
     "title": "Controleresultaat",
     "is_active": 1,
     "is_reserved": 0,
@@ -1608,6 +1608,64 @@
         "name": "niet_arbeidsongeschikt",
         "value": "008",
         "label": "Niet arbeidsongeschikt",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "mediwe_bellen_moment": {
+    "name": "mediwe_bellen_moment",
+    "title": "Bellen",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "niet_bellen": {
+        "name": "niet_bellen",
+        "value": 1,
+        "label": "Niet",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "achteraf_bellen": {
+        "name": "achteraf_bellen",
+        "value": 2,
+        "label": "Achteraf",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "vooraf_bellen": {
+        "name": "vooraf_bellen",
+        "value": 3,
+        "label": "Vooraf",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
+  },
+  "mediwe_opdracht_wijze": {
+    "name": "mediwe_opdracht_wijze",
+    "title": "Opdracht versturen per",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "opdracht_per_mail": {
+        "name": "opdracht_per_mail",
+        "value": 1,
+        "label": "Mail",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "opdracht_per_fax": {
+        "name": "opdracht_per_fax",
+        "value": 2,
+        "label": "Fax",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "opdracht_groepsmail": {
+        "name": "opdracht_groepsmail",
+        "value": 3,
+        "label": "Groepsmail",
         "is_active": 1,
         "is_reserved": 0
       }
