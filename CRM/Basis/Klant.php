@@ -189,7 +189,7 @@ class CRM_Basis_Klant {
                 WHERE contact_id = $old_id AND location_type_id = 6 ;                                          
        
             ";
-die($sql);
+
        CRM_Core_DAO::executeQuery($sql);
    }
 

@@ -11,6 +11,16 @@ class CRM_Basis_ControleArts {
 
   private $_controleArtsContactSubTypeName = NULL;
 
+
+    /**
+     * CRM_Basis_Klant method to migrate data from existing systems.
+     */
+    public function migrate($params) {
+
+        $this->_migrate_from_joomla($params);
+
+    }
+
   /**
    * CRM_Basis_ControleArts constructor.
    */
@@ -475,5 +485,96 @@ class CRM_Basis_ControleArts {
             }
         }
     }
+
+
+    /*
+*   CRM_Basis_Klant migrate info  joomla application of a customer from previous civicrm application
+*/
+    private function _migrate_from_joomla($params)
+    {
+
+        $config = CRM_Basis_Config::singleton();
+
+        $sql = "SELECT * FROM mediwe_joomla.migratie_controlearts ";
+
+        $dao = CRM_Core_DAO::executeQuery($sql);
+
+        while ($dao->fetch()) {
+
+            $adres = array();
+            $params = array();
+            $old_id = false;
+
+            $params = (array)$dao;
+            foreach ($params as $key => $value) {
+                if (   substr($key, 0, 1 ) == "_" || $key == 'N'  )  {
+                    unset($params[$key]);
+                }
+
+            }
+
+            // zoek controlearts met dat nummer van joomla
+            $arts = $this->get(array ( 'external_identifier' => $params['external_identifier']));
+
+            if (!isset($klant['count'])) {
+                $params['id'] = reset($arts)['contact_id'];
+            }
+
+            // voeg de controlearts toe
+            $arts = $this->create($params);
+
+            $adres['contact_id'] = $arts['id'];
+            $adres['is_billing'] = 1;
+            $adres['location_type_id'] = 'Billing';
+
+            $return = civicrm_api3('Adres', 'get', $adres);
+
+            if (isset($return['count']) && $return['count'] > 0) {
+                $adres['id'] = $return['values']['id'];
+            }
+
+
+            $adres['street_address'] = $params['street_address'];
+            $adres['postal_code'] = $params['postal_code'];
+            $adres['city'] = $params['city'];
+
+            try {
+
+                $return = civicrm_api3('Adres', 'create', $adres);
+            }
+            catch (CiviCRM_API3_Exception $ex) {
+                throw new API_Exception(ts('Could not create a Mediwe adres in '.__METHOD__
+                    .', contact your system administrator! Error from API Adres create: '.$ex->getMessage()));
+            }
+
+
+            if ($key == 'phone') {
+                $phone['phone'] = $value;
+                $phone['phone_type_id'] = '1';
+                $phone['location_type_id'] = 'Werk';
+
+                // create phone
+                $phone['contact_id'] = $arts['id'];
+                $return = civicrm_api3('Telefoon', 'create', $phone);
+                }
+
+
+            }
+            if ($key == 'mobile') {
+                $mobile['phone'] = $value;
+                $mobile['phone_type_id'] = '2';
+                $mobile['location_type_id'] = 'Werk';
+
+                // create phone
+                $mobile['contact_id'] = $arts['id'];
+                $return = civicrm_api3('Telefoon', 'create', $mobile);
+            }
+
+            if ($key == 'email') {
+                $return = $this->_createEmail($arts['id'], 'Werk', $value );
+            }
+
+        }
+
 
 }
