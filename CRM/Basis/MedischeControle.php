@@ -33,14 +33,14 @@ class CRM_Basis_MedischeControle {
   public function create($params) {
 
       // ensure mandatory data
-      if (!isset($params['control_date'])) {
+      if (!isset($params['mmc_controle_datum'])) {
           throw new Exception('Controledatum ziekte ontbreekt!');
       }
 
       // create/update ziektemelding
       $ziektemelding = new CRM_Basis_Ziektemelding();
       $melding = $ziektemelding->create($params);
-      $params['mediwe_ziekte_id'] = $melding['id'];
+      $params['mmc_ziekte_id'] = $melding['id'];
 
       // ensure case type is set correctly
       $params['case_type_id'] = $this->_medischeControleCaseTypeName;
@@ -113,7 +113,7 @@ class CRM_Basis_MedischeControle {
                     AND
                       cc.contact_id = " . $params['contact_id'] . "
                     AND 
-                        ca.start_date =  '" . $params['control_date'] . "'      
+                        ca.start_date =  '" . $params['mmc_controle_datum'] . "'      
                 ";
       }
 
@@ -314,11 +314,11 @@ class CRM_Basis_MedischeControle {
       }
 
       // check ziektemelding
-      if (!isset($params['mediwe_ziekte_id'])) {
+      if (!isset($params['mmc_ziekte_id'])) {
 
           $ziektemelding = new CRM_Basis_Ziektemelding();
           $melding = $ziektemelding->create($params);
-          $params['mediwe_ziekte_id'] = $melding['id'];
+          $params['mmc_ziekte_id'] = $melding['id'];
 
           // ensure case type is set correctly
           $params['case_type_id'] = $this->_medischeControleCaseTypeName;
@@ -339,8 +339,8 @@ class CRM_Basis_MedischeControle {
 
           // save the medical control
 
-          $params['subject'] = "Medische controle van " . $params['control_date'];
-          $params['start_date'] = $params['control_date'];
+          $params['subject'] = "Medische controle van " . $params['mmc_controle_datum'];
+          $params['start_date'] = $params['mmc_controle_datum'];
           if (isset($params['end_date'])) {
               unset($params['end_date']);
           }
@@ -376,7 +376,7 @@ class CRM_Basis_MedischeControle {
                 $controles[$arrayRowId] = $config->addDaoData($config->getMedischeControleCustomGroup(), $controles[$arrayRowId]);
 
                 // gegevens ziektemelding
-                $illness_id = $controles[$arrayRowId]['mediwe_ziekte_id'];
+                $illness_id = $controles[$arrayRowId]['mmc_ziekte_id'];
                 $illness = $ziektemelding->get( array ( 'id' => $illness_id ))[$illness_id];
 
                 foreach ($illness as $key => $value) {

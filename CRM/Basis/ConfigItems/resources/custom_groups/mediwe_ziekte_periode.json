@@ -1,6 +1,6 @@
 {
-    "mediwe_illness":{
-    "name":"mediwe_illness",
+  "mediwe_ziekte_periode":{
+    "name":"mediwe_ziekte_periode",
     "title":"Ziekteperiode",
     "extends": "Case",
     "extends_entity_column_value": ["3"],
@@ -10,28 +10,28 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
-         "illness_reason": {
-           "name": "illness_reason",
+         "mzp_reden_ziekte": {
+           "name": "mzp_reden_ziekte",
            "label": "Reden",
            "data_type": "String",
            "html_type": "Select",
-           "option_group": "reason_illness",
+           "option_group": "mediwe_reden_ziekte",
            "is_searchable": 1,
            "is_active": 1,
            "is_required": 0
          },
-      "illness_presumed_reason": {
-        "name": "illness_presumed_reason",
+      "mzp_vermoedelijke_reden": {
+        "name": "mzp_vermoedelijke_reden",
         "label": "Vermoedelijke reden",
         "data_type": "String",
         "html_type": "Select",
-        "option_group": "presumed_reason_illness",
+        "option_group": "vermoedelijke_reden_ziekte",
         "is_searchable": 1,
         "is_active": 1,
         "is_required": 0
       },
-      "illness_date_resumed": {
-        "name": "illness_date_resumed",
+      "mzp_spontane_werkhervatting": {
+        "name": "mzp_spontane_werkhervatting",
         "label": "Spontane werkhervatting",
         "data_type": "Date",
         "html_type": "Select Date",
@@ -40,8 +40,8 @@
         "is_active": 1,
         "is_required": 0
       },
-        "illness_is_extension": {
-          "name": "illness_is_extension",
+        "mzp_is_verlenging": {
+          "name": "mzp_is_verlenging",
           "label": "Verlenging",
           "data_type": "Boolean",
           "html_type": "Radio",
@@ -49,8 +49,8 @@
           "is_active": 1,
           "is_required": 0
         },
-        "illness_is_private_accident": {
-          "name": "illness_is_private_accident",
+        "mzp_is_prive_ongeval": {
+          "name": "mzp_is_prive_ongeval",
           "label": "Privé ongeval",
           "data_type": "Boolean",
           "html_type": "Radio",
@@ -58,8 +58,8 @@
           "is_active": 1,
           "is_required": 0
         },
-        "illness_is_exit_allowed": {
-          "name": "illness_is_exit_allowed",
+        "mzp_mag_huis_verlaten": {
+          "name": "mzp_mag_huis_verlaten",
           "label": "Mag het huis verlaten",
           "data_type": "Boolean",
           "html_type": "Radio",
@@ -67,8 +67,8 @@
           "is_active": 1,
           "is_required": 0
         },
-        "illness_is_hospitalization": {
-          "name": "illness_is_hospitalization",
+        "mzp_is_ziekenhuisopname": {
+          "name": "mzp_is_ziekenhuisopname",
           "label": "Ziekenhuisopname",
           "data_type": "Boolean",
           "html_type": "Radio",
@@ -76,8 +76,8 @@
           "is_active": 1,
           "is_required": 0
         },
-        "illness_date_begin_hospitalization": {
-          "name": "illness_date_begin_hospitalization",
+        "mzp_ziekenhuisopname_van": {
+          "name": "mzp_ziekenhuisopname_van",
           "label": "Begin datum opname",
           "data_type": "Date",
           "html_type": "Select Date",
@@ -86,8 +86,8 @@
           "is_active": 1,
           "is_required": 0
         },
-        "illness_date_end_hospitalization": {
-          "name": "illness_date_end_hospitalization",
+        "mzp_ziekenhuisopname_tot": {
+          "name": "mzp_ziekenhuisopname_tot",
           "label": "Eind datum opname",
           "data_type": "Date",
           "html_type": "Select Date",
@@ -96,8 +96,8 @@
           "is_active": 1,
           "is_required": 0
         },
-        "illness_doctor_name": {
-          "name": "illness_doctor_name",
+        "mzp_behandelende_arts": {
+          "name": "mzp_behandelende_arts",
           "label": "Behandelende arts",
           "data_type": "String",
           "html_type": "Text",
@@ -106,8 +106,8 @@
           "is_required":0,
           "is_active": 1
         },
-      "illness_no_certificate": {
-        "name": "illness_no_certificate",
+      "mzp_is_zonder_attest": {
+        "name": "mzp_is_zonder_attest",
         "label": "Ziekte zonder attest",
         "data_type": "Boolean",
         "html_type": "Radio",
@@ -115,10 +115,10 @@
         "is_active": 1,
         "is_required": 0
       },
-      "illness_remarks": {
-        "name": "illness_remarks",
+      "mzp_opmerkingen": {
+        "name": "mzp_opmerkingen",
         "label": "Opmerkingen",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "note_rows": 4,
         "is_searchable": 0,

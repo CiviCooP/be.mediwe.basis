@@ -1,6 +1,6 @@
 {
-    "mediwe_home_visit":{
-    "name":"mediwe_home_visit",
+    "mediwe_huisbezoek":{
+    "name":"mediwe_huisbezoek",
     "title":"Huisbezoek",
     "extends": "Activity",
     "extends_entity_column_value": ["300"],
@@ -10,8 +10,8 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
-         "visit_street_address": {
-           "name": "visit_street_address",
+         "mh_huisbezoek_adres": {
+           "name": "mh_huisbezoek_adres",
            "label": "Straat, huisnr en busnr",
            "data_type": "String",
            "html_type": "Text",
@@ -20,8 +20,8 @@
            "is_required": 1,
            "weight": 1
          },
-      "visit_postal_code": {
-        "name": "visit_postal_code",
+      "mh_huisbezoek_postcode": {
+        "name": "mh_huisbezoek_postcode",
         "label": "Postcode huisbezoek",
         "data_type": "String",
         "html_type": "Text",
@@ -30,8 +30,8 @@
         "is_required": 1,
         "weight": 2
       },
-      "visit_city": {
-        "name": "visit_city",
+      "mh_huisbezoek_gemeente": {
+        "name": "mh_huisbezoek_gemeente",
         "label": "Gemeente huisbezoek",
         "data_type": "String",
         "html_type": "Text",
@@ -40,19 +40,19 @@
         "is_required": 1,
         "weight": 3
       },
-      "visit_country": {
-        "name": "visit_country",
+      "mh_huisbezoek_land": {
+        "name": "mh_huisbezoek_land",
         "label": "Land huisbezoek",
         "data_type": "String",
         "html_type": "Select",
-        "option_group": "mediwe_countries",
+        "option_group": "mediwe_landen",
         "is_searchable": 1,
         "is_active": 1,
         "is_required": 1,
         "weight": 4
       },
-      "visit_home_from": {
-        "name": "visit_home_from",
+      "mh_thuisplicht_van": {
+        "name": "mh_thuisplicht_van",
         "label": "Thuisplicht van",
         "data_type": "String",
         "html_type": "Text",
@@ -60,8 +60,8 @@
         "is_active": 1,
         "weight": 5
       },
-      "visit_home_till": {
-        "name": "visit_home_till",
+      "mh_thuisplicht_tot": {
+        "name": "mh_thuisplicht_tot",
         "label": "Thuisplicht tot",
         "data_type": "String",
         "html_type": "Text",

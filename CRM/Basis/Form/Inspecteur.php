@@ -29,9 +29,9 @@ class CRM_Basis_Form_Inspecteur extends CRM_Core_Form {
     $this->add('text', 'mobile', ts('GSM'), array(), FALSE);
     $this->add('text', 'email', ts('E-mail'), array(), FALSE);
 
-    $this->add('text', 'supplier_venice', ts('Nr Venice'), array(), FALSE);
-    $this->add('text', 'supplier_vat', ts('Ondernemingsnummer'), array(), FALSE);
-    $this->add('text', 'supplier_account', ts('Rekening'), array(), FALSE);
+    $this->add('text', 'ml_venice', ts('Nr Venice'), array(), FALSE);
+    $this->add('text', 'ml_btw_nummer', ts('Ondernemingsnummer'), array(), FALSE);
+    $this->add('text', 'ml_iban', ts('Rekening'), array(), FALSE);
 
     $this->addButtons(array(
       array('type' => 'next', 'name' => ts('Save'), 'isDefault' => true,),
@@ -44,6 +44,7 @@ class CRM_Basis_Form_Inspecteur extends CRM_Core_Form {
 
     $this->getElement('id')->setValue(FALSE);
 
+    // todo ERIK HOMMEL what does this do?
     if (isset($this->_contactData[0])) {
         if  ($this->_contactData[0]['id'] > 0) {
             $this->getElement('id')->setValue($this->_contactData[0]['id']);
@@ -63,9 +64,9 @@ class CRM_Basis_Form_Inspecteur extends CRM_Core_Form {
         $this->getElement('mobile')->setValue($this->_contactData[0]['mobile']);
         $this->getElement('email')->setValue($this->_contactData[0]['email']);
 
-        $this->getElement('supplier_venice')->setValue($this->_contactData[0]['supplier_venice']);
-        $this->getElement('supplier_vat')->setValue($this->_contactData[0]['supplier_vat']);
-        $this->getElement('supplier_account')->setValue($this->_contactData[0]['supplier_account']);
+        $this->getElement('ml_venice')->setValue($this->_contactData[0]['leverancier_venice']);
+        $this->getElement('ml_btw_nummer')->setValue($this->_contactData[0]['ml_btw_nummer']);
+        $this->getElement('ml_iban')->setValue($this->_contactData[0]['ml_iban']);
 
 
     }

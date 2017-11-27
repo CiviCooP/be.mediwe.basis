@@ -1,6 +1,6 @@
 {
-    "control_conditions":{
-    "name":"control_conditions",
+    "mediwe_voorwaarden_controle":{
+    "name":"mediwe_voorwaarden_controle",
     "title":"Voorwaarden medische controle",
     "extends": "Membership",
     "extends_entity_column_value": ["1", "3","4"],
@@ -10,8 +10,8 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
-         "control_conditions_foreseen_number": {
-           "name": "control_conditions_foreseen_number",
+         "mvc_aantal_controles": {
+           "name": "mvc_aantal_controles",
            "label": "Aantal controles",
            "data_type": "Int",
            "html_type": "Text",
@@ -21,8 +21,8 @@
            "is_required": 1,
            "weight": 11
          },
-        "control_conditions_pro_rata_number": {
-           "name": "control_conditions_pro_rata_number",
+        "mvc_pro_rata": {
+           "name": "mvc_pro_rata",
            "label": "Pro rata",
            "data_type": "Int",
            "html_type": "Text",
@@ -32,8 +32,8 @@
            "is_required": 1,
            "weight": 12
          },
-         "control_conditions_unit_price": {
-           "name": "control_conditions_unit_price",
+         "mvc_controle_prijs": {
+           "name": "mc_controle_prijs",
            "label": "Prijs per controle",
            "data_type": "Money",
            "html_type": "Text",
@@ -43,8 +43,8 @@
            "is_required": 1,
            "weight": 32
          },
-         "control_conditions_unit_price_consult": {
-           "name": "control_conditions_unit_price_consult",
+         "mvc_consultatie_prijs": {
+           "name": "mvc_consultatie_prijs",
            "label": "Prijs per consultatie",
            "data_type": "Money",
            "html_type": "Text",
@@ -54,8 +54,8 @@
            "is_required": 1,
            "weight": 54
          },
-         "control_conditions_supplement_weekend": {
-           "name": "control_conditions_supplement_weekend",
+         "mvc_supplement_weekend": {
+           "name": "mvc_supplement_weekend",
            "label": "Supplement weekendcontrole",
            "data_type": "Money",
            "html_type": "Text",
@@ -65,8 +65,8 @@
            "is_required": 1,
            "weight": 74
          },
-        "control_conditions_supplement_crossborder": {
-           "name": "control_conditions_supplement_crossborder",
+        "mvc_supplement_buitenland": {
+           "name": "mvc_supplement_buitenland",
            "label": "Supplement controle in buitenland",
            "data_type": "Money",
            "html_type": "Text",
@@ -76,8 +76,8 @@
            "is_required": 1,
            "weight": 90
          },
-        "control_conditions_own_reference": {
-           "name": "control_conditions_own_reference",
+        "mvc_eigen_referentie": {
+           "name": "mvc_eigen_referentie",
            "label": "Eigen referentie",
            "data_type": "String",
            "html_type": "Text",
@@ -87,8 +87,8 @@
            "is_required": 0,
            "weight": 104
          },
-        "control_conditions_index": {
-           "name": "control_conditions_index",
+        "mvc_gezondheidsindex": {
+           "name": "mvc_gezondheidsindex",
            "label": "Gezondheidsindex",
            "data_type": "Float",
            "html_type": "Text",
@@ -98,8 +98,8 @@
            "is_required": 0,
            "weight": 117
          },
-        "control_conditions_vat": {
-           "name": "control_conditions_vat",
+        "mvc_btw_percentage": {
+           "name": "mvc_btw_percentage",
            "label": "BTW %",
            "data_type": "Float",
            "html_type": "Text",
@@ -109,8 +109,8 @@
            "is_required": 1,
            "weight": 128
          },
-        "control_conditions_invoice_accident": {
-           "name": "control_conditions_invoice_accident",
+        "mvc_factureer_ao": {
+           "name": "mvc_factureer_ao",
            "label": "factureer AO",
            "data_type": "Boolean",
            "html_type": "Radio",
@@ -120,8 +120,8 @@
            "is_required": 1,
            "weight": 136
          },
-        "control_conditions_global_invoice": {
-           "name": "control_conditions_global_invoice",
+        "mvc_globale_factuur": {
+           "name": "mvc_globale_factuur",
            "label": "1 globale factuur",
            "data_type": "Boolean",
            "html_type": "Radio",

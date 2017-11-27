@@ -1,6 +1,6 @@
 {
-    "mediwe_certificate":{
-    "name":"mediwe_certificate",
+    "mediwe_medisch_attest":{
+    "name":"mediwe_medisch_attest",
     "title":"Medisch attest",
     "extends": "Activity",
     "extends_entity_column_value": ["200"],
@@ -10,8 +10,8 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
-              "certificate_incoming_date": {
-                "name": "certificate_incoming_date",
+              "mma_ontvangst_datum": {
+                "name": "mma_ontvangst_datum",
                 "label": "Ontvangst datum",
                 "data_type": "Date",
                 "html_type": "Select Date",
@@ -20,8 +20,8 @@
                 "is_active": 1,
                 "is_required": 1
               },
-              "certificate_post_date": {
-                "name": "certificate_post_date",
+              "mma_poststempel_datum": {
+                "name": "mma_poststempel_datum",
                 "label": "Poststempel datum",
                 "data_type": "Date",
                 "html_type": "Select Date",
@@ -30,8 +30,8 @@
                 "is_active": 1,
                 "is_required": 1
               },
-              "certificate_is_late": {
-                "name": "certificate_is_late",
+              "mma_te_laat_ontvangen": {
+                "name": "mma_te_laat_ontvangen",
                 "label": "Te laat ontvangen",
                 "data_type": "Boolean",
                 "html_type": "Radio",
@@ -39,18 +39,18 @@
                 "is_active": 1,
                 "is_required": 0
               },
-             "certificate_reason": {
-               "name": "certificate_reason",
+             "mma_reden_attest": {
+               "name": "mma_reden_attest",
                "label": "Reden",
                "data_type": "String",
                "html_type": "Select",
-               "option_group": "reason_illness_short",
+               "option_group": "mediwe_reden_ziekte_kort",
                "is_searchable": 1,
                "is_active": 1,
                "is_required": 1
              },
-            "certificate_date_begin": {
-              "name": "certificate_date_begin",
+            "mma_begin_datum": {
+              "name": "mma_begin_datum",
               "label": "Begin datum",
               "data_type": "Date",
               "html_type": "Select Date",
@@ -59,8 +59,8 @@
               "is_active": 1,
               "is_required": 1
             },
-            "certificate_date_end": {
-              "name": "certificate_date_end",
+            "mma_eind_datum": {
+              "name": "mma_eind_datum",
               "label": "Eind datum",
               "data_type": "Date",
               "html_type": "Select Date",
@@ -69,8 +69,8 @@
               "is_active": 1,
               "is_required": 0
             },
-            "certificate_is_extension": {
-              "name": "certificate_is_extension",
+            "mma_attest_verlenging": {
+              "name": "mma_attest_verlenging",
               "label": "Verlenging",
               "data_type": "Boolean",
               "html_type": "Radio",
@@ -78,8 +78,8 @@
               "is_active": 1,
               "is_required": 0
             },
-            "certificate_is_private_accident": {
-              "name": "certificate_is_private_accident",
+            "mma_prive_ongeval": {
+              "name": "mma_prive_ongeval",
               "label": "Privé ongeval",
               "data_type": "Boolean",
               "html_type": "Radio",
@@ -87,8 +87,8 @@
               "is_active": 1,
               "is_required": 0
             },
-            "certificate_is_exit_allowed": {
-              "name": "certificate_is_exit_allowed",
+            "mma_mag_huis_verlaten": {
+              "name": "mma_mag_huis_verlaten",
               "label": "Mag het huis verlaten",
               "data_type": "Boolean",
               "html_type": "Radio",
@@ -96,8 +96,8 @@
               "is_active": 1,
               "is_required": 0
             },
-            "certificate_is_hospitalization": {
-              "name": "certificate_is_hospitalization",
+            "mma_ziekenhuis_opname": {
+              "name": "mma_ziekenhuis_opname",
               "label": "Ziekenhuisopname",
               "data_type": "Boolean",
               "html_type": "Radio",
@@ -105,8 +105,8 @@
               "is_active": 1,
               "is_required": 0
             },
-            "certificate_date_begin_hospitalization": {
-              "name": "certificate_date_begin_hospitalization",
+            "mma_begin_datum_opname": {
+              "name": "mma_begin_datum_opname",
               "label": "Begin datum opname",
               "data_type": "Date",
               "html_type": "Select Date",
@@ -115,8 +115,8 @@
               "is_active": 1,
               "is_required": 0
             },
-            "certificate_date_end_hospitalization": {
-              "name": "certificate_date_end_hospitalization",
+            "mma_eind_datum_opname": {
+              "name": "mma_eind_datum_opname",
               "label": "Eind datum opname",
               "data_type": "Date",
               "html_type": "Select Date",
@@ -125,8 +125,8 @@
               "is_active": 1,
               "is_required": 0
             },
-            "certificate_doctor_name": {
-              "name": "certificate_doctor_name",
+            "mma_behandelende_arts": {
+              "name": "mma_behandelende_arts",
               "label": "Behandelende arts",
               "data_type": "String",
               "html_type": "Text",
@@ -135,18 +135,18 @@
               "is_required":0,
               "is_active": 1
             },
-            "certificate_remarks": {
-              "name": "certificate_remarks",
+            "mma_opmerkingen": {
+              "name": "mma_opmerkingen",
               "label": "Opmerkingen",
-              "data_type": "String",
+              "data_type": "Memo",
               "html_type": "TextArea",
               "note_rows": 4,
               "is_searchable": 0,
               "is_active": 1,
               "is_required": 0
             },
-          "certificate_diagnosis": {
-            "name": "certificate_diagnosis",
+          "mma_attest_diagnose": {
+            "name": "mma_attest_diagnose",
             "label": "Diagnose op attest",
             "data_type": "String",
             "html_type": "Select",
@@ -155,10 +155,10 @@
             "is_active": 1,
             "is_required": 0
           },
-          "certificate_alternative_work": {
-            "name": "certificate_alternative_work",
+          "mma_aangepast_werk": {
+            "name": "mma_aangepast_werk",
             "label": "Aangepast werk",
-            "data_type": "String",
+            "data_type": "Memo",
             "html_type": "TextArea",
             "note_rows": 4,
             "is_searchable": 0,

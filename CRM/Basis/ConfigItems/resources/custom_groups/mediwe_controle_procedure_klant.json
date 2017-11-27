@@ -1,6 +1,6 @@
 {
-  "customer_procedure":{
-    "name":"customer_procedure",
+  "mediwe_controle_procedure_klant":{
+    "name":"mediwe_controle_procedure_klant",
     "title":"Controleprocedure klant",
     "extends":"Organization",
     "extends_entity_column_value": ["mediwe_klant"],
@@ -10,23 +10,22 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
-      "customer_procedure_remarks": {
-        "name": "customer_procedure_remarks",
+      "mcpk_opmerkingen": {
+        "name": "mcpk_opmerkingen",
         "label": "Opmerkingen",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 1,
         "is_search_range":0,
         "is_view": 0,
         "is_required":0,
-        "column_name": "klantnummer_venice_1",
         "weight": 1,
         "is_active": 1
       },
-      "customer_procedure_free": {
-        "name": "customer_procedure_free",
+      "mcpk_vrij_veld": {
+        "name": "mcpk_vrij_veld",
         "label": "Vrij veld",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 1,
         "is_search_range":0,
@@ -35,10 +34,10 @@
         "weight": 2,
         "is_active": 1
       },
-      "customer_procedure_sector": {
-        "name": "customer_procedure_sector",
+      "mcpk_sector_omschrijving": {
+        "name": "mcpk_sector_omschrijving",
         "label": "Sector omschrijving",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 1,
         "is_search_range":0,
@@ -48,12 +47,12 @@
         "is_active": 1
       },
 
-      "customer_procedure_id_sector": {
-        "name": "customer_procedure_id_sector",
+      "mcpk_sector_id": {
+        "name": "mcpk_sector_id",
         "label": "Sector identificatie",
         "data_type": "Int",
         "html_type": "Select",
-        "option_group": "sector",
+        "option_group": "mediwe_sector_indeling",
         "is_searchable": 1,
         "is_search_range":0,
         "is_view": 0,
@@ -62,12 +61,12 @@
         "is_active": 1
       },
 
-      "customer_procedure_fte_calculation_type": {
-        "name": "customer_procedure_fte_calculation_type",
+      "mcpk_fte_berekeningswijze": {
+        "name": "mcpk_fte_berekeningswijze",
         "label": "FTE berekeningswijze",
         "data_type": "String",
         "html_type": "Select",
-        "option_group": "berekeningswijze_fte",
+        "option_group": "mediwe_berekeningswijze_fte",
         "is_searchable": 1,
         "is_search_range":0,
         "is_view": 0,
@@ -76,8 +75,8 @@
         "is_active": 1
       },
 
-      "customer_procedure_cao_noexit_from": {
-        "name": "customer_procedure_cao_noexit_from",
+      "mcpk_huis_niet_verlaten_van": {
+        "name": "mcpk_huis_niet_verlaten_van",
         "label": "Huis niet verlaten van",
         "data_type": "String",
         "html_type": "Text",
@@ -90,8 +89,8 @@
         "is_active": 1
       },
 
-      "customer_procedure_cao_noexit_till": {
-        "name": "customer_procedure_cao_noexit_till",
+      "mcpk_huis_niet_verlaten_tot": {
+        "name": "mcpk_huis_niet_verlaten_tot",
         "label": "Huis niet verlaten tot",
         "data_type": "String",
         "html_type": "Text",
@@ -104,10 +103,10 @@
         "is_active": 1
       },
 
-      "customer_procedure": {
-        "name": "customer_procedure",
+      "mcpk_controle_procedure": {
+        "name": "mcpk_controle_procedure",
         "label": "Controle procedure",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 1,
         "is_search_range":0,
@@ -117,10 +116,10 @@
         "is_active": 1
       },
 
-      "customer_procedure_vision": {
-        "name": "customer_procedure_vision",
+      "mcpk_verzuimbeleid_visie": {
+        "name": "mcpk_verzuimbeleid_visie",
         "label": "Visie op verzuimbeleid",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 1,
         "is_search_range":0,
@@ -130,10 +129,10 @@
         "is_active": 1
       },
 
-      "customer_procedure_goal": {
-        "name": "customer_procedure_goal",
+      "mcpk_doel_controle": {
+        "name": "mcpk_doel_controle",
         "label": "Doel van controles",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 1,
         "is_search_range":0,
@@ -142,8 +141,8 @@
         "weight": 10,
         "is_active": 1
       },
-      "customer_procedure_email_results": {
-        "name": "customer_procedure_email_results",
+      "mcpk_email_resultaten": {
+        "name": "mcpk_email_resultaten",
         "label": "Mail de resultaten naar",
         "data_type": "String",
         "html_type": "Text",
@@ -154,8 +153,8 @@
         "weight": 11,
         "is_active": 1
       },
-      "customer_procedure_use_sms": {
-        "name": "customer_procedure_use_sms",
+      "mcpk_sms_medewerker": {
+        "name": "mcpk_sms_medewerker",
         "label": "Stuur SMS naar medewerker",
         "data_type": "Boolean",
         "html_type": "Radio",

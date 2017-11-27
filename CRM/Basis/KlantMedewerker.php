@@ -223,11 +223,11 @@ class CRM_Basis_KlantMedewerker {
             $search_args['external_identifier'] = $params['external_identifier'];
         }
         else {
-            if (isset($params['employee_national_nbr'])) {
-                $search_args['employee_national_nbr'] = $params['employee_national_nbr'];
+            if (isset($params['mkm_rijksregister_nummer'])) {
+                $search_args['mkm_rijksregister_nummer'] = $params['mkm_rijksregister_nummer'];
             }
-            if (isset($params['employee_personnel_nbr'])) {
-                $search_args['employee_personnel_nbr'] = $params['employee_personnel_nbr'];
+            if (isset($params['mkm_personeelsnummer'])) {
+                $search_args['mkm_personeelsnummer'] = $params['mkm_personeelsnummer'];
             }
             $search_args['display_name'] = $params['display_name'];
         }

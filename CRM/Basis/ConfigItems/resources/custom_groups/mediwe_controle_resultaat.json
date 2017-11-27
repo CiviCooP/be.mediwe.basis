@@ -1,6 +1,6 @@
 {
-    "mediwe_control_result":{
-    "name":"mediwe_control_result",
+    "mediwe_controle_resultaat":{
+    "name":"mediwe_controle_resultaat",
     "title":"Medische controle: resultaat",
     "extends": "Activity",
     "extends_entity_column_value": ["300", "310", "320"],
@@ -10,73 +10,73 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
-        "control_result_km": {
-          "name": "control_result_km",
+        "mcr_opgegeven_km": {
+          "name": "mcr_opgegeven_km",
           "label": "Totaal km opgegeven door arts",
           "data_type": "Int",
           "html_type": "Text",
           "is_searchable": 0,
           "is_active": 1
         },
-      "control_result_info_mediwe": {
-        "name": "control_result_info_mediwe",
+      "mcr_opmerkingen_mediwe": {
+        "name": "mcr_opmerkingen_mediwe",
         "label": "Opmerking voor Mediwe",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_info": {
-        "name": "control_result_info",
+      "mcr_resultaat_opmerkingen": {
+        "name": "mcr_resultaat_opmerkingen",
         "label": "Opmerkingen",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_step": {
-        "name": "control_result_step",
+      "mcr_controle_resultaat": {
+        "name": "mcr_controle_resultaat",
         "label": "Resultaat",
         "data_type": "String",
         "html_type": "Select",
-        "option_group": "mediwe_control_result",
+        "option_group": "mediwe_controle_resultaat",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_is_workrelated": {
-        "name": "control_result_is_workrelated",
+      "mcr_is_werkgerelateerd": {
+        "name": "mcr_is_werkgerelateerd",
         "label": "Is werkgerelateerd",
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_advice_occupational": {
-        "name": "control_result_advice_occupational",
+      "mcr_advies_geneesheer": {
+        "name": "mcr_advies_geneesheer",
         "label": "Advies arbeidsgeneesheer",
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_advice_counselor": {
-        "name": "control_result_advice_counselor",
+      "mcr_advies_vertrouwenspersoon": {
+        "name": "mcr_advies_vertrouwenspersoon",
         "label": "Advies vertrouwenspersoon",
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_can_extension": {
-        "name": "control_result_can_extension",
+      "mcr_verlenging_mogelijk": {
+        "name": "mcr_verlenging_mogelijk",
         "label": "Verlenging is mogelijk?",
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_date_resume": {
-        "name": "control_result_date_resume",
+      "mcr_datum_werkhervatting": {
+        "name": "mcr_datum_werkhervatting",
         "label": "Datum werkhervatting",
         "data_type": "Date",
         "html_type": "Select",

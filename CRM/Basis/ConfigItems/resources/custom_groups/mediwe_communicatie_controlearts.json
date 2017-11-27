@@ -1,6 +1,6 @@
 {
-  "communication": {
-    "name": "communication",
+  "mediwe_communicatie_controlearts": {
+    "name": "mediwe_communicatie_controlearts",
     "title": "Communicatie controlearts",
     "extends": "Organization",
     "extends_entity_column_value": ["mediwe_controle_arts"],
@@ -10,8 +10,8 @@
     "is_reserved": 0,
     "collapse_display": 0,
     "fields": {
-      "arts_riziv": {
-        "name": "arts_riziv",
+      "mcc_arts_riziv": {
+        "name": "mcc_arts_riziv",
         "label": "RIZIV nummer",
         "data_type": "String",
         "html_type": "Text",
@@ -21,8 +21,8 @@
         "is_required": 0,
         "weight": 1
       },
-      "arts_gebruikt_app": {
-        "name": "arts_gebruikt_app",
+      "mcc_arts_gebruikt_app": {
+        "name": "mcc_arts_gebruikt_app",
         "label": "Gebruikt de app",
         "data_type": "Boolean",
         "html_type": "Radio",
@@ -32,52 +32,32 @@
         "is_required": 0,
         "weight": 2
       },
-      "arts_bellen_vooraf": {
-        "name": "arts_bellen_vooraf",
-        "label": "Bellen vooraf",
-        "data_type": "Boolean",
-        "html_type": "Radio",
+      "mcc_arts_bel_moment": {
+        "name": "mcc_arts_bel_moment",
+        "label": "Bellen",
+        "data_type": "String",
+        "html_type": "Multi-Select",
+        "option_group": "mediwe_bellen_moment",
         "is_searchable": 1,
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
-        "weight": 10
+        "weight": 3
       },
-      "arts_bellen_achteraf": {
-        "name": "arts_bellen_achteraf",
-        "label": "Bellen achteraf",
-        "data_type": "Boolean",
-        "html_type": "Radio",
-        "is_searchable": 1,
-        "is_view": 0,
-        "is_active": 1,
-        "is_required": 0,
-        "weight": 20
-      },
-      "arts_opdracht_fax": {
-        "name": "arts_opdracht_fax",
-        "label": "Opdracht per fax",
-        "data_type": "Boolean",
-        "html_type": "Radio",
+      "mcc_arts_opdracht": {
+        "name": "mcc_arts_opdracht",
+        "label": "Opdracht per",
+        "data_type": "String",
+        "html_type": "Multi-Select",
+        "option_group": "mediwe_bellen_moment",
         "is_searchable": 1,
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
         "weight": 30
       },
-      "arts_opdracht_mail": {
-        "name": "arts_opdracht_mail",
-        "label": "Opdracht per mail",
-        "data_type": "Boolean",
-        "html_type": "Radio",
-        "is_searchable": 1,
-        "is_view": 0,
-        "is_active": 1,
-        "is_required": 0,
-        "weight": 40
-      },
-      "arts_overzicht": {
-        "name": "arts_overzicht",
+      "mcc_arts_overzicht": {
+        "name": "mcc_arts_overzicht",
         "label": "Overzicht op de middag",
         "data_type": "Boolean",
         "html_type": "Radio",
@@ -87,19 +67,19 @@
         "is_required": 0,
         "weight": 50
       },
-      "arts_opmerkingen": {
-        "name": "arts_opmerkingen",
+      "mcc_arts_opmerkingen": {
+        "name": "mcc_arts_opmerkingen",
         "label": "Opmerkingen",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 0,
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
         "weight": 60
-      }
-      "arts_percentage_akkoord": {
-        "name": "arts_percentage_akkoord",
+      },
+      "mcc_arts_percentage_akkoord": {
+        "name": "mcc_arts_percentage_akkoord",
         "label": "Percentage akkoord",
         "data_type": "Int",
         "html_type": "Text",

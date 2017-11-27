@@ -19,10 +19,10 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
     $this->add('text', 'city', ts('Gemeente'), array(), TRUE);
     $this->add('text', 'customer_vat', ts('BTW nummer'), array(), TRUE);
     $this->add('text', 'customer_reference', ts('Eigen referentie'), array(), FALSE);
-    $this->add('text', 'customer_procedure_email_results', ts('Emailadres voor resultaten'), array(), FALSE);
-    $this->add('text', 'org_level1', ts('Omschrijving niveau 1'), array(), FALSE);
-    $this->add('text', 'org_level2', ts('Omschrijving niveau 2'), array(), FALSE);
-    $this->add('text', 'org_level3', ts('Omschrijving niveau 3'), array(), FALSE);
+    $this->add('text', 'mcpk_email_resultaten', ts('Emailadres voor resultaten'), array(), FALSE);
+    $this->add('text', 'mio_niveau1', ts('Omschrijving niveau 1'), array(), FALSE);
+    $this->add('text', 'mio_niveau2', ts('Omschrijving niveau 2'), array(), FALSE);
+    $this->add('text', 'mio_niveau3', ts('Omschrijving niveau 3'), array(), FALSE);
     $this->addButtons(array(
       array('type' => 'next', 'name' => ts('Save'), 'isDefault' => true,),
       array('type' => 'cancel', 'name' => ts('Cancel')),
@@ -37,7 +37,7 @@ class CRM_Basis_Form_Klant extends CRM_Core_Form {
         $this->getElement('organization_name')->setValue($this->_data($this->_contactData,'organization_name'));
         $this->getElement('customer_vat')->setValue($this->_data($this->_contactData,'customer_vat'));
         $this->getElement('customer_reference')->setValue($this->_data($this->_contactData,'customer_reference'));
-        $this->getElement('customer_procedure_email_results')->setValue($this->_data($this->_contactData,'customer_procedure_email_results'));
+        $this->getElement('mcpk_email_resultaten')->setValue($this->_data($this->_contactData,'mcpk_email_resultaten'));
 
         // adresgegevens
         $this->getElement('supplemental_address_1')->setValue($this->_data($this->_addressData,'supplemental_address_1'));

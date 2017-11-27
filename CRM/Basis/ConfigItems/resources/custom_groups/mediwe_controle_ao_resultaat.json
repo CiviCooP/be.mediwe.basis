@@ -1,6 +1,6 @@
 {
-    "mediwe_control_ao_result":{
-    "name":"mediwe_control_ao_result",
+    "mediwe_controle_ao_resultaat":{
+    "name":"mediwe_controle_ao_resultaat",
     "title":"Medische controle AO: resultaat",
     "extends": "Activity",
     "extends_entity_column_value": ["400"],
@@ -10,25 +10,25 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
-        "control_ao_result_type": {
-          "name": "control_ao_type",
+        "mcar_soort_controle": {
+          "name": "mcar_soort_controle",
           "label": "Soort controle",
           "data_type": "String",
           "html_type": "Select",
-          "option_group": "mediwe_control_ao_type",
+          "option_group": "mediwe_type_controle_ao",
           "is_searchable": 0,
           "is_active": 1
         },
-        "control_ao_result_code": {
-          "name": "control_ao_result_code",
+        "mcar_persoon_aangeboden": {
+          "name": "mcar_persoon_aangeboden",
           "label": "Heeft de persoon zich aangeboden?",
           "data_type": "Boolean",
           "html_type": "Radio",
           "is_searchable": 0,
           "is_active": 1
         },
-        "control_result_ao_datetime": {
-          "name": "control_result_ao_datetime",
+        "mcar_datum_tijd": {
+          "name": "mcar_datum_tijd",
           "label": "Datum en uur",
           "data_type": "Date",
           "html_type": "Select",
@@ -36,8 +36,8 @@
           "is_searchable": 0,
           "is_active": 1
         },
-      "control_result_ao_datetime_accident": {
-        "name": "control_result_ao_datetime_accident",
+      "mcar_datum_ongeval": {
+        "name": "mcar_datum_ongeval",
         "label": "Datum ongeval",
         "data_type": "Date",
         "html_type": "Select",
@@ -45,104 +45,104 @@
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_description_accident": {
-        "name": "control_result_ao_description_accident",
+      "mcar_ongeval_beschrijving": {
+        "name": "mcar_ongeval_beschrijving",
         "label": "Beschrijving van het ongeval (werknemer)",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_injury_original": {
-        "name": "control_result_ao_injury_original",
+      "mcar_oorspronkelijke_letsels": {
+        "name": "mcar_oorspronkelijke_letsels",
         "label": "Oorspronkelijke letsels",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_injury_actual": {
-        "name": "control_result_ao_injury_actual",
+      "mcar_huidige_letsels": {
+        "name": "mcar_huidige_letsels",
         "label": "Huidige letsels",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_can_adapt_work": {
-        "name": "control_result_ao_can_adapt_work",
+      "mcar_aangepast_mogelijk": {
+        "name": "mcar_aangepast_mogelijk",
         "label": "Is aangepast werk mogelijk?",
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_adapt_work": {
-        "name": "control_result_ao_adapt_work",
+      "mcar_aangepast_werk": {
+        "name": "mcar_aangepast_werk",
         "label": "Aangepast werk",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_is_real": {
-        "name": "control_result_ao_is_real",
-        "label": "Reële gebeurenis",
+      "mcar_reele_gebeurtenis": {
+        "name": "mcar_reele_gebeurtenis",
+        "label": "Reële gebeurtenis",
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_is_sudden": {
-        "name": "control_result_ao_is_sudden",
+      "mcar_plotse_gebeurtenis": {
+        "name": "mcar_plotse_gebeurtenis",
         "label": "Plotse gebeurenis",
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_is_external_cause": {
-        "name": "control_result_ao_is_external_cause",
+      "mcar_externe_oorzaak": {
+        "name": "mcar_externe_oorzaak",
         "label": "Externe oorzaak",
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_is_causal_link": {
-        "name": "control_result_ao_is_causal_link",
+      "mcar_oorzakelijk_verband": {
+        "name": "mcar_oorzakelijk_verband",
         "label": "Oorzakelijk verband",
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_is_pre_existant_case": {
-        "name": "control_result_ao_is_pre_existant_case",
+      "mcar_voorafbestaande_toestand": {
+        "name": "mcar_voorafbestaande_toestand",
         "label": "Voorafbestaande toestand",
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_description_pre_existant_case": {
-        "name": "control_result_ao_description_pre_existant_case",
+      "mcar_voorafbestemde_beschrijving": {
+        "name": "mcar_voorafbestemde_beschrijving",
         "label": "Zo ja: omschrijving:",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_two_accepted_percentage": {
-        "name": "control_result_ao_two_accepted_percentage",
+      "mcar_aanvaard_percentage": {
+        "name": "mcar_aanvaard_percentage",
         "label": "Aanvaard % TWO",
         "data_type": "Int",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_two_accepted_date_begin": {
-        "name": "control_result_ao_two_accepted_date_begin",
+      "mcar_aanvaard_vanaf": {
+        "name": "mcar_aanvaard_vanaf",
         "label": "Aanvaard vanaf",
         "data_type": "Date",
         "html_type": "Select",
@@ -150,8 +150,8 @@
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_two_accepted_date_end": {
-        "name": "control_result_ao_two_accepted_date_end",
+      "mcar_aanvaard_tot": {
+        "name": "mcar_aanvaard_tot",
         "label": "Aanvaard tot",
         "data_type": "Date",
         "html_type": "Select",
@@ -159,16 +159,16 @@
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_two_foreseen_percentage": {
-        "name": "control_result_ao_two_foreseen_percentage",
+      "mcar_voorzien_percentage": {
+        "name": "mcar_voorzien_percentage",
         "label": "Voorziene % TWO",
         "data_type": "Int",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_two_foreseen_date_begin": {
-        "name": "control_result_ao_two_foreseen_date_begin",
+      "mcar_voorzien_vanaf": {
+        "name": "mcar_voorzien_vanaf",
         "label": "Voorzien vanaf",
         "data_type": "Date",
         "html_type": "Select",
@@ -176,8 +176,8 @@
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_two_foreseen_date_end": {
-        "name": "control_result_ao_two_foreseen_date_end",
+      "mcar_voorzien_tot": {
+        "name": "mcar_voorzien_tot",
         "label": "Voorzien tot",
         "data_type": "Date",
         "html_type": "Select",
@@ -185,8 +185,8 @@
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_date_resume_work": {
-        "name": "control_result_ao_date_resume_work",
+      "mcar_arbeidsgeschikt_vanaf": {
+        "name": "mcar_arbeidsgeschikt_vanaf",
         "label": "Arbeidsgeschikt vanaf",
         "data_type": "Date",
         "html_type": "Select",
@@ -194,8 +194,8 @@
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_foreseen_date_resume_work": {
-        "name": "control_result_ao_foreseen_date_resume_work",
+      "mcar_voorziene_werkhervatting": {
+        "name": "mcar_voorziene_werkhervatting",
         "label": "Voorziene werkhervatting",
         "data_type": "Date",
         "html_type": "Select",
@@ -203,8 +203,8 @@
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_imposed_date_resume_work": {
-        "name": "control_result_ao_imposed_date_resume_work",
+      "mcar_opgelegde_werkhervatting": {
+        "name": "mcar_opgelegde_werkhervatting",
         "label": "Opgelegde werkhervatting",
         "data_type": "Date",
         "html_type": "Select",
@@ -212,8 +212,8 @@
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result_ao_is_extension_excluded": {
-        "name": "control_result_ao_is_extension_excluded",
+      "mcar_verlenging_uitgesloten": {
+        "name": "mcar_verlenging_uitgesloten",
         "label": "Verlenging is uitgesloten",
         "data_type": "Boolean",
         "html_type": "Radio",

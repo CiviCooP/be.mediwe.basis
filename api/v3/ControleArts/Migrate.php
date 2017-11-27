@@ -8,7 +8,7 @@
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
-function _civicrm_api3_controle_arts_migrate_spec(&$spec) {
+function _civicrm_api3_controle_arts_Migrate_spec(&$spec) {
   //$spec['organization_name']['api.required'] = 1;
 }
 
@@ -21,7 +21,7 @@ function _civicrm_api3_controle_arts_migrate_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function _civicrm_api3_controle_arts_migrate($params) {
+function civicrm_api3_controle_arts_Migrate($params) {
   $ControleArts = new CRM_Basis_ControleArts();
   $returnValues = $ControleArts->migrate($params);
   return civicrm_api3_create_success($returnValues, $params, 'ControleArts', 'Migrate');

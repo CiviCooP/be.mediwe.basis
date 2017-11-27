@@ -1,6 +1,6 @@
 {
-    "mijnmediwe_conditions":{
-    "name":"mijnmediwe_conditions",
+    "mijnmediwe_voorwaarden":{
+    "name":"mijnmediwe_voorwaarden",
     "title":"Voorwaarden Mijn Mediwe platform",
     "extends": "Membership",
     "extends_entity_column_value": ["2"],
@@ -10,8 +10,8 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
-        "mijnmediwe_conditions_price": {
-           "name": "mijnmediwe_conditions_price",
+        "mmv_prijs_per_jaar": {
+           "name": "mmv_prijs_per_jaar",
            "label": "Prijs per jaar",
            "data_type": "Money",
            "html_type": "Text",
@@ -21,8 +21,8 @@
            "is_required": 1,
            "weight": 32
          },
-        "mijnmediwe_conditions_own_reference": {
-           "name": "mijnmediwe_conditions_own_reference",
+        "mmv_eigen_referentie": {
+           "name": "mmv_eigen_referentie",
            "label": "Eigen referentie",
            "data_type": "String",
            "html_type": "Text",
@@ -32,8 +32,8 @@
            "is_required": 0,
            "weight": 104
          },
-        "mijnmediwe_conditions_index": {
-           "name": "mijnmediwe_conditions_index",
+        "mmv_gezondheidsindex": {
+           "name": "mmv_gezondheidsindex",
            "label": "Gezondheidsindex",
            "data_type": "Float",
            "html_type": "Text",
@@ -43,8 +43,8 @@
            "is_required": 0,
            "weight": 117
          },
-        "mijnmediwe_conditions_vat": {
-           "name": "mijnmediwe_conditions_vat",
+        "mmv_btw_percentage": {
+           "name": "mmv_btw_percentage",
            "label": "BTW %",
            "data_type": "Float",
            "html_type": "Text",

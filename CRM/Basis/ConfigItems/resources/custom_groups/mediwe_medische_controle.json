@@ -1,6 +1,6 @@
 {
-    "mediwe_control":{
-    "name":"mediwe_control",
+    "mediwe_medische_controle":{
+    "name":"mediwe_medische_controle",
     "title":"Medische controle",
     "extends": "Case",
     "extends_entity_column_value": ["4"],
@@ -10,8 +10,8 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
-         "mediwe_ziekte_id": {
-           "name": "mediwe_ziekte_id",
+         "mmc_ziekte_id": {
+           "name": "mmc_ziekte_id",
            "label": "Ziekteperiode ID",
            "data_type": "Int",
            "html_type": "Text",
@@ -22,8 +22,8 @@
 
            "in_selector": "0"
          },
-      "control_date": {
-        "name": "control_date",
+      "mmc_controle_datum": {
+        "name": "mmc_controle_datum",
         "label": "Controledatum",
         "data_type": "Date",
         "html_type": "Select Date",
@@ -32,123 +32,123 @@
         "is_active": 1,
         "is_required": 0
       },
-      "control_reason": {
-        "name": "control_reason",
+      "mmc_reden_ziekte_kort": {
+        "name": "mmc_reden_ziekte_kort",
         "label": "Reden",
         "data_type": "String",
         "html_type": "Select",
-        "option_group": "reason_illness_short",
+        "option_group": "mediwe_reden_ziekte_kort",
         "is_searchable": 1,
         "is_active": 1,
         "is_required": 0
       },
-      "control_type": {
-        "name": "control_type",
+      "mmc_type_controle": {
+        "name": "mmc_type_controle",
         "label": "Type controle",
         "data_type": "Int",
         "html_type": "Select",
-        "option_group": "mediwe_control_type",
+        "option_group": "mediwe_soort_controle",
         "is_searchable": 0,
         "is_active": 1
       },
-        "control_km": {
-          "name": "control_km",
+        "mmc_afstand_km": {
+          "name": "mmc_afstand_km",
           "label": "Afstand km",
           "data_type": "Float",
           "html_type": "Text",
           "is_searchable": 0,
           "is_active": 1
         },
-        "control_time": {
-          "name": "control_time",
+        "mmc_afstand_tijd": {
+          "name": "mmc_afstand_tijd",
           "label": "Afstand tijd",
           "data_type": "String",
           "html_type": "Text",
           "is_searchable": 0,
           "is_active": 1
         },
-      "control_job_description": {
-        "name": "control_job_description",
+      "mmc_job_beschrijving": {
+        "name": "mmc_job_beschrijving",
         "label": "Job omschrijving",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_info_mediwe": {
-        "name": "control_info_mediwe",
+      "mmc_opmerking_mediwe": {
+        "name": "mmc_opmerking_mediwe",
         "label": "Opmerking voor Mediwe",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_info_controlearts": {
-        "name": "control_info_controlearts",
+      "mmc_opmerking_controlearts": {
+        "name": "mmc_opmerking_controlearts",
         "label": "Opmerking voor de controlearts",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_info_is_public": {
-        "name": "control_info_is_public",
+      "mmc_info_delen_patient": {
+        "name": "mmc_info_delen_patient",
         "label": "Mag deze info gedeeld worden met de patiënt?",
         "data_type": "Boolean",
         "html_type": "Radio",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_criterium": {
-        "name": "control_criterium",
+      "mmc_controle_criterium": {
+        "name": "mmc_controle_criterium",
         "label": "Criterium",
         "data_type": "Int",
         "html_type": "Select",
-        "option_group": "mediwe_control_criterium",
+        "option_group": "mediwe_controle_criterium",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_name_contact": {
-        "name": "control_name_contact",
+      "mmc_naam_contactpersoon": {
+        "name": "mmc_naam_contactpersoon",
         "label": "Naam contactpersoon",
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_name_requestor": {
-        "name": "control_name_requestor",
+      "mmc_naam_aanvrager": {
+        "name": "mmc_naam_aanvrager",
         "label": "Naam aanvrager",
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_phone_contact": {
-        "name": "control_phone_contact",
+      "mmc_telefoon_contactpersoon": {
+        "name": "mmc_telefoon_contactpersoon",
         "label": "Telefoon contactpersoon",
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_email_contact1": {
-        "name": "control_email_contact1",
+      "mmc_email1_contactpersoon": {
+        "name": "mmc_email1_contactpersoon",
         "label": "E-mail contactpersoon (1)",
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_email_contact2": {
-        "name": "control_email_contact2",
+      "mmc_email2_contactpersoon": {
+        "name": "mmc_email2_contactpersoon",
         "label": "E-mail contactpersoon (2)",
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_email_contact3": {
+      "mmc_email3_contactpersoon": {
         "name": "control_email_contact3",
         "label": "E-mail contactpersoon (3)",
         "data_type": "String",
@@ -156,76 +156,76 @@
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_email_result1": {
-        "name": "control_email_result1",
+      "mmc_result_email1": {
+        "name": "mmc_result_email1",
         "label": "E-mail resultaat (1)",
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_email_result2": {
-        "name": "control_email_result2",
+      "mmc_result_email2": {
+        "name": "mmc_result_email2",
         "label": "E-mail resultaat (2)",
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_email_result3": {
-        "name": "control_email_result3",
+      "mmc_result_email3": {
+        "name": "mmc_result_email3",
         "label": "E-mail resultaat (3)",
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_purchase_price": {
-        "name": "control_purchase_price",
+      "mmc_aankoop_prijs_arts": {
+        "name": "mmc_aankoop_prijs_arts",
         "label": "Aankoop prijs (arts)",
         "data_type": "Money",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_purchase_supplement": {
-        "name": "control_purchase_supplement",
+      "mmc_aankoop_supplement_arts": {
+        "name": "mmc_aankoop_supplement_arts",
         "label": "Aankoop supplement voor de arts",
         "data_type": "Money",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_selling_price": {
-        "name": "control_selling_price",
+      "mmc_verkoop_prijs_klant": {
+        "name": "mmc_verkoop_prijs_klant",
         "label": "Verkoop prijs (klant)",
         "data_type": "Money",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_selling_discount": {
-        "name": "control_selling_discount",
+      "mmc_verkoop_korting_klant": {
+        "name": "mmc_verkoop_korting_klant",
         "label": "Verkoop korting klant",
         "data_type": "Money",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_purchase_order": {
-        "name": "control_purchase_order",
+      "mmc_po_nummer_klant": {
+        "name": "mmc_po_nummer_klant",
         "label": "PO nummer klant",
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 0,
         "is_active": 1
       },
-      "control_result": {
-        "name": "control_result",
+      "mmc_resultaat": {
+        "name": "mmc_resultaat",
         "label": "Resultaat",
         "data_type": "String",
         "html_type": "Select",
-        "option_group": "mediwe_control_result",
+        "option_group": "mediwe_controle_resultaat",
         "is_searchable": 0,
         "is_active": 1
       }

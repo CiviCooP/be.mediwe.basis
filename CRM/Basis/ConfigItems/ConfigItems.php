@@ -7,7 +7,8 @@
  * @date 31 May 2017
  * @license AGPL-3.0
  */
-class CRM_Basis_ConfigItems_ConfigItems {
+class CRM_Basis_ConfigItems_ConfigItems
+{
 
   private static $_singleton;
 
@@ -17,14 +18,15 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * CRM_Basis_ConfigItems_ConfigItems constructor.
    */
-  function __construct() {
+  function __construct()
+  {
     // Get the directory of the extension based on the name.
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $resourcesPath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/';
+    $resourcesPath = $container->getPath('be.mediwe.basis') . '/CRM/Basis/ConfigItems/resources/';
     if (!is_dir($resourcesPath) || !file_exists($resourcesPath)) {
-      throw new Exception(ts('Could not find the folder '.$resourcesPath
-        .' which is required for extension be.mediwe.basis in '.__METHOD__
-        .'.It does not exist or is not a folder, contact your system administrator'));
+      throw new Exception(ts('Could not find the folder ' . $resourcesPath
+        . ' which is required for extension be.mediwe.basis in ' . __METHOD__
+        . '.It does not exist or is not a folder, contact your system administrator'));
     }
     $this->_resourcesPath = $resourcesPath;
 
@@ -32,12 +34,12 @@ class CRM_Basis_ConfigItems_ConfigItems {
     $this->setRelationshipTypes();
     $this->setMembershipTypes();
     $this->setOptionGroups();
-    
+
     $this->setActivityTypes();
 
-    // cases after load activities
-    //$this->setCaseTypes();
-      
+    // cases after load activity and relationship types as some will be required for the case types
+    $this->setCaseTypes();
+
     // customData as last one because it might need one of the previous ones (option group, relationship types, activity types)
     $this->setCustomData();
   }
@@ -49,7 +51,8 @@ class CRM_Basis_ConfigItems_ConfigItems {
    * @access public
    * @static
    */
-  public static function singleton() {
+  public static function singleton()
+  {
     if (!self::$_singleton) {
       self::$_singleton = new CRM_Basis_ConfigItems_ConfigItems();
     }
@@ -62,8 +65,9 @@ class CRM_Basis_ConfigItems_ConfigItems {
    * @throws Exception when resource file not found
    * @access protected
    */
-  protected function setOptionGroups() {
-    $jsonFile = $this->_resourcesPath.'option_groups.json';
+  protected function setOptionGroups()
+  {
+    $jsonFile = $this->_resourcesPath . 'option_groups.json';
     if (!file_exists($jsonFile)) {
       throw new Exception(ts('Could not load option_groups configuration file for extension,
       contact your system administrator!'));
@@ -82,8 +86,9 @@ class CRM_Basis_ConfigItems_ConfigItems {
    * @throws Exception when resource file not found
    * @access protected
    */
-  protected function setContactTypes() {
-    $jsonFile = $this->_resourcesPath.'contact_types.json';
+  protected function setContactTypes()
+  {
+    $jsonFile = $this->_resourcesPath . 'contact_types.json';
     if (!file_exists($jsonFile)) {
       throw new Exception(ts('Could not load contact_types configuration file for extension,
       contact your system administrator!'));
@@ -96,213 +101,119 @@ class CRM_Basis_ConfigItems_ConfigItems {
     }
   }
 
-    /**
-     * Method to create relationship types
-     *
-     * @throws Exception when resource file not found
-     * @access protected
-     */
-    protected function setRelationshipTypes() {
-        $jsonFile = $this->_resourcesPath.'relationship_types.json';
-        if (!file_exists($jsonFile)) {
-            throw new Exception(ts('Could not load relationship_types configuration file for extension, 
+  /**
+   * Method to create relationship types
+   *
+   * @throws Exception when resource file not found
+   * @access protected
+   */
+  protected function setRelationshipTypes()
+  {
+    $jsonFile = $this->_resourcesPath . 'relationship_types.json';
+    if (!file_exists($jsonFile)) {
+      throw new Exception(ts('Could not load relationship_types configuration file for extension, 
             contact your system administrator!'));
-        }
-        $relationshipTypesJson = file_get_contents($jsonFile);
-        $relationshipTypes = json_decode($relationshipTypesJson, true);
-        $relationshipType = new CRM_Basis_ConfigItems_RelationshipType();
+    }
+    $relationshipTypesJson = file_get_contents($jsonFile);
+    $relationshipTypes = json_decode($relationshipTypesJson, true);
+    $relationshipType = new CRM_Basis_ConfigItems_RelationshipType();
 
-        foreach ($relationshipTypes as $name => $relationshipTypeParams) {
-            $relationshipType->create($relationshipTypeParams);
-        }
-
-        $relationshipType->disableRelationshipType("Child of");
-        $relationshipType->disableRelationshipType("Spouse of");
-        $relationshipType->disableRelationshipType("Sibling of");
-        $relationshipType->disableRelationshipType("Volunteer for");
-        $relationshipType->disableRelationshipType("Head of Household for");
-        $relationshipType->disableRelationshipType("Household Member of");
-        $relationshipType->disableRelationshipType("Homeless Services Coordinator is");
-        $relationshipType->disableRelationshipType("Health Services Coordinator is");
-        $relationshipType->disableRelationshipType("Senior Services Coordinator is");
-        $relationshipType->disableRelationshipType("Benefits Specialist is");
+    foreach ($relationshipTypes as $name => $relationshipTypeParams) {
+      $relationshipType->create($relationshipTypeParams);
     }
 
-    /**
-     * Method to create activity types
-     *
-     * @throws Exception when resource file not found
-     * @access protected
-     */
-    protected function setActivityTypes() {
-        $jsonFile = $this->_resourcesPath.'activity_types.json';
-        if (!file_exists($jsonFile)) {
-            throw new Exception(ts('Could not load activity_types configuration file for extension,
+    // disable core relationship types that are not required
+    $relationshipType->disableRelationshipType("Child of");
+    $relationshipType->disableRelationshipType("Spouse of");
+    $relationshipType->disableRelationshipType("Sibling of");
+    $relationshipType->disableRelationshipType("Volunteer for");
+    $relationshipType->disableRelationshipType("Head of Household for");
+    $relationshipType->disableRelationshipType("Household Member of");
+    $relationshipType->disableRelationshipType("Homeless Services Coordinator is");
+    $relationshipType->disableRelationshipType("Health Services Coordinator is");
+    $relationshipType->disableRelationshipType("Senior Services Coordinator is");
+    $relationshipType->disableRelationshipType("Benefits Specialist is");
+  }
+
+  /**
+   * Method to create activity types
+   *
+   * @throws Exception when resource file not found
+   * @access protected
+   */
+  protected function setActivityTypes()
+  {
+    $jsonFile = $this->_resourcesPath . 'activity_types.json';
+    if (!file_exists($jsonFile)) {
+      throw new Exception(ts('Could not load activity_types configuration file for extension,
       activity your system administrator!'));
-        }
-        $activityTypesJson = file_get_contents($jsonFile);
-        $activityTypes = json_decode($activityTypesJson, true);
-        foreach ($activityTypes as $name => $activityTypeParams) {
-            $activityType = new CRM_Basis_ConfigItems_ActivityType();
-            $activityType->create($activityTypeParams);
-        }
     }
-
-    /**
-     * Method to create case types
-     *
-     * @throws Exception when resource file not found
-     * @access protected
-     */
-    protected function setCaseTypes() {
-
-        /* Dit werkt niet
-        $jsonFile = $this->_resourcesPath.'case_types.json';
-        if (!file_exists($jsonFile)) {
-            throw new Exception(ts('Could not load case_types configuration file for extension,
-      case your system administrator!'));
-        }
-        $caseTypesJson = file_get_contents($jsonFile);
-        $caseTypes = json_decode($caseTypesJson, true);
-        foreach ($caseTypes as $name => $caseTypeParams) {
-            $caseType = new CRM_Basis_ConfigItems_CaseType();
-            $caseType->create($caseTypeParams);
-        }
-        */
-
-        // workaround
-        $xml1 = "<?xml version=\"1.0\" encoding=\"utf - 8\" ?>
-                        
-                        <CaseType>
-                            <name>dossier_ziektemelding</name>
-                            <ActivityTypes>
-                                <ActivityType>
-                                    <name>Open Case</name>
-                                    <max_instances>1</max_instances>
-                                </ActivityType>
-                                <ActivityType>
-                                    <name>mediwe_ziekteattest</name>
-                                    <max_instances>1</max_instances>
-                                </ActivityType>
-                            </ActivityTypes>
-                            <ActivitySets>
-                                <ActivitySet>
-                                    <name>standard_timeline</name>
-                                    <label>Standard Timeline</label>
-                                    <timeline>true</timeline>
-                                    <ActivityTypes>
-                                            <ActivityType>
-                                                <name>Open Case</name>
-                                                <status>Completed</status>
-                                            </ActivityType>
-                                    </ActivityTypes>
-                                </ActivitySet>
-                            </ActivitySets>
-                            <CaseRoles>
-                                <RelationshipType>
-                                    <name>Case Coordinator</name>
-                                    <creator>1</creator>
-                                    <manager>1</manager>
-                                 </RelationshipType>
-                            </CaseRoles>
-                        </CaseType>
-                        ";
-        $sql1 = "insert  into 
-                    civicrm_case_type (id,name,title,description,is_active,is_reserved,weight,definition) 
-                 values 
-                    (3,'dossier_ziektemelding','Dossier Ziektemelding',NULL,1,NULL,1,'$xml1');";
-        $xml2 = "<?xml version=\"1.0\" encoding=\"utf - 8\" ?>
-                        
-                        <CaseType>
-                            <name>dossier_ziektemelding</name>
-                            <ActivityTypes>
-                                <ActivityType>
-                                    <name>Open Case</name>
-                                    <max_instances>1</max_instances>
-                                </ActivityType>
-                                <ActivityType>
-                                    <name>mediwe_huisbezoek</name>
-                                    <max_instances>2</max_instances>
-                                </ActivityType>
-                                <ActivityType>
-                                    <name>mediwe_convocatie</name>
-                                    <max_instances>2</max_instances>
-                                </ActivityType>
-                                <ActivityType>
-                                    <name>mediwe_onderzoek_ao</name>
-                                    <max_instances>1</max_instances>
-                                </ActivityType>
-                            </ActivityTypes>
-                            <ActivitySets>
-                                <ActivitySet>
-                                    <name>standard_timeline</name>
-                                    <label>Standard Timeline</label>
-                                    <timeline>true</timeline>
-                                    <ActivityTypes>
-                                            <ActivityType>
-                                                <name>Open Case</name>
-                                                <status>Completed</status>
-                                            </ActivityType>
-                                    </ActivityTypes>
-                                </ActivitySet>
-                            </ActivitySets>
-                            <CaseRoles>
-                                <RelationshipType>
-                                    <name>Case Coordinator</name>
-                                    <creator>1</creator>
-                                    <manager>1</manager>
-                                 </RelationshipType>
-                                 <RelationshipType>
-		                            <name>onderzocht_door_controlearts</name>
-		                            <creator>0>/creator>
-		                            <manager>0</manager>
-	                             </RelationshipType>
-                            </CaseRoles>
-                        </CaseType>
-                        ";
-        $sql2 = "insert  into 
-                    civicrm_case_type
-                      (id,name,title,description,is_active,is_reserved,weight,definition) 
-                      values 
-                      (4,'dossier_medische_controle','Dossier Medische Controle',NULL,1,NULL,1,'$xml2');
-                  ";
-        CRM_Core_DAO::executeQuery($sql1);
-        CRM_Core_DAO::executeQuery($sql2);
+    $activityTypesJson = file_get_contents($jsonFile);
+    $activityTypes = json_decode($activityTypesJson, true);
+    foreach ($activityTypes as $name => $activityTypeParams) {
+      $activityType = new CRM_Basis_ConfigItems_ActivityType();
+      $activityType->create($activityTypeParams);
     }
+  }
+
+  /**
+   * Method to create case types
+   *
+   * @throws Exception when resource file not found
+   * @access protected
+   */
+  protected function setCaseTypes()
+  {
+    $jsonFile = $this->_resourcesPath . 'case_types.json';
+    if (!file_exists($jsonFile)) {
+      throw new Exception(ts('Could not load case_types configuration file for extension,
+          case your system administrator!'));
+    }
+    $caseTypesJson = file_get_contents($jsonFile);
+    $caseTypes = json_decode($caseTypesJson, true);
+    foreach ($caseTypes as $name => $caseTypeParams) {
+      //todo ERIK HOMMEL add xml file to caseTypeParams
+      $caseTypeParams['xml'] = $this->getCaseXML($caseTypeParams['case_type_name']);
+      $caseType = new CRM_Basis_ConfigItems_CaseType();
+      $caseType->create($caseTypeParams);
+    }
+  }
 
 
-    /**
-     * Method to create membership types
-     *
-     * @throws Exception when resource file not found
-     * @access protected
-     */
-    protected function setMembershipTypes() {
-        $jsonFile = $this->_resourcesPath.'membership_types.json';
-        if (!file_exists($jsonFile)) {
-            throw new Exception(ts('Could not load contact_types configuration file for extension,
+  /**
+   * Method to create membership types
+   *
+   * @throws Exception when resource file not found
+   * @access protected
+   */
+  protected function setMembershipTypes()
+  {
+    $jsonFile = $this->_resourcesPath . 'membership_types.json';
+    if (!file_exists($jsonFile)) {
+      throw new Exception(ts('Could not load contact_types configuration file for extension,
       contact your system administrator!'));
-        }
-        $membershipTypesJson = file_get_contents($jsonFile);
-        $membershipTypes = json_decode($membershipTypesJson, true);
-        foreach ($membershipTypes as $name => $membershipTypeParams) {
-            $membershipType = new CRM_Basis_ConfigItems_MembershipType();
-            $membershipType->create($membershipTypeParams);
-        }
     }
-    
+    $membershipTypesJson = file_get_contents($jsonFile);
+    $membershipTypes = json_decode($membershipTypesJson, true);
+    foreach ($membershipTypes as $name => $membershipTypeParams) {
+      $membershipType = new CRM_Basis_ConfigItems_MembershipType();
+      $membershipType->create($membershipTypeParams);
+    }
+  }
+
   /**
    * Method to set the custom data groups and fields
    *
    * @throws Exception when config json could not be loaded
    * @access protected
    */
-  protected function setCustomData() {
+  protected function setCustomData()
+  {
     // read all json files from custom_groups dir
-    $customDataPath = $this->_resourcesPath.'custom_groups';
+    $customDataPath = $this->_resourcesPath . 'custom_groups';
     if (file_exists($customDataPath) && is_dir($customDataPath)) {
       // get all json files from dir
-      $jsonFiles = glob($customDataPath.DIRECTORY_SEPARATOR. "*.json");
+      $jsonFiles = glob($customDataPath . DIRECTORY_SEPARATOR . "*.json");
       foreach ($jsonFiles as $customDataFile) {
         $customDataJson = file_get_contents($customDataFile);
         $customData = json_decode($customDataJson, true);
@@ -324,7 +235,8 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * Method to disable configuration items
    */
-  public static function disable() {
+  public static function disable()
+  {
     self::disableCustomData();
     self::disableOptionGroups();
     self::disableContactTypes();
@@ -334,7 +246,8 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * Method to enable configuration items
    */
-  public static function enable() {
+  public static function enable()
+  {
     self::enableCustomData();
     self::enableOptionGroups();
     self::enableContactTypes();
@@ -344,7 +257,8 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * Method to uninstall configuration items
    */
-  public static function uninstall() {
+  public static function uninstall()
+  {
     self::uninstallCustomData();
     self::uninstallOptionGroups();
     self::uninstallContactTypes();
@@ -353,13 +267,14 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * Method to uninstall custom data
    */
-  private static function uninstallCustomData() {
+  private static function uninstallCustomData()
+  {
     // read all json files from custom_groups dir
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $customDataPath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/custom_groups';
+    $customDataPath = $container->getPath('be.mediwe.basis') . '/CRM/Basis/ConfigItems/resources/custom_groups';
     if (file_exists($customDataPath) && is_dir($customDataPath)) {
       // get all json files from dir
-      $jsonFiles = glob($customDataPath.DIRECTORY_SEPARATOR. "*.json");
+      $jsonFiles = glob($customDataPath . DIRECTORY_SEPARATOR . "*.json");
       foreach ($jsonFiles as $customDataFile) {
         $customDataJson = file_get_contents($customDataFile);
         $customData = json_decode($customDataJson, true);
@@ -374,13 +289,14 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * Method to enable custom data
    */
-  private static function enableCustomData() {
+  private static function enableCustomData()
+  {
     // read all json files from custom_groups dir
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $customDataPath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/custom_groups';
+    $customDataPath = $container->getPath('be.mediwe.basis') . '/CRM/Basis/ConfigItems/resources/custom_groups';
     if (file_exists($customDataPath) && is_dir($customDataPath)) {
       // get all json files from dir
-      $jsonFiles = glob($customDataPath.DIRECTORY_SEPARATOR. "*.json");
+      $jsonFiles = glob($customDataPath . DIRECTORY_SEPARATOR . "*.json");
       foreach ($jsonFiles as $customDataFile) {
         $customDataJson = file_get_contents($customDataFile);
         $customData = json_decode($customDataJson, true);
@@ -395,13 +311,14 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * Method to disable custom data
    */
-  private static function disableCustomData() {
+  private static function disableCustomData()
+  {
     // read all json files from custom_groups dir
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $customDataPath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/custom_groups';
+    $customDataPath = $container->getPath('be.mediwe.basis') . '/CRM/Basis/ConfigItems/resources/custom_groups';
     if (file_exists($customDataPath) && is_dir($customDataPath)) {
       // get all json files from dir
-      $jsonFiles = glob($customDataPath.DIRECTORY_SEPARATOR. "*.json");
+      $jsonFiles = glob($customDataPath . DIRECTORY_SEPARATOR . "*.json");
       foreach ($jsonFiles as $customDataFile) {
         $customDataJson = file_get_contents($customDataFile);
         $customData = json_decode($customDataJson, true);
@@ -416,11 +333,12 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * Method to disable option groups
    */
-  private static function disableOptionGroups() {
+  private static function disableOptionGroups()
+  {
     // read all json files from dir
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $resourcePath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/';
-    $jsonFile = $resourcePath.'option_groups.json';
+    $resourcePath = $container->getPath('be.mediwe.basis') . '/CRM/Basis/ConfigItems/resources/';
+    $jsonFile = $resourcePath . 'option_groups.json';
     if (file_exists($jsonFile)) {
       $optionGroupsJson = file_get_contents($jsonFile);
       $optionGroups = json_decode($optionGroupsJson, true);
@@ -434,11 +352,12 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * Method to disable contact types
    */
-  private static function disableContactTypes() {
+  private static function disableContactTypes()
+  {
     // read all json files from dir
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $resourcePath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/';
-    $jsonFile = $resourcePath.'contact_types.json';
+    $resourcePath = $container->getPath('be.mediwe.basis') . '/CRM/Basis/ConfigItems/resources/';
+    $jsonFile = $resourcePath . 'contact_types.json';
     if (file_exists($jsonFile)) {
       $contactTypesJson = file_get_contents($jsonFile);
       $contactTypes = json_decode($contactTypesJson, true);
@@ -452,11 +371,12 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * Method to enable contact types
    */
-  private static function enableContactTypes() {
+  private static function enableContactTypes()
+  {
     // read all json files from dir
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $resourcePath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/';
-    $jsonFile = $resourcePath.'contact_types.json';
+    $resourcePath = $container->getPath('be.mediwe.basis') . '/CRM/Basis/ConfigItems/resources/';
+    $jsonFile = $resourcePath . 'contact_types.json';
     if (file_exists($jsonFile)) {
       $contactTypesJson = file_get_contents($jsonFile);
       $contactTypes = json_decode($contactTypesJson, true);
@@ -470,11 +390,12 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * Method to uninstall contact types
    */
-  private static function uninstallContactTypes() {
+  private static function uninstallContactTypes()
+  {
     // read all json files from dir
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $resourcePath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/';
-    $jsonFile = $resourcePath.'contact_types.json';
+    $resourcePath = $container->getPath('be.mediwe.basis') . '/CRM/Basis/ConfigItems/resources/';
+    $jsonFile = $resourcePath . 'contact_types.json';
     if (file_exists($jsonFile)) {
       $contactTypesJson = file_get_contents($jsonFile);
       $contactTypes = json_decode($contactTypesJson, true);
@@ -488,11 +409,12 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * Method to enable option groups
    */
-  private static function enableOptionGroups() {
+  private static function enableOptionGroups()
+  {
     // read all json files from dir
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $resourcePath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/';
-    $jsonFile = $resourcePath.'option_groups.json';
+    $resourcePath = $container->getPath('be.mediwe.basis') . '/CRM/Basis/ConfigItems/resources/';
+    $jsonFile = $resourcePath . 'option_groups.json';
     if (file_exists($jsonFile)) {
       $optionGroupsJson = file_get_contents($jsonFile);
       $optionGroups = json_decode($optionGroupsJson, true);
@@ -506,11 +428,12 @@ class CRM_Basis_ConfigItems_ConfigItems {
   /**
    * Method to uninstall option groups
    */
-  private static function uninstallOptionGroups() {
+  private static function uninstallOptionGroups()
+  {
     // read all json files from dir
     $container = CRM_Extension_System::singleton()->getFullContainer();
-    $resourcePath = $container->getPath('be.mediwe.basis').'/CRM/Basis/ConfigItems/resources/';
-    $jsonFile = $resourcePath.'option_groups.json';
+    $resourcePath = $container->getPath('be.mediwe.basis') . '/CRM/Basis/ConfigItems/resources/';
+    $jsonFile = $resourcePath . 'option_groups.json';
     if (file_exists($jsonFile)) {
       $optionGroupsJson = file_get_contents($jsonFile);
       $optionGroups = json_decode($optionGroupsJson, true);
@@ -519,5 +442,18 @@ class CRM_Basis_ConfigItems_ConfigItems {
         $optionGroup->uninstall($name);
       }
     }
+  }
+
+  /**
+   * Method to get the XML data for a casetype
+   * @param $caseType
+   * @return bool|false|int
+   */
+  private function getCaseXML($caseType) {
+    $fileName = $this->_resourcesPath.$caseType.'.xml';
+    if (file_exists($fileName)) {
+      return readfile($fileName);
+    }
+    return FALSE;
   }
 }

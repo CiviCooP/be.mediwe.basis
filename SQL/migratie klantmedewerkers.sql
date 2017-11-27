@@ -33,7 +33,7 @@ SET p.contact_id = ct.id;
 
 -- Custom data
 INSERT INTO civicrm_value_medewerker_18 (entity_id, rijksregisternr_128, personeelsnummer_129, partner_130, niveau_1_131, niveau_2_code_132, niveau_2_133, niveau_3_134, functie_135, contract_137, contract_omschrijving_138, ploegensysteem_139, bezetting_140, kostenplaats_141, datum_in_dienst_142, datum_uit_dienst_143, opmerkingen_144, vrije_info_1_145, is_controlevrij_146, is_controlevrij_tot_147, controle_steeds_aangewezen_148, controle_steeds_aangewezen_tot_149)
-SELECT contact_id, employee_national_nbr, employee_personnel_nbr, employee_partner, employee_level1, employee_code_level2, employee_level2, employee_level3, employee_function, employee_contract, employee_contract_desc, employee_crew_system, employee_fte, employee_costcenter, employee_date_in, employee_date_out, employee_remarks, employee_free1, employee_is_free, employee_is_free_till, employee_is_blacklisted, employee_is_blacklisted_till 
+SELECT contact_id, mkm_rijksregister_nummer, mkm_personeelsnummer, mkm_partner, mkm_niveau1, mkm_code_niveau2, mkm_niveau2, mkm_niveau3, mkm_functie, mkm_contract, mkm_contract_omschrijving, mkm_ploegensysteem, mkm_bezetting, mkm_kostenplaats, mkm_datum_in_dienst, mkm_datum_uit_dienst, mkm_opmerkingen, mkm_vrij_veld1, mkm_is_controlevrij, mkm_controlevrij_tot, mkm_steeds_aangewezen, mkm_aangewezen_tot
 FROM mediwe_joomla.migratie_klantmedewerker
 WHERE contact_id > min_id;
 

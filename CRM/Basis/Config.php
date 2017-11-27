@@ -81,6 +81,10 @@ class CRM_Basis_Config {
   private $_ziekteMeldingRedenOptionGroup = array();
   private $_medischeControleCriteriumOptionGroup = array();
 
+  // properties voor migratie databases
+  private $_joomlaDbName = NULL;
+  private $_sourceCiviDbName = NULL;
+
   /**
    * CRM_Basis_Config constructor.
    */
@@ -100,8 +104,28 @@ class CRM_Basis_Config {
     $this->setCasesCustomGroups();
     
     $this->setCaseTypes();
+
+    $this->_joomlaDbName = "mediwe_joomla";
+    $this->_sourceCiviDbName = "mediwe_civicrm";
   }
 
+  /**
+   * Getter for Joomla DB name
+   *
+   * @return null|string
+   */
+  public function getJoomlaDbName() {
+    return $this->_joomlaDbName;
+  }
+
+  /**
+   * Getter for Source CiviCRM DB name
+   *
+   * @return null|string
+   */
+  public function getSourceCiviDbName() {
+    return $this->_sourceCiviDbName;
+  }
 
   /**
    * Method to retrieve custom field from custom group
@@ -333,8 +357,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getExpertSystemPeriodCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_period');
+    public function getExpertSysteemPeriodeCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'mes_periode');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -348,8 +372,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getExpertSystemPopulationCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_population');
+    public function getExpertSysteemPopulatieCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'mes_populatie');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -372,20 +396,6 @@ class CRM_Basis_Config {
         }
     }
 
-    /**
-     * Getter for Ziekteperiodes custom field from expertsysteem custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getExpertSystemPeriodsCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_periods');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
-    }
 
     /**
      * Getter for Ziekte_op_maandag custom field from expertsysteem custom group
@@ -575,7 +585,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getMedewerkerRijksregisterNrCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_national_nbr');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_rijksregister_nummer');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -590,7 +600,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getMedewerkerPersoneelsNummerCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_personnel_nbr');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_personeelsnummer');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -599,13 +609,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_partner custom field from medewerker custom group
+     * Getter for mkm_partner custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getMedewerkerPartnerCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_partner');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_partner');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -614,13 +624,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_level1 custom field from medewerker custom group
+     * Getter for mkm_niveau1 custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getMedewerkerLevel1CustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_level1');
+    public function getMedewerkerNiveau1CustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_niveau1');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -634,8 +644,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getMedewerkerLevel2rCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_level2');
+    public function getMedewerkerNiveau2CustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_niveau2');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -644,13 +654,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_level3 custom field from medewerker custom group
+     * Getter for mkm_niveau3 custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getMedewerkerLevel3CustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_level3');
+    public function getMedewerkerNiveau3CustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_niveau3');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -659,13 +669,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_code_level2 custom field from medewerker custom group
+     * Getter for mkm_code_niveau2 custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getMedewerkerLevel2CodeCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_code_level2');
+    public function getMedewerkerCodeNiveau2CustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_code_niveau2');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -674,13 +684,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_function custom field from medewerker custom group
+     * Getter for mkm_functie custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getMedewerkerFunctieCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_function');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_functie');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -689,13 +699,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_statute custom field from medewerker custom group
+     * Getter for mkm_statuut custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getMedewerkerStatuutCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_statute');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_statuut');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -704,13 +714,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_contract custom field from medewerker custom group
+     * Getter for mkm_contract custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getMedewerkerContractCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_contract');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_contract');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -719,13 +729,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_contract_desc custom field from medewerker custom group
+     * Getter for mkm_contract_omschrijving custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getMedewerkerSubContractCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_contract_desc');
+    public function getMedewerkerContractOmschrijvingCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_contract_omschrijving');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -734,13 +744,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_crew_system custom field from medewerker custom group
+     * Getter for mkm_ploegensysteem custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getMedewerkerPloegenSysteemCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_crew_system');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_ploegensysteem');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -749,13 +759,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_fte custom field from medewerker custom group
+     * Getter for mkm_bezetting field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getMedewerkerFTECustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_fte');
+    public function getMedewerkerBezettingCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_bezetting');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -764,13 +774,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_costcenter custom field from medewerker custom group
+     * Getter for mkm_kostenplaats custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getMedewerkerKostenplaatsCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_costcenter');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_kostenplaats');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -779,13 +789,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_date_in custom field from medewerker custom group
+     * Getter for mkm_datum_in_dienst custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getMedewerkerDatumInDienstCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_date_in');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_datum_in_dienst');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -794,13 +804,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_date_out custom field from medewerker custom group
+     * Getter for mkm_datum_uit_dienst custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getMedewerkerDatumUitDienstCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_date_out');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_datum_uit_dienst');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -809,13 +819,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_remarks custom field from medewerker custom group
+     * Getter for mkm_opmerkingen custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getMedewerkerOpmerkingenCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_remarks');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_opmerkingen');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -824,13 +834,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_free1 custom field from medewerker custom group
+     * Getter for mkm_vrij_veld1 custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getMedewerkerVrijVeld1CustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_free1');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_vrij_veld1');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -839,13 +849,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_is_free custom field from medewerker custom group
+     * Getter for mkm_is_controlevrij custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getMedewerkerIsControlevrijCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_is_free');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_is_controlevrij');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -854,13 +864,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_is_free_till custom field from medewerker custom group
+     * Getter for mkm_controlevrij_tot custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getMedewerkerIsControlevrijTotCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_is_free_till');
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_controlevrij_tot');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -869,13 +879,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_is_blacklisted custom field from medewerker custom group
+     * Getter for mkm_steeds_aangewezen custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getMedewerkerIsControleVerplichtCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_is_blacklisted');
+    public function getMedewerkerSteedsAangewezenCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_steeds_aangewezen');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -884,13 +894,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for employee_is_blacklisted_till custom field from medewerker custom group
+     * Getter for mkm_aangewezen_tot custom field from medewerker custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getMedewerkerIsControleVerplichtTotCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'employee_is_blacklisted_till');
+    public function getMedewerkerAangewezenTotCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_aangewezen_tot');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -906,7 +916,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getTellerZiekteOpMaandagCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerExpertsysteemTellersCustomGroup, 'periods_monday_count');
+        $customField = $this->getCustomField($this->_klantMedewerkerExpertsysteemTellersCustomGroup, 'mte_maandag_ziektes');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1000,7 +1010,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getArtsVeniceCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'supplier_venice');
+        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'leverancierle_venice');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1014,8 +1024,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsVatCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'supplier_vat');
+    public function getArtsBtwCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'leverancier_btw_nummer');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1029,8 +1039,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsSubjectToVatCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'supplier_subject_to_vat');
+    public function getArtsBtwPlichtigCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'leverancier_btw_plichtig');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1044,8 +1054,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsAccountCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'supplier_account');
+    public function getArtsIbanCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'leverancier_iban');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1059,8 +1069,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsEigenReferentieCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'supplier_reference');
+    public function getArtsBestelNummerCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'leverancier_bestelnummer');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1075,7 +1085,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getArtsCsvBestandBijFactuurCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'supplier_detail_csv');
+        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'leverancier_csv_toevoegen');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1090,8 +1100,9 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
+    // todo ERIK HOMMEL Huh? Ik heb toch maar 1 leverancier custom group? Waarom dan meerdere keren hier de venice ophalen? En ook de VAT????
     public function getInspecteurVeniceCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'supplier_venice');
+        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'leverancier_venice');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1105,8 +1116,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getInspecteurVatCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'supplier_vat');
+    public function getInspecteurBtwNummerCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'leverancier_btw_nummer');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1120,8 +1131,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getInspecteurSubjectToVatCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'supplier_subject_to_vat');
+    public function getInspecteurBtwPlichtigCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'leverancier_btw_plichtig');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1135,8 +1146,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getInspecteurAccountCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'supplier_account');
+    public function getInspecteurIbanCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'leverancier_iban');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1150,8 +1161,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getInspecteurEigenReferentieCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'supplier_reference');
+    public function getInspecteurBestelNummerCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'leverancier_bestel_nummer');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1166,7 +1177,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getInspecteurCsvBestandBijFactuurCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'supplier_detail_csv');
+        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'leverancier_csv_toevoegen');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1181,7 +1192,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getOrgLevel1CustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'org_level1');
+        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_niveau1');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1196,7 +1207,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getOrgLevel2CustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'org_level2');
+        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_niveau2');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1211,7 +1222,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getOrgLevel3CustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'org_level3');
+        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_niveau3');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1225,8 +1236,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getOrgApprovalEmailCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'org_approval_email');
+    public function getOrgEmailGoedkeuringCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_email_goedkeuring');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1240,8 +1251,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getOrgApprovalTitleCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'org_approval_title');
+    public function getOrgAansprekingGoedkeuringCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_aanspreking_goedkeuring');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1255,8 +1266,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getOrgShortPeriodCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'org_short_period');
+    public function getOrgMaxKortCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_max_dagen_kort');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1270,8 +1281,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getOrgMonthsNewEmployeeCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'org_months_new_employee');
+    public function getOrgMaxMaandenNieuwCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_max_maanden_nieuw');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1285,8 +1296,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getCustomerProcedureRemarksCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'customer_procedure_remarks');
+    public function getKlantProcedureOpmerkingenCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_opmerkingen');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1301,8 +1312,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getCustomerProcedureFreeCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'customer_procedure_free');
+    public function getKlantProcedureVrijVeldCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_vrij_veld');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1316,8 +1327,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getCustomerProcedureSectorCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'customer_procedure_sector');
+    public function getKlantProcedureSectorCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_sector_omschrijving');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1331,8 +1342,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getCustomerProcedureIdSectorCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'customer_procedure_id_sector');
+    public function getKlantProcedureSectorIdCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_sector_id');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1346,8 +1357,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getCustomerProcedureFteCalculationTypeCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'customer_procedure_fte_calculation_type');
+    public function getKlantProcedureFteBerekeningswijzeCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_fte_berekeningswijze');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1361,8 +1372,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getCustomerProcedureCaoNoExitFromCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'customer_procedure_cao_noexit_from');
+    public function getKlantProcedureHuisNietVerlatenVanCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_huis_niet_verlaten_van');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1376,8 +1387,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getCustomerProcedureCaoNoExitTillCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'customer_procedure_cao_noexit_till');
+    public function getKlantProcedureHuisNietVerlatenTotCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_huis_niet_verlaten_tot');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1391,8 +1402,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getCustomerProcedureCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'customer_procedure');
+    public function getKlantProcedureCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_controle_procedure');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1406,8 +1417,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getCustomerProcedureVisionCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'customer_procedure_vision');
+    public function getKlantProcedureVisieCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_verzuimbeleid_visie');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1421,8 +1432,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getCustomerProcedureGoalCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'customer_procedure_goal');
+    public function getKlantCustomerProcedureDoelCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_doel_controle');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1436,8 +1447,8 @@ class CRM_Basis_Config {
      * @param null $key
      * @return mixed|array
      */
-    public function getCustomerProcedureUseSmsCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'customer_procedure_use_sms');
+    public function getKlantProcedureSmsMedwerkerCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_sms_medewerker');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1482,7 +1493,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getArtsPostcodeCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsWerkgebiedCustomGroup, 'field_of_work_zip');
+        $customField = $this->getCustomField($this->_controleArtsWerkgebiedCustomGroup, 'mw_postcode');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1497,7 +1508,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getArtsGemeenteCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsWerkgebiedCustomGroup, 'field_of_work_city');
+        $customField = $this->getCustomField($this->_controleArtsWerkgebiedCustomGroup, 'mw_gemeente');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1512,7 +1523,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getArtsPrioriteitCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsWerkgebiedCustomGroup, 'field_of_work_prio');
+        $customField = $this->getCustomField($this->_controleArtsWerkgebiedCustomGroup, 'mw_prioriteit');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -2220,10 +2231,10 @@ class CRM_Basis_Config {
                     case 'field_of_work':
                         $this->_controleArtsWerkgebiedCustomGroup = $customGroup;
                         break;
-                    case 'communication':
+                    case 'mediwe_communicatie_controlearts':
                         $this->_controleArtsCommunicatieCustomGroup = $customGroup;
                         break;
-                    case 'supplier':
+                    case 'leverancier':
                         $this->_controleArtsLeverancierCustomGroup = $customGroup;
                         break;
                 }
@@ -2276,7 +2287,7 @@ class CRM_Basis_Config {
                     case 'field_of_work':
                         $this->_inspecteurWerkgebiedCustomGroup = $customGroup;
                         break;
-                    case 'supplier':
+                    case 'leverancier':
                         $this->_inspecteurLeverancierCustomGroup = $customGroup;
                         break;
                 }
@@ -2411,19 +2422,19 @@ class CRM_Basis_Config {
                     case 'mediwe_illness':
                         $this->_ziektemeldingZiekteperiodeCustomGroup = $customGroup;
                         break;
-                    case 'mediwe_certificate':
+                    case 'mediwe_medisch_attest':
                         $this->_ziektemeldingZiekteAttestCustomGroup = $customGroup;
                         break;
-                    case 'mediwe_control':
+                    case 'mediwe_medische_controle':
                         $this->_medischeControleCustomGroup = $customGroup;
                         break;
-                    case 'mediwe_home_visit':
+                    case 'mediwe_huisbezoek':
                         $this->_medischeControleHuisbezoekCustomGroup = $customGroup;
                         break;
-                    case 'mediwe_control_ao_result':
+                    case 'mediwe_controle_ao_resultaat':
                         $this->_medischeControleResultaatAoCustomGroup = $customGroup;
                         break;
-                    case 'mediwe_control_result':
+                    case 'mediwe_controle_resultaat':
                         $this->_medischeControleResultaatCustomGroup = $customGroup;
                         break;
                 }

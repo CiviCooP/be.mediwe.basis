@@ -1,6 +1,6 @@
 {
-  "employee": {
-    "name": "employee",
+  "mediwe_klant_medewerker": {
+    "name": "mediwe_klant_medewerker",
     "title": "Medewerker",
     "extends": "Individual",
     "extends_entity_column_value": ["mediwe_klant_medewerker"],
@@ -10,8 +10,8 @@
     "is_reserved": 0,
     "collapse_display": 0,
     "fields": {
-      "employee_national_nbr": {
-        "name": "employee_national_nbr",
+      "mkm_rijksregister_nummer": {
+        "name": "mkm_rijksregister_nummer",
         "label": "Rijksregisternr",
         "data_type": "String",
         "html_type": "Text",
@@ -21,8 +21,8 @@
         "is_required": 0,
         "weight": 1
       },
-      "employee_personnel_nbr": {
-        "name": "employee_personnel_nbr",
+      "mkm_personeelsnummer": {
+        "name": "mkm_personeelsnummer",
         "label": "Personeelsnummer",
         "data_type": "String",
         "html_type": "Text",
@@ -32,8 +32,8 @@
         "is_required": 0,
         "weight": 2
       },
-      "employee_partner": {
-        "name": "employee_partner",
+      "mkm_partner": {
+        "name": "mkm_partner",
         "label": "Partner",
         "data_type": "String",
         "html_type": "Text",
@@ -43,8 +43,8 @@
         "is_required": 0,
         "weight": 3
       },
-      "employee_level1": {
-        "name": "employee_level1",
+      "mkm_niveau1": {
+        "name": "mkm_niveau1",
         "label": "Niveau 1",
         "data_type": "String",
         "html_type": "Text",
@@ -54,8 +54,8 @@
         "is_required": 0,
         "weight": 4
       },
-      "employee_code_level2": {
-        "name": "employee_code_level2",
+      "mkm_code_niveau2": {
+        "name": "mkm_code_niveau2",
         "label": "Niveau 2 code",
         "data_type": "String",
         "html_type": "Text",
@@ -65,8 +65,8 @@
         "is_required": 0,
         "weight": 5
       },
-      "employee_level2": {
-        "name": "employee_level2",
+      "mkm_niveau2": {
+        "name": "mkm_niveau2",
         "label": "Niveau 2",
         "data_type": "String",
         "html_type": "Text",
@@ -76,8 +76,8 @@
         "is_required": 0,
         "weight": 6
       },
-      "employee_level3": {
-        "name": "employee_level3",
+      "mkm_niveau3": {
+        "name": "mkm_niveau3",
         "label": "Niveau 3",
         "data_type": "String",
         "html_type": "Text",
@@ -87,8 +87,8 @@
         "is_required": 0,
         "weight": 7
       },
-      "employee_function": {
-        "name": "employee_function",
+      "mkm_functie": {
+        "name": "mkm_functie",
         "label": "Functie",
         "data_type": "String",
         "html_type": "Text",
@@ -98,8 +98,8 @@
         "is_required": 0,
         "weight": 8
       },
-      "employee_statute": {
-        "name": "employee_statute",
+      "mkm_statuut": {
+        "name": "mkm_statuut",
         "label": "Statuut",
         "data_type": "String",
         "html_type": "Text",
@@ -109,8 +109,8 @@
         "is_required": 0,
         "weight": 9
       },
-      "employee_contract": {
-        "name": "employee_contract",
+      "mkm_contract": {
+        "name": "mkm_contract",
         "label": "Contract",
         "data_type": "String",
         "html_type": "Text",
@@ -120,8 +120,8 @@
         "is_required": 0,
         "weight": 10
       },
-      "employee_contract_desc": {
-        "name": "employee_contract_desc",
+      "mkm_contract_omschrijving": {
+        "name": "mkm_contract_omschrijving",
         "label": "Contract omschrijving",
         "data_type": "String",
         "html_type": "Text",
@@ -131,8 +131,8 @@
         "is_required": 0,
         "weight": 11
       },
-      "employee_crew_system": {
-        "name": "employee_crew_system",
+      "mkm_ploegensysteem": {
+        "name": "mkm_ploegensysteem",
         "label": "Ploegensysteem",
         "data_type": "String",
         "html_type": "Text",
@@ -142,8 +142,8 @@
         "is_required": 0,
         "weight": 12
       },
-      "employee_fte": {
-        "name": "employee_fte",
+      "mkm_bezetting": {
+        "name": "mkm_bezetting",
         "label": "Bezetting",
         "data_type": "String",
         "html_type": "Text",
@@ -153,8 +153,8 @@
         "is_required": 0,
         "weight": 13
       },
-      "employee_costcenter": {
-        "name": "employee_costcenter",
+      "mkm_kostenplaats": {
+        "name": "mkm_kostenplaats",
         "label": "Kostenplaats",
         "data_type": "String",
         "html_type": "Text",
@@ -164,8 +164,8 @@
         "is_required": 0,
         "weight": 14
       },
-      "employee_date_in": {
-        "name": "employee_date_in",
+      "mkm_datum_in_dienst": {
+        "name": "mkm_datum_in_dienst",
         "label": "Datum in dienst",
         "data_type": "Date",
         "date_format": "dd/mm/yy",
@@ -176,8 +176,8 @@
         "is_required": 0,
         "weight": 15
       },
-      "employee_date_out": {
-        "name": "employee_date_out",
+      "mkm_datum_uit_dienst": {
+        "name": "mkm_datum_uit_dienst",
         "label": "Datum uit dienst",
         "data_type": "Date",
         "date_format": "dd/mm/yy",
@@ -188,32 +188,30 @@
         "is_required": 0,
         "weight": 16
       },
-      "employee_remarks": {
-        "name": "employee_remarks",
+      "mkm_opmerkingen": {
+        "name": "mkm_opmerkingen",
         "label": "Opmerkingen",
-        "data_type": "String",
+        "data_type": "Memo",
         "html_type": "TextArea",
-        "text_length": 1000,
         "is_searchable": 0,
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
         "weight": 17
       },
-      "employee_free1": {
-        "name": "employee_free1",
+      "mkm_vrij_veld1": {
+        "name": "mkm_vrij_veld1",
         "label": "Vrije info 1",
-        "data_type": "String",
-        "html_type": "Text",
-        "text_length": 3000,
+        "data_type": "Memo",
+        "html_type": "TextArea",
         "is_searchable": 0,
         "is_view": 0,
         "is_active": 1,
         "is_required": 0,
         "weight": 18
       },
-      "employee_is_free": {
-        "name": "employee_is_free",
+      "mkm_is_controlevrij": {
+        "name": "mkm_is_controlevrij",
         "label": "Is controlevrij",
         "data_type": "Boolean",
         "html_type": "Radio",
@@ -223,8 +221,8 @@
         "is_required": 0,
         "weight": 19
       },
-      "employee_is_free_till": {
-        "name": "employee_is_free_till",
+      "mkm_controlevrij_tot": {
+        "name": "mkm_controlevrij_tot",
         "label": "Is controlevrij tot",
         "data_type": "Date",
         "date_format": "dd/mm/yy",
@@ -235,8 +233,8 @@
         "is_required": 0,
         "weight": 20
       },
-      "employee_is_blacklisted": {
-        "name": "employee_is_blacklisted",
+      "mkm_steeds_aangewezen": {
+        "name": "mkm_steeds_aangewezen",
         "label": "Controle steeds aangewezen",
         "data_type": "Boolean",
         "html_type": "Radio",
@@ -246,8 +244,8 @@
         "is_required": 0,
         "weight": 21
       },
-      "employee_is_blacklisted_till": {
-        "name": "employee_is_blacklisted_till",
+      "mkm_aangewezen_tot": {
+        "name": "mkm_aangewezen_tot",
         "label": "Controle steeds aangewezen tot",
         "data_type": "Date",
         "date_format": "dd/mm/yy",

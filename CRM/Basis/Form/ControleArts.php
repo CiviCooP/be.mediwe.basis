@@ -23,7 +23,7 @@ class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
     $this->add('text', 'postal_code', ts('Postcode'), array(), TRUE);
     $this->add('text', 'city', ts('Gemeente'), array(), TRUE);
 
-    $this->add('text', 'arts_riziv', ts('Riziv nummer '), array(), FALSE);
+    $this->add('text', 'mcc_arts_riziv', ts('Riziv nummer '), array(), FALSE);
 
     $this->add('select', 'preferred_language', ts('Taal'), $this->_languageData, TRUE);
     
@@ -31,19 +31,19 @@ class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
     $this->add('text', 'mobile', ts('GSM'), array(), FALSE);
     $this->add('text', 'email', ts('E-mail'), array(), FALSE);
 
-    $this->addYesNo('arts_gebruikt_app', ts('Gebruikt applicatie'), TRUE, TRUE);
+    $this->addYesNo('mcc_arts_gebruikt_app', ts('Gebruikt applicatie'), TRUE, TRUE);
 
-    $this->addYesNo('arts_bellen_vooraf', ts('Opbellen vooraf'), TRUE, TRUE);
-    $this->addYesNo('arts_bellen_achteraf', ts('Opbellen achteraf'), TRUE, TRUE);
-    $this->addYesNo('arts_opdracht_fax', ts('Opdrachten via Fax'), TRUE, TRUE);
-    $this->addYesNo('arts_opdracht_mail', ts('Opdrachten via e-mail'), TRUE, TRUE);
-    $this->addYesNo('arts_overzicht', ts('Wenst een overzicht'), TRUE, TRUE);
+    $this->add('select', 'mcc_arts_bel_moment', ts('Belmoment'), $this->getBelMoment(), FALSE,
+      array('id' => 'mcc_arts_bel_moment', 'multiple' => 'multiple', 'class' => 'crm-select2'));
+    $this->add('select', 'mcc_arts_opdracht', ts('Opdrachten per'), $this->getOpdrachtPer(), FALSE,
+      array('id' => 'mcc_arts_opdracht', 'multiple' => 'multiple', 'class' => 'crm-select2'));
+    $this->addYesNo('mcc_arts_overzicht', ts('Wenst een overzicht'), TRUE, TRUE);
 
-    $this->add('textarea', 'arts_opmerkingen', ts('Opmerkingen'), array(), FALSE);
+    $this->add('textarea', 'mcc_arts_opmerkingen', ts('Opmerkingen'), array(), FALSE);
 
-    $this->add('text', 'supplier_venice', ts('Nr Venice'), array(), FALSE);
-    $this->add('text', 'supplier_vat', ts('Ondernemingsnummer'), array(), FALSE);
-    $this->add('text', 'supplier_account', ts('Rekening'), array(), FALSE);
+    $this->add('text', 'leverancier_venice', ts('Nr Venice'), array(), FALSE);
+    $this->add('text', 'leverancier_btw_nummer', ts('Ondernemingsnummer'), array(), FALSE);
+    $this->add('text', 'leverancier_iban', ts('Rekening'), array(), FALSE);
 
     $this->addButtons(array(
       array('type' => 'next', 'name' => ts('Save'), 'isDefault' => true,),
@@ -69,7 +69,7 @@ class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
         $this->getElement('postal_code')->setValue($this->_contactData[0]['postal_code']);
         $this->getElement('city')->setValue($this->_contactData[0]['city']);
 
-        $this->getElement('arts_riziv')->setValue($this->_contactData[0]['arts_riziv']);
+        $this->getElement('mcc_arts_riziv')->setValue($this->_contactData[0]['mcc_arts_riziv']);
 
         $this->getElement('preferred_language')->setValue($this->_contactData[0]['preferred_language']);
 
@@ -77,19 +77,17 @@ class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
         $this->getElement('mobile')->setValue($this->_contactData[0]['mobile']);
         $this->getElement('email')->setValue($this->_contactData[0]['email']);
 
-        $this->getElement('arts_gebruikt_app')->setValue($this->_contactData[0]['arts_gebruikt_app']);
+        $this->getElement('mcc_arts_gebruikt_app')->setValue($this->_contactData[0]['mcc_arts_gebruikt_app']);
 
-        $this->getElement('arts_bellen_vooraf')->setValue($this->_contactData[0]['arts_bellen_vooraf']);
-        $this->getElement('arts_bellen_achteraf')->setValue($this->_contactData[0]['arts_bellen_achteraf']);
-        $this->getElement('arts_opdracht_fax')->setValue($this->_contactData[0]['arts_opdracht_fax']);
-        $this->getElement('arts_opdracht_mail')->setValue($this->_contactData[0]['arts_opdracht_mail']);
-        $this->getElement('arts_overzicht')->setValue($this->_contactData[0]['arts_overzicht']);
+        $this->getElement('mcc_arts_bel_moment')->setValue($this->_contactData[0]['mcc_arts_bel_moment']);
+        $this->getElement('mcc_arts_opdracht')->setValue($this->_contactData[0]['mcc_arts_opdracht']);
+        $this->getElement('mcc_arts_overzicht')->setValue($this->_contactData[0]['mcc_arts_overzicht']);
 
-        $this->getElement('arts_opmerkingen')->setValue($this->_contactData[0]['arts_opmerkingen']);
+        $this->getElement('mcc_arts_opmerkingen')->setValue($this->_contactData[0]['mcc_arts_opmerkingen']);
 
-        $this->getElement('supplier_venice')->setValue($this->_contactData[0]['supplier_venice']);
-        $this->getElement('supplier_vat')->setValue($this->_contactData[0]['supplier_vat']);
-        $this->getElement('supplier_account')->setValue($this->_contactData[0]['supplier_account']);
+        $this->getElement('leverancier_venice')->setValue($this->_contactData[0]['leverancier_venice']);
+        $this->getElement('leverancier_btw_nummer')->setValue($this->_contactData[0]['leverancier_btw_nummer']);
+        $this->getElement('leverancier_iban')->setValue($this->_contactData[0]['leverancier_iban']);
 
 
     }

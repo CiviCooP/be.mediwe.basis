@@ -1,6 +1,6 @@
 {
-    "zorgfonds_conditions":{
-    "name":"zorgfonds_conditions",
+    "mediwe_zorgfonds_voorwaarden":{
+    "name":"mediwe_zorgfonds_voorwaarden",
     "title":"Voorwaarden zorgfonds",
     "extends": "Membership",
     "extends_entity_column_value": ["5", "6"],
@@ -10,8 +10,8 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
-         "zorgfonds_conditions_price_per_month": {
-           "name": "zorgfonds_conditions_price_per_month",
+         "mzv_prijs_per_maand": {
+           "name": "mzv_prijs_per_maand",
            "label": "Prijs per maand",
            "data_type": "Money",
            "html_type": "Text",
@@ -21,8 +21,8 @@
            "is_required": 1,
            "weight": 10
          },
-        "zorgfonds_conditions_price_per_task": {
-            "name": "zorgfonds_conditions_price_per_task",
+        "mzv_prijs_per_opdracht": {
+            "name": "mzv_prijs_per_opdracht",
             "label": "Prijs per opdracht",
             "data_type": "Money",
             "html_type": "Text",
@@ -32,8 +32,8 @@
             "is_required": 1,
             "weight": 20
         },
-        "zorgfonds_conditions_price_per_task_bzc": {
-            "name": "zorgfonds_conditions_price_per_task_bzc",
+        "mzv_prijs_per_bzc": {
+            "name": "mzv_prijs_per_bzc",
             "label": "Prijs per opdracht BZC",
             "data_type": "Money",
             "html_type": "Text",
@@ -43,8 +43,8 @@
             "is_required": 1,
             "weight": 30
        },
-        "zorgfonds_conditions_own_reference": {
-           "name": "zorgfonds_conditions_own_reference",
+        "mzv_eigen_referentie": {
+           "name": "mzv_eigen_referentie",
            "label": "Eigen referentie",
            "data_type": "String",
            "html_type": "Text",
@@ -54,8 +54,8 @@
            "is_required": 0,
            "weight": 40
          },
-        "zorgfonds_conditions_index": {
-           "name": "zorgfonds_conditions_index",
+        "mzv_gezondheidsindex": {
+           "name": "mzv_gezondheidsindex",
            "label": "Gezondheidsindex",
            "data_type": "Float",
            "html_type": "Text",
@@ -65,8 +65,8 @@
            "is_required": 0,
            "weight": 50
          },
-        "zorgfonds_conditions_vat": {
-           "name": "zorgfonds_conditions_vat",
+        "mzv_btw_percentage": {
+           "name": "mzv_btw_percentage",
            "label": "BTW %",
            "data_type": "Float",
            "html_type": "Text",

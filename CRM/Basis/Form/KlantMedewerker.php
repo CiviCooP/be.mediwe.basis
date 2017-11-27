@@ -23,8 +23,8 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
     $this->add('text', 'employer_organization_name', ts('Werkgever '), array(), FALSE);
     $this->add('text', 'employer_customer_vat', ts('BTW nummer '), array(), FALSE);
       
-    $this->add('text', 'employee_national_nbr', ts('Rijksregisternummer '), array(), FALSE);
-    $this->add('text', 'employee_personnel_nbr', ts('Personeelsnummer'), array(), FALSE);
+    $this->add('text', 'mkm_rijksregister_nummer', ts('Rijksregisternummer '), array(), FALSE);
+    $this->add('text', 'mkm_personeelsnummer', ts('Personeelsnummer'), array(), FALSE);
 
     $this->add('text', 'display_name', ts('Naam werknemer'), array(), TRUE);
     $this->add('text', 'domicilie_supplemental_address_1', ts('Tweede lijn'), array(), FALSE);
@@ -32,22 +32,22 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
     $this->add('text', 'domicilie_postal_code', ts('Postcode'), array(), TRUE);
     $this->add('text', 'domicilie_city', ts('Gemeente'), array(), TRUE);
 
-    $this->add('text', 'employee_partner', ts('Partner'), array(), FALSE);
+    $this->add('text', 'mkm_partner', ts('Partner'), array(), FALSE);
 
     $this->add('text', 'phone', ts('Telefoon'), array(), FALSE);
     $this->add('text', 'mobile', ts('GSM'), array(), FALSE);
 
-    $this->add('text', 'employee_level1', ts('Niveau 1'), array(), FALSE);
-    $this->add('text', 'employee_code_level2', ts('Code Niveau 2'), array(), FALSE);
-    $this->add('text', 'employee_level2', ts('Niveau 2'), array(), FALSE);
-    $this->add('text', 'employee_level3', ts('Niveau 3'), array(), FALSE);
+    $this->add('text', 'mkm_niveau1', ts('Niveau 1'), array(), FALSE);
+    $this->add('text', 'mkm_code_niveau2', ts('Code Niveau 2'), array(), FALSE);
+    $this->add('text', 'mkm_niveau2', ts('Niveau 2'), array(), FALSE);
+    $this->add('text', 'mkm_niveau3', ts('Niveau 3'), array(), FALSE);
 
-    $this->add('text', 'employee_function', ts('Functie'), array(), FALSE);
+    $this->add('text', 'mkm_functie', ts('Functie'), array(), FALSE);
 
     $dateParts     = implode( CRM_Core_DAO::VALUE_SEPARATOR, array( 'Y', 'M' ) );
 
-    $this->add( 'datepicker', 'employee_date_in',  ts('Datum in dienst'), array(), FALSE);
-    $this->add( 'datepicker', 'employee_date_out',  ts('Datum uit dienst'), array(), FALSE);
+    $this->add( 'datepicker', 'mkm_datum_in_dienst',  ts('Datum in dienst'), array(), FALSE);
+    $this->add( 'datepicker', 'mkm_datum_uit_dienst',  ts('Datum uit dienst'), array(), FALSE);
 
     $this->add('text', 'verblijf_supplemental_address_1', ts('Tweede lijn (verblijfplaats)'), array(), FALSE);
     $this->add('text', 'verblijf_street_address', ts('Adres verblijf (straat en huisnummer)'), array(), FALSE);
@@ -109,21 +109,21 @@ class CRM_Basis_Form_KlantMedewerker extends CRM_Core_Form {
           $this->getElement('employer_organization_name')->setValue($this->_data($this->_employerData, 'organization_name'));
           $this->getElement('employer_customer_vat')->setValue($this->_data($this->_employerData,'customer_vat'));
 
-          $this->getElement('employee_national_nbr')->setValue($this->_data($this->_contactData,'employee_national_nbr'));
-          $this->getElement('employee_personnel_nbr')->setValue($this->_data($this->_contactData,'employee_personnel_nbr'));
+          $this->getElement('mkm_rijksregister_nummer')->setValue($this->_data($this->_contactData,'mkm_rijksregister_nummer'));
+          $this->getElement('mkm_personeelsnummer')->setValue($this->_data($this->_contactData,'mkm_personeelsnummer'));
           $this->getElement('display_name')->setValue($this->_data($this->_contactData,'display_name'));
 
 
-          $this->getElement('employee_partner')->setValue($this->_data($this->_contactData,'employee_partner'));
+          $this->getElement('mkm_partner')->setValue($this->_data($this->_contactData,'mkm_partner'));
 
-          $this->getElement('employee_level1')->setValue($this->_data($this->_contactData, 'employee_level1'));
-          $this->getElement('employee_code_level2')->setValue($this->_data($this->_contactData, 'employee_code_level2'));
-          $this->getElement('employee_level2')->setValue($this->_data($this->_contactData, 'employee_level2'));
-          $this->getElement('employee_level3')->setValue($this->_data($this->_contactData, 'employee_level3'));
+          $this->getElement('mkm_niveau1')->setValue($this->_data($this->_contactData, 'mkm_niveau1'));
+          $this->getElement('mkm_code_niveau2')->setValue($this->_data($this->_contactData, 'mkm_code_niveau2'));
+          $this->getElement('mkm_niveau2')->setValue($this->_data($this->_contactData, 'mkm_niveau2'));
+          $this->getElement('mkm_niveau3')->setValue($this->_data($this->_contactData, 'mkm_niveau3'));
 
-          $this->getElement('employee_function')->setValue($this->_data($this->_contactData, 'employee_function'));
-          $this->getElement('employee_date_in')->setValue($this->_data($this->_contactData, 'employee_date_in'));
-          $this->getElement('employee_date_out')->setValue($this->_data($this->_contactData, 'employee_date_out'));
+          $this->getElement('mkm_functie')->setValue($this->_data($this->_contactData, 'mkm_functie'));
+          $this->getElement('mkm_datum_in_dienst')->setValue($this->_data($this->_contactData, 'mkm_datum_in_dienst'));
+          $this->getElement('mkm_datum_uit_dienst')->setValue($this->_data($this->_contactData, 'mkm_datum_uit_dienst'));
 
     }
 

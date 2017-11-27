@@ -20,36 +20,36 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
         $this->add('text', 'employer_customer_vat', ts('BTW nummer '), array(), FALSE);
 
         // De werknemer
-        $this->add('text', 'employee_employee_national_nbr', ts('Rijksregisternummer '), array(), FALSE);
-        $this->add('text', 'employee_employee_personnel_nbr', ts('Personeelsnummer'), array(), FALSE);
+        $this->add('text', 'mkm_rijksregister_nummer', ts('Rijksregisternummer '), array(), FALSE);
+        $this->add('text', 'mkm_personeelsnummer', ts('Personeelsnummer'), array(), FALSE);
 
         $this->add('text', 'employee_display_name', ts('Naam werknemer'), array(), TRUE);
 
-        $this->add('text', 'employee_employee_partner', ts('Partner'), array(), FALSE);
+        $this->add('text', 'mkm_partner', ts('Partner'), array(), FALSE);
 
         $this->add('text', 'employee_phone', ts('Telefoon'), array(), FALSE);
         $this->add('text', 'employee_mobile', ts('GSM'), array(), FALSE);
 
-        $this->add('text', 'employee_employee_level1', ts('Niveau 1'), array(), FALSE);
-        $this->add('text', 'employee_employee_code_level2', ts('Code Niveau 2'), array(), FALSE);
-        $this->add('text', 'employee_employee_level2', ts('Niveau 2'), array(), FALSE);
-        $this->add('text', 'employee_employee_level3', ts('Niveau 3'), array(), FALSE);
+        $this->add('text', 'mkm_niveau1', ts('Niveau 1'), array(), FALSE);
+        $this->add('text', 'mkm_code_niveau2', ts('Code Niveau 2'), array(), FALSE);
+        $this->add('text', 'mkm_niveau2', ts('Niveau 2'), array(), FALSE);
+        $this->add('text', 'mkm_niveau3', ts('Niveau 3'), array(), FALSE);
 
-        $this->add('text', 'employee_employee_function', ts('Functie'), array(), FALSE);
+        $this->add('text', 'mkm_functie', ts('Functie'), array(), FALSE);
 
-        $this->add( 'datepicker', 'employee_employee_date_in',  ts('Datum in dienst'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '1940-01-01'));
-        $this->add( 'datepicker', 'employee_employee_date_out',  ts('Datum uit dienst'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2010-01-01'));
+        $this->add( 'datepicker', 'mkm_datum_in_dienst',  ts('Datum in dienst'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '1940-01-01'));
+        $this->add( 'datepicker', 'mkm_datum_uit_dienst',  ts('Datum uit dienst'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2010-01-01'));
 
 
         // Afwezigheidsgegevens
-        $this->add('select', 'illness_reason', ts('Reden'), $this->_reasonData, TRUE);
+        $this->add('select', 'mzp_reden_ziekte', ts('Reden'), $this->_reasonData, TRUE);
         $this->add( 'datepicker', 'start_date',  ts('Begindatum'), array(), TRUE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2017-01-01'));
         $this->add( 'datepicker', 'end_date',  ts('Einddatum'), array(), FALSE, array('time' => FALSE, 'date' => 'dd-mm-yy', 'minDate' => '2017-01-01'));
-        $this->addYesNo('illness_is_extension', ts('Is verlening'), TRUE, FALSE);
-        $this->addYesNo('illness_is_private_accident', ts('Is privé ongeval'), TRUE, FALSE);
-        $this->addYesNo('illness_is_exit_allowed', ts('Mag het huis verlaten'), TRUE, FALSE);
-        $this->addYesNo('illness_is_hospitalization', ts('Opname in het ziekenhuis'), TRUE, FALSE);
-        $this->addYesNo('illness_no_certificate', ts('Ziekte zonder attest'), TRUE, FALSE);
+        $this->addYesNo('mzp_is_verlenging', ts('Is verlening'), TRUE, FALSE);
+        $this->addYesNo('mzp_is_prive_ongeval', ts('Is privé ongeval'), TRUE, FALSE);
+        $this->addYesNo('mzp_mag_huis_verlaten', ts('Mag het huis verlaten'), TRUE, FALSE);
+        $this->addYesNo('mzp_is_ziekenhuisopname', ts('Opname in het ziekenhuis'), TRUE, FALSE);
+        $this->addYesNo('mzp_is_zonder_attest', ts('Ziekte zonder attest'), TRUE, FALSE);
 
 
 
@@ -70,21 +70,21 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
         }
 
         if ($this->_employeeData) {
-            $this->getElement('employee_employee_national_nbr')->setValue($this->_data($this->_employeeData,'employee_national_nbr'));
-            $this->getElement('employee_employee_personnel_nbr')->setValue($this->_data($this->_employeeData,'employee_personnel_nbr'));
+            $this->getElement('mkm_rijksregister_nummer')->setValue($this->_data($this->_employeeData,'mkm_rijksregister_nummer'));
+            $this->getElement('mkm_personeelsnummer')->setValue($this->_data($this->_employeeData,'mkm_personeelsnummer'));
             $this->getElement('employee_display_name')->setValue($this->_data($this->_employeeData,'display_name'));
 
-            $this->getElement('employee_employee_partner')->setValue($this->_data($this->_employeeData,'employee_partner'));
+            $this->getElement('mkm_partner')->setValue($this->_data($this->_employeeData,'mkm_partner'));
             $this->getElement('employee_phone')->setValue($this->_data($this->_employeeData,'phone'));
             $this->getElement('employee_mobile')->setValue($this->_data($this->_employeeData,'mobile'));
-            $this->getElement('employee_employee_level1')->setValue($this->_data($this->_employeeData,'employee_level1'));
-            $this->getElement('employee_employee_code_level2')->setValue($this->_data($this->_employeeData,'employee_code_level2'));
-            $this->getElement('employee_employee_level2')->setValue($this->_data($this->_employeeData,'employee_level2'));
-            $this->getElement('employee_employee_level3')->setValue($this->_data($this->_employeeData,'employee_level3'));
+            $this->getElement('mkm_niveau1')->setValue($this->_data($this->_employeeData,'mkm_niveau1'));
+            $this->getElement('mkm_code_niveau2')->setValue($this->_data($this->_employeeData,'mkm_code_niveau2'));
+            $this->getElement('mkm_niveau2')->setValue($this->_data($this->_employeeData,'mkm_niveau2'));
+            $this->getElement('mkm_niveau3')->setValue($this->_data($this->_employeeData,'mkm_niveau3'));
 
-            $this->getElement('employee_employee_function')->setValue($this->_data($this->_employeeData,'employee_function'));
-            $this->getElement('employee_employee_date_in')->setValue($this->_data($this->_employeeData,'employee_date_in'));
-            $this->getElement('employee_employee_date_out')->setValue($this->_data($this->_employeeData,'employee_date_out'));
+            $this->getElement('mkm_functie')->setValue($this->_data($this->_employeeData,'mkm_functie'));
+            $this->getElement('mkm_datum_in_dienst')->setValue($this->_data($this->_employeeData,'mkm_datum_in_dienst'));
+            $this->getElement('mkm_datum_uit_dienst')->setValue($this->_data($this->_employeeData,'mkm_datum_uit_dienst'));
 
             $this->add('hidden', 'employee_id');
             $this->getElement('employee_id')->setValue($this->_data($this->_employeeData,'id'));
@@ -97,14 +97,14 @@ class CRM_Basis_Form_Ziektemelding extends CRM_Core_Form {
             $this->getElement('id')->setValue($this->_data($this->_ziektemeldingData,'id'));
 
             // set values to screen
-            $this->getElement('illness_reason')->setValue($this->_data($this->_ziektemeldingData,'illness_reason'));
+            $this->getElement('mzp_reden_ziekte')->setValue($this->_data($this->_ziektemeldingData,'mzp_reden_ziekte'));
             $this->getElement('start_date')->setValue($this->_data($this->_ziektemeldingData,'start_date'));
             $this->getElement('end_date')->setValue($this->_data($this->_ziektemeldingData,'end_date'));
-            $this->getElement('illness_is_extension')->setValue($this->_data($this->_ziektemeldingData,'illness_is_extension'));
-            $this->getElement('illness_is_private_accident')->setValue($this->_data($this->_ziektemeldingData,'illness_is_private_accident'));
-            $this->getElement('illness_is_exit_allowed')->setValue($this->_data($this->_ziektemeldingData,'illness_is_exit_allowed'));
-            $this->getElement('illness_is_hospitalization')->setValue($this->_data($this->_ziektemeldingData,'illness_is_hospitalization'));
-            $this->getElement('illness_no_certificate')->setValue($this->_data($this->_ziektemeldingData,'illness_no_certificate'));
+            $this->getElement('mzp_is_verlenging')->setValue($this->_data($this->_ziektemeldingData,'mzp_is_verlenging'));
+            $this->getElement('mzp_is_prive_ongeval')->setValue($this->_data($this->_ziektemeldingData,'mzp_is_prive_ongeval'));
+            $this->getElement('mzp_mag_huis_verlaten')->setValue($this->_data($this->_ziektemeldingData,'mzp_mag_huis_verlaten'));
+            $this->getElement('mzp_is_ziekenhuisopname')->setValue($this->_data($this->_ziektemeldingData,'mzp_is_ziekenhuisopname'));
+            $this->getElement('mzp_is_zonder_attest')->setValue($this->_data($this->_ziektemeldingData,'mzp_is_zonder_attest'));
         }
 
 

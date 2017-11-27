@@ -298,11 +298,11 @@ class CRM_Basis_Ziektemelding {
         }
 
         $get_params = array( 'display_name' => $params_employee['display_name'] );
-        if (isset($params_employee['employee_national_nbr'])) {
-            $get_params['employee_national_nbr'] = $params_employee['employee_national_nbr'];
+        if (isset($params_employee['mkm_rijksregister_nummer'])) {
+            $get_params['mkm_rijksregister_nummer'] = $params_employee['mkm_rijksregister_nummer'];
         }
-        if (isset($params_employee['employee_personnel_nbr'])) {
-            $get_params['employee_personnel_nbr'] = $params_employee['employee_personnel_nbr'];
+        if (isset($params_employee['mkm_personeelsnummer'])) {
+            $get_params['mkm_personeelsnummer'] = $params_employee['mkm_personeelsnummer'];
         }
 
         $employee = civicrm_api3('KlantMedewerker', 'Get', $get_params );
