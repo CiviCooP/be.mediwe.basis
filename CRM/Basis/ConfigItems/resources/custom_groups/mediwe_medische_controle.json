@@ -149,7 +149,7 @@
         "is_active": 1
       },
       "mmc_email3_contactpersoon": {
-        "name": "control_email_contact3",
+        "name": "mmc_email3_contactpersoon",
         "label": "E-mail contactpersoon (3)",
         "data_type": "String",
         "html_type": "Text",

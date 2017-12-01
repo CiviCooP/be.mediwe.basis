@@ -49,7 +49,7 @@
         "label": "Opdracht per",
         "data_type": "String",
         "html_type": "Multi-Select",
-        "option_group": "mediwe_bellen_moment",
+        "option_group": "mediwe_opdracht_wijze",
         "is_searchable": 1,
         "is_view": 0,
         "is_active": 1,

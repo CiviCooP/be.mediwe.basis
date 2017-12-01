@@ -1,0 +1,32 @@
+{
+  "activityTypes": {
+    "Open Case":{
+      "name":"Open Case",
+      "max_instances":1
+    },"mediwe_ziekteattest":{
+      "name":"mediwe_ziekteattest",
+      "max_instances":1
+    }
+  },
+  "caseRoles":{
+    "Case Coordinator":{
+      "name":"Case Coordinator",
+      "creator":1,
+      "manager":1
+    }
+  },
+  "activitySets":{
+    "standard_timeline":{
+      "name":"standard_timeline",
+      "label":"Standard Timeline",
+      "timeline":"true",
+      "activityTypes": {
+        "Open Case": {
+          "name": "Open Case",
+          "status": "Completed",
+          "label":"Open Case"
+        }
+      }
+    }
+  }
+}

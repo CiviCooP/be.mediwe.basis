@@ -33,7 +33,7 @@
            "weight": 12
          },
          "mvc_controle_prijs": {
-           "name": "mc_controle_prijs",
+           "name": "mvc_controle_prijs",
            "label": "Prijs per controle",
            "data_type": "Money",
            "html_type": "Text",

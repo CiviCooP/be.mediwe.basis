@@ -1641,34 +1641,5 @@
         "is_reserved": 0
       }
     }
-  },
-  "mediwe_opdracht_wijze": {
-    "name": "mediwe_opdracht_wijze",
-    "title": "Opdracht versturen per",
-    "is_active": 1,
-    "is_reserved": 0,
-    "option_values": {
-      "opdracht_per_mail": {
-        "name": "opdracht_per_mail",
-        "value": 1,
-        "label": "Mail",
-        "is_active": 1,
-        "is_reserved": 0
-      },
-      "opdracht_per_fax": {
-        "name": "opdracht_per_fax",
-        "value": 2,
-        "label": "Fax",
-        "is_active": 1,
-        "is_reserved": 0
-      },
-      "opdracht_groepsmail": {
-        "name": "opdracht_groepsmail",
-        "value": 3,
-        "label": "Groepsmail",
-        "is_active": 1,
-        "is_reserved": 0
-      }
-    }
   }
-}
+ }

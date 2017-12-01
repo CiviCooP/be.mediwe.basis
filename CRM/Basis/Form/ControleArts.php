@@ -108,8 +108,6 @@ class CRM_Basis_Form_ControleArts extends CRM_Core_Form {
   }
 
   public function postProcess() {
-    //CRM_Core_Error::debug('submitValues', $this->_submitValues);
-    //exit();
     $this->saveControleArts($this->_submitValues);
     parent::postProcess();
   }

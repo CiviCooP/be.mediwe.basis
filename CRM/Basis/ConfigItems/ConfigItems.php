@@ -172,8 +172,10 @@ class CRM_Basis_ConfigItems_ConfigItems
     $caseTypesJson = file_get_contents($jsonFile);
     $caseTypes = json_decode($caseTypesJson, true);
     foreach ($caseTypes as $name => $caseTypeParams) {
-      //todo ERIK HOMMEL add xml file to caseTypeParams
-      $caseTypeParams['xml'] = $this->getCaseXML($caseTypeParams['case_type_name']);
+      $definition = $this->getCaseDefinition($caseTypeParams['name']);
+      if (!empty($definition)) {
+        $caseTypeParams['definition'] = $definition;
+      }
       $caseType = new CRM_Basis_ConfigItems_CaseType();
       $caseType->create($caseTypeParams);
     }
@@ -445,15 +447,45 @@ class CRM_Basis_ConfigItems_ConfigItems
   }
 
   /**
-   * Method to get the XML data for a casetype
+   * Method to get the Case Type definition JSON and turn it into valid definition array
    * @param $caseType
-   * @return bool|false|int
+   * @return array
    */
-  private function getCaseXML($caseType) {
-    $fileName = $this->_resourcesPath.$caseType.'.xml';
-    if (file_exists($fileName)) {
-      return readfile($fileName);
+  private function getCaseDefinition($caseType) {
+    $result = array();
+    $jsonFile = $this->_resourcesPath.$caseType.'.json';
+    if (file_exists($jsonFile)) {
+      $definitionJson = file_get_contents($jsonFile);
+      $definition = json_decode($definitionJson, true);
+      foreach ($definition as $definitionKey => $definitionValues) {
+        switch ($definitionKey) {
+          case "activityTypes":
+            foreach ($definitionValues as $typeKey => $typeValues) {
+              $result['activityTypes'][] = $typeValues;
+            }
+            break;
+          case "activitySets":
+            foreach ($definitionValues as $setKey => $setValues) {
+              $temp = $setValues;
+              unset($temp['activityTypes']);
+              if (isset($setValues['activityTypes'])) {
+                foreach ($setValues['activityTypes'] as $setTypeKey => $setTypeValues) {
+                  $temp['activityTypes'][] = $setTypeValues;
+                }
+              }
+              if (!empty($temp)) {
+                $result['activitySets'][] = $temp;
+              }
+            }
+            break;
+          case "caseRoles":
+            foreach ($definitionValues as $roleKey => $roleValues) {
+              $result['caseRoles'][] = $roleValues;
+            }
+            break;
+        }
+      }
     }
-    return FALSE;
+    return $result;
   }
 }
