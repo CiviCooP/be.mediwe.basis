@@ -1620,6 +1620,20 @@ class CRM_Basis_Config {
 }
 
     /**
+     * Getter for controle arts werkgebied custom group
+     *
+     * @param string $key
+     * @return mixed|array
+     */
+    public function getControleArtsWerkgebiedCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_controleArtsWerkgebiedCustomGroup[$key])) {
+            return $this->_controleArtsWerkgebiedCustomGroup[$key];
+        } else {
+            return $this->_controleArtsWerkgebiedCustomGroup;
+        }
+    }
+
+    /**
      * Getter for controle arts Communicatie custom group
      *
      * @param string $key
