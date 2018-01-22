@@ -8,11 +8,9 @@ class CRM_Basis_Upgrader extends CRM_Basis_Upgrader_Base {
   // By convention, functions that look like "function upgrade_NNNN()" are
   // upgrade tasks. They are executed in order (like Drupal's hook_update_N).
 
-  /**
-   * Example: Run an external SQL script when the module is installed.
-   *
+
   public function install() {
-    $this->executeSqlFile('sql/myinstall.sql');
+    CRM_Basis_ConfigItems_ConfigItems::singleton();
   }
 
   /**
