@@ -23,7 +23,7 @@
         "is_active": 1
       },
       "ml_venice": {
-        "name": "ml_aansluitingsnummer",
+        "name": "ml_venice",
         "label": "Leveranciernummer Venice",
         "data_type": "String",
         "html_type": "Text",

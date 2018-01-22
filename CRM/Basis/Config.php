@@ -49,13 +49,10 @@ class CRM_Basis_Config {
   private $_klantOrganisatieCustomGroup = array();
   private $_klantProcedureCustomGroup = array();
 
-  private $_inspecteurLeverancierCustomGroup = array();
-  private $_inspecteurWerkgebiedCustomGroup = array();
-
-  private $_controleArtsLeverancierCustomGroup = array();
-  private $_controleArtsVakantieperiodeCustomGroup = array();
-  private $_controleArtsCommunicatieCustomGroup = array();
-  private $_controleArtsWerkgebiedCustomGroup = array();
+  private $_leverancierCustomGroup = array();
+  private $_vakantiePeriodeCustomGroup = array();
+  private $_communicatieCustomGroup = array();
+  private $_werkgebiedCustomGroup = array();
 
   private $_klantMedewerkerExpertsysteemTellersCustomGroup = array();
   private $_klantMedewerkerMedewerkerCustomGroup = array();
@@ -96,11 +93,12 @@ class CRM_Basis_Config {
     $this->setLocationTypes();
     $this->setOptionGroups();
 
-    $this->setKlantCustomGroups();
-    $this->setKlantMedewerkerCustomGroups();
-    $this->setControleArtsCustomGroups();
-    $this->setInspecteurCustomGroups();
-    $this->setMembershipCustomGroups();
+    // set custom groups and custom fields voor controlearts/inspecteur
+    $this->setCustomGroups('mediwe_communicatie_controlearts', '_communicatieCustomGroup');
+    $this->setCustomGroups('mediwe_vakantie_periode', '_vakantiePeriodeCustomGroup');
+    $this->setCustomGroups('mediwe_werkgebied', 'werkgebiedCustomGroup');
+    $this->setCustomGroups('mediwe_leverancier', '_leverancierCustomGroup');
+
     $this->setCasesCustomGroups();
     
     $this->setCaseTypes();
@@ -253,7 +251,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getArtsGebruiktAppCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsCommunicatieCustomGroup, 'arts_gebruikt_app');
+        $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_gebruikt_app');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -262,13 +260,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for bellen_vooraf custom field from communicatie custom group
+     * Getter for belmoment custom field from communicatie custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsBellenVoorafCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsCommunicatieCustomGroup, 'arts_bellen_vooraf');
+    public function getArtsBelMomentCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_bel_moment');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -277,43 +275,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for bellen_achteraf custom field from communicatie custom group
+     * Getter for opdracht_per custom field from communicatie custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsBellenAchterafCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsCommunicatieCustomGroup, 'arts_bellen_achteraf');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
-    }
-
-    /**
-     * Getter for opdracht_fax custom field from communicatie custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getArtsOpdrachtPerFaxCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsCommunicatieCustomGroup, 'arts_opdracht_fax');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
-    }
-
-    /**
-     * Getter for opdracht_mail custom field from communicatie custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getArtsOpdrachtPerMailCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsCommunicatieCustomGroup, 'arts_opdracht_mail');
+    public function getArtsOpdrachtPerCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_opdracht');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -328,7 +296,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getArtsOverzichtCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsCommunicatieCustomGroup, 'arts_overzicht');
+        $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_overzicht');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -343,15 +311,29 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getArtsOpmerkingenCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsCommunicatieCustomGroup, 'arts_opmerkingen');
+        $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_opmerkingen');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
             return $customField;
         }
     }
-    
-    /**
+
+  /**
+   * Getter for arts percentage akkoord custom field
+   *
+   * @return mixed
+   */
+  public function getArtsPercentageAkkoordCustomField() {
+    $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_percentage_akkoord');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
+    } else {
+      return $customField;
+    }
+  }
+
+  /**
      * Getter for Periode custom field from expertsysteem custom group
      *
      * @param null $key
@@ -1004,13 +986,13 @@ class CRM_Basis_Config {
 
 
     /**
-     * Getter for venice custom field from controleartsLeverancierCustomGroup custom group
+     * Getter for venice custom field from leverancier CustomGroup custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsVeniceCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'leverancierle_venice');
+    public function getVeniceCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_venice');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1019,13 +1001,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for vat custom field from controleartsLeverancierCustomGroup custom group
+     * Getter for vat custom field from leverancierCustomGroup custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsBtwCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'leverancier_btw_nummer');
+    public function getBtwCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_btw_nummer');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1034,13 +1016,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for subject_to_vat custom field from controleartsLeverancierCustomGroup custom group
+     * Getter for subject_to_vat custom field from leverancierCustomGroup custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsBtwPlichtigCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'leverancier_btw_plichtig');
+    public function getBtwPlichtigCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_btw_plichtig');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1049,13 +1031,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for account custom field from controleartsLeverancierCustomGroup custom group
+     * Getter for account custom field from leverancierCustomGroup custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsIbanCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'leverancier_iban');
+    public function getIbanCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_iban');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1064,13 +1046,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for Eigen_referentie custom field from controleartsLeverancierCustomGroup custom group
+     * Getter for Eigen_referentie custom field from leverancierCustomGroup custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsBestelNummerCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'leverancier_bestelnummer');
+    public function getBestelNummerCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_bestelnummer');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1079,105 +1061,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for CSV_bestand_bij_factuur custom field from controleartsLeverancierCustomGroup custom group
+     * Getter for CSV_bestand_bij_factuur custom field from leverancierCustomGroup custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsCsvBestandBijFactuurCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsLeverancierCustomGroup, 'leverancier_csv_toevoegen');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
-    }
-
-
-    /**
-     * Getter for venice custom field from inspecteurLeverancierCustomGroup custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    // todo ERIK HOMMEL Huh? Ik heb toch maar 1 leverancier custom group? Waarom dan meerdere keren hier de venice ophalen? En ook de VAT????
-    public function getInspecteurVeniceCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'leverancier_venice');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
-    }
-
-    /**
-     * Getter for vat custom field from inspecteurLeverancierCustomGroup custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getInspecteurBtwNummerCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'leverancier_btw_nummer');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
-    }
-
-    /**
-     * Getter for subject_to_vat custom field from inspecteurLeverancierCustomGroup custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getInspecteurBtwPlichtigCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'leverancier_btw_plichtig');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
-    }
-
-    /**
-     * Getter for account custom field from inspecteurLeverancierCustomGroup custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getInspecteurIbanCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'leverancier_iban');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
-    }
-
-    /**
-     * Getter for Eigen_referentie custom field from inspecteurLeverancierCustomGroup custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getInspecteurBestelNummerCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'leverancier_bestel_nummer');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
-    }
-
-    /**
-     * Getter for CSV_bestand_bij_factuur custom field from inspecteurLeverancierCustomGroup custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getInspecteurCsvBestandBijFactuurCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurLeverancierCustomGroup, 'leverancier_csv_toevoegen');
+    public function getCsvBestandBijFactuurCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_csv_toevoegen');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1457,13 +1347,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for vakantie_van custom field from controleArtsVakantieperiode custom group
+     * Getter for vakantie_van custom field from vakantieperiode custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getVakantieVanCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsVakantieperiodeCustomGroup, 'holiday_from');
+        $customField = $this->getCustomField($this->_vakantiePeriodeCustomGroup, 'mvp_vakantie_van');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1472,13 +1362,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for vakantie_tot custom field from controleArtsVakantieperiode custom group
+     * Getter for vakantie_tot custom field from vakantieperiode custom group
      *
      * @param null $key
      * @return mixed|array
      */
     public function getVakantieTotCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsVakantieperiodeCustomGroup, 'holiday_till');
+        $customField = $this->getCustomField($this->_vakantiePeriodeCustomGroup, 'mvp_vakantie_tot');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1487,13 +1377,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for postcode custom field from controleArtsWerkgebied custom group
+     * Getter for postcode custom field from werkgebied custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsPostcodeCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsWerkgebiedCustomGroup, 'mw_postcode');
+    public function getPostcodeCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_werkgebiedCustomGroup, 'mw_postcode');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1502,13 +1392,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for gemeente custom field from controleArtsWerkgebied custom group
+     * Getter for gemeente custom field from werkgebied custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsGemeenteCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsWerkgebiedCustomGroup, 'mw_gemeente');
+    public function getGemeenteCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_werkgebiedCustomGroup, 'mw_gemeente');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1517,58 +1407,13 @@ class CRM_Basis_Config {
     }
 
     /**
-     * Getter for prioriteit custom field from controleArtsWerkgebied custom group
+     * Getter for prioriteit custom field from werkgebied custom group
      *
      * @param null $key
      * @return mixed|array
      */
-    public function getArtsPrioriteitCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_controleArtsWerkgebiedCustomGroup, 'mw_prioriteit');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
-    }
-
-    /**
-     * Getter for postcode custom field from inspecteurWerkgebied custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getInspecteurPostcodeCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurWerkgebiedCustomGroup, 'field_of_work_zip');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
-    }
-
-    /**
-     * Getter for gemeente custom field from inspecteurWerkgebied custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getInspecteurGemeenteCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurWerkgebiedCustomGroup, 'field_of_work_city');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
-    }
-
-    /**
-     * Getter for prioriteit custom field from inspecteurWerkgebied custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getInspecteurPrioriteitCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_inspecteurWerkgebiedCustomGroup, 'field_of_work_prio');
+    public function getPrioriteitCustomField($key = NULL) {
+        $customField = $this->getCustomField($this->_werkgebiedCustomGroup, 'mw_prioriteit');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1578,72 +1423,58 @@ class CRM_Basis_Config {
 
 
     /**
-     * Getter for controle arts vakantie periode custom group
+     * Getter for vakantie periode custom group
      *
      * @param string $key
      * @return mixed|array
      */
-    public function getControleArtsVakantieperiodeCustomGroup($key = NULL) {
-        if (!empty($key) && isset($this->_controleArtsVakantieperiodeCustomGroup[$key])) {
-            return $this->_controleArtsVakantieperiodeCustomGroup[$key];
+    public function getVakantieperiodeCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_vakantiePeriodeCustomGroup[$key])) {
+            return $this->_vakantiePeriodeCustomGroup[$key];
         } else {
-            return $this->_controleArtsVakantieperiodeCustomGroup;
+            return $this->_vakantiePeriodeCustomGroup;
         }
     }
 
     /**
-     * Getter for inspecteur leverancier custom group
-     *
-     * @param string $key
-     * @return mixed|array
-     */
-    public function getInspecteurLeverancierCustomGroup($key = NULL) {
-        if (!empty($key) && isset($this->_controleArtsLeverancierCustomGroup[$key])) {
-            return $this->_controleArtsLeverancierCustomGroup[$key];
-        } else {
-            return $this->_controleArtsLeverancierCustomGroup;
-        }
-    }
-
-    /**
-   * Getter for controle arts leverancier custom group
+   * Getter for leverancier custom group
    *
    * @param string $key
    * @return mixed|array
    */
-  public function getControleArtsLeverancierCustomGroup($key = NULL) {
-    if (!empty($key) && isset($this->_controleArtsLeverancierCustomGroup[$key])) {
-      return $this->_controleArtsLeverancierCustomGroup[$key];
+  public function getLeverancierCustomGroup($key = NULL) {
+    if (!empty($key) && isset($this->_leverancierCustomGroup[$key])) {
+      return $this->_leverancierCustomGroup[$key];
     } else {
-      return $this->_controleArtsLeverancierCustomGroup;
+      return $this->_leverancierCustomGroup;
 }
 }
 
     /**
-     * Getter for controle arts werkgebied custom group
+     * Getter for werkgebied custom group
      *
      * @param string $key
      * @return mixed|array
      */
-    public function getControleArtsWerkgebiedCustomGroup($key = NULL) {
-        if (!empty($key) && isset($this->_controleArtsWerkgebiedCustomGroup[$key])) {
-            return $this->_controleArtsWerkgebiedCustomGroup[$key];
+    public function getWerkgebiedCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_werkgebiedCustomGroup[$key])) {
+            return $this->_werkgebiedCustomGroup[$key];
         } else {
-            return $this->_controleArtsWerkgebiedCustomGroup;
+            return $this->_werkgebiedCustomGroup;
         }
     }
 
     /**
-     * Getter for controle arts Communicatie custom group
+     * Getter for communicatie custom group
      *
      * @param string $key
      * @return mixed|array
      */
-    public function getControleArtsCommunicatieCustomGroup($key = NULL) {
-        if (!empty($key) && isset($this->_controleArtsCommunicatieCustomGroup[$key])) {
-            return $this->_controleArtsCommunicatieCustomGroup[$key];
+    public function getCommunicatieCustomGroup($key = NULL) {
+        if (!empty($key) && isset($this->_communicatieCustomGroup[$key])) {
+            return $this->_communicatieCustomGroup[$key];
         } else {
-            return $this->_controleArtsCommunicatieCustomGroup;
+            return $this->_communicatieCustomGroup;
         }
     }
     
@@ -1733,11 +1564,11 @@ class CRM_Basis_Config {
     }
 
     /**
- * Getter for ziekteperiode custom group
- *
- * @param string $key
- * @return mixed|array
- */
+     * Getter for ziekteperiode custom group
+     *
+     * @param string $key
+     * @return mixed|array
+     */
     public function getZiektemeldingZiekteperiodeCustomGroup($key = NULL) {
         if (!empty($key) && isset($this->_ziektemeldingZiekteperiodeCustomGroup[$key])) {
             return $this->_ziektemeldingZiekteperiodeCustomGroup[$key];
@@ -2188,157 +2019,28 @@ class CRM_Basis_Config {
         catch (CiviCRM_API3_Exception $ex) {
         }
     }  
-  
-  
-  
 
-  /**
-   * Method to set the klant custom groups and custom fields
-   */
-  private function setKlantCustomGroups() {
-    try {
-      $customGroups = civicrm_api3('CustomGroup','get', array(
-        'options' => array('limit' => 0)));
-      foreach ($customGroups['values'] as $customGroupId => $customGroup) {
+    /**
+     * Method to set the custom groups and all of its custom fields
+     */
+    private function setCustomGroups($customGroupName, $propertyName) {
+      try {
+        $customGroup = civicrm_api3('CustomGroup', 'getsingle', array(
+          'name' => $customGroupName,
+        ));
         $customFields = civicrm_api3('CustomField', 'get', array(
-            'custom_group_id' => $customGroupId,
-            'options' => array('limit' => 0)
+          'custom_group_id' => $customGroupName,
+          'options' => array('limit' => 0),
         ));
         $customGroup['custom_fields'] = $customFields['values'];
-        switch ($customGroup['name']) {
-          case 'invoicing':
-            $this->_klantBoekhoudingCustomGroup = $customGroup;
-            break;
-          case 'expert_system':
-            $this->_klantExpertsysteemCustomGroup = $customGroup;
-            break;
-          case 'organization':
-            $this->_klantOrganisatieCustomGroup = $customGroup;
-            break;
-          case 'customer_procedure':
-            $this->_klantProcedureCustomGroup = $customGroup;
-            break;
-        }
+        $this->$propertyName = $customGroup;
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+        CRM_Core_Error::createError('Unable to set the property '.$propertyName.' for custom group with name '
+          .$customGroupName. ' in '.__METHOD__.', extension be.mediwe.basis will not function properly. Contact your system administrator');
       }
     }
-    catch (CiviCRM_API3_Exception $ex) {
-    }
-  }
 
-    /**
-     * Method to set the controleArts custom groups and custom fields
-     */
-    private function setControleArtsCustomGroups() {
-        try {
-            $customGroups = civicrm_api3('CustomGroup','get', array(
-                'options' => array('limit' => 0)));
-            foreach ($customGroups['values'] as $customGroupId => $customGroup) {
-                $customFields = civicrm_api3('CustomField', 'get', array(
-                    'custom_group_id' => $customGroupId,
-                    'options' => array('limit' => 0)
-                ));
-                $customGroup['custom_fields'] = $customFields['values'];
-                switch ($customGroup['name']) {
-                    case 'holiday':
-                        $this->_controleArtsVakantieperiodeCustomGroup = $customGroup;
-                        break;
-                    case 'field_of_work':
-                        $this->_controleArtsWerkgebiedCustomGroup = $customGroup;
-                        break;
-                    case 'mediwe_communicatie_controlearts':
-                        $this->_controleArtsCommunicatieCustomGroup = $customGroup;
-                        break;
-                    case 'leverancier':
-                        $this->_controleArtsLeverancierCustomGroup = $customGroup;
-                        break;
-                }
-            }
-        }
-        catch (CiviCRM_API3_Exception $ex) {
-        }
-    }
-
-    /**
-     * Method to set the klantmedewerker custom groups and custom fields
-     */
-    private function setKlantMedewerkerCustomGroups() {
-        try {
-            $customGroups = civicrm_api3('CustomGroup','get', array(
-                'options' => array('limit' => 0)));
-            foreach ($customGroups['values'] as $customGroupId => $customGroup) {
-                $customFields = civicrm_api3('CustomField', 'get', array(
-                    'custom_group_id' => $customGroupId,
-                    'options' => array('limit' => 0)));
-                $customGroup['custom_fields'] = $customFields['values'];
-
-                switch ($customGroup['name']) {
-                    case 'counters':
-                        $this->_klantMedewerkerExpertsysteemTellersCustomGroup = $customGroup;
-                        break;
-                    case 'employee':
-                        $this->_klantMedewerkerMedewerkerCustomGroup = $customGroup;
-                        break;
-                }
-            }
-        }
-        catch (CiviCRM_API3_Exception $ex) {
-        }
-    }
-
-    /**
-     * Method to set the inspecteur custom groups and custom fields
-     */
-    private function setInspecteurCustomGroups() {
-        try {
-            $customGroups = civicrm_api3('CustomGroup','get', array(
-                'options' => array('limit' => 0)));
-            foreach ($customGroups['values'] as $customGroupId => $customGroup) {
-                $customFields = civicrm_api3('CustomField', 'get', array(
-                    'custom_group_id' => $customGroupId,
-                    'options' => array('limit' => 0)));
-                $customGroup['custom_fields'] = $customFields['values'];
-                switch ($customGroup['name']) {
-                    case 'field_of_work':
-                        $this->_inspecteurWerkgebiedCustomGroup = $customGroup;
-                        break;
-                    case 'leverancier':
-                        $this->_inspecteurLeverancierCustomGroup = $customGroup;
-                        break;
-                }
-            }
-        }
-        catch (CiviCRM_API3_Exception $ex) {
-        }
-    }
-
-    /**
-     * Method to set the inspecteur custom groups and custom fields
-     */
-    private function setMembershipCustomGroups() {
-        try {
-            $customGroups = civicrm_api3('CustomGroup','get', array(
-                'options' => array('limit' => 0)));
-            foreach ($customGroups['values'] as $customGroupId => $customGroup) {
-                $customFields = civicrm_api3('CustomField', 'get', array(
-                    'custom_group_id' => $customGroupId,
-                    'options' => array('limit' => 0)));
-                $customGroup['custom_fields'] = $customFields['values'];
-                switch ($customGroup['name']) {
-                    case 'voorwaarden_controle':
-                        $this->_voorwaardenControleCustomGroup = $customGroup;
-                        break;
-                    case 'voorwaarden_mijn_mediwe':
-                        $this->_voorwaardenMijnMediweCustomGroup = $customGroup;
-                        break;
-                    case 'voorwaarden_zorgfonds':
-                        $this->_voorwaardenZorgfondsCustomGroup = $customGroup;
-                        break;
-                }
-            }
-        }
-        catch (CiviCRM_API3_Exception $ex) {
-        }
-    }
 
     /**
      * Method to set the  option groups and option fields
