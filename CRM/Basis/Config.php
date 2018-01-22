@@ -96,7 +96,7 @@ class CRM_Basis_Config {
     // set custom groups and custom fields voor controlearts/inspecteur
     $this->setCustomGroups('mediwe_communicatie_controlearts', '_communicatieCustomGroup');
     $this->setCustomGroups('mediwe_vakantie_periode', '_vakantiePeriodeCustomGroup');
-    $this->setCustomGroups('mediwe_werkgebied', 'werkgebiedCustomGroup');
+    $this->setCustomGroups('mediwe_werkgebied', '_werkgebiedCustomGroup');
     $this->setCustomGroups('mediwe_leverancier', '_leverancierCustomGroup');
 
     $this->setCasesCustomGroups();
