@@ -387,7 +387,7 @@
       },
       "vorig_kalenderjaar": {
         "name": "vorig_kalenderjaar",
-        "value": "Y",
+        "value": "Y-1",
         "label": "vorig kalenderjaar",
         "is_active": 1,
         "is_reserved": 0
@@ -1606,7 +1606,7 @@
       },
       "niet_arbeidsongeschikt": {
         "name": "niet_arbeidsongeschikt",
-        "value": "008",
+        "value": "009",
         "label": "Niet arbeidsongeschikt",
         "is_active": 1,
         "is_reserved": 0
