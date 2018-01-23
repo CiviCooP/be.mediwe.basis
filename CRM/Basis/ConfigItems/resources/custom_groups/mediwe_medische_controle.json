@@ -51,22 +51,6 @@
         "is_searchable": 0,
         "is_active": 1
       },
-        "mmc_afstand_km": {
-          "name": "mmc_afstand_km",
-          "label": "Afstand km",
-          "data_type": "Float",
-          "html_type": "Text",
-          "is_searchable": 0,
-          "is_active": 1
-        },
-        "mmc_afstand_tijd": {
-          "name": "mmc_afstand_tijd",
-          "label": "Afstand tijd",
-          "data_type": "String",
-          "html_type": "Text",
-          "is_searchable": 0,
-          "is_active": 1
-        },
       "mmc_job_beschrijving": {
         "name": "mmc_job_beschrijving",
         "label": "Job omschrijving",

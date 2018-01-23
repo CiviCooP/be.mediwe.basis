@@ -10,16 +10,16 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
-         "mh_huisbezoek_adres": {
-           "name": "mh_huisbezoek_adres",
-           "label": "Straat, huisnr en busnr",
-           "data_type": "String",
-           "html_type": "Text",
-           "is_searchable": 1,
-           "is_active": 1,
-           "is_required": 1,
-           "weight": 1
-         },
+       "mh_huisbezoek_adres": {
+         "name": "mh_huisbezoek_adres",
+         "label": "Straat, huisnr en busnr",
+         "data_type": "String",
+         "html_type": "Text",
+         "is_searchable": 1,
+         "is_active": 1,
+         "is_required": 1,
+         "weight": 1
+       },
       "mh_huisbezoek_postcode": {
         "name": "mh_huisbezoek_postcode",
         "label": "Postcode huisbezoek",
@@ -50,6 +50,22 @@
         "is_active": 1,
         "is_required": 1,
         "weight": 4
+      },
+      "mh_afstand_km": {
+        "name": "mh_afstand_km",
+        "label": "Afstand km",
+        "data_type": "Float",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_active": 1
+      },
+      "mh_afstand_tijd": {
+        "name": "mh_afstand_tijd",
+        "label": "Afstand tijd",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_active": 1
       },
       "mh_thuisplicht_van": {
         "name": "mh_thuisplicht_van",
