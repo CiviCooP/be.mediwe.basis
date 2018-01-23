@@ -28,6 +28,12 @@ function _civicrm_api3_controle_arts_Voorstel_spec(&$spec) {
     'api.required' => 0,
     'type' => CRM_Utils_Type::T_INT,
   );
+  $spec['huisbezoek_id'] = array(
+    'name' => 'huisbezoek_id',
+    'title' => 'huisbezoek_id',
+    'api.required' => 0,
+    'type' => CRM_Utils_Type::T_INT,
+  );
 }
 
 /**

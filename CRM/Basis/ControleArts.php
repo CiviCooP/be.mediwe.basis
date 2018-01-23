@@ -741,7 +741,7 @@ class CRM_Basis_ControleArts {
           'limit' => 0,
         ),
       ));
-      $values = $this->rearrangeRepeatingData($customData['values']);
+      $values = CRM_Basis_Utils::rearrangeRepeatingData($customData['values']);
       foreach ($values as $recordId => $data) {
         $result[$recordId]['datum_van'] = $data[$periodeVanCustomFieldId];
         $result[$recordId]['datum_tot'] = $data[$periodeTotCustomFieldId];
@@ -764,27 +764,6 @@ class CRM_Basis_ControleArts {
         unset($result[$recordId]);
       }
     }
-  }
-
-  /**
-   * Method om waarden uit CustomValue repeating groups om te bouwen van alle waarden per custom veld naar
-   * alle custom velden per occurrence
-   *
-   * @param $dataValues
-   * @return array
-   */
-  private function rearrangeRepeatingData($dataValues) {
-    $result = array();
-    // ignore all non-data elements
-    $ignores = array('entity_table', 'entity_id', 'id', 'latest');
-    foreach ($dataValues as $customFieldId => $customData) {
-      foreach ($customData as $key => $value) {
-        if (!in_array($key, $ignores)) {
-          $result[$key][$customFieldId] = $value;
-        }
-      }
-    }
-    return $result;
   }
 
 }

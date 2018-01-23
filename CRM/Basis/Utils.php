@@ -61,4 +61,26 @@ class CRM_Basis_Utils {
       return FALSE;
     }
   }
+
+  /**
+   * Method om waarden uit CustomValue repeating groups om te bouwen van alle waarden per custom veld naar
+   * alle custom velden per occurrence
+   *
+   * @param $dataValues
+   * @return array
+   */
+  public static function rearrangeRepeatingData($dataValues) {
+    $result = array();
+    // ignore all non-data elements
+    $ignores = array('entity_table', 'entity_id', 'id', 'latest');
+    foreach ($dataValues as $customFieldId => $customData) {
+      foreach ($customData as $key => $value) {
+        if (!in_array($key, $ignores)) {
+          $result[$key][$customFieldId] = $value;
+        }
+      }
+    }
+    return $result;
+  }
+
 }
