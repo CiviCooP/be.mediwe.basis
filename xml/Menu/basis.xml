@@ -54,4 +54,10 @@
     <title>Ziektemelding</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/mediwe/erikh/page/test</path>
+    <page_callback>CRM_Basis_Page_ErikHommelTest</page_callback>
+    <title>ErikHommelTest</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>
