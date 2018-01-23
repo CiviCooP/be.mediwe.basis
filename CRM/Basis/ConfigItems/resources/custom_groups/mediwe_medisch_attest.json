@@ -15,7 +15,7 @@
                 "label": "Ontvangst datum",
                 "data_type": "Date",
                 "html_type": "Select Date",
-                "date_format": "dd/mm/YY",
+                "date_format": "dd/mm/yy",
                 "is_searchable": 1,
                 "is_active": 1,
                 "is_required": 1
@@ -25,7 +25,7 @@
                 "label": "Poststempel datum",
                 "data_type": "Date",
                 "html_type": "Select Date",
-                "date_format": "dd/mm/YY",
+                "date_format": "dd/mm/yy",
                 "is_searchable": 1,
                 "is_active": 1,
                 "is_required": 1
@@ -54,7 +54,7 @@
               "label": "Begin datum",
               "data_type": "Date",
               "html_type": "Select Date",
-              "date_format": "dd/mm/YY",
+              "date_format": "dd/mm/yy",
               "is_searchable": 1,
               "is_active": 1,
               "is_required": 1
@@ -64,7 +64,7 @@
               "label": "Eind datum",
               "data_type": "Date",
               "html_type": "Select Date",
-              "date_format": "dd/mm/YY",
+              "date_format": "dd/mm/yy",
               "is_searchable": 1,
               "is_active": 1,
               "is_required": 0
@@ -110,7 +110,7 @@
               "label": "Begin datum opname",
               "data_type": "Date",
               "html_type": "Select Date",
-              "date_format": "dd/mm/YY",
+              "date_format": "dd/mm/yy",
               "is_searchable": 1,
               "is_active": 1,
               "is_required": 0
