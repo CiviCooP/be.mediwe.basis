@@ -66,10 +66,18 @@ class CRM_Basis_ControleArts {
       ),
       'return' => array(
         'id',
-        'custom_'.CRM_Basis_Config::singleton()->getArtsGebruiktAppCustomField,
-        'custom_'.CRM_Basis_Config::singleton()->getArtsBelMomentCustomField,
-        'custom_'.CRM_Basis_Config::singleton()->getArtsOpdrachtPerCustomField,
-        'custom_'.CRM_Basis_Config::singleton()->getArtsOverzichtCustomField,
+        'display_name',
+        'street_address',
+        'city',
+        'postal_code',
+        'phone',
+        'preferred_communication_method',
+        'custom_'.CRM_Basis_Config::singleton()->getArtsGebruiktAppCustomField('id'),
+        'custom_'.CRM_Basis_Config::singleton()->getArtsBelMomentCustomField('id'),
+        'custom_'.CRM_Basis_Config::singleton()->getArtsOpdrachtPerCustomField('id'),
+        'custom_'.CRM_Basis_Config::singleton()->getArgetArtsPercentageAkkoordCustomField('id'),
+        'custom_'.CRM_Basis_Config::singleton()->getGemeenteCustomField('id'),
+        'custom_'.CRM_Basis_Config::singleton()->getArtsOverzichtCustomField('id'),
       ),
       $postcodeCustom => $postcode,
     );
@@ -80,15 +88,49 @@ class CRM_Basis_ControleArts {
     }
     return $result;
   }
-
   /**
-   * Method om de repeterende gegevens van artsen op te halen
-   * @param $artsen
+   *
    */
-  private function enhanceVoorstelArtsenData($artsen) {
+  private function generateVoorstelArtsenData($artsen) {
     $result = array();
-    return $result;
+    foreach ($artsen as $artsId => $artsData) {
+      // als arts nu op vakantie mag hij achterwege blijven
+      if ($this->isOpVakantie($artsId) == FALSE) {
+        // basisgegevens klaarzetten
+        $suggestie = array(
+          'contact_id' => $artsId,
+          'naam_arts' => $artsData['display_name'],
+          'gebruikt_app' => $artsData['custom_'.CRM_Basis_Config::singleton()->getArtsGebruiktAppCustomField('id')],
+          'akkoord_percentage' => $artsData['custom_'.CRM_Basis_Config::singleton()->getArgetArtsPercentageAkkoordCustomField('id')],
+          'bellen' => $artsData['custom_'.'custom_'.CRM_Basis_Config::singleton()->getArtsBelMomentCustomField('id')],
+          'opdracht_per' => $artsData['custom_'.CRM_Basis_Config::singleton()->getArtsOpdrachtPerCustomField('id')],
+          'overzicht_middag' => $artsData['custom_'.CRM_Basis_Config::singleton()->getArtsOverzichtCustomField('id')],
+        );
+        if (!empty($artsData['street_address'])) {
+          $suggestie['adres'] = $artsData['street_address'];
+        }
+        if (!empty($artsData['postal_code'])) {
+          $suggestie['postal_code'] = $artsData['postal_code'];
+        }
+        if (!empty($artsData['city'])) {
+          $suggestie['plaats'] = $artsData['city'];
+        }
+        if (!empty($artsData['phone'])) {
+          $suggestie['telefoon'] = $artsData['phone'];
+        }
+        // ophalen vakantieperiodes arts
+        // ophalen afstand
+        // communicatievoorkeuren label ophalen
+        // berekenen aantal opdrachten vandaag voor arts
+
+      }
+
+    }
   }
+  public function isOpVakantie($contactId) {
+    return FALSE;
+  }
+
 
   /**
    * Method om te beoordelen of ik valide parameters for Voorstel heb, en deze aan te vullen waar nodig
