@@ -26,5 +26,11 @@
     "component_id": 7,
     "name": "mediwe_onderzoek_ao",
     "label":"Onderzoek arbeidsongeval"
+  },
+  "mediwe_belafspraak_arts":
+  {
+    "value": 500,
+    "name": "mediwe_belafspraak_arts",
+    "label":"Dagelijkse belafspraak met arts"
   }
 }

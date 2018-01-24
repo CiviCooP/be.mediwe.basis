@@ -2271,7 +2271,7 @@ class CRM_Basis_Config {
   /**
    * Function to return singleton object
    *
-   * @return object $_singleton
+   * @return CRM_Basis_Config
    * @access public
    * @static
    */
