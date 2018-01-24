@@ -1641,5 +1641,27 @@
         "is_reserved": 0
       }
     }
+  },
+  "mediwe_opdracht_wijze": {
+    "name": "mediwe_opdracht_wijze",
+    "title": "Opdracht Per",
+    "is_active": 1,
+    "is_reserved": 0,
+    "option_values": {
+      "per_mail": {
+        "name": "mail",
+        "value": 1,
+        "label": "E-mail",
+        "is_active": 1,
+        "is_reserved": 0
+      },
+      "per_fax": {
+        "name": "fax",
+        "value": 2,
+        "label": "Fax",
+        "is_active": 1,
+        "is_reserved": 0
+      }
+    }
   }
  }
