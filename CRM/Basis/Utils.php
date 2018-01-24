@@ -83,4 +83,25 @@ class CRM_Basis_Utils {
     return $result;
   }
 
+  /**
+   * Method om preferred communication labels in een string te plaatsen
+   *
+   * @param $prefCommMethods
+   * @return string
+   */
+  public static function getPreferredCommunicationLabels($prefCommMethods) {
+    $result = array();
+    foreach ($prefCommMethods as $prefCommMethod) {
+      try {
+        $result[] = civicrm_api3('OptionValue', 'getvalue', array(
+          'option_group_id' => 'preferred_communication_method',
+          'value' => $prefCommMethod,
+          'return' => 'label',
+        ));
+      } catch (CiviCRM_API3_Exception $ex) {
+      }
+      return implode(', ', $result);
+    }
+  }
+
 }
