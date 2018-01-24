@@ -79,6 +79,8 @@ class CRM_Basis_Config {
   private $_ziekteMeldingRedenKortOptionGroup = array();
   private $_ziekteMeldingRedenOptionGroup = array();
   private $_medischeControleCriteriumOptionGroup = array();
+  private $_belMomentOptionGroup = array();
+  private $_opdrachtWijzeOptionGroup = array();
 
   // properties voor migratie databases
   private $_joomlaDbName = NULL;
@@ -108,6 +110,34 @@ class CRM_Basis_Config {
 
     $this->_joomlaDbName = "mediwe_joomla";
     $this->_sourceCiviDbName = "mediwe_civicrm";
+  }
+
+  /**
+   * Getter voor bel moment option group
+   * 
+   * @param null $key
+   * @return array|mixed
+   */
+  public function getBelMomentOptionGroup($key = NULL) {
+    if (!empty($key) && isset($this->_belMomentOptionGroup[$key])) {
+      return $this->_belMomentOptionGroup['id'];
+    } else {
+      return $this->_belMomentOptionGroup;
+    }
+  }
+
+  /**
+   * Getter voor opdracht wijze option group
+   *
+   * @param null $key
+   * @return array|mixed
+   */
+  public function getOpdrachtWijzeOptionGroup($key = NULL) {
+    if (!empty($key) && isset($this->_opdrachtWijzeOptionGroup[$key])) {
+      return $this->_opdrachtWijzeOptionGroup['id'];
+    } else {
+      return $this->_opdrachtWijzeOptionGroup;
+    }
   }
 
   /**
@@ -2082,6 +2112,12 @@ class CRM_Basis_Config {
                     case 'mediwe_control_criterium':
                         $this->_medischeControleCriteriumOptionGroup = $optionGroup;
                         break;
+                  case 'mediwe_bellen_moment':
+                    $this->_belMomentOptionGroup = $optionGroup;
+                    break;
+                  case 'mediwe_opdracht_wijze':
+                    $this->_opdrachtWijzeOptionGroup = $optionGroup;
+                    break;
                 }
             }
         }
