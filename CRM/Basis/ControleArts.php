@@ -67,7 +67,7 @@ class CRM_Basis_ControleArts {
       );
       try {
         $artsen = civicrm_api3('Contact', 'get', $contactParams);
-        $result = $this->generateVoorstelArtsenData($artsen['values'], $params['voorstel_datum']);
+        $result = $this->generateVoorstelArtsenData($artsen['values'], $params);
         // als huisbezoek_id meegegeven, bepaal afstand
       } catch (CiviCRM_API3_Exception $ex) {
       }
@@ -79,14 +79,18 @@ class CRM_Basis_ControleArts {
 
   /**
    * Method om data voor voorstel artsen te ordenen
+   *
+   * @param array $artsen
+   * @param array $params
+   * @return array
    */
-  private function generateVoorstelArtsenData($artsen, $peilDatum) {
+  private function generateVoorstelArtsenData($artsen, $params) {
     $result = array();
     foreach ($artsen as $artsId => $artsData) {
       // als arts nu op vakantie mag hij achterwege blijven
       // ophalen vakantieperiodes arts
-      $vakantiePeriodes = $this->getVakantiePeriodesWithContactId($artsId, $peilDatum);
-      if ($this->isOpVakantie($vakantiePeriodes, $peilDatum) == FALSE) {
+      $vakantiePeriodes = $this->getVakantiePeriodesWithContactId($artsId, $params['voorstel_datum']);
+      if ($this->isOpVakantie($vakantiePeriodes, $params['voorstel_datum']) == FALSE) {
         $suggestie = array();
         $suggestie['contact_id'] = $artsData['id'];
         $suggestie['naam_arts'] = $artsData['display_name'];
@@ -112,13 +116,53 @@ class CRM_Basis_ControleArts {
           $suggestie['communicatie_voorkeur'] = CRM_Basis_Utils::getPreferredCommunicationLabels($artsData['preferred_communication_method']);
         }
         // berekenen aantal opdrachten vandaag voor arts
-        $suggestie['huisbezoeken_vandaag'] = $this->getHuisbezoekenArtsOpPeilDatum($artsId, $peilDatum);
+        $suggestie['huisbezoeken_vandaag'] = $this->getHuisbezoekenArtsOpPeilDatum($artsId, $params['voorstel_datum']);
+        // afstand toevoegen als huisbezoek_id bekend
+        if ($params['huisbezoek_id']) {
+          $afstand = $this->getAfstandVoorHuisbezoek($params['huisbezoek_id'], $artsId, $artsData);
+          if (!empty($afstand)) {
+            $suggestie['km'] = $afstand['km'];
+            $suggestie['afstand_tijd'] = $afstand['tijd'];
+          }
+        }
         // vakantieperiodes toevoegen
         $suggestie['vakantie_periodes'] = $vakantiePeriodes;
         $result[$artsId] = $suggestie;
       }
     }
     return $result;
+  }
+  public function getAfstandVoorHuisbezoek($huisbezoekId, $artsId, $artsData = array()) {
+    $result = array();
+    // fout als artsId en artsData leeg
+    if (empty($artsId && empty($artsData))) {
+      return $result;
+    }
+    // als artsData leeg, haal gegevens arts op met artsId
+    if (empty($artsData)) {
+      try {
+        $artsData = civicrm_api3('Address', 'getsingle', array(
+          'return' => array("street_address", "city", "postal_code"),
+          'contact_id' => $artsId,
+          'is_primary' => 1,
+        ));
+        // haal gegevens huisbezoek op met huisbezoekId
+        $huisbezoek = civicrm_api3('Huisbezoek', 'getsingle', array(
+          'id' => $huisbezoekId,
+        ));
+        // bereken afstand
+        $afstand = civicrm_api3('Google', 'afstand', array(
+        ));
+        if (isset($afstand['values'])) {
+          $result = $afstand['values'];
+        }
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+      }
+      return $result;
+    }
+    // haal gegevens huisbezoek op met huisbezoekId
+    // bereken afstand
   }
 
   /**
