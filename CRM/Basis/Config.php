@@ -2095,10 +2095,6 @@ class CRM_Basis_Config {
             $optionGroups = civicrm_api3('OptionGroup','get', array(
                 'options' => array('limit' => 0)));
             foreach ($optionGroups['values'] as $optionGroupId => $optionGroup) {
-                $optionValues = civicrm_api3('OptionValue','get', array(
-                    'option_group_id' => $optionGroupId,
-                    'options' => array('limit' => 0)));
-                $optionGroup['option_values'] = $optionValues['values'];
                 switch ($optionGroup['name']) {
                     case 'mediwe_control_type':
                         $this->_medischeControleSoortOptionGroup = $optionGroup;
