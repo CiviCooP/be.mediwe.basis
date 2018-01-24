@@ -21,7 +21,7 @@ function _civicrm_api3_huisbezoek_Get_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_ziekmelding_Get($params) {
+function civicrm_api3_huisbezoek_Get($params) {
 
     $huisbezoek = new CRM_Basis_Huisbezoek();
     $returnValues = $huisbezoek->get($params);
