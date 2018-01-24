@@ -336,7 +336,7 @@ class CRM_Basis_Config {
    *
    * @return mixed
    */
-  public function getArtsPercentageAkkoordCustomField() {
+  public function getArtsPercentageAkkoordCustomField($key = NULL) {
     $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_percentage_akkoord');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];

@@ -43,7 +43,7 @@ class CRM_Basis_ControleArts {
     if ($this->validVoorstelParams($params)) {
       // zoek alle artsen binnen postcode, limit en peildatum
       $postcodeCustom = 'custom_'.CRM_Basis_Config::singleton()->getPostcodeCustomField('id');
-      $params = array(
+      $contactParams = array(
         'contact_sub_type' => $this->_controleArtsContactSubTypeName,
         'options' => array(
           'limit' => $params['limiet']
@@ -59,19 +59,18 @@ class CRM_Basis_ControleArts {
           'custom_'.CRM_Basis_Config::singleton()->getArtsGebruiktAppCustomField('id'),
           'custom_'.CRM_Basis_Config::singleton()->getArtsBelMomentCustomField('id'),
           'custom_'.CRM_Basis_Config::singleton()->getArtsOpdrachtPerCustomField('id'),
-          'custom_'.CRM_Basis_Config::singleton()->getArgetArtsPercentageAkkoordCustomField('id'),
+          'custom_'.CRM_Basis_Config::singleton()->getArtsPercentageAkkoordCustomField('id'),
           'custom_'.CRM_Basis_Config::singleton()->getGemeenteCustomField('id'),
           'custom_'.CRM_Basis_Config::singleton()->getArtsOverzichtCustomField('id'),
         ),
         $postcodeCustom => $params['postcode'],
       );
       try {
-        $artsen = civicrm_api3('Contact', 'get', $params);
-        $result = $this->generateVoorstelArtsenData($artsen, $params['voorstel_datum']);
+        $artsen = civicrm_api3('Contact', 'get', $contactParams);
+        $result = $this->generateVoorstelArtsenData($artsen['values'], $params['voorstel_datum']);
       } catch (CiviCRM_API3_Exception $ex) {
       }
-      // ophalen afstand als parameter huisbezoek_id gevuld
-      return $artsen;
+      return $result;
     } else {
       return FALSE;
     }
@@ -85,16 +84,14 @@ class CRM_Basis_ControleArts {
     foreach ($artsen as $artsId => $artsData) {
       // als arts nu op vakantie mag hij achterwege blijven
       // ophalen vakantieperiodes arts
-      $suggestie = array();
-      $suggestie['vakantie_periodes'] = $this->getVakantiePeriodesWithContactId($artsId, $peilDatum);
-
-      if ($this->isOpVakantie($suggestie['vakantie_periodes'], $peilDatum) == FALSE) {
-        // basisgegevens klaarzetten
-        $suggestie['contact_id'] = $artsId;
+      $vakantiePeriodes = $this->getVakantiePeriodesWithContactId($artsId, $peilDatum);
+      if ($this->isOpVakantie($vakantiePeriodes, $peilDatum) == FALSE) {
+        $suggestie = array();
+        $suggestie['contact_id'] = $artsData['id'];
         $suggestie['naam_arts'] = $artsData['display_name'];
         $suggestie['gebruikt_app'] = $artsData['custom_'.CRM_Basis_Config::singleton()->getArtsGebruiktAppCustomField('id')];
-        $suggestie['akkoord_percentage'] = $artsData['custom_'.CRM_Basis_Config::singleton()->getArgetArtsPercentageAkkoordCustomField('id')];
-        $suggestie['bellen'] = $artsData['custom_'.'custom_'.CRM_Basis_Config::singleton()->getArtsBelMomentCustomField('id')];
+        $suggestie['akkoord_percentage'] = $artsData['custom_'.CRM_Basis_Config::singleton()->getArtsPercentageAkkoordCustomField('id')];
+        $suggestie['bellen'] = $artsData['custom_'.CRM_Basis_Config::singleton()->getArtsBelMomentCustomField('id')];
         $suggestie['opdracht_per'] = $artsData['custom_'.CRM_Basis_Config::singleton()->getArtsOpdrachtPerCustomField('id')];
         $suggestie['overzicht_middag'] = $artsData['custom_'.CRM_Basis_Config::singleton()->getArtsOverzichtCustomField('id')];
         if ($artsData['street_address']) {
@@ -114,7 +111,9 @@ class CRM_Basis_ControleArts {
           $suggestie['communicatie_voorkeur'] = CRM_Basis_Utils::getPreferredCommunicationLabels($artsData['preferred_communication_method']);
         }
         // berekenen aantal opdrachten vandaag voor arts
-        $suggestie['opdrachten_vandaag'] = $this->getOpdrachtenPeilDatum($artsId, $peilDatum);
+        $suggestie['huisbezoeken_vandaag'] = $this->getHuisbezoekenArtsOpPeilDatum($artsId, $peilDatum);
+        // vakantieperiodes toevoegen
+        $suggestie['vakantie_periodes'] = $vakantiePeriodes;
         $result[$artsId] = $suggestie;
       }
     }
@@ -122,39 +121,59 @@ class CRM_Basis_ControleArts {
   }
 
   /**
-   * Method om aantal opdrachten voor de arts op de peildatum te tellen
+   * Method om aantal huisbezoeken voor de arts op de peildatum te tellen
    *
    * @param $artsId
    * @param $peilDatum
-   * @return array|int
+   * @return mixed
    */
-  private function getOpdrachtenPeilDatum($artsId, $peilDatum) {
+  private function getHuisbezoekenArtsOpPeilDatum($artsId, $peilDatum) {
     if (!$peilDatum) {
       $peilDatum = new DateTime();
     }
-    // eerste aanname: opdracht = medische controle dus tellen we relaties
-    // TODO check with Christophe
-    // haal de relaties controlearts op die actief zijn en waarvan de startdatum de peildatum is
+    $huisbezoekActivityType = CRM_Basis_Config::singleton()->getHuisbezoekActivityType();
+    // tel het aantal actieve activiteiten van het type huisbezoek toegewezen aan de arts met datum is peildatum
     try {
-      return civicrm_api3('Relationship', 'getcount', array(
-        'relationship_type_id' => CRM_Basis_Config::singleton()->getControleArtsRelationshipTypeId(),
-        'contact_id_a' => $artsId,
-        'start_date' => $peilDatum->format('Ymd'),
+      return civicrm_api3('Activity', 'getcount', array(
+        'activity_type_id' => $huisbezoekActivityType['value'],
+        'assignee_contact_id' => $artsId,
+        'is_deleted' => 0,
+        'is_test' => 0,
+        'is_current_revision' => 1,
+        'activity_date_time' => array(
+          'BETWEEN' => array(
+            $peilDatum->format('Y-m-d').' 00:00:00',
+            $peilDatum->format('Y-m-d').' 23:59:59',
+          ),
+        ),
       ));
     }
     catch (CiviCRM_API3_Exception $ex) {
-      return 0;
     }
+    return 0;
   }
 
 
   /**
-   * Method om te controleren of een arts op de peildatum op vakantie is
+   * Method om te controleren of de arts op vakantie is.
+   * Kan aangeroepen worden met vakantiePeriodes en artsId leeg, dan wordt de paramter vakantieperiodes gebruikt
+   * Kan ook aangeroepen worden met artsId, dan worden de vakantieperiodes van de arts opgehaald
    *
    * @param array $vakantiePeriodes (verwacht: id, datum_van (Y-m-d), datum_tot (Y-m-d) - bv. 1:2018-03-05:2018-03-07
+   * @param $peilDatum
+   * @param int $artsId
+   *
    * @return bool
    */
-  public function isOpVakantie($vakantiePeriodes, $peilDatum) {
+  public function isOpVakantie($vakantiePeriodes = array(), $peilDatum, $artsId = NULL) {
+    // als artsId, vakantieperiodes van arts ophalen
+    if (!empty($artsId)) {
+      $vakantiePeriodes = $this->getVakantiePeriodesWithContactId($artsId);
+    }
+    // zeker stellen dat peildatum een DateTime object is
+    if (!$peilDatum instanceof DateTime) {
+      $peilDatum = new DateTime($peilDatum);
+    }
     foreach ($vakantiePeriodes as $periodeId => $periodeData) {
       if ($periodeData['datum_van']) {
         $vanDatum = new DateTime($periodeData['datum_van']);
@@ -189,10 +208,10 @@ class CRM_Basis_ControleArts {
       $params['limiet'] = 0;
     }
     // default voorstel datum is vandaag
-    if (!$params['voorstel_datum']) {
-      $voorstelDatum = new DateTime();
+    if (!isset($params['voorstel_datum']) || empty($params['voorstel_datum'])) {
+      $params['voorstel_datum'] = new DateTime();
     } else {
-      $voorstelDatum = new DateTime($params['voorstel_datum']);
+      $params['voorstel_datum'] = new DateTime($params['voorstel_datum']);
     }
     return TRUE;
   }
@@ -256,22 +275,28 @@ class CRM_Basis_ControleArts {
     if (!$peilDatum) {
       $peilDatum = new DateTime();
     } else {
-      $peilDatum = new DateTime($peilDatum);
+      // zeker stellen dat peildatum een DateTime object is
+      if (!$peilDatum instanceof DateTime) {
+        $peilDatum = new DateTime($peilDatum);
+      }
     }
+    $customParams = array(
+      'entity_id' => $contactId,
+      'entity_table' => 'civicrm_contact',
+      'return.custom_'.$periodeVanCustomFieldId => 1,
+      'return.custom_'.$periodeTotCustomFieldId => 1,
+      'options' => array(
+        'limit' => 0,
+      ),
+    );
     try {
-      $customData = civicrm_api3('CustomValue', 'get', array(
-        'entity_id' => $contactId,
-        'entity_table' => 'civicrm_contact',
-        'return.custom_'.$periodeVanCustomFieldId => 1,
-        'return.custom_'.$periodeTotCustomFieldId => 1,
-        'options' => array(
-          'limit' => 0,
-        ),
-      ));
+      $customData = civicrm_api3('CustomValue', 'get', $customParams);
       $values = CRM_Basis_Utils::rearrangeRepeatingData($customData['values']);
       foreach ($values as $recordId => $data) {
-        $result[$recordId]['datum_van'] = $data[$periodeVanCustomFieldId];
-        $result[$recordId]['datum_tot'] = $data[$periodeTotCustomFieldId];
+        $vanDatum = new DateTime($data[$periodeVanCustomFieldId]);
+        $totDatum = new DateTime($data[$periodeTotCustomFieldId]);
+        $result[$recordId]['datum_van'] = $vanDatum->format('j-n-Y');
+        $result[$recordId]['datum_tot'] = $totDatum->format('j-n-Y');
       }
       $this->filterVakantiePeriodesPeildatum($peilDatum, $result);
     }
@@ -283,8 +308,9 @@ class CRM_Basis_ControleArts {
   /**
    * Method to update a controlearts
    *
-   * @param $params
+   * @param $data
    * @return array
+   * @throws
    */
   public function update($data) {
 
