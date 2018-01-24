@@ -23,11 +23,13 @@ class CRM_Basis_Config {
   private $_klantMedewerkerLocationTypes = array();
 
   // properties for relationship types
-  private $_isKlantViaRelationshipType = array();
-  private $_isWerknemerVanRelationshipType = array();
-  private $_ziektemeldingRelationshipType = array();
-  private $_vraagtControleAanRelationshipType = array();
-  
+  private $_isKlantViaRelationshipTypeId = NULL;
+  private $_isWerknemerVanRelationshipTypeId = NULL;
+  private $_ziektemeldingRelationshipTypeId = NULL;
+  private $_vraagtControleAanRelationshipTypeId = NULL;
+  private $_controleArtsRelationshipTypeId = NULL;
+
+
   // properties for membership types
   private $_maandelijksMembershipType = array();
   private $_voorafbetaaldMembershipType = array();
@@ -82,6 +84,7 @@ class CRM_Basis_Config {
   private $_joomlaDbName = NULL;
   private $_sourceCiviDbName = NULL;
 
+
   /**
    * CRM_Basis_Config constructor.
    */
@@ -105,6 +108,15 @@ class CRM_Basis_Config {
 
     $this->_joomlaDbName = "mediwe_joomla";
     $this->_sourceCiviDbName = "mediwe_civicrm";
+  }
+
+  /**
+   * Getter for controle arts relationship type id
+   *
+   * @return null
+   */
+  public function getControleArtsRelationshipTypeId() {
+    return $this->_controleArtsRelationshipTypeId;
   }
 
   /**
@@ -1937,17 +1949,20 @@ class CRM_Basis_Config {
             foreach ($relationshipTypes['values'] as $relationshipTypeId => $relationshipType) {
                 switch ($relationshipType['name_a_b']) {
                     case 'is_klant_via':
-                        $this->_isKlantViaRelationshipType = $relationshipType;
+                        $this->_isKlantViaRelationshipTypeId = $relationshipType['id'];
                         break;
                     case 'Employee of':
-                        $this->_isWerknemerVanRelationshipType = $relationshipType;
+                        $this->_isWerknemerVanRelationshipTypeId = $relationshipType['id'];
                         break;
                     case 'ziektemelding':
-                        $this->_ziektemeldingRelationshipType = $relationshipType;
+                        $this->_ziektemeldingRelationshipTypeId = $relationshipType['id'];
                         break;
                     case 'vraagt_controle_aan':
-                        $this->_vraagtControleAanRelationshipType = $relationshipType;
+                        $this->_vraagtControleAanRelationshipTypeId = $relationshipType['id'];
                         break;
+                  case 'controlearts':
+                    $this->_controleArtsRelationshipTypeId = $relationshipType['id'];
+                    break;
                 }
             }
         }
