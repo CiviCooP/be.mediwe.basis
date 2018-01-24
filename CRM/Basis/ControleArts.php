@@ -868,7 +868,9 @@ class CRM_Basis_ControleArts {
         $createdContact = civicrm_api3('Contact', 'create', $params);
 
         // migrate tag info
-        $this->_migrate_tags($civi_arts['contact_id'], $contact_id);
+        if (isset($civi_arts['contact_id'])) {
+            $this->_migrate_tags($civi_arts['contact_id'], $contact_id);
+        }
 
         return $createdContact;
     }
