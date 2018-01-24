@@ -68,6 +68,7 @@ class CRM_Basis_ControleArts {
       try {
         $artsen = civicrm_api3('Contact', 'get', $contactParams);
         $result = $this->generateVoorstelArtsenData($artsen['values'], $params['voorstel_datum']);
+        // als huisbezoek_id meegegeven, bepaal afstand
       } catch (CiviCRM_API3_Exception $ex) {
       }
       return $result;
