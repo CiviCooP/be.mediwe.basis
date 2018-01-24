@@ -756,7 +756,7 @@ class CRM_Basis_ControleArts {
                     // leverancier custom fields
                     $contacts[$arrayRowId] = $config->addDaoData($config->getLeverancierCustomGroup(),  $contacts[$arrayRowId]);
                     // communicatie custom fields
-                    $contacts[$arrayRowId] = $config->addDaoData($config->getControleArtsCommunicatieCustomGroup(),  $contacts[$arrayRowId]);
+                    $contacts[$arrayRowId] = $config->addDaoData($config->getCommunicatieCustomGroup(),  $contacts[$arrayRowId]);
                     // Workgebied custom fields
                     //$contacts[$arrayRowId] = $config->addDaoData($config->getWorkgebiedCustomGroup(),  $contacts[$arrayRowId]);
                     // vakantiedagen custom fields
@@ -962,7 +962,7 @@ class CRM_Basis_ControleArts {
 
             // migreer de leveranciersgegevens uit civi produktie
             $this->_migrate_from_civi($params['id'], $params);
-die('Eerste arts OK');
+
         }
     }
 
