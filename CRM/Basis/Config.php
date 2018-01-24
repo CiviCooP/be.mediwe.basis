@@ -114,7 +114,7 @@ class CRM_Basis_Config {
 
   /**
    * Getter voor bel moment option group
-   * 
+   *
    * @param null $key
    * @return array|mixed
    */
