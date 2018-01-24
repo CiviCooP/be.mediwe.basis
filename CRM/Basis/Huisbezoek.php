@@ -146,19 +146,14 @@ class CRM_Basis_Huisbezoek {
    * @return array
    */
   public function get($params) {
-      $huisbezoek = array();
-
+    $huisbezoek = array();
     try {
-
         // ensure activity type is set correctly
         $params['activity_type_id'] = $this->_huisbezoekActivityTypeName;
-
         $huisbezoek = civicrm_api3('Activity', 'get', $params)['values'];
-        $this->_addHuisbezoekAllFields($huisbezoek);
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
-
     return $huisbezoek;
   }
 
@@ -273,21 +268,5 @@ class CRM_Basis_Huisbezoek {
               .', contact your system administrator! Error from API Activity create: '.$ex->getMessage()));
       }
   }
-
-    private function _addHuisbezoekAllFields(&$huisbezoeken)
-    {
-        $config = CRM_Basis_Config::singleton();
-        $ziektemelding = new CRM_Basis_Ziektemelding();
-
-        foreach ($huisbezoeken as $arrayRowId => $huisbezoek) {
-            if (isset($huisbezoek['id'])) {
-                // huisbezoek custom fields
-                $huisbezoeken[$arrayRowId] = $config->addDaoData($config->getMedischeControleHuisbezoekCustomGroup(), $huisbezoeken[$arrayRowId]);
-
-                // huisbezoek resultaat custom fields
-                $huisbezoeken[$arrayRowId] = $config->addDaoData($config->getMedischeControleResultaatCustomGroup(), $huisbezoeken[$arrayRowId]);
-            }
-        }
-    }
 
 }
