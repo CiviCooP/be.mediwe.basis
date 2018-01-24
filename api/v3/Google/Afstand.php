@@ -1,4 +1,5 @@
 <?php
+
 use CRM_Basis_ExtensionUtil as E;
 
 /**
@@ -9,13 +10,41 @@ use CRM_Basis_ExtensionUtil as E;
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
-function _civicrm_api3_google_Afstand_spec(&$spec) {
-  $spec['adres']['api.required'] = 1;
-  $spec['postcode']['api.required'] = 1;
-  $spec['gemeente']['api.required'] = 1;
-  $spec['adres_arts']['api.required'] = 1;
-  $spec['postcode_arts']['api.required'] = 1;
-  $spec['gemeente_arts']['api.required'] = 1;
+function _civicrm_api3_google_Afstand_spec(&$spec)
+{
+    $spec['adres'] = array(
+        'api.required' => 1,
+        'name' => 'adres',
+        'title' => 'Adres',
+        'type' => CRM_Utils_Type::T_STRING
+    );
+
+    $spec['postcode'] = array('api.required' => 1,
+        'name' => 'postcode',
+        'title' => 'Postcode',
+        'type' => CRM_Utils_Type::T_STRING
+    );
+
+    $spec['gemeente'] = array('api.required' => 1,
+        'name' => 'gemeente',
+        'title' => 'Gemeente',
+        'type' => CRM_Utils_Type::T_STRING);
+
+    $spec['adres_arts'] = array('api.required' => 1,
+        'name' => 'adres_arts',
+        'title' => 'Adres Arts',
+        'type' => CRM_Utils_Type::T_STRING);
+
+    $spec['postcode_arts'] = array(
+        'api.required' => 1,
+        'name' => 'postcode_arts',
+        'title' => 'Postcode Arts',
+        'type' => CRM_Utils_Type::T_STRING);
+
+    $spec['gemeente_arts'] = array('api.required' => 1,
+        'name' => 'gemeente_arts',
+        'title' => 'Gemeente Arts',
+        'type' => CRM_Utils_Type::T_STRING);
 }
 
 /**
