@@ -32,6 +32,38 @@ class CRM_Basis_ControleArts {
   }
 
   /**
+   * Method om vakantieperiodes toe te voegen
+   * @param $vakantiePeriodes
+   * @param $artsId
+   * @return bool
+   */
+  public function insertVakantiePeriodes($vakantiePeriodes, $artsId) {
+    if (empty($artsId)) {
+      return FALSE;
+    }
+    $count = count($vakantiePeriodes);
+    $vanCustomField = 'custom_'.CRM_Basis_Config::singleton()->getVakantieVanCustomField('id');
+    $vanName = CRM_Basis_Config::singleton()->getVakantieVanCustomField('name');
+    $totName = CRM_Basis_Config::singleton()->getVakantieTotCustomField('name');
+    $totCustomField = 'custom_'.CRM_Basis_Config::singleton()->getVakantieTotCustomField('id');
+    $customParams = array(
+      'entity_table' => 'civicrm_contact',
+      'entity_id' => $artsId,
+    );
+    foreach ($vakantiePeriodes as $vakantiePeriode) {
+      $customParams[$vanCustomField.':-'.$count] = $vakantiePeriode[$vanName];
+      $customParams[$totCustomField.':-'.$count] = $vakantiePeriode[$totName];
+      $count--;
+    }
+    try {
+      civicrm_api3('CustomValue', 'create', $customParams);
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+      CRM_Core_Error::createError(ts('Could not add custom values for vakantieperiodes in '.__METHOD__.', contact your system administrator'));
+    }
+  }
+
+  /**
    * Method om data van voor te stellen artsen op te halen
    *
    * @param $params
