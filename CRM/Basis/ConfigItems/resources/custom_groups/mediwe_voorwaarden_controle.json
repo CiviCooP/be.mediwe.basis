@@ -3,7 +3,7 @@
     "name":"mediwe_voorwaarden_controle",
     "title":"Voorwaarden medische controle",
     "extends": "Membership",
-    "extends_entity_column_value": ["1", "3","4"],
+    "extends_entity_column_value": ["1", "3"],
     "style":"Inline",
     "is_multiple":0,
     "is_active":1,

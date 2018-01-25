@@ -1,0 +1,81 @@
+{
+    "mediwe_voorwaarden_controle":{
+    "name":"mediwe_voorwaarden_arts",
+    "title":"Voorwaarden verloning arts",
+    "extends": "Membership",
+    "extends_entity_column_value": ["4"],
+    "style":"Inline",
+    "is_multiple":0,
+    "is_active":1,
+    "is_reserved":0,
+    "collapse_display":0,
+    "fields": {
+         "mva_controle_honorarium": {
+           "name": "mva_controle_honorarium",
+           "label": "Honorarium per controle",
+           "data_type": "Money",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 32
+         },
+         "mva_consultatie_honorarium": {
+           "name": "mva_consultatie_honorarium",
+           "label": "Honorarium per consultatie",
+           "data_type": "Money",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 54
+         },
+         "mva_supplement_weekend": {
+           "name": "mva_supplement_weekend",
+           "label": "Supplement weekendcontrole",
+           "data_type": "Money",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 74
+         },
+        "mva_supplement_buitenland": {
+           "name": "mva_supplement_buitenland",
+           "label": "Supplement controle in buitenland",
+           "data_type": "Money",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 90
+         },
+        "mva_supplement_app": {
+          "name": "mva_supplement_app",
+          "label": "Supplement gebruik van de app",
+          "data_type": "Money",
+          "html_type": "Text",
+          "is_searchable": 1,
+          "is_view": 0,
+          "is_active": 1,
+          "is_required": 1,
+          "weight": 95
+        },
+        "mva_btw_percentage": {
+           "name": "mva_btw_percentage",
+           "label": "BTW %",
+           "data_type": "Float",
+           "html_type": "Text",
+           "is_searchable": 1,
+           "is_view": 0,
+           "is_active": 1,
+           "is_required": 1,
+           "weight": 128
+         }
+        }
+    }
+}
