@@ -43,6 +43,7 @@ class CRM_Basis_Config {
   private $_consultatieActivityType = array();
   private $_consultatieAoActivityType = array();
   private $_ziekteattestActivityType = array();
+  private $_belAfspraakArtsActivityType = array();
 
 
     // properties for custom groups
@@ -1809,6 +1810,16 @@ class CRM_Basis_Config {
         return $this->_consultatieAoActivityType;
     }
 
+    /**
+     *  Getter voor de belafspraak Arts activiteit
+     *
+     * @return array
+     */
+    public function getBelAfspraakArtsActivityType()
+    {
+        return $this->_belAfspraakArtsActivityType;
+    }
+
 
     /**
      * Getter for ziektemelding  case type
@@ -2013,7 +2024,6 @@ class CRM_Basis_Config {
         try {
             $activityTypes = civicrm_api3('OptionValue', 'get', array(
                 'option_group_id' => "activity_type",
-                'component_id' => "CiviCase",
                 'options' => array('limit' => 0)));
             foreach ($activityTypes['values'] as $activityTypeId => $activityType) {
                 switch ($activityType['name']) {
@@ -2028,6 +2038,9 @@ class CRM_Basis_Config {
                         break;
                     case "mediwe_onderzoek_ao":
                         $this->_consultatieAoActivityType = $activityType;
+                        break;
+                    case "mediwe_belafspraak_arts":
+                        $this->_belAfspraakArtsActivityType = $activityType;
                         break;
                 }
             }
