@@ -175,3 +175,45 @@ function basis_civicrm_navigationMenu(&$menu) {
   ));
   _basis_civix_navigationMenu($menu);
 } // */
+
+/**
+ * Implements hook_civicrm_post()
+ *
+ * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_post/
+ *
+ * @param $op
+ * @param $objectName
+ * @param $objectId
+ * @param $objectRef
+ */
+
+
+function basis_civicrm_post($op, $objectName, $objectId, &$objectRef){
+
+    if($op =='create' && $objectName == 'Relationship'){
+        $relationShip = $objectRef;
+
+        $params = array(
+            'case_id' => $relationShip->case_id,
+            'relationship_type_id' => $relationShip->relationship_type_id,
+            'contact_id_a' => $relationShip->contact_id_a,
+            'contact_id_b' => $relationShip->contact_id_b
+        );
+
+        $dagelijkseBelAfspraak = new CRM_Basis_Acties_DagelijkseBelAfspraak($params);
+        if($dagelijkseBelAfspraak->controleer())
+        {
+            $dagelijkseBelAfspraak->actie();
+        }
+        $opdrachtEmailArts = new CRM_Basis_Acties_OpdrachtEmailArts($params);
+        if($opdrachtEmailArts->controleer())
+        {
+            $opdrachtEmailArts->actie();
+        }
+
+    }
+
+
+
+
+}

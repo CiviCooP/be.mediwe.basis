@@ -43,6 +43,7 @@ class CRM_Basis_Config {
   private $_consultatieActivityType = array();
   private $_consultatieAoActivityType = array();
   private $_ziekteattestActivityType = array();
+  private $_belAfspraakArtsActivityType = array();
 
 
     // properties for custom groups
@@ -87,6 +88,11 @@ class CRM_Basis_Config {
   private $_joomlaDbName = NULL;
   private $_sourceCiviDbName = NULL;
 
+  //mobiel telefoon type id
+  private $_mobielPhoneTypeId = NULL;
+  // contact id van het mediwe team
+  private $_mediweTeamContactId = 1 ;
+
 
   /**
    * CRM_Basis_Config constructor.
@@ -118,9 +124,29 @@ class CRM_Basis_Config {
       $this->setCustomGroups('mediwe_controle_procedure_klant', '_klantProcedureCustomGroup');
 
     $this->setCasesCustomGroups();
-    
+    $this->setMediweTeamContactId();
     $this->setCaseTypes();
+      
+    $this->_joomlaDbName = "mediwe_joomla";
+    $this->_sourceCiviDbName = "mediwe_civicrm";
+    try {
+      $this->_mobielPhoneTypeId = civicrm_api3('OptionValue', 'getvalue', array(
+        'option_group_id' => 'phone_type',
+        'name' => 'Mobile',
+        'return' => 'value',
+      ));
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+    }
+  }
 
+  /**
+   * Getter voor mobiel telefoon type id
+   *
+   * @return array|null
+   */
+  public function getMobielPhoneTypeId() {
+    return $this->_mobielPhoneTypeId;
   }
 
   /**
@@ -1815,6 +1841,16 @@ class CRM_Basis_Config {
         return $this->_consultatieAoActivityType;
     }
 
+    /**
+     *  Getter voor de belafspraak Arts activiteit
+     *
+     * @return array
+     */
+    public function getBelAfspraakArtsActivityType()
+    {
+        return $this->_belAfspraakArtsActivityType;
+    }
+
 
     /**
      * Getter for ziektemelding  case type
@@ -2019,7 +2055,6 @@ class CRM_Basis_Config {
         try {
             $activityTypes = civicrm_api3('OptionValue', 'get', array(
                 'option_group_id' => "activity_type",
-                'component_id' => "CiviCase",
                 'options' => array('limit' => 0)));
             foreach ($activityTypes['values'] as $activityTypeId => $activityType) {
                 switch ($activityType['name']) {
@@ -2034,6 +2069,9 @@ class CRM_Basis_Config {
                         break;
                     case "mediwe_onderzoek_ao":
                         $this->_consultatieAoActivityType = $activityType;
+                        break;
+                    case "mediwe_belafspraak_arts":
+                        $this->_belAfspraakArtsActivityType = $activityType;
                         break;
                 }
             }
@@ -2217,7 +2255,24 @@ class CRM_Basis_Config {
         }
         catch (CiviCRM_API3_Exception $ex) {
         }
-    }    
+    }
+
+    /**
+     * Method plece the MediWe team id in the custom Config
+     *
+     */
+
+    public function setMediweTeamContactId()
+    {
+        try {
+            $this->_mediweTeamContactId = civicrm_api3('Domain', 'getvalue', array(
+                'return' => "contact_id",
+                'id' => 1,
+            ));;
+        } catch (CiviCRM_API3_Exception $ex) {
+            $this->_mediweTeamContactId = 1;
+        }
+    }
     
     /**
      * Method to place the custom fields in the entity array based on the
@@ -2275,6 +2330,14 @@ class CRM_Basis_Config {
             $d = new DateTime('+1day');
             return $d->format('Y-m-d');
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getMediweTeamContactId()
+    {
+        return $this->_mediweTeamContactId;
     }
 
   /**

@@ -9,14 +9,29 @@
  */
 class CRM_Basis_Telefoon {
 
-
   /**
    * CRM_Basis_Klant constructor.
    */
-   public function __construct()
-   {
-     $config = CRM_Basis_Config::singleton();
+   public function __construct() {
    }
+
+  /**
+   * Method om een mobiel op te halen voor contact (als er meerdere zijn slechts de eerste)
+   * @param $contactId
+   * @return string
+   */
+  public function getMobielForContact($contactId) {
+    $query = 'SELECT phone FROM civicrm_phone WHERE contact_id = %1 AND phone_type_id = %2 LIMIT 1';
+    $mobiel = CRM_Core_DAO::singleValueQuery($query, array(
+      1 => array($contactId, 'Integer'),
+      2 => array(CRM_Basis_Config::singleton()->getMobielPhoneTypeId(), 'Integer'),
+    ));
+    if ($mobiel) {
+      return (string) $mobiel;
+    } else {
+      return FALSE;
+    }
+  }
 
   /**
    * Method to create a new address
