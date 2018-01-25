@@ -205,6 +205,11 @@ function basis_civicrm_post($op, $objectName, $objectId, &$objectRef){
         {
             $dagelijkseBelAfspraak->actie();
         }
+        $opdrachtEmailArts = new CRM_Basis_Acties_OpdrachtEmailArts($params);
+        if($opdrachtEmailArts->controleer())
+        {
+            $opdrachtEmailArts->actie();
+        }
 
     }
 

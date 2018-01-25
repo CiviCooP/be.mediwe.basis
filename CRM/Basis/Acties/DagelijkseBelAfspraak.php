@@ -105,11 +105,11 @@ class CRM_Basis_Acties_DagelijkseBelAfspraak
                 } catch(CiviCRM_API3_Exception $ex){
                    $details = '';
                 }
-                $apiParams['details'] = $details . "<br/>" . 'Keuring voor '.$naamOnderzochte;
+                $apiParams['details'] = $details . "<br/>" . 'Medische controle voor '.$naamOnderzochte;
                 $apiParams['id'] = $activityId;
             } else
             {
-                $apiParams['details'] = 'Keuring voor '.$naamOnderzochte;
+                $apiParams['details'] = 'Medische controle voor '.$naamOnderzochte;
             }
             $apiParams['status_id'] = 'Scheduled';
             $belafspraak = civicrm_api3('Activity', 'create', $apiParams);

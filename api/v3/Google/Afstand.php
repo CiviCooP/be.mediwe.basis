@@ -67,6 +67,10 @@ function civicrm_api3_google_Afstand($params)
         $data = json_decode($data);
         $time = 0;
         $distance = 0;
+
+        if(isset($data['status'])&&$data['status']=='OVER_QUERY_LIMIT'){
+            return civicrm_api3_create_error("Google is over zijn dagenlijkse aanvraag tax", $params);
+        }
         if (isset($data->rows[0])) {
             if ($data->rows[0]->elements[0]->status == 'NOT_FOUND') {
                 return civicrm_api3_create_error("Google kent dit adres niet", $params);
