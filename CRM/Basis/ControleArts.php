@@ -44,29 +44,13 @@ class CRM_Basis_ControleArts {
       // zoek alle artsen binnen postcode, limit en peildatum
       $postcodeCustom = 'custom_'.CRM_Basis_Config::singleton()->getPostcodeCustomField('id');
       $contactParams = array(
-        'contact_sub_type' => $this->_controleArtsContactSubTypeName,
         'options' => array(
           'limit' => $params['limiet']
-        ),
-        'return' => array(
-          'id',
-          'display_name',
-          'street_address',
-          'city',
-          'postal_code',
-          'phone',
-          'preferred_communication_method',
-          'custom_'.CRM_Basis_Config::singleton()->getArtsGebruiktAppCustomField('id'),
-          'custom_'.CRM_Basis_Config::singleton()->getArtsBelMomentCustomField('id'),
-          'custom_'.CRM_Basis_Config::singleton()->getArtsOpdrachtPerCustomField('id'),
-          'custom_'.CRM_Basis_Config::singleton()->getArtsPercentageAkkoordCustomField('id'),
-          'custom_'.CRM_Basis_Config::singleton()->getGemeenteCustomField('id'),
-          'custom_'.CRM_Basis_Config::singleton()->getArtsOverzichtCustomField('id'),
         ),
         $postcodeCustom => $params['postcode'],
       );
       try {
-        $artsen = civicrm_api3('Contact', 'get', $contactParams);
+        $artsen = civicrm_api3('ControleArts', 'get', $contactParams);
         $result = $this->generateVoorstelArtsenData($artsen['values'], $params);
         // als huisbezoek_id meegegeven, bepaal afstand
       } catch (CiviCRM_API3_Exception $ex) {
@@ -87,10 +71,9 @@ class CRM_Basis_ControleArts {
   private function generateVoorstelArtsenData($artsen, $params) {
     $result = array();
     foreach ($artsen as $artsId => $artsData) {
-      // als arts nu op vakantie mag hij achterwege blijven
-      // ophalen vakantieperiodes arts
-      $vakantiePeriodes = $this->getVakantiePeriodesWithContactId($artsId, $params['voorstel_datum']);
-      if ($this->isOpVakantie($vakantiePeriodes, $params['voorstel_datum']) == FALSE) {
+      // als arts nu op vakantie mag hij achterwege blijven (
+
+      if (!isset($artsData['vakantie_periodes']) || !$this->isOpVakantie($artsData['vakantie_periodes'], $params['voorstel_datum'])) {
         $suggestie = array();
         $suggestie['contact_id'] = $artsData['id'];
         $suggestie['naam_arts'] = $artsData['display_name'];
@@ -125,13 +108,29 @@ class CRM_Basis_ControleArts {
             $suggestie['afstand_tijd'] = $afstand['tijd'];
           }
         }
-        // vakantieperiodes toevoegen
-        $suggestie['vakantie_periodes'] = $vakantiePeriodes;
+        // toevoegen vakantie periodes
+        if (isset($artsData['vakantie_periodes'])) {
+          foreach ($artsData['vakantie_periodes'] as $vakantiePeriode) {
+            $suggestie['vakantie_periodes'][] = array(
+              'datum_van' => $vakantiePeriode[CRM_Basis_Config::singleton()->getVakantieVanCustomField('name')],
+              'datum_tot' => $vakantiePeriode[CRM_Basis_Config::singleton()->getVakantieTotCustomField('name')],
+            );
+          }
+        }
         $result[$artsId] = $suggestie;
       }
     }
     return $result;
   }
+
+  /**
+   * Method om afstand voor huisbezoek te bepalen
+   *
+   * @param $huisbezoekId
+   * @param $artsId
+   * @param array $artsData
+   * @return array
+   */
   public function getAfstandVoorHuisbezoek($huisbezoekId, $artsId, $artsData = array()) {
     $result = array();
     // fout als artsId en artsData leeg
@@ -201,10 +200,8 @@ class CRM_Basis_ControleArts {
 
   /**
    * Method om te controleren of de arts op vakantie is.
-   * Kan aangeroepen worden met vakantiePeriodes en artsId leeg, dan wordt de paramter vakantieperiodes gebruikt
-   * Kan ook aangeroepen worden met artsId, dan worden de vakantieperiodes van de arts opgehaald
    *
-   * @param array $vakantiePeriodes (verwacht: id, datum_van (Y-m-d), datum_tot (Y-m-d) - bv. 1:2018-03-05:2018-03-07
+   * @param array $vakantiePeriodes (verwacht: id, mvp_vakantie_van (Y-m-d), mvp_vakantie_tot (Y-m-d) - bv. 1:2018-03-05:2018-03-07
    * @param $peilDatum
    * @param int $artsId
    *
@@ -212,19 +209,19 @@ class CRM_Basis_ControleArts {
    */
   public function isOpVakantie($vakantiePeriodes = array(), $peilDatum, $artsId = NULL) {
     // als artsId, vakantieperiodes van arts ophalen
-    if (!empty($artsId)) {
-      $vakantiePeriodes = $this->getVakantiePeriodesWithContactId($artsId);
+    if (!empty($artsId) && empty($vakantiePeriodes)) {
+      $vakantiePeriodes = $this->getVakantiePeriodesCustomFields($artsId);
     }
     // zeker stellen dat peildatum een DateTime object is
     if (!$peilDatum instanceof DateTime) {
       $peilDatum = new DateTime($peilDatum);
     }
     foreach ($vakantiePeriodes as $periodeId => $periodeData) {
-      if ($periodeData['datum_van']) {
-        $vanDatum = new DateTime($periodeData['datum_van']);
+      if ($periodeData['mvp_vakantie_van']) {
+        $vanDatum = new DateTime($periodeData['mvp_vakantie_van']);
       }
-      if ($periodeData['datum_tot']) {
-        $totDatum = new DateTime($periodeData['datum_tot']);
+      if ($periodeData['mvp_vakantie_tot']) {
+        $totDatum = new DateTime($periodeData['mvp_vakantie_tot']);
       }
       if ($vanDatum && $totDatum) {
         if ($peilDatum >= $vanDatum && $peilDatum <= $totDatum) {
@@ -234,7 +231,6 @@ class CRM_Basis_ControleArts {
     }
     return FALSE;
   }
-
 
   /**
    * Method om te beoordelen of ik valide parameters for Voorstel heb, en deze aan te vullen waar nodig
@@ -308,44 +304,35 @@ class CRM_Basis_ControleArts {
   }
 
   /**
-   * Method om alle vakantieperiodes van een contact id vanaf peildatum op te halen
+   * Method om alle vakantieperiodes van een contact id op te halen
    *
    * @param $contactId
    * @return array
    */
-  public function getVakantiePeriodesWithContactId($contactId, $peilDatum = NULL) {
+  public function getVakantiePeriodesCustomFields($contactId) {
     $result = array();
-    $periodeVanCustomFieldId = CRM_Basis_Config::singleton()->getVakantieVanCustomField('id');
-    $periodeTotCustomFieldId = CRM_Basis_Config::singleton()->getVakantieTotCustomField('id');
-    if (!$peilDatum) {
-      $peilDatum = new DateTime();
-    } else {
-      // zeker stellen dat peildatum een DateTime object is
-      if (!$peilDatum instanceof DateTime) {
-        $peilDatum = new DateTime($peilDatum);
-      }
+    $select = CRM_Basis_Utils::createCustomDataQuery(CRM_Basis_Config::singleton()->getVakantieperiodeCustomGroup());
+    $query = $select.' WHERE entity_id = %1';
+    $dao = CRM_Core_DAO::executeQuery($query, array(1 => array($contactId, 'Integer')));
+    while ($dao->fetch()) {
+      $result[] = CRM_Basis_Utils::moveDaoToArray($dao);
     }
-    $customParams = array(
-      'entity_id' => $contactId,
-      'entity_table' => 'civicrm_contact',
-      'return.custom_'.$periodeVanCustomFieldId => 1,
-      'return.custom_'.$periodeTotCustomFieldId => 1,
-      'options' => array(
-        'limit' => 0,
-      ),
-    );
-    try {
-      $customData = civicrm_api3('CustomValue', 'get', $customParams);
-      $values = CRM_Basis_Utils::rearrangeRepeatingData($customData['values']);
-      foreach ($values as $recordId => $data) {
-        $vanDatum = new DateTime($data[$periodeVanCustomFieldId]);
-        $totDatum = new DateTime($data[$periodeTotCustomFieldId]);
-        $result[$recordId]['datum_van'] = $vanDatum->format('j-n-Y');
-        $result[$recordId]['datum_tot'] = $totDatum->format('j-n-Y');
-      }
-      $this->filterVakantiePeriodesPeildatum($peilDatum, $result);
-    }
-    catch (CiviCRM_API3_Exception $ex) {
+    return $result;
+  }
+
+  /**
+   * Method om alle werkgebieden van een contact id op te halen
+   *
+   * @param $contactId
+   * @return array
+   */
+  public function getWerkgebiedenCustomFields($contactId) {
+    $result = array();
+    $select = CRM_Basis_Utils::createCustomDataQuery(CRM_Basis_Config::singleton()->getWerkgebiedCustomGroup());
+    $query = $select.' WHERE entity_id = %1';
+    $dao = CRM_Core_DAO::executeQuery($query, array(1 => array($contactId, 'Integer')));
+    while ($dao->fetch()) {
+      $result[] = CRM_Basis_Utils::moveDaoToArray($dao);
     }
     return $result;
   }
@@ -416,25 +403,60 @@ class CRM_Basis_ControleArts {
    * @return array
    */
     public function get($params) {
-       
-        $controlearts = array();
-        // ensure that contact sub type is set
-        $params['contact_sub_type'] = $this->_controleArtsContactSubTypeName;
-        $params['sequential'] = 1;
+      $controleArts = array();
+      // ensure that contact sub type is set
+      $params['contact_sub_type'] = $this->_controleArtsContactSubTypeName;
+      $params['sequential'] = 1;
+      try {
+        $contacts = civicrm_api3('Contact', 'get', $params);
+        $controleArts = $contacts['values'];
+        $telefoon = new CRM_Basis_Telefoon();
+        // standaard contact api geeft geen custom velden, dus extra functie om custom velden toe te voegen
+        foreach ($controleArts as $controleArtsId => $controleArtsData) {
+          $communicatie = $this->getCommunicatieCustomFields($controleArtsData['id']);
+          if ($communicatie) {
+            $controleArts[$controleArtsId] = array_merge($controleArts[$controleArtsId], $communicatie);
+          }
+          $vakanties['vakantie_periodes'] = $this->getVakantiePeriodesCustomFields($controleArtsData['id']);
+          if ($vakanties) {
+            $controleArts[$controleArtsId] = array_merge($controleArts[$controleArtsId], $vakanties);
+          }
+          $werkgebieden['werkgebieden'] = $this->getWerkgebiedenCustomFields($controleArtsData['id']);
+          if ($werkgebieden) {
+            $controleArts[$controleArtsId] = array_merge($controleArts[$controleArtsId], $werkgebieden);
+          }
+          $mobiel = $telefoon->getMobielForContact($controleArtsData['id']);
+          if ($mobiel) {
+            $controleArts[$controleArtsId]['mobiel'] = $mobiel;
+          }
 
-        try {
-
-            $contacts = civicrm_api3('Contact', 'get', $params);
-            $controlearts = $contacts['values'];
-
-            $this->_addControleArtsAllFields($controlearts);
-
-            return $controlearts;
         }
-        catch (CiviCRM_API3_Exception $ex) {
-        }
-
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+      }
+      return $controleArts;
     }
+
+  /**
+   * Method om communicatie custom data te halen
+   * @param $artsId
+   * @return array
+   */
+  private function getCommunicatieCustomFields($artsId) {
+    $result = array();
+    if ($artsId) {
+      $queryParams = array(1 => array($artsId['id'], 'Integer'));
+      $select = CRM_Basis_Utils::createCustomDataQuery(CRM_Basis_Config::singleton()->getCommunicatieCustomGroup());
+      if ($select) {
+        $query = $select.' WHERE entity_id = %1';
+        $dao = CRM_Core_DAO::executeQuery($query, $queryParams);
+        if ($dao->fetch()) {
+          return CRM_Basis_Utils::moveDaoToArray($dao);
+        }
+      }
+    }
+    return $result;
+  }
 
     public function getByName($organization_name) {
         $params = array (
@@ -444,15 +466,6 @@ class CRM_Basis_ControleArts {
         );
 
         return $this->get($params);
-    }
-
-    public function getVakantieperiodes($params) {
-
-        $config = CRM_Basis_Config::singleton();
-        $vakantieCustomFields = $config->getVakantieperiodeCustomGroup('custom_fields');
-
-        return $this->_getRepeatingData($vakantieCustomFields, $params);
-
     }
 
     public function saveVakantiePeriodes($contact_id, $data) {
@@ -467,27 +480,6 @@ class CRM_Basis_ControleArts {
         $WerkgebiedCustomFields = $config->getWerkgebiedCustomGroup('custom_fields');
 
         return $this->_saveRepeatingData($WerkgebiedCustomFields, $contact_id, $data);
-    }
-
-    private function _getRepeatingData($customFields, $params) {
-
-        $my_array = array();
-
-        foreach ($customFields as $field) {
-            $key = 'return.custom_' . $field['id'];
-            $params[$key] = "1";
-        }
-        $values = civicrm_api3('CustomValue', 'get', $params)['values'];
-
-        foreach ($customFields as $field) {
-            foreach ($values[$field['id']] as $key => $value) {
-                if (is_numeric($key)) {
-                    $my_array[$key]['id'] = $key;
-                    $my_array[$key][$field['name']] = $value;
-                }
-            }
-        }
-        return $my_array;
     }
 
     private function _saveRepeatingData($customFields, $entity_id, $array) {
@@ -789,36 +781,6 @@ class CRM_Basis_ControleArts {
 
         return $createdPhone['values'];
 
-    }
-
-    private function _addControleArtsAllFields(&$contacts) {
-        $config = CRM_Basis_Config::singleton();
-
-        foreach ($contacts as $arrayRowId => $contact) {
-            if (isset($contact['id'])) {
-                if (isset($contact['id'])) {
-                    // leverancier custom fields
-                    $contacts[$arrayRowId] = $config->addDaoData($config->getLeverancierCustomGroup(),  $contacts[$arrayRowId]);
-                    // communicatie custom fields
-                    $contacts[$arrayRowId] = $config->addDaoData($config->getCommunicatieCustomGroup(),  $contacts[$arrayRowId]);
-                    // Workgebied custom fields
-                    //$contacts[$arrayRowId] = $config->addDaoData($config->getWorkgebiedCustomGroup(),  $contacts[$arrayRowId]);
-                    // vakantiedagen custom fields
-                    //$contacts[$arrayRowId] = $config->addDaoData($config->getVakantieperiodeCustomGroup(),  $contacts[$arrayRowId]);
-
-                    // get mobile phone
-                    $mobile = $this->_existsPhone($contact['id'], "Main", "Mobile");
-                    if (!$mobile) {
-                        $contacts[$arrayRowId]['mobile'] = false;
-                    }
-                    else {
-                        $contacts[$arrayRowId]['mobile'] = $mobile['phone'];
-                    }
-
-
-                }
-            }
-        }
     }
 
     private function _getFromCivi($aansluitingsnummer) {

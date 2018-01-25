@@ -86,6 +86,9 @@ class CRM_Basis_Config {
   private $_joomlaDbName = NULL;
   private $_sourceCiviDbName = NULL;
 
+  //overige properties
+  private $_mobielPhoneTypeId = NULL;
+
 
   /**
    * CRM_Basis_Config constructor.
@@ -110,6 +113,24 @@ class CRM_Basis_Config {
 
     $this->_joomlaDbName = "mediwe_joomla";
     $this->_sourceCiviDbName = "mediwe_civicrm";
+    try {
+      $this->_mobielPhoneTypeId = civicrm_api3('OptionValue', 'getvalue', array(
+        'option_group_id' => 'phone_type',
+        'name' => 'Mobile',
+        'return' => 'value',
+      ));
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+    }
+  }
+
+  /**
+   * Getter voor mobiel telefoon type id
+   *
+   * @return array|null
+   */
+  public function getMobielPhoneTypeId() {
+    return $this->_mobielPhoneTypeId;
   }
 
   /**

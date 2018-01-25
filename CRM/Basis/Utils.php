@@ -104,4 +104,44 @@ class CRM_Basis_Utils {
     }
   }
 
+  /**
+   * Method om dao in array te stoppen en de 'overbodige' data er uit te slopen
+   *
+   * @param $dao
+   * @return array
+   */
+  public static function moveDaoToArray($dao) {
+    $ignores = array('N', 'id', 'entity_id');
+    $columns = get_object_vars($dao);
+    // first remove all columns starting with _
+    foreach ($columns as $key => $value) {
+      if (substr($key,0,1) == '_') {
+        unset($columns[$key]);
+      }
+      if (in_array($key, $ignores)) {
+        unset($columns[$key]);
+      }
+    }
+    return $columns;
+  }
+
+  /**
+   * Method om select en from voor custom group samen te stellen
+   *
+   * @param $customGroupArray
+   * @return string
+   */
+  public static function createCustomDataQuery($customGroupArray) {
+    if (!$customGroupArray['custom_fields']) {
+      $select = 'SELECT *';
+    } else {
+      $columns = array();
+      foreach ($customGroupArray['custom_fields'] as $customFieldId => $customField) {
+        $columns[] = $customField['column_name'].' AS '.$customField['name'];
+      }
+      $select = 'SELECT '.implode(", ", $columns);
+    }
+    $result = $select.' FROM '.$customGroupArray['table_name'];
+    return $result;
+  }
 }
