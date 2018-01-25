@@ -67,7 +67,7 @@ class CRM_Basis_ControleArts {
       );
       try {
         $artsen = civicrm_api3('Contact', 'get', $contactParams);
-        $result = $this->generateVoorstelArtsenData($artsen['values'], $params['voorstel_datum']);
+        $result = $this->generateVoorstelArtsenData($artsen['values'], $params);
         // als huisbezoek_id meegegeven, bepaal afstand
       } catch (CiviCRM_API3_Exception $ex) {
       }
@@ -79,14 +79,18 @@ class CRM_Basis_ControleArts {
 
   /**
    * Method om data voor voorstel artsen te ordenen
+   *
+   * @param array $artsen
+   * @param array $params
+   * @return array
    */
-  private function generateVoorstelArtsenData($artsen, $peilDatum) {
+  private function generateVoorstelArtsenData($artsen, $params) {
     $result = array();
     foreach ($artsen as $artsId => $artsData) {
       // als arts nu op vakantie mag hij achterwege blijven
       // ophalen vakantieperiodes arts
-      $vakantiePeriodes = $this->getVakantiePeriodesWithContactId($artsId, $peilDatum);
-      if ($this->isOpVakantie($vakantiePeriodes, $peilDatum) == FALSE) {
+      $vakantiePeriodes = $this->getVakantiePeriodesWithContactId($artsId, $params['voorstel_datum']);
+      if ($this->isOpVakantie($vakantiePeriodes, $params['voorstel_datum']) == FALSE) {
         $suggestie = array();
         $suggestie['contact_id'] = $artsData['id'];
         $suggestie['naam_arts'] = $artsData['display_name'];
@@ -112,13 +116,53 @@ class CRM_Basis_ControleArts {
           $suggestie['communicatie_voorkeur'] = CRM_Basis_Utils::getPreferredCommunicationLabels($artsData['preferred_communication_method']);
         }
         // berekenen aantal opdrachten vandaag voor arts
-        $suggestie['huisbezoeken_vandaag'] = $this->getHuisbezoekenArtsOpPeilDatum($artsId, $peilDatum);
+        $suggestie['huisbezoeken_vandaag'] = $this->getHuisbezoekenArtsOpPeilDatum($artsId, $params['voorstel_datum']);
+        // afstand toevoegen als huisbezoek_id bekend
+        if ($params['huisbezoek_id']) {
+          $afstand = $this->getAfstandVoorHuisbezoek($params['huisbezoek_id'], $artsId, $artsData);
+          if (!empty($afstand)) {
+            $suggestie['km'] = $afstand['km'];
+            $suggestie['afstand_tijd'] = $afstand['tijd'];
+          }
+        }
         // vakantieperiodes toevoegen
         $suggestie['vakantie_periodes'] = $vakantiePeriodes;
         $result[$artsId] = $suggestie;
       }
     }
     return $result;
+  }
+  public function getAfstandVoorHuisbezoek($huisbezoekId, $artsId, $artsData = array()) {
+    $result = array();
+    // fout als artsId en artsData leeg
+    if (empty($artsId && empty($artsData))) {
+      return $result;
+    }
+    // als artsData leeg, haal gegevens arts op met artsId
+    if (empty($artsData)) {
+      try {
+        $artsData = civicrm_api3('Address', 'getsingle', array(
+          'return' => array("street_address", "city", "postal_code"),
+          'contact_id' => $artsId,
+          'is_primary' => 1,
+        ));
+        // haal gegevens huisbezoek op met huisbezoekId
+        $huisbezoek = civicrm_api3('Huisbezoek', 'getsingle', array(
+          'id' => $huisbezoekId,
+        ));
+        // bereken afstand
+        $afstand = civicrm_api3('Google', 'afstand', array(
+        ));
+        if (isset($afstand['values'])) {
+          $result = $afstand['values'];
+        }
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+      }
+      return $result;
+    }
+    // haal gegevens huisbezoek op met huisbezoekId
+    // bereken afstand
   }
 
   /**
@@ -756,7 +800,7 @@ class CRM_Basis_ControleArts {
                     // leverancier custom fields
                     $contacts[$arrayRowId] = $config->addDaoData($config->getLeverancierCustomGroup(),  $contacts[$arrayRowId]);
                     // communicatie custom fields
-                    $contacts[$arrayRowId] = $config->addDaoData($config->getControleArtsCommunicatieCustomGroup(),  $contacts[$arrayRowId]);
+                    $contacts[$arrayRowId] = $config->addDaoData($config->getCommunicatieCustomGroup(),  $contacts[$arrayRowId]);
                     // Workgebied custom fields
                     //$contacts[$arrayRowId] = $config->addDaoData($config->getWorkgebiedCustomGroup(),  $contacts[$arrayRowId]);
                     // vakantiedagen custom fields
@@ -777,9 +821,10 @@ class CRM_Basis_ControleArts {
         }
     }
 
-    private function _getFromCivi($external_identifier) {
+    private function _getFromCivi($aansluitingsnummer) {
 
-        $sql = "SELECT * FROM mediwe_old_civicrm.migratie_leveranciersgegevens WHERE external_identifier = '$external_identifier' ";
+        $sql = "SELECT * FROM mediwe_old_civicrm.migratie_leveranciersgegevens WHERE ml_aansluitingsnummer = '$aansluitingsnummer' ";
+
         $dao = CRM_Core_DAO::executeQuery($sql);
 
         if ($dao->fetch()) {
@@ -799,14 +844,48 @@ class CRM_Basis_ControleArts {
  */
     private function _migrate_tags($old_id, $new_id) {
 
+        $dao = CRM_Core_DAO::executeQuery("SELECT * FROM civicrm_tag WHERE id = 10");
+
+        if (!$dao->fetch()) {
+            $sql = "INSERT INTO `mediwe_civicrm`.`civicrm_tag` (
+                      `id`,
+                      `name`,
+                      `description`,
+                      `parent_id`,
+                      `is_selectable`,
+                      `is_reserved`,
+                      `is_tagset`,
+                      `used_for`,
+                      `created_date`
+                    )
+                    SELECT
+                      `id`,
+                      `name`,
+                      `description`,
+                      `parent_id`,
+                      `is_selectable`,
+                      `is_reserved`,
+                      `is_tagset`,
+                      `used_for`,
+                      `created_date`
+                    FROM
+                      `mediwe_old_civicrm`.`civicrm_tag`
+                    ;
+                  ";
+
+            CRM_Core_DAO::executeQuery($sql);
+        }
+
         CRM_Core_DAO::executeQuery(" DELETE FROM civicrm_entity_tag WHERE entity_id = $new_id AND entity_table = 'civicrm_contact';");
 
         $sql = " INSERT INTO civicrm_entity_tag (entity_table, entity_id, tag_id)
                 SELECT 'civicrm_contact', $new_id, tag_id FROM mediwe_old_civicrm.civicrm_entity_tag
                 WHERE entity_id = $old_id AND entity_table = 'civicrm_contact'; ";
+
         CRM_Core_DAO::executeQuery($sql);
 
     }
+
 
 
     /*
@@ -825,7 +904,7 @@ class CRM_Basis_ControleArts {
 
         // zoek deze klant op in civi produktie
         $civi_arts = $this->_getFromCivi($data['supplier_aansluitingsnummer']);
-var_dump($civi_arts);exit;
+
         // update de leveranciersgegevens
         $this->_addToParamsCustomFields($config->getLeverancierCustomGroup('custom_fields'), $civi_arts, $params);
 
@@ -833,7 +912,9 @@ var_dump($civi_arts);exit;
         $createdContact = civicrm_api3('Contact', 'create', $params);
 
         // migrate tag info
-        $this->_migrate_tags($civi_arts['contact_id'], $contact_id);
+        if (isset($civi_arts['contact_id'])) {
+            $this->_migrate_tags($civi_arts['contact_id'], $contact_id);
+        }
 
         return $createdContact;
     }
@@ -866,6 +947,31 @@ var_dump($civi_arts);exit;
                     $id_doctor = $params[$key];
                     $params[$key] = "Arts-" . $params[$key];
                 }
+
+                // reformat bellen vooraf/achteraf  mcc_arts_bel_moment
+                $params['mcc_arts_bel_moment'] = CRM_Core_DAO::VALUE_SEPARATOR;
+                if ($key == 'arts_bellen_vooraf' & $value = '1') {
+                    $params['mcc_arts_bel_moment'] .=  "3" . CRM_Core_DAO::VALUE_SEPARATOR;
+                }
+                if ($key == 'arts_bellen_achteraf' & $value = '1') {
+                    $params['mcc_arts_bel_moment'] .=  "2" . CRM_Core_DAO::VALUE_SEPARATOR;
+                }
+                if ($params['mcc_arts_bel_moment'] == CRM_Core_DAO::VALUE_SEPARATOR) {
+                    $params['mcc_arts_bel_moment'] .=  "1" . CRM_Core_DAO::VALUE_SEPARATOR;
+                }
+
+                // reformat opdracht per
+                $params['mcc_arts_opdracht'] = CRM_Core_DAO::VALUE_SEPARATOR;
+                if ($key == 'arts_opdracht_fax' & $value = '1') {
+                    $params['mcc_arts_opdracht'] .=  "3" . CRM_Core_DAO::VALUE_SEPARATOR;
+                }
+                if ($key == 'arts_opdracht_mail' & $value = '1') {
+                    $params['mcc_arts_opdracht'] .=  "2" . CRM_Core_DAO::VALUE_SEPARATOR;
+                }
+                if ($params['mcc_arts_opdracht'] == CRM_Core_DAO::VALUE_SEPARATOR) {
+                    $params['mcc_arts_opdracht'] =  false;
+                }
+
             }
 
             // zoek controlearts met dat nummer van joomla
@@ -902,7 +1008,7 @@ var_dump($civi_arts);exit;
 
             // migreer de leveranciersgegevens uit civi produktie
             $this->_migrate_from_civi($params['id'], $params);
-die('Eerste arts OK');
+
         }
     }
 
