@@ -16,18 +16,21 @@ class CRM_Basis_Klant {
     /**
      * CRM_Basis_Klant method to migrate data from existing systems.
      */
-   public function migrate($params) {
+   public function migrate() {
 
-        $this->_migrate_from_joomla($params);
+        $this->migrate_from_joomla();
 
    }
 
     /**
      * CRM_Basis_Klant get billing addresses from previous civicrm application.
      */
-   private function _getFromCivi($external_identifier) {
+   private function getFromCivi($external_identifier) {
 
-       $sql = "SELECT * FROM mediwe_civicrm.migratie_facturatie_adressen WHERE external_identifier = '$external_identifier' AND location_type_id = 5";
+       $config = CRM_Basis_Config::singleton();
+
+       $sql = "SELECT * FROM " . $config->getSourceCiviDbName() . ".migratie_facturatie_adressen WHERE external_identifier = '$external_identifier' AND location_type_id = 5";
+
        $dao = CRM_Core_DAO::executeQuery($sql);
 
        if ($dao->fetch()) {
@@ -47,12 +50,12 @@ class CRM_Basis_Klant {
     /**
      * CRM_Basis_Klant migrate addresses pointing to another customer.
      */
-   private function _migrate_master_addresses_from_civi() {
+   private function migrate_master_addresses_from_civi() {
 
        $config = CRM_Basis_Config::singleton();
 
        $sql = "SELECT * 
-                FROM mediwe_civicrm.migratie_facturatie_adressen 
+                FROM " . $config->getSourceCiviDbName() . ".migratie_facturatie_adressen 
                 WHERE  location_type_id = 5 
                 AND master_identifier IS NOT NULL 
                 ORDER BY master_identifier; ";
@@ -126,9 +129,11 @@ class CRM_Basis_Klant {
     /*
      *   CRM_Basis_Klant migrate invoicing info of a customer from previous civicrm application
      */
-   private function _migrate_invoicing_info($old_id, $new_id) {
+   private function migrate_invoicing_info($old_id, $new_id) {
 
-        $sql = " SELECT * FROM mediwe_civicrm.migratie_facturatiegegevens WHERE contact_id = '$old_id' ";
+        $config = CRM_Basis_Config::singleton();
+
+        $sql = " SELECT * FROM " . $config->getSourceCiviDbName() . ".migratie_facturatiegegevens WHERE contact_id = $old_id ";
 
         $dao = CRM_Core_DAO::executeQuery($sql);
 
@@ -144,16 +149,17 @@ class CRM_Basis_Klant {
         $params['id'] = $new_id;
         unset($params['contact_id']);
 
+       // update de facturatiegegevens
+       $this->addToParamsCustomFields($config->getKlantBoekhoudingCustomGroup('custom_fields'), $params);
+
         civicrm_api3('Klant', 'create', $params);
-
-
 
    }
 
      /*
       *   CRM_Basis_Klant migrate invoicing mail address of a customer from previous civicrm application
       */
-   private function _migrate_billing_mail($old_id, $new_id) {
+   private function migrate_billing_mail($old_id, $new_id) {
 
        $config = CRM_Basis_Config::singleton();
 
@@ -185,7 +191,7 @@ class CRM_Basis_Klant {
                   reset_date,
                   signature_text,
                   signature_html 
-                FROM mediwe_civicrm.civicrm_email
+                FROM " . $config->getSourceCiviDbName() . ".civicrm_email
                 WHERE contact_id = $old_id AND location_type_id = 6 ;                                          
        
             ";
@@ -196,12 +202,14 @@ class CRM_Basis_Klant {
    /*
     *   CRM_Basis_Klant migrate tags of a customer from previous civicrm application
     */
-   private function _migrate_tags($old_id, $new_id) {
+   private function migrate_tags($old_id, $new_id) {
+
+       $config = CRM_Basis_Config::singleton();
 
        CRM_Core_DAO::executeQuery(" DELETE FROM civicrm_entity_tag WHERE entity_id = $new_id AND entity_table = 'civicrm_contact';");
 
        $sql = " INSERT INTO civicrm_entity_tag (entity_table, entity_id, tag_id)
-                SELECT 'civicrm_contact', $new_id, tag_id FROM mediwe_civicrm.civicrm_entity_tag
+                SELECT 'civicrm_contact', $new_id, tag_id FROM " . $config->getSourceCiviDbName() . ".civicrm_entity_tag
                 WHERE entity_id = $old_id AND entity_table = 'civicrm_contact'; ";
        CRM_Core_DAO::executeQuery($sql);
        
@@ -210,7 +218,9 @@ class CRM_Basis_Klant {
    /*
   *   CRM_Basis_Klant migrate notes of a customer from previous civicrm application
   */
-   private function _migrate_notes($old_id, $new_id) {
+   private function migrate_notes($old_id, $new_id) {
+
+       $config = CRM_Basis_Config::singleton();
 
        CRM_Core_DAO::executeQuery(" DELETE FROM civicrm_note WHERE entity_id = $new_id AND entity_table = 'civicrm_contact';");
 
@@ -228,7 +238,7 @@ class CRM_Basis_Klant {
                         modified_date,
                         subject,
                         privacy
-                FROM mediwe_civicrm.civicrm_note
+                FROM " . $config->getSourceCiviDbName() . ".civicrm_note
                 WHERE entity_id = $old_id AND entity_table = 'civicrm_contact'; ";
 
        CRM_Core_DAO::executeQuery($sql);
@@ -238,11 +248,11 @@ class CRM_Basis_Klant {
   /*
   *   CRM_Basis_Klant migrate info  joomla application of a customer from previous civicrm application
   */
-   private function _migrate_from_joomla($params) {
+   private function migrate_from_joomla() {
 
        $config = CRM_Basis_Config::singleton();
 
-       $sql = "SELECT * FROM mediwe_joomla.migratie_customer ";
+       $sql = " SELECT * FROM mediwe_joomla.migratie_customer WHERE external_id = '15/07859';";
 
        $dao = CRM_Core_DAO::executeQuery($sql);
 
@@ -253,6 +263,7 @@ class CRM_Basis_Klant {
            $old_id = false;
 
            $params = (array)$dao;
+
            foreach ($params as $key => $value) {
                if (   substr($key, 0, 1 ) == "_" || $key == 'N'  )  {
                    unset($params[$key]);
@@ -266,12 +277,21 @@ class CRM_Basis_Klant {
            }
 
            // zoek klant met dat nummer van joomla
-           $klant = $this->get(array ( 'external_identifier' => $params['external_identifier']));
+           $klant = $this->get(array ( 'external_identifier' => $params['external_id']));
 
 
            if (!isset($klant['count'])) {
                $params['id'] = reset($klant)['contact_id'];
            }
+
+           // update de controle procedure gegevens
+           $this->addToParamsCustomFields($config->getKlantProcedureCustomGroup('custom_fields'), $params);
+
+           // update de expert systeem gegevens
+           $this->addToParamsCustomFields($config->getKlantExpertsysteemCustomGroup('custom_fields'), $params);
+
+           // update de interne organisatie gegevens
+           $this->addToParamsCustomFields($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
 
            // voeg de klant toe
            $klant = $this->create($params);
@@ -300,32 +320,31 @@ class CRM_Basis_Klant {
                    .', contact your system administrator! Error from API Adres create: '.$ex->getMessage()));
            }
 
-
            // zoek deze klant op in civi produktie
-           $civi_customer = $this->_getFromCivi($params['external_identifier']);
+           $civi_customer = $this->getFromCivi($params['external_id']);
 
            if (isset($civi_customer['contact_id'])) {
 
                $old_id = $civi_customer['contact_id'];
 
                // migrate tags from civi production
-               $this->_migrate_tags($old_id, $klant['id']);
+               $this->migrate_tags($old_id, $klant['id']);
 
                // migrate notes from civi production
-               $this->_migrate_notes($old_id, $klant['id']);
+               $this->migrate_notes($old_id, $klant['id']);
 
                // migrate billing email addresses
-               $this->_migrate_billing_mail($old_id, $klant['id']);
+               $this->migrate_billing_mail($old_id, $klant['id']);
 
                // migrate accounting data
-               $this->_migrate_invoicing_info($old_id, $klant['id']);
+               $this->migrate_invoicing_info($old_id, $klant['id']);
 
            }
-
+die('Eerste klant OK');
        }
 
        // migrate billing addresses pointing to another customer
-       $this->_migrate_master_addresses_from_civi();
+       $this->migrate_master_addresses_from_civi();
 
    }
 
@@ -336,10 +355,10 @@ class CRM_Basis_Klant {
    {
      $config = CRM_Basis_Config::singleton();
      $contactSubType = $config->getKlantContactSubType();
-     $this->_klantContactSubTypeName = $contactSubType['name'];
+     $this->klantContactSubTypeName = $contactSubType['name'];
 
      $locationType = $config->getKlantLocationType();
-     $this->_klantLocationType = $locationType['name'];
+     $this->klantLocationType = $locationType['name'];
 
    }
 
@@ -354,14 +373,14 @@ class CRM_Basis_Klant {
 
     // ensure contact_type and contact_sub_type are set correctly
    $params['contact_type'] = 'Organization';
-   $params['contact_sub_type'] = $this->_klantContactSubTypeName;
+   $params['contact_sub_type'] = $this->klantContactSubTypeName;
 
    if (isset($params['id'])) {
          return $this->update($params);
    }
    else {
         if ($this->exists($params) === FALSE) {
-            return $this->_saveKlant($params);
+            return $this->saveKlant($params);
         }
         else {
             // some activity
@@ -382,7 +401,7 @@ class CRM_Basis_Klant {
 
     if ($exists) {
         try {
-            return $this->_saveKlant($params);
+            return $this->saveKlant($params);
         }
         catch (CiviCRM_API3_Exception $ex) {
             throw new API_Exception(ts('Could not create a Mediwe Klant in '.__METHOD__
@@ -403,7 +422,7 @@ class CRM_Basis_Klant {
       $klant = array();
 
       // ensure that contact sub type is set
-      $search_params['contact_sub_type'] = $this->_klantContactSubTypeName;
+      $search_params['contact_sub_type'] = $this->klantContactSubTypeName;
 
       try {
           $klant = civicrm_api3('Contact', 'getsingle', $search_params);
@@ -427,7 +446,7 @@ class CRM_Basis_Klant {
   public function get($params) {
     $klanten = array();
     // ensure that contact sub type is set
-    $params['contact_sub_type'] = $this->_klantContactSubTypeName;
+    $params['contact_sub_type'] = $this->klantContactSubTypeName;
     $params['sequential'] = 1;
 
     try {
@@ -435,7 +454,10 @@ class CRM_Basis_Klant {
       $contacts = civicrm_api3('Contact', 'get', $params);
       $klanten = $contacts['values'];
 
-      $this->_addKlantAllFields($klanten);
+      if ($klanten) {
+          $this->addKlantAllFields($klanten);
+      }
+
 
       return $klanten;
     }
@@ -448,14 +470,14 @@ class CRM_Basis_Klant {
       $params = array (
           'sequential' => 1,
           'organization_name' => $organization_name,
-          'contact_sub_type' => $this->_klantContactSubTypeName,
+          'contact_sub_type' => $this->klantContactSubTypeName,
       );
 
       return $this->get($params);
   }
 
   public function getLocationType() {
-      return $this->_klantLocationType;
+      return $this->klantLocationType;
   }
 
   /**
@@ -464,16 +486,16 @@ class CRM_Basis_Klant {
    * @param $contacts
    */
 
-  private function _saveKlant($params) {
+  private function saveKlant($params) {
 
       $config = CRM_Basis_Config::singleton();
 
 
       // rename klant custom fields for api  ($customFields, $data, &$params)
-      $this->_addToParamsCustomFields($config->getKlantBoekhoudingCustomGroup('custom_fields'),  $params);
-      $this->_addToParamsCustomFields($config->getKlantExpertsysteemCustomGroup('custom_fields'),  $params);
-      $this->_addToParamsCustomFields($config->getKlantProcedureCustomGroup('custom_fields'),  $params);
-      $this->_addToParamsCustomFields($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
+      $this->addToParamsCustomFields($config->getKlantBoekhoudingCustomGroup('custom_fields'),  $params);
+      $this->addToParamsCustomFields($config->getKlantExpertsysteemCustomGroup('custom_fields'),  $params);
+      $this->addToParamsCustomFields($config->getKlantProcedureCustomGroup('custom_fields'),  $params);
+      $this->addToParamsCustomFields($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
 
       try {
 
@@ -492,7 +514,7 @@ class CRM_Basis_Klant {
     /*
    *   CRM_Basis_Klant method to rename custom fields for create/update to "custom_<FieldId>"
    */
-  private function _addToParamsCustomFields($customFields, &$params) {
+  private function addToParamsCustomFields($customFields, &$params) {
 
       foreach ($customFields as $field) {
           $fieldName = $field['name'];
@@ -509,7 +531,7 @@ class CRM_Basis_Klant {
      *   CRM_Basis_Klant method to add custom data in customer data array (read)
      */
 
-  private function _addKlantAllFields(&$contacts) {
+  private function addKlantAllFields(&$contacts) {
     $config = CRM_Basis_Config::singleton();
 
     foreach ($contacts as $arrayRowId => $contact) {
@@ -542,7 +564,7 @@ class CRM_Basis_Klant {
       $klant = array();
 
       // ensure that contact sub type is set
-      $params['contact_sub_type'] = $this->_klantContactSubTypeName;
+      $params['contact_sub_type'] = $this->klantContactSubTypeName;
       $params['contact_id'] = $klantId;
       try {
           if ($this->exists($params)) {

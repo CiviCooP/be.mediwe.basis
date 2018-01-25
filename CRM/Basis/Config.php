@@ -52,6 +52,7 @@ class CRM_Basis_Config {
   private $_klantProcedureCustomGroup = array();
 
   private $_leverancierCustomGroup = array();
+  private $_voorwaardenArtsCustomGroup = array();
   private $_vakantiePeriodeCustomGroup = array();
   private $_communicatieCustomGroup = array();
   private $_werkgebiedCustomGroup = array();
@@ -91,6 +92,11 @@ class CRM_Basis_Config {
    * CRM_Basis_Config constructor.
    */
   function __construct() {
+
+
+  $this->_joomlaDbName = "mediwe_joomla";
+  $this->_sourceCiviDbName = "mediwe_old_civicrm";
+
     $this->setContactSubTypes();
     $this->setRelationshipTypes();
     $this->setActivityTypes();
@@ -103,13 +109,18 @@ class CRM_Basis_Config {
     $this->setCustomGroups('mediwe_vakantie_periode', '_vakantiePeriodeCustomGroup');
     $this->setCustomGroups('mediwe_werkgebied', '_werkgebiedCustomGroup');
     $this->setCustomGroups('mediwe_leverancier', '_leverancierCustomGroup');
+    $this->setCustomGroups('mediwe_voorwaarden_arts', '_voorwaardenArtsCustomGroup');
+
+    // set custom groups and custom fields voor klanten
+      $this->setCustomGroups('mediwe_facturatie', '_klantBoekhoudingCustomGroup');
+      $this->setCustomGroups('mediwe_expertsysteem', '_klantExpertsysteemCustomGroup');
+      $this->setCustomGroups('mediwe_interne_organisatie', '_klantOrganisatieCustomGroup');
+      $this->setCustomGroups('mediwe_controle_procedure_klant', '_klantProcedureCustomGroup');
 
     $this->setCasesCustomGroups();
     
     $this->setCaseTypes();
 
-    $this->_joomlaDbName = "mediwe_joomla";
-    $this->_sourceCiviDbName = "mediwe_civicrm";
   }
 
   /**
@@ -1569,6 +1580,7 @@ class CRM_Basis_Config {
    * @return mixed|array
    */
   public function getKlantProcedureCustomGroup($key = NULL) {
+
     if (!empty($key) && isset($this->_klantProcedureCustomGroup[$key])) {
       return $this->_klantProcedureCustomGroup[$key];
     } else {
@@ -2216,6 +2228,7 @@ class CRM_Basis_Config {
      */
     public function addDaoData($customGroup, $entity) {
         $table_name = $customGroup['table_name'];
+
         $fields = $customGroup['custom_fields'];
         $sql = 'SELECT * FROM '. $table_name . ' WHERE entity_id = %1';
         $dao = CRM_Core_DAO::executeQuery($sql, array(
