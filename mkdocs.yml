@@ -1,0 +1,22 @@
+site_name: CiviCRM Mediwe Basis
+repo_url: https://github.com/CiviCooP/be.mediwe.basis
+theme: material
+
+pages:
+- Home: index.md
+- Configuratie items voor CiviCRM: configitems.md
+- Types van Contacten: contacttypes.md
+- CiviCRM extensies: civiextensions.md
+- Documentatie bijwerken: documentatie.md
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - def_list
+  - codehilite
+  - toc(permalink=true)
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.tilde
+  - pymdownx.betterem
+  - pymdownx.mark

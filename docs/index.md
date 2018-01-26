@@ -2,34 +2,31 @@
 
 Mediwe () gebruikt CiviCRM als centrale applicatie voor het beheren van relaties en de controles die uitgevoerd worden.
 
-De extensie **Mediwe Basis CiviCRM Extensie** *(be.mediwe.basis)* bevat alle basis instellingen en klasses die nodig zijn. Deze documentatie bevat een algemene beschrijving van de geleverde functionaliteit en alle technische documentatie over wat er precies in de extensie zit.
-
-## Installatie
-
-## Extensies
-Er worden bij Mediwe een aantal extensies gebruikt. Ze worden hieronder kort opgenoemd met eventuele afhankelijkheden. Daar waar nodig is er specifieke documentatie per extensie.
-
-|Extensie              | Extensie waar deze afhankelijk van is | Drush installatie |
-|----------------------|:-----------------------------:|-------------------------------------------------------------------|
-|be.mediwe.basis       |geen|```drush cvapi Extension.download key="be.mediwe.basis" url="https://github.com/CiviCooP/be.mediwe.basis/archive/master.zip"```|
-|be.mediwe.interneui   |be.mediwe.basis|``` drush cvapi Extension.download key="be.mediwe.interneui" url="https://github.com/CiviCooP/be.mediwe.interneui/archive/master.zip"```|
-|org.civicoop.civirules|geen|``` drush cvapi Extension.download key="org.civicoop.civirules" url="https://github.com/CiviCooP/org.civicoop.civirules/archive/1.17.zip" install="1"```|
-|org.civicoop.emailapi |org.civicoop.civirules|``` drush cvapi Extension.download key="org.civicoop.emailapi" url="https://github.com/CiviCooP/org.civicoop.emailapi/archive/V1.12.zip" install="1"```|
-
-
-## Ondersteuning
+Deze extensie **Mediwe Basis CiviCRM Extensie** *(be.mediwe.basis)* bevat alle basis instellingen en klasses die nodig zijn. Deze documentatie bevat een algemene beschrijving van de geleverde functionaliteit en alle technische documentatie over wat er precies in de extensie zit.
 
 ## Algemene beschrijving
+Mediwe heeft een enkel basisproces: het doen van medische controles bij zieke werknemers namens een opdrachtgever. Dat kan allerlei vormen aannemen en zeer verschillende flows hebben, maar dat zal altijd de basis zijn.
 
-## Gedetailleerde beschrijvingen
-* [Laden en bijwerken van configuratie items](config_items.md)
->* [CiviCRM activiteit types](activity_types.md)
->* [CiviCRM contact types](contact_types.md)
->* [CiviCRM dossier types](case_types)
->* [CiviCRM keuzegroepen](option_groups.md)
->* [CiviCRM lidmaatschap types](membership_types)
->* [CiviCRM eigen velden](custom_groups.json)
->* [CiviCRM relatie types](relationship_types.md)
+Er worden een aantal types van contacten (*contact subtypes*) in CiviCRM gebruikt om de soorten van contacten die belangrijk zijn voor het proces van Mediwe te kenmerken. Dit zijn Klant, KlantMedewerker, Controlearts, Inspecteur en Zorgfonds gebruiker.
+
+CiviCase wordt gebruikt om verschillende [Typen van Dossiers](dossier_types.md) vast te kunnen leggen.
+
+Er zijn een aantal zogenaamde [CiviRules](org_civicoop_civirules.md) in gebruik om delen van de procesgang te automatiseren.
+
+## Configuratie Items
+Met [Configuratie items voor CiviCRM](config_items.md) worden allerlei basis zaken in CiviCRM bedoeld zoals contact subtypen, types activiteiten, dossiertypes, groepen etc. die automatisch aangemaakt worden bij installatie. Deze kunnen op een later tijdstip ook weer bijgewerkt worden.
+
+## Extensies
+Er worden bij Mediwe een aantal [CiviCRM extensies](civiextensions.md) gebruikt.
+
+!!! note "Ondersteuning"
+    [CiviCooP](https://civicoop.org) ondersteunt Mediwe bij alle zaken rondom CiviCRM.
+    
+    **e-mail** : [helpdesk@civicoop.org](mailto:helpdesk@civicoop.org)
+    
+    **telefoon** : +31 (0)55 57 62 855
+
+
 
 
 
