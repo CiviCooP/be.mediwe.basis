@@ -9,12 +9,12 @@ De extensie **Mediwe Basis CiviCRM Extensie** *(be.mediwe.basis)* bevat alle bas
 ## Extensies
 Er worden bij Mediwe een aantal extensies gebruikt. Ze worden hieronder kort opgenoemd met eventuele afhankelijkheden. Daar waar nodig is er specifieke documentatie per extensie.
 
-|Extensie              | Extensie waar deze afhankelijk van is |
-|----------------------|---------------------------------------|
-|be.mediwe.basis       |:geen:|
-|be.mediwe.interneui   |:be.mediwe.basis:|
-|org.civicoop.civirules|:geen:|
-|org.civicoop.emailapi |:org.civicoop.civirules:|
+|Extensie              | Extensie waar deze afhankelijk van is | Drush installatie |
+|----------------------|:-----------------------------:|-------------------------------------------------------------------|
+|be.mediwe.basis       |geen|  drush cvapi Extension.download key="be.mediwe.basis" url="https://github.com/CiviCooP/be.mediwe.basis/archive/master.zip"|
+|be.mediwe.interneui   |be.mediwe.basis|
+|org.civicoop.civirules|geen|
+|org.civicoop.emailapi |org.civicoop.civirules|
 
 
 ### Installatie via drush
