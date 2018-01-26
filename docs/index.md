@@ -11,7 +11,7 @@ Er worden bij Mediwe een aantal extensies gebruikt. Ze worden hieronder kort opg
 
 |Extensie              | Extensie waar deze afhankelijk van is | Drush installatie |
 |----------------------|:-----------------------------:|-------------------------------------------------------------------|
-|be.mediwe.basis       |geen|  drush cvapi Extension.download key="be.mediwe.basis" url="https://github.com/CiviCooP/be.mediwe.basis/archive/master.zip"|
+|be.mediwe.basis       |geen|```drush cvapi Extension.download key="be.mediwe.basis" url="https://github.com/CiviCooP/be.mediwe.basis/archive/master.zip"```|
 |be.mediwe.interneui   |be.mediwe.basis|
 |org.civicoop.civirules|geen|
 |org.civicoop.emailapi |org.civicoop.civirules|
