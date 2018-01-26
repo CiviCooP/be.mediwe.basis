@@ -6,6 +6,17 @@ De extensie **Mediwe Basis CiviCRM Extensie** *(be.mediwe.basis)* bevat alle bas
 
 ## Installatie
 
+De volgende extensies worden gebruikt
+* be.mediwe.basis
+* org.civicoop.emailapi
+
+### Say it with scripts
+
+ ```
+ drush cvapi Extension.download key="org.civicoop.emailapi" url="https://github.com/CiviCooP/be.mediwe.basis/archive/master.zip"
+ drush cvapi Extension.download key="org.civicoop.emailapi" url="https://github.com/CiviCooP/org.civicoop.emailapi/archive/V1.12.zip" install="1"
+ ```
+
 ## Ondersteuning
 
 ## Algemene beschrijving
