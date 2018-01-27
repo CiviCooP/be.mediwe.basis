@@ -144,4 +144,23 @@ class CRM_Basis_Utils {
     $result = $select.' FROM '.$customGroupArray['table_name'];
     return $result;
   }
+
+    /**
+     * Method to select a list of email templates (purpose use it in a settings form
+     *
+     * @return array
+     */
+
+    public static function messageTemplates()
+    {
+        $result = array();
+        $dao = CRM_Core_DAO::executeQuery("
+        SELECT id, msg_title FROM civicrm_msg_template
+        WHERE workflow_id IS NULL
+        ");
+        while ($dao->fetch()) {
+            $result[$dao->id] = $dao->msg_title;
+        }
+        return $result;
+    }
 }

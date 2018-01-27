@@ -1,6 +1,7 @@
 <?php
 
 require_once 'basis.civix.php';
+use CRM_Basis_ExtensionUtil as E;
 
 /**
  * Implements hook_civicrm_searchColumns().
@@ -157,24 +158,26 @@ function basis_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
  *
 function basis_civicrm_preProcess($formName, &$form) {
 
-} // */
+} //
 
 /**
  * Implements hook_civicrm_navigationMenu().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_navigationMenu
- *
+ */
+
 function basis_civicrm_navigationMenu(&$menu) {
-  _basis_civix_insert_navigation_menu($menu, NULL, array(
-    'label' => ts('The Page', array('domain' => 'be.mediwe.basis')),
-    'name' => 'the_page',
-    'url' => 'civicrm/the-page',
-    'permission' => 'access CiviReport,access CiviContribute',
+
+  _basis_civix_insert_navigation_menu($menu, 'Administer', array(
+    'label' => E::ts('Mediwe Settings'),
+    'name' => 'settingbasis',
+    'url' => 'civicrm/admin/setting/basis',
+    'permission' => 'manage CiviCRM',
     'operator' => 'OR',
     'separator' => 0,
-  ));
+   ));
   _basis_civix_navigationMenu($menu);
-} // */
+}
 
 /**
  * Implements hook_civicrm_post()
@@ -186,7 +189,6 @@ function basis_civicrm_navigationMenu(&$menu) {
  * @param $objectId
  * @param $objectRef
  */
-
 
 function basis_civicrm_post($op, $objectName, $objectId, &$objectRef){
 
