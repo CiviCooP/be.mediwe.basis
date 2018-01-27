@@ -7,6 +7,7 @@ pages:
 - Configuratie items voor CiviCRM: configitems.md
 - Types van Contacten: contacttypes.md
 - CiviCRM extensies: civiextensions.md
+- Automatische Acties: automatische_acties.md
 - Documentatie bijwerken: documentatie.md
 
 markdown_extensions:
