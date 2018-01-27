@@ -16,6 +16,9 @@ Er zijn een aantal zogenaamde [CiviRules](org_civicoop_civirules.md) in gebruik 
 ## Configuratie Items
 Met [Configuratie items voor CiviCRM](config_items.md) worden allerlei basis zaken in CiviCRM bedoeld zoals contact subtypen, types activiteiten, dossiertypes, groepen etc. die automatisch aangemaakt worden bij installatie. Deze kunnen op een later tijdstip ook weer bijgewerkt worden.
 
+## Automatische Acties
+[Automatische Acties](automatische_acties.md) zijn taken automatisch worden uitgevoerd als er binnen een dossier aan bepaalde voorwaarden voldaan is. Een voorbeeld is de email die aan de arts verstuurd wordt zodra is toegewezen als controle arts aan een medewerker.
+
 ## Extensies
 Er worden bij Mediwe een aantal [CiviCRM extensies](civiextensions.md) gebruikt.
 
