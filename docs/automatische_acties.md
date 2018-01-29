@@ -26,11 +26,13 @@ Dit gebeurd met de volgende automatische activiteit.
 Automatische akties kunnen gerealiseerd worden met CiviRules en Post hooks.
 
 Voordeel CiviRules
+
 * Voorwaarden zijn via de gebruikers interface aan te passen.
 * De aktie kent gebruikers documentatie vanuit de interface.
 * Een automatische aktie kan eenvoudig uitgezet worden.
 
-Voordeel PostHooks
+Voordeel Post Hooks
+
 * Complexe situaties kunnen uitgeprogrammeerd worden.
 
 Per automatische aktie kan besloten worden welke methodiek wordt gebruikt.

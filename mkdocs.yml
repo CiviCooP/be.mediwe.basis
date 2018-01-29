@@ -6,6 +6,7 @@ pages:
 - Home: index.md
 - Configuratie items voor CiviCRM: configitems.md
 - Types van Contacten: contacttypes.md
+- Drupal modules (en themes): drupalmodules.md
 - CiviCRM extensies: civiextensions.md
 - Automatische Acties: automatische_acties.md
 - Documentatie bijwerken: documentatie.md
