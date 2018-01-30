@@ -510,7 +510,7 @@ class CRM_Basis_ControleArts {
         $config->getVakantieperiodeCustomGroup('custom_fields'),
         $contact_id,
         $data,
-        'mvp_vakantie_van'
+        array('mvp_vakantie_van')
       );
     }
 
@@ -521,7 +521,7 @@ class CRM_Basis_ControleArts {
         $config->getWerkgebiedCustomGroup('custom_fields'),
         $contact_id,
         $data,
-        'mw_postcode'
+        array('mw_postcode')
       );
 
     }

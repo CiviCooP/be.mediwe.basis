@@ -2346,6 +2346,7 @@ class CRM_Basis_Config {
    * @param object $customFields (dao)
    * @param integer $entity_id
    * @param array $array(id, fieldname/value)
+   * @param array $array_key array of key values to be used for search existing values
    * @return int
    */
   public function setRepeatingData($customFields, $entity_id, $array, $array_key) {
@@ -2363,9 +2364,12 @@ class CRM_Basis_Config {
 
       // get existing ids
       $get_params = array(
+        'sequential' => 1,
         'entity_id' => $entity_id,
-        $array_key => $data[$array_key],
       );
+      foreach ($array_key as $key) {
+        $get_params[$key] = $data[$key]; 
+      }
       $old_expert_data = $this->getRepeatingData($customFields, $get_params);
 
       foreach ($old_expert_data as $old_one) {

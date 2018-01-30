@@ -307,7 +307,7 @@ class CRM_Basis_Klant {
              $config->getKlantExpertsysteemCustomGroup('custom_fields'),
              $klant['id'],
              $mes_data,
-             'mes_periode'
+             array('mes_periode', 'mes_populatie', 'mes_actie')
            );
 
            $adres['contact_id'] = $klant['id'];
