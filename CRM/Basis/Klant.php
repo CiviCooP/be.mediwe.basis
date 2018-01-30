@@ -18,6 +18,8 @@ class CRM_Basis_Klant {
      */
    public function migrate() {
 
+     set_time_limit(0);
+
         $this->migrate_from_joomla();
 
    }
@@ -252,7 +254,7 @@ class CRM_Basis_Klant {
 
        $config = CRM_Basis_Config::singleton();
 
-       $sql = " SELECT * FROM mediwe_joomla.migratie_customer WHERE external_id = '15/07859';";
+       $sql = " SELECT * FROM mediwe_joomla.migratie_customer;";
 
        $dao = CRM_Core_DAO::executeQuery($sql);
 
@@ -260,6 +262,7 @@ class CRM_Basis_Klant {
 
            $adres = array();
            $params = array();
+           $mes_data = array();
            $old_id = false;
 
            $params = (array)$dao;
@@ -274,6 +277,12 @@ class CRM_Basis_Klant {
                        $params['phone'] = $value;
                    }
                }
+
+               // split data of repeating group
+               if (substr($key, 0, 3) == "mes") {
+                   $mes_data[0][$key] = $value;
+                   unset($params[$key]);
+               }
            }
 
            // zoek klant met dat nummer van joomla
@@ -287,14 +296,19 @@ class CRM_Basis_Klant {
            // update de controle procedure gegevens
            $this->addToParamsCustomFields($config->getKlantProcedureCustomGroup('custom_fields'), $params);
 
-           // update de expert systeem gegevens
-           $this->addToParamsCustomFields($config->getKlantExpertsysteemCustomGroup('custom_fields'), $params);
-
            // update de interne organisatie gegevens
            $this->addToParamsCustomFields($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
 
            // voeg de klant toe
            $klant = $this->create($params);
+
+           // update de expert systeem gegevens (repeating!)
+           $config->setRepeatingData(
+             $config->getKlantExpertsysteemCustomGroup('custom_fields'),
+             $klant['id'],
+             $mes_data,
+             'mes_periode'
+           );
 
            $adres['contact_id'] = $klant['id'];
            $adres['is_billing'] = 1;
@@ -340,7 +354,7 @@ class CRM_Basis_Klant {
                $this->migrate_invoicing_info($old_id, $klant['id']);
 
            }
-die('Eerste klant OK');
+
        }
 
        // migrate billing addresses pointing to another customer
@@ -577,6 +591,15 @@ die('Eerste klant OK');
       }
 
       return $klant;
+  }
+
+  private function getKlantExpertsysteem($params) {
+
+    $config = CRM_Basis_Config::singleton();
+    $vakantieCustomFields = $config->getKlantExpertsysteemCustomGroup('custom_fields');
+
+    return $config->getRepeatingData($vakantieCustomFields, $params);
+
   }
 
 }

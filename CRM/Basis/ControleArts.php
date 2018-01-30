@@ -17,7 +17,9 @@ class CRM_Basis_ControleArts {
      */
     public function migrate($params) {
 
-        $this->_migrate_from_joomla($params);
+      set_time_limit(0);
+
+      $this->_migrate_from_joomla($params);
 
     }
 
@@ -501,71 +503,29 @@ class CRM_Basis_ControleArts {
     }
 
     public function saveVakantiePeriodes($contact_id, $data) {
-        $config = CRM_Basis_Config::singleton();
-        $vakantieCustomFields = $config->getVakantieperiodeCustomGroup('custom_fields');
 
-        return $this->_saveRepeatingData($vakantieCustomFields, $contact_id, $data);
+      $config = CRM_Basis_Config::singleton();
+
+      $config->setRepeatingData(
+        $config->getVakantieperiodeCustomGroup('custom_fields'),
+        $contact_id,
+        $data,
+        'mvp_vakantie_van'
+      );
     }
 
     public function saveWerkgebied($contact_id, $data) {
         $config = CRM_Basis_Config::singleton();
-        $WerkgebiedCustomFields = $config->getWerkgebiedCustomGroup('custom_fields');
 
-        return $this->_saveRepeatingData($WerkgebiedCustomFields, $contact_id, $data);
-    }
-
-    private function _saveRepeatingData($customFields, $entity_id, $array) {
-
-        $rv = false;
-
-        $params = array(
-            'sequential' => 1,
-            'entity_id' => $entity_id,
-        );
-        $newline = -1;
-        foreach ($array as $data) {
-            if (!isset($data['id'])) {
-                $data['id'] = $newline;
-                $newline = $newline - 1;
-            }
-            foreach ($customFields as $field) {
-
-                if (isset($data[$field['name']])) {
-                    $key = "custom_" . $field['id'] . ":" . $data['id'];
-                    if ($field['data_type'] == 'Date') {
-                        if ($this->_apidate($data[$field['name']]) != "") {
-                            $params[$key] = $this->_apidate($data[$field['name']]);
-                        }
-                    }
-                    else {
-                        $params[$key] = $data[$field['name']];
-                    }
-                }
-            }
-        }
-
-        if (count($params) > 2) {
-            $rv = civicrm_api3('CustomValue', 'create', $params);
-        }
-
-        return $rv;
+      $config->setRepeatingData(
+        $config->getWerkgebiedCustomGroup('custom_fields'),
+        $contact_id,
+        $data,
+        'mw_postcode'
+      );
 
     }
 
-    private function _apidate($date)
-    {
-        if (substr($date, 0, 4) == 1900 || substr($date, 0, 4) == 0 ) {
-            $rv = "";
-        }
-        else {
-            $rv = str_replace(' ', '', $date);
-            $rv = str_replace(':', '', $rv);
-            $rv = str_replace('-', '', $rv);
-            $rv = str_replace('/', '', $rv);
-        }
-
-        return $rv;
-    }
   /**
    * Method to delete all medeWorkers from a klant with klantId (set to is_deleted in CiviCRM)
    *
@@ -682,6 +642,16 @@ class CRM_Basis_ControleArts {
 
     }
 
+  private function getVakantieperiodes($params) {
+
+    $config = CRM_Basis_Config::singleton();
+    $vakantieCustomFields = $config->getVakantieperiodeCustomGroup('custom_fields');
+
+    return $config->getRepeatingData($vakantieCustomFields, $params);
+
+  }
+
+
     private function _addToParamsCustomFields($customFields, $data, &$params) {
 
         foreach ($customFields as $field) {
@@ -706,7 +676,10 @@ class CRM_Basis_ControleArts {
         }
 
         $adres['street_address'] = $data['street_address'];
-        $adres['supplemental_address_1'] = $data['supplemental_address_1'];
+        if (isset($data['supplemental_address_1'])) {
+          $adres['supplemental_address_1'] = $data['supplemental_address_1'];
+        }
+
         $adres['postal_code'] = $data['postal_code'];
         $adres['city'] = $data['city'];
 
@@ -921,8 +894,7 @@ class CRM_Basis_ControleArts {
 
         $config = CRM_Basis_Config::singleton();
 
-        $sql = "SELECT * FROM mediwe_joomla.migratie_controlearts ";
-
+        $sql = "SELECT * FROM mediwe_joomla.migratie_controlearts;";  // WHERE supplier_aansluitingsnummer = '55/00713';";
         $dao = CRM_Core_DAO::executeQuery($sql);
 
         while ($dao->fetch()) {
