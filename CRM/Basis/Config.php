@@ -15,7 +15,7 @@ class CRM_Basis_Config {
   // properties for specific contact sub types
   private $_klantContactSubType = array();
   private $_klantMedewerkerContactSubType = array();
-  private $_controleArtsContactSubType = array();
+  private $_artsContactSubType = array();
   private $_inspecteurContactSubType = array();
 
   // properties for address location types
@@ -27,13 +27,13 @@ class CRM_Basis_Config {
   private $_isWerknemerVanRelationshipTypeId = NULL;
   private $_ziektemeldingRelationshipTypeId = NULL;
   private $_vraagtControleAanRelationshipTypeId = NULL;
-  private $_controleArtsRelationshipTypeId = NULL;
+  private $_artsRelationshipTypeId = NULL;
 
 
   // properties for membership types
   private $_maandelijksMembershipType = array();
   private $_voorafbetaaldMembershipType = array();
-  private $_controleartsMembershipType = array();
+  private $_artsMembershipType = array();
   private $_mijnMediweMembershipType = array();
   private $_zorgfondsMembershipType = array();
   private $_inspecteurMembershipType = array();
@@ -111,7 +111,7 @@ class CRM_Basis_Config {
     $this->setOptionGroups();
 
     // set custom groups and custom fields voor controlearts/inspecteur
-    $this->setCustomGroups('mediwe_communicatie_controlearts', '_communicatieCustomGroup');
+    $this->setCustomGroups('mediwe_communicatie_arts', '_communicatieCustomGroup');
     $this->setCustomGroups('mediwe_vakantie_periode', '_vakantiePeriodeCustomGroup');
     $this->setCustomGroups('mediwe_werkgebied', '_werkgebiedCustomGroup');
     $this->setCustomGroups('mediwe_leverancier', '_leverancierCustomGroup');
@@ -183,7 +183,7 @@ class CRM_Basis_Config {
    * @return null
    */
   public function getControleArtsRelationshipTypeId() {
-    return $this->_controleArtsRelationshipTypeId;
+    return $this->_artsRelationshipTypeId;
   }
 
   /**
@@ -1756,7 +1756,7 @@ class CRM_Basis_Config {
    * @return null
    */
   public function getControleArtsContactSubType() {
-    return $this->_controleArtsContactSubType;
+    return $this->_artsContactSubType;
   }
 
     /**
@@ -1902,8 +1902,8 @@ class CRM_Basis_Config {
      *
      * @return null
      */
-    public function getControleartsMembershipType() {
-        return $this->_controleartsMembershipType;
+    public function getArtsMembershipType() {
+        return $this->_artsMembershipType;
     }
 
     /**
@@ -1981,7 +1981,7 @@ class CRM_Basis_Config {
             $this->_klantMedewerkerContactSubType = $contactType;
             break;
           case 'mediwe_controle_arts':
-            $this->_controleArtsContactSubType = $contactType;
+            $this->_artsContactSubType = $contactType;
             break;
             case 'mediwe_inspecteur':
                 $this->_inspecteurContactSubType = $contactType;
@@ -2039,7 +2039,7 @@ class CRM_Basis_Config {
                         $this->_vraagtControleAanRelationshipTypeId = $relationshipType['id'];
                         break;
                   case 'controlearts':
-                    $this->_controleArtsRelationshipTypeId = $relationshipType['id'];
+                    $this->_artsRelationshipTypeId = $relationshipType['id'];
                     break;
                 }
             }
@@ -2100,7 +2100,7 @@ class CRM_Basis_Config {
                         $this->_mijnMediweMembershipType = $membershipType;
                         break;
                     case 'Controlearts':
-                        $this->_controleartsMembershipType = $membershipType;
+                        $this->_artsMembershipType = $membershipType;
                         break;
                     case 'Zorgfonds':
                         $this->_zorgfondsMembershipType = $membershipType;
@@ -2368,7 +2368,7 @@ class CRM_Basis_Config {
         'entity_id' => $entity_id,
       );
       foreach ($array_key as $key) {
-        $get_params[$key] = $data[$key]; 
+        $get_params[$key] = $data[$key];
       }
       $old_expert_data = $this->getRepeatingData($customFields, $get_params);
 

@@ -526,6 +526,43 @@ class CRM_Basis_ControleArts {
 
     }
 
+    public function saveVoorwaarden($old_contact_id, $contact_id )   {
+
+      $config = CRM_Basis_Config::singleton();
+      $save_params = array(
+        'sequential' => 1,
+        'membership_type_id' => $config->getArtsMembershipType(),
+        'contact_id' => $contact_id,
+      );
+
+      $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_voorwaarden_arts WHERE contact_id = $old_contact_id ";
+      $dao = CRM_Core_DAO::executeQuery($sql);
+
+      if ($dao->fetch()) {
+        $params = (array)$dao;
+        foreach ($params as $key => $value) {
+          if (   substr($key, 0, 1 ) == "_" || $key == 'N'  )  {
+            unset($params[$key]);
+          }
+          else {
+            switch ($key) {
+              case "contact_id":
+                break;
+              default:
+                $save_params[$key] = $params[$key];
+            }
+
+          }
+        }
+      }
+
+      // create membership
+      $createdMembership = civicrm_api3('Membership', 'create', $save_params);
+
+      return $createdMembership;
+
+    }
+
   /**
    * Method to delete all medeWorkers from a klant with klantId (set to is_deleted in CiviCRM)
    *
@@ -790,7 +827,8 @@ class CRM_Basis_ControleArts {
 
     private function _getFromCivi($aansluitingsnummer) {
 
-        $sql = "SELECT * FROM mediwe_old_civicrm.migratie_leveranciersgegevens WHERE ml_aansluitingsnummer = '$aansluitingsnummer' ";
+        $config = CRM_Basis_Config::singleton();
+        $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_leveranciersgegevens WHERE ml_aansluitingsnummer = '$aansluitingsnummer' ";
 
         $dao = CRM_Core_DAO::executeQuery($sql);
 
@@ -811,7 +849,8 @@ class CRM_Basis_ControleArts {
  */
     private function _migrate_tags($old_id, $new_id) {
 
-        $dao = CRM_Core_DAO::executeQuery("SELECT * FROM civicrm_tag WHERE id = 10");
+      $config = CRM_Basis_Config::singleton();
+      $dao = CRM_Core_DAO::executeQuery("SELECT * FROM civicrm_tag WHERE id = 10");
 
         if (!$dao->fetch()) {
             $sql = "INSERT INTO `mediwe_civicrm`.`civicrm_tag` (
@@ -836,7 +875,7 @@ class CRM_Basis_ControleArts {
                       `used_for`,
                       `created_date`
                     FROM
-                      `mediwe_old_civicrm`.`civicrm_tag`
+                      " . $config->getSourceCiviDbName() .  ".`civicrm_tag`
                     ;
                   ";
 
@@ -846,7 +885,7 @@ class CRM_Basis_ControleArts {
         CRM_Core_DAO::executeQuery(" DELETE FROM civicrm_entity_tag WHERE entity_id = $new_id AND entity_table = 'civicrm_contact';");
 
         $sql = " INSERT INTO civicrm_entity_tag (entity_table, entity_id, tag_id)
-                SELECT 'civicrm_contact', $new_id, tag_id FROM mediwe_old_civicrm.civicrm_entity_tag
+                SELECT 'civicrm_contact', $new_id, tag_id FROM " . $config->getSourceCiviDbName() .  ".civicrm_entity_tag
                 WHERE entity_id = $old_id AND entity_table = 'civicrm_contact'; ";
 
         CRM_Core_DAO::executeQuery($sql);
@@ -881,6 +920,7 @@ class CRM_Basis_ControleArts {
         // migrate tag info
         if (isset($civi_arts['contact_id'])) {
             $this->_migrate_tags($civi_arts['contact_id'], $contact_id);
+            $this->saveVoorwaarden($civi_arts['contact_id'], $contact_id);
         }
 
         return $createdContact;
