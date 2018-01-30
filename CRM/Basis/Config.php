@@ -126,7 +126,7 @@ class CRM_Basis_Config {
     $this->setCasesCustomGroups();
     $this->setMediweTeamContactId();
     $this->setCaseTypes();
-      
+
     $this->_joomlaDbName = "mediwe_joomla";
     $this->_sourceCiviDbName = "mediwe_civicrm";
     try {

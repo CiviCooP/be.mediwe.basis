@@ -3,7 +3,7 @@
 /**
  * Class voor het versturen van de email naar de arts
  *
- * @author Klaas Eikelboom (CiviCooP) <erik.hommel@civicoop.org>
+ * @author Klaas Eikelboom (CiviCooP) <klaas.eikelboom@civicoop.org>
  * @date 25 Januari 2017
  * @license AGPL-3.0
  */
@@ -39,12 +39,15 @@ class CRM_Basis_Acties_OpdrachtEmailArts
 
 
     public function actie()
-    {
-       $apiParams['contact_id'] = $this->_params['contact_id_a'];
-       $apiParams['template_id'] = 68;
-       $apiParams['case_id'] = $this->_params['case_id'];
-
-       civicrm_api3('Email','Send',$apiParams);
+    {  $templateId =  Civi::settings()->get('mediwe_opdrachtemailarts_template_id');
+       if($templateId) {
+           $apiParams['contact_id'] = $this->_params['contact_id_a'];
+           $apiParams['template_id'] = $templateId;
+           $apiParams['case_id'] = $this->_params['case_id'];
+           civicrm_api3('Email', 'Send', $apiParams);
+       } else{
+           Civi::log()->error("Opdracht Arts Template id is nog niet ingesteld - de OpdrachtEmail wordt niet verstuurd");
+       }
 
     }
 
