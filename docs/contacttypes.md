@@ -16,5 +16,9 @@ De controlearts wordt vastgelegd in het dossier [Medische Controle](dossiertypes
 !!! important "Belangrijk"
     Let op: de controlearts wordt in principe niet door de gebruiker in het dossier vastgelegd, maar automatisch als de activiteit **huisbezoek** aan de controle arts wordt toegekend. Op het moment dat dat gebeurt wordt automatisch de relatie op het dossier vastgelegd.
     
+## Inspecteur
+
+## Gebruiker Zorgfonds
+    
     
     
