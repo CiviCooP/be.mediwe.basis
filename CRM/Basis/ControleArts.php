@@ -517,12 +517,12 @@ class CRM_Basis_ControleArts {
     public function saveWerkgebied($contact_id, $data) {
         $config = CRM_Basis_Config::singleton();
 
-      $config->setRepeatingData(
-        $config->getWerkgebiedCustomGroup('custom_fields'),
-        $contact_id,
-        $data,
-        array('mw_postcode')
-      );
+        $config->setRepeatingData(
+          $config->getWerkgebiedCustomGroup('custom_fields'),
+          $contact_id,
+          $data,
+          array('mw_postcode', 'mw_gemeente')
+        );
 
     }
 
@@ -531,30 +531,36 @@ class CRM_Basis_ControleArts {
       $config = CRM_Basis_Config::singleton();
       $save_params = array(
         'sequential' => 1,
-        'membership_type_id' => $config->getArtsMembershipType(),
+        'membership_type_id' => $config->getArtsMembershipType()['id'],
         'contact_id' => $contact_id,
       );
 
-      $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_voorwaarden_arts WHERE contact_id = $old_contact_id ";
+      // get existing membership
+      try {
+        $membership = civicrm_api3('Membership', 'getsingle', $save_params);
+        if (isset($membership['id'])) {
+          $save_params['id'] = $membership['id'];
+        }
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+
+      }
+
+
+      $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_controlearts_voorwaarden WHERE contact_id = $old_contact_id ";
       $dao = CRM_Core_DAO::executeQuery($sql);
 
       if ($dao->fetch()) {
         $params = (array)$dao;
         foreach ($params as $key => $value) {
-          if (   substr($key, 0, 1 ) == "_" || $key == 'N'  )  {
+          if (   substr($key, 0, 1 ) == "_" || $key == 'N' || $key == "contact_id" )  {
             unset($params[$key]);
-          }
-          else {
-            switch ($key) {
-              case "contact_id":
-                break;
-              default:
-                $save_params[$key] = $params[$key];
-            }
-
           }
         }
       }
+
+      // convert names of custom fields
+      $this->_addToParamsCustomFields($config->getArtsVoorwaardenCustomGroup('custom_fields'), $params, $save_params);
 
       // create membership
       $createdMembership = civicrm_api3('Membership', 'create', $save_params);
@@ -602,10 +608,6 @@ class CRM_Basis_ControleArts {
         $this->_addToParamsCustomFields($config->getLeverancierCustomGroup('custom_fields'), $data, $params);
         $this->_addToParamsCustomFields($config->getCommunicatieCustomGroup('custom_fields'), $data, $params);
 
-        // TODO: What to do with repeating groups?
-        //$this->_addToParamsCustomFields($config->getWorkgebiedCustomGroup('custom_fields'), $data, $params);
-
-
         try {
 
             $createdContact = civicrm_api3('Contact', 'create', $params);
@@ -646,13 +648,14 @@ class CRM_Basis_ControleArts {
                     'mvp_vakantie_tot' => $data['mvp_vakantie_tot'],
                 );
 
-                $vakantie_params = array(
+                $old_periods = $this->getVakantieperiodes(
+                  array(
                     'entity_id' => $controlearts['id'],
                     'mvp_vakantie_van' => $data['mvp_vakantie_van'],
                     'mvp_vakantie_tot' => $data['mvp_vakantie_tot'],
+                  )
                 );
 
-                $old_periods = $this->getVakantieperiodes($vakantie_params);
                 foreach ($old_periods as $period) {
                     if (substr($period['mvp_vakantie_van'], 0, 10) == substr($data['mvp_vakantie_van'], 0, 10)) {
                         $holiday['id'] = $period['id'];
@@ -661,14 +664,11 @@ class CRM_Basis_ControleArts {
 
                 $this->saveVakantiePeriodes($controlearts['id'], array($holiday));
 
-                if (isset($data['regios'])) {
-                    $this->saveWerkgebied($controlearts['id'], $data['regios']);
-                }
-
-
             }
 
-
+            if (isset($data['regios'])) {
+              $this->saveWerkgebied($controlearts['id'], $data['regios']);
+            }
 
             return $controlearts;
         }

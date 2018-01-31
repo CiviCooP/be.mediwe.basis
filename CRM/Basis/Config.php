@@ -111,7 +111,7 @@ class CRM_Basis_Config {
     $this->setOptionGroups();
 
     // set custom groups and custom fields voor controlearts/inspecteur
-    $this->setCustomGroups('mediwe_communicatie_arts', '_communicatieCustomGroup');
+    $this->setCustomGroups('mediwe_communicatie_controlearts', '_communicatieCustomGroup');
     $this->setCustomGroups('mediwe_vakantie_periode', '_vakantiePeriodeCustomGroup');
     $this->setCustomGroups('mediwe_werkgebied', '_werkgebiedCustomGroup');
     $this->setCustomGroups('mediwe_leverancier', '_leverancierCustomGroup');
@@ -1515,6 +1515,20 @@ class CRM_Basis_Config {
         }
     }
 
+  /**
+   * Getter for voorwaarden arts custom group
+   *
+   * @param string $key
+   * @return mixed|array
+   */
+  public function getArtsVoorwaardenCustomGroup($key = NULL) {
+    if (!empty($key) && isset($this->_voorwaardenArtsCustomGroup[$key])) {
+      return $this->_voorwaardenArtsCustomGroup[$key];
+    } else {
+      return $this->_voorwaardenArtsCustomGroup;
+    }
+  }
+
     /**
    * Getter for leverancier custom group
    *
@@ -2363,19 +2377,17 @@ class CRM_Basis_Config {
     foreach ($array as $data) {
 
       // get existing ids
-      $get_params = array(
+      $get_params = [
         'sequential' => 1,
         'entity_id' => $entity_id,
-      );
+      ];
       foreach ($array_key as $key) {
         $get_params[$key] = $data[$key];
       }
-      $old_expert_data = $this->getRepeatingData($customFields, $get_params);
+      $existing_data = $this->getRepeatingData($customFields, $get_params);
 
-      foreach ($old_expert_data as $old_one) {
-        if ($old_one['mes_periode'] == $data['mes_periode']) {
-          $array[$count]['id'] = $old_one['id'];
-        }
+      foreach ($existing_data as $existing) {
+        $array[$count]['id'] = $existing['id'];
       }
       if (!isset($array[$count]['id'])) {
         $array[$count]['id'] = $newline;
@@ -2396,7 +2408,6 @@ class CRM_Basis_Config {
           }
         }
       }
-
       $count = $count + 1;
     }
 
@@ -2419,16 +2430,18 @@ class CRM_Basis_Config {
     $values = civicrm_api3('CustomValue', 'get', $params)['values'];
 
     foreach ($customFields as $field) {
-      if (isset($values[$field['id']])) {
-        foreach ($values[$field['id']] as $key => $value) {
-          if (is_numeric($key)) {
-            $my_array[$key]['id'] = $key;
-            $my_array[$key][$field['name']] = $value;
+      foreach ($values as $value) {
+        if ($value['id'] == $field['id']) {
+          foreach ($value as $key => $value) {
+            if (is_numeric($key)) {
+              $my_array[$key]['id'] = $key;
+              $my_array[$key][$field['name']] = $value;
+            }
           }
         }
       }
-
     }
+
     return $my_array;
   }
 
