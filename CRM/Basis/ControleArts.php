@@ -934,7 +934,7 @@ class CRM_Basis_ControleArts {
 
         $config = CRM_Basis_Config::singleton();
 
-        $sql = "SELECT * FROM mediwe_joomla.migratie_controlearts;";  // WHERE supplier_aansluitingsnummer = '55/00713';";
+        $sql = "SELECT * FROM mediwe_joomla.migratie_controlearts LIMIT 0,80;";
         $dao = CRM_Core_DAO::executeQuery($sql);
 
         while ($dao->fetch()) {
@@ -1014,6 +1014,10 @@ class CRM_Basis_ControleArts {
 
             // migreer de leveranciersgegevens uit civi produktie
             $this->_migrate_from_civi($params['id'], $params);
+
+            // confirm migration
+          $sql = "INSERT INTO `mediwe_joomla`.`migration_doctor` (`id`) VALUES  ($id_doctor);";
+          CRM_Core_DAO::executeQuery($sql);
 
         }
     }
