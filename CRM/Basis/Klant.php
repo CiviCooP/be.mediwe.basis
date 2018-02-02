@@ -247,6 +247,91 @@ class CRM_Basis_Klant {
 
    }
 
+  private function migratie_mijnmediwe_contracten($old_contact_id, $contact_id )   {
+
+    $config = CRM_Basis_Config::singleton();
+    $save_params = array(
+      'sequential' => 1,
+      'membership_type_id' => $config->getMijnMediweMembershipType()['id'],
+      'contact_id' => $contact_id,
+    );
+
+    // get existing membership
+    try {
+      $membership = civicrm_api3('Membership', 'getsingle', $save_params);
+      if (isset($membership['id'])) {
+        $save_params['id'] = $membership['id'];
+      }
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+
+    }
+
+
+    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_mijnmediwe_voorwaarden WHERE contact_id = $old_contact_id ";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+
+    if ($dao->fetch()) {
+      $params = (array)$dao;
+      foreach ($params as $key => $value) {
+        if (   substr($key, 0, 1 ) == "_" || $key == 'N' || $key == "contact_id" )  {
+          unset($params[$key]);
+        }
+      }
+    }
+
+    // convert names of custom fields
+    $this->_addToParamsCustomFields($config->getVoorwaardenMijnMediweCustomGroup('custom_fields'), $params, $save_params);
+
+    // create membership
+    $createdMembership = civicrm_api3('Membership', 'create', $save_params);
+
+    return $createdMembership;
+
+  }
+
+  private function migratie_controle_contracten($old_contact_id, $contact_id )   {
+
+    $config = CRM_Basis_Config::singleton();
+    $save_params = array(
+      'sequential' => 1,
+      'membership_type_id' => array($config->getMaandelijksMembershipType()['id'], $config->getVoorafbetaaldMembershipType()['id'] ),
+      'contact_id' => $contact_id,
+    );
+
+    // get existing membership
+    try  {
+      $membership = civicrm_api3('Membership', 'getsingle', $save_params);
+      if (isset($membership['id'])) {
+        $save_params['id'] = $membership['id'];
+      }
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+
+    }
+
+
+    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_controle_voorwaarden WHERE contact_id = $old_contact_id ";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+
+    if ($dao->fetch()) {
+      $params = (array)$dao;
+      foreach ($params as $key => $value) {
+        if (   substr($key, 0, 1 ) == "_" || $key == 'N' || $key == "contact_id" )  {
+          unset($params[$key]);
+        }
+      }
+    }
+
+    // convert names of custom fields
+    $this->_addToParamsCustomFields($config->getVoorwaardenControleCustomGroup('custom_fields'), $params, $save_params);
+
+    // create membership
+    $createdMembership = civicrm_api3('Membership', 'create', $save_params);
+
+    return $createdMembership;
+
+  }
   /*
   *   CRM_Basis_Klant migrate info  joomla application of a customer from previous civicrm application
   */
@@ -352,6 +437,15 @@ class CRM_Basis_Klant {
 
                // migrate accounting data
                $this->migrate_invoicing_info($old_id, $klant['id']);
+
+               // migrate Mijn Mediwe contracten
+               $this->migratie_mijnmediwe_contracten($old_id, $klant['id']);
+
+               // migrate Controle contracten
+               $this->migratie_controle_contracten($old_id, $klant['id']);
+
+               // migratie relaties is klant via
+
 
            }
 

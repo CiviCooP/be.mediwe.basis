@@ -118,10 +118,13 @@ class CRM_Basis_Config {
     $this->setCustomGroups('mediwe_voorwaarden_arts', '_voorwaardenArtsCustomGroup');
 
     // set custom groups and custom fields voor klanten
-      $this->setCustomGroups('mediwe_facturatie', '_klantBoekhoudingCustomGroup');
-      $this->setCustomGroups('mediwe_expertsysteem', '_klantExpertsysteemCustomGroup');
-      $this->setCustomGroups('mediwe_interne_organisatie', '_klantOrganisatieCustomGroup');
-      $this->setCustomGroups('mediwe_controle_procedure_klant', '_klantProcedureCustomGroup');
+    $this->setCustomGroups('mediwe_facturatie', '_klantBoekhoudingCustomGroup');
+    $this->setCustomGroups('mediwe_expertsysteem', '_klantExpertsysteemCustomGroup');
+    $this->setCustomGroups('mediwe_interne_organisatie', '_klantOrganisatieCustomGroup');
+    $this->setCustomGroups('mediwe_controle_procedure_klant', '_klantProcedureCustomGroup');
+
+    $this->setCustomGroups('mijnmediwe_voorwaarden', '_voorwaardenMijnmediweCustomGroup');
+    $this->setCustomGroups('mediwe_voorwaarden_controle', '_voorwaardenControleCustomGroup');
 
     $this->setCasesCustomGroups();
     $this->setMediweTeamContactId();
@@ -1628,6 +1631,35 @@ class CRM_Basis_Config {
     }
   }
 
+  /**
+   * Getter for klant voorwaarden controle custom group
+   *
+   * @param string $key
+   * @return mixed|array
+   */
+  public function getVoorwaardenControleCustomGroup($key = NULL) {
+
+    if (!empty($key) && isset($this->_voorwaardenControleCustomGroup[$key])) {
+      return $this->_voorwaardenControleCustomGroup[$key];
+    } else {
+      return $this->_voorwaardenControleCustomGroup;
+    }
+  }
+
+  /**
+   * Getter for klant voorwaarden Mijn Mediwe custom group
+   *
+   * @param string $key
+   * @return mixed|array
+   */
+  public function getVoorwaardenMijnMediweCustomGroup($key = NULL) {
+
+    if (!empty($key) && isset($this->_voorwaardenMijnMediweCustomGroup[$key])) {
+      return $this->_voorwaardenMijnMediweCustomGroup[$key];
+    } else {
+      return $this->_voorwaardenMijnMediweCustomGroup;
+    }
+  }
 
     /**
      * Getter for klantmedewerker experst systeem tellers custom group
