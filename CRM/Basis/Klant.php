@@ -250,10 +250,13 @@ class CRM_Basis_Klant {
   private function migratie_mijnmediwe_contracten($old_contact_id, $contact_id )   {
 
     $config = CRM_Basis_Config::singleton();
+    $createdMembership = false;
+
     $save_params = array(
       'sequential' => 1,
       'membership_type_id' => $config->getMijnMediweMembershipType()['id'],
       'contact_id' => $contact_id,
+      'status_id' => 2,
     );
 
     // get existing membership
@@ -267,7 +270,6 @@ class CRM_Basis_Klant {
 
     }
 
-
     $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_mijnmediwe_voorwaarden WHERE contact_id = $old_contact_id ";
     $dao = CRM_Core_DAO::executeQuery($sql);
 
@@ -278,13 +280,14 @@ class CRM_Basis_Klant {
           unset($params[$key]);
         }
       }
+
+      // convert names of custom fields
+      $this->addToParamsCustomFields($config->getVoorwaardenMijnMediweCustomGroup('custom_fields'), $params, $save_params);
+
+      // create membership
+      $createdMembership = civicrm_api3('Membership', 'create', $save_params);
+
     }
-
-    // convert names of custom fields
-    $this->_addToParamsCustomFields($config->getVoorwaardenMijnMediweCustomGroup('custom_fields'), $params, $save_params);
-
-    // create membership
-    $createdMembership = civicrm_api3('Membership', 'create', $save_params);
 
     return $createdMembership;
 
@@ -293,10 +296,13 @@ class CRM_Basis_Klant {
   private function migratie_controle_contracten($old_contact_id, $contact_id )   {
 
     $config = CRM_Basis_Config::singleton();
+    $createdMembership = false;
+
     $save_params = array(
       'sequential' => 1,
       'membership_type_id' => array($config->getMaandelijksMembershipType()['id'], $config->getVoorafbetaaldMembershipType()['id'] ),
       'contact_id' => $contact_id,
+      'status_id' => 2,
     );
 
     // get existing membership
@@ -304,12 +310,12 @@ class CRM_Basis_Klant {
       $membership = civicrm_api3('Membership', 'getsingle', $save_params);
       if (isset($membership['id'])) {
         $save_params['id'] = $membership['id'];
+        $save_params['membership_type_id'] = $membership['membership_type_id'];
       }
     }
     catch (CiviCRM_API3_Exception $ex) {
 
     }
-
 
     $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_controle_voorwaarden WHERE contact_id = $old_contact_id ";
     $dao = CRM_Core_DAO::executeQuery($sql);
@@ -317,21 +323,102 @@ class CRM_Basis_Klant {
     if ($dao->fetch()) {
       $params = (array)$dao;
       foreach ($params as $key => $value) {
-        if (   substr($key, 0, 1 ) == "_" || $key == 'N' || $key == "contact_id" )  {
+        if (substr($key, 0, 1) == "_" || $key == 'N' || $key == "contact_id") {
           unset($params[$key]);
         }
       }
+
+        // take over membership id
+        switch ($params['membership_type_id']) {
+          case "1":
+            $save_params['membership_type_id'] = $config->getVoorafbetaaldMembershipType()['id'];
+            break;
+          default:
+            $save_params['membership_type_id'] = $config->getMaandelijksMembershipType()['id'];
+            break;
+        }
+
+        // convert names of custom fields
+        $this->addToParamsCustomFields($config->getVoorwaardenControleCustomGroup('custom_fields'), $params, $save_params);
+
+        // create membership
+        $createdMembership = civicrm_api3('Membership', 'create', $save_params);
+
+
     }
-
-    // convert names of custom fields
-    $this->_addToParamsCustomFields($config->getVoorwaardenControleCustomGroup('custom_fields'), $params, $save_params);
-
-    // create membership
-    $createdMembership = civicrm_api3('Membership', 'create', $save_params);
 
     return $createdMembership;
 
   }
+
+
+  private function migrate_is_klant_via($old_contact_id, $contact_id) {
+
+    $config = CRM_Basis_Config::singleton();
+
+    // get relationship in previous civi environment one way
+    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_is_klant_via WHERE contact_id_a = $old_contact_id ";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+
+    if ($dao->fetch()) {
+       // get the other customer
+      $params = array (
+        'sequential' => 1,
+        'external_identifier' => $dao->external_id_b,
+        'contact_sub_type' => $this->klantContactSubTypeName,
+      );
+
+      try {
+        $klant_b = civicrm_api3('Contact', 'getsingle', $params);
+        if (isset($klant_b['id'])) {
+          $params = array (
+            'sequential' => 1,
+            'contact_id_a' => $contact_id,
+            'contact_id_b' => $$klant_b['id'],
+            'relation_type_id' => $this->klantContactSubTypeName,
+          );
+          civicrm_api3('Relationship', 'create', $params);
+        }
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+
+      }
+
+    }
+
+    // get relationship in previous civi environment the other way
+    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_is_klant_via WHERE contact_id_b = $old_contact_id ";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+
+    if ($dao->fetch()) {
+      // get the other customer
+      $params = array (
+        'sequential' => 1,
+        'external_identifier' => $dao->external_id_a,
+      //  'contact_sub_type' => $config->getKlantContactSubType(),
+      );
+
+      try {
+        $klant_a = civicrm_api3('Contact', 'getsingle', $params);
+        if (isset($klant_a['id'])) {
+          $params = array (
+            'sequential' => 1,
+            'contact_id_b' => $contact_id,
+            'contact_id_a' => $$klant_a['id'],
+            'relation_type_id' => $config->getIsKlantViaRelationshipType(),
+          );
+          civicrm_api3('Relationship', 'create', $params);
+        }
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+
+      }
+
+    }
+
+
+  }
+
   /*
   *   CRM_Basis_Klant migrate info  joomla application of a customer from previous civicrm application
   */
@@ -339,11 +426,11 @@ class CRM_Basis_Klant {
 
        $config = CRM_Basis_Config::singleton();
 
-       $sql = " SELECT * FROM mediwe_joomla.migratie_customer;";
+       $sql = " SELECT * FROM mediwe_joomla.migratie_customer LIMIT 0, 100;";  // WHERE external_id = '15/07859'
 
        $dao = CRM_Core_DAO::executeQuery($sql);
 
-       while ($dao->fetch()) {
+       while ($dao && $dao->fetch()) {
 
            $adres = array();
            $params = array();
@@ -351,6 +438,7 @@ class CRM_Basis_Klant {
            $old_id = false;
 
            $params = (array)$dao;
+           $id_company = $params['source_contact'];
 
            foreach ($params as $key => $value) {
                if (   substr($key, 0, 1 ) == "_" || $key == 'N'  )  {
@@ -445,14 +533,17 @@ class CRM_Basis_Klant {
                $this->migratie_controle_contracten($old_id, $klant['id']);
 
                // migratie relaties is klant via
-
+               $this->migrate_is_klant_via($old_id, $klant['id']);
 
            }
-
        }
 
        // migrate billing addresses pointing to another customer
        $this->migrate_master_addresses_from_civi();
+
+     // confirm migration
+     $sql = "INSERT INTO " . $config->getJoomlaDbName() . ".migration_customer (`id`) VALUES  ($id_company);";
+     CRM_Core_DAO::executeQuery($sql);
 
    }
 

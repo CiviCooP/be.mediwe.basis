@@ -2132,9 +2132,9 @@ class CRM_Basis_Config {
      */
     private function setMembershipTypes() {
         try {
-            $relaionshipTypes = civicrm_api3('MembershipType','get', array(
+            $membershipTypes = civicrm_api3('MembershipType','get', array(
                 'options' => array('limit' => 0)));
-            foreach ($relaionshipTypes['values'] as $membershipTypeId => $membershipType) {
+            foreach ($membershipTypes['values'] as $membershipTypeId => $membershipType) {
                 switch ($membershipType['name']) {
                     case 'Maandelijks':
                         $this->_maandelijksMembershipType = $membershipType;
@@ -2414,7 +2414,10 @@ class CRM_Basis_Config {
         'entity_id' => $entity_id,
       ];
       foreach ($array_key as $key) {
-        $get_params[$key] = $data[$key];
+        if (isset($data[$key])) {
+          $get_params[$key] = $data[$key];
+        }
+
       }
       $existing_data = $this->getRepeatingData($customFields, $get_params);
 
