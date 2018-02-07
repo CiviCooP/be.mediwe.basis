@@ -405,7 +405,7 @@ class CRM_Basis_Klant {
             'sequential' => 1,
             'contact_id_b' => $contact_id,
             'contact_id_a' => $$klant_a['id'],
-            'relation_type_id' => $config->getIsKlantViaRelationshipType(),
+            'relation_type_id' => $config->getIsKlantViaRelationshipTypeId(),
           );
           civicrm_api3('Relationship', 'create', $params);
         }
@@ -426,7 +426,7 @@ class CRM_Basis_Klant {
 
        $config = CRM_Basis_Config::singleton();
 
-       $sql = " SELECT * FROM mediwe_joomla.migratie_customer LIMIT 0, 100;";  // WHERE external_id = '15/07859'
+       $sql = " SELECT * FROM mediwe_joomla.migratie_customer LIMIT 0, 100;";  // WHERE external_id = '03/00126'
 
        $dao = CRM_Core_DAO::executeQuery($sql);
 

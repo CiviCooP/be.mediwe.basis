@@ -40,13 +40,13 @@ class CRM_Basis_KlantMedewerker {
         $mobile = array();
         $employer = array();
 
-        $sql = " SELECT *  FROM mediwe_joomla.migratie_klantmedewerker; ";
+        $sql = " SELECT *  FROM " . $config->getJoomlaDbName() . ".migratie_klantmedewerker LIMIT 0,100; ";
 
         $dao = CRM_Core_DAO::executeQuery($sql);
 
         while ($dao->fetch()) {
-
             $params = (array)$dao;
+            $id_personnel = $params['external_identifier'];
             foreach ($params as $key => $value) {
                 $newkey = $key;
                 if (   substr($key, 0, 1 ) == "_" || $key == 'N' )  {
@@ -70,7 +70,7 @@ class CRM_Basis_KlantMedewerker {
                 if ($key == 'phone') {
                     $phone['phone'] = $value;
                     $phone['phone_type_id'] = '1';
-                    $phone['location_type_id'] = $config->getKlantMedewerkerDomicilieLocationType();
+                    $phone['location_type_id'] =  $config->getKlantMedewerkerDomicilieLocationType();
                 }
                 if ($key == 'mobile') {
                     $mobile['phone'] = $value;
@@ -98,6 +98,7 @@ class CRM_Basis_KlantMedewerker {
             // create domicilie adres
             $domicilie['contact_id'] = $id;
             $domicilie['location_type_id'] = $config->getKlantMedewerkerDomicilieLocationType();
+
             $return = civicrm_api3('Adres', 'create', $domicilie);
             
             // create verblijf adres
@@ -140,7 +141,7 @@ class CRM_Basis_KlantMedewerker {
             if ($employer_id) {
                 $employerRelation = array();
                 $employerRelation['contact_id_a'] = $id;
-                $employerRelation['relationship_type_id'] = $config->getIsWerknemerVanRelationshipType()['id'];
+                $employerRelation['relationship_type_id'] = $config->getIsWerknemerVanRelationshipTypeId();
 
                 // get the existing relation
                 $return = reset(civicrm_api3('Relatie', 'get', $employerRelation)['values']);
@@ -157,6 +158,10 @@ class CRM_Basis_KlantMedewerker {
                 // create the relationship
                 $return = civicrm_api3('Relationship', 'create', $employerRelation);
             }
+
+          // confirm migration
+          $sql = "INSERT INTO " . $config->getJoomlaDbName() . ".migration_personnel (`id`) VALUES  ($id_personnel);";
+          CRM_Core_DAO::executeQuery($sql);
 
         }
     }

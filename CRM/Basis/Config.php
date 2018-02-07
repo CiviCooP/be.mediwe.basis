@@ -1819,8 +1819,8 @@ class CRM_Basis_Config {
      *
      * @return null
      */
-   public function getIsKlantViaRelationshipType() {
-        return $this->_isKlantViaRelationshipType;
+   public function getIsKlantViaRelationshipTypeId() {
+        return $this->_isKlantViaRelationshipTypeId;
    }
 
     /**
@@ -1828,8 +1828,8 @@ class CRM_Basis_Config {
      *
      * @return null
      */
-    public function getIsWerknemerVanRelationshipType() {
-        return $this->_isWerknemerVanRelationshipType;
+    public function getIsWerknemerVanRelationshipTypeId() {
+        return $this->_isWerknemerVanRelationshipTypeId;
     }
 
     /**
@@ -1837,8 +1837,8 @@ class CRM_Basis_Config {
      *
      * @return null
      */
-    public function getZiektemeldingRelationshipType() {
-        return $this->_ziektemeldingRelationshipType;
+    public function getZiektemeldingRelationshipTypeId() {
+        return $this->_ziektemeldingRelationshipTypeId;
     }
 
     /**
@@ -1846,8 +1846,8 @@ class CRM_Basis_Config {
      *
      * @return null
      */
-    public function getVraagtControleAanRelationshipType() {
-        return $this->_vraagtControleAanRelationshipType;
+    public function getVraagtControleAanRelationshipTypeId() {
+        return $this->_vraagtControleAanRelationshipTypeId;
     }
 
 
@@ -1997,10 +1997,10 @@ class CRM_Basis_Config {
                     case 'Billing':
                         $this->_klantLocationTypes[] = $locationType;
                         break;
-                    case 'Thuis':
+                    case 'Home':
                         $this->_klantMedewerkerLocationTypes['domicilie'] = $locationTypeId;
                         break;
-                    case 'Andere':
+                    case 'Other':
                         $this->_klantMedewerkerLocationTypes['verblijf'] = $locationTypeId;
                         break;
                 }
@@ -2070,6 +2070,9 @@ class CRM_Basis_Config {
         try {
             $relationshipTypes = civicrm_api3('RelationshipType','get', array(
                 'options' => array('limit' => 0)));
+
+
+
             foreach ($relationshipTypes['values'] as $relationshipTypeId => $relationshipType) {
                 switch ($relationshipType['name_a_b']) {
                     case 'is_klant_via':
