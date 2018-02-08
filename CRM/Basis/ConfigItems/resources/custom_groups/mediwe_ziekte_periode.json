@@ -115,6 +115,33 @@
         "is_active": 1,
         "is_required": 0
       },
+      "mzp_werd_ziek_op_werk": {
+        "name": "mzp_werd_ziek_op_werk",
+        "label": "Werd ziek op het werk",
+        "data_type": "Boolean",
+        "html_type": "Radio",
+        "is_searchable": 0,
+        "is_active": 1,
+        "is_required": 0
+      },
+      "mzp_is_klant_ingelicht": {
+        "name": "mzp_is_klant_ingelicht",
+        "label": "Is de klant ingelicht?",
+        "data_type": "Boolean",
+        "html_type": "Radio",
+        "is_searchable": 0,
+        "is_active": 1,
+        "is_required": 0
+      },
+      "mzp_uur_shift": {
+        "name": "mzp_uur_shift",
+        "label": "Vertrokken van shift",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_active": 1,
+        "is_required": 0
+      },
       "mzp_opmerkingen": {
         "name": "mzp_opmerkingen",
         "label": "Opmerkingen",
