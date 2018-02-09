@@ -25,10 +25,10 @@ class CRM_Basis_ConfigItems_OptionValue {
    */
   protected function validateCreateParams($params) {
     if (!isset($params['name']) || empty($params['name'])) {
-      throw new Exception(ts('Missing mandatory param name in class '.__METHOD__));
+      throw new Exception(ts('Missing mandatory param name in class ' . __METHOD__));
     }
     if (!isset($params['option_group_id']) || empty($params['option_group_id'])) {
-      throw new Exception(ts('Missing mandatory param option_group_id in '.__METHOD__));
+      throw new Exception(ts('Missing mandatory param option_group_id in ' . __METHOD__));
     }
     $this->_apiParams = $params;
   }
@@ -55,12 +55,19 @@ class CRM_Basis_ConfigItems_OptionValue {
     if (!isset($this->_apiParams['label'])) {
       $this->_apiParams['label'] = ucfirst($this->_apiParams['name']);
     }
+    // if component set, get component_id with name
+    if (isset($this->_apiParams['component'])) {
+      $this->_apiParams['component_id'] = $this->getComponentIdWithName($this->_apiParams['component']);
+      unset($this->_apiParams['component']);
+    }
+
     try {
       return civicrm_api3('OptionValue', 'Create', $this->_apiParams);
-    } catch (CiviCRM_API3_Exception $ex) {
-      throw new Exception(ts('Could not create or update option_value with name'.$this->_apiParams['name']
-        .' in option group with id '.$this->_apiParams['option_group_id'].' in '.__METHOD__
-          .', error from API OptionValue Create: ').$ex->getMessage());
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+      throw new Exception(ts('Could not create or update option_value with name' . $this->_apiParams['name']
+        . ' in option group with id ' . $this->_apiParams['option_group_id'] . ' in ' . __METHOD__
+          . ', error from API OptionValue Create: ') . $ex->getMessage());
     }
   }
 
@@ -69,14 +76,33 @@ class CRM_Basis_ConfigItems_OptionValue {
    *
    * @param string $name
    * @param int $optionGroupId
-   * @return array|boolean
+   * @return array|bool
    */
   public function getWithNameAndOptionGroupId($name, $optionGroupId) {
     $params = array('name' => $name, 'option_group_id' => $optionGroupId);
     try {
       return civicrm_api3('OptionValue', 'Getsingle', $params);
-    } catch (CiviCRM_API3_Exception $ex) {
+    }
+    catch (CiviCRM_API3_Exception $ex) {
       return array();
     }
   }
+
+  /**
+   * Method to get the component_id with a component name
+   *
+   * @param $componentName
+   * @return bool|null|string
+   */
+  public function getComponentIdWithName($componentName) {
+    $query = "SELECT id FROM civicrm_component WHERE name = %1";
+    $componentId = CRM_Core_DAO::singleValueQuery($query, array(
+        1 => array($componentName, 'String'),
+    ));
+    if ($componentId) {
+      return $componentId;
+    }
+    return FALSE;
+  }
+
 }

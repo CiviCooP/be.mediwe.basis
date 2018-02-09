@@ -18,7 +18,7 @@ class CRM_Basis_ConfigItems_MembershipType {
    */
   protected function validateCreateParams($params) {
     if (!isset($params['name']) || empty($params['name'])) {
-      throw new Exception('Missing mandatory param name in '.__METHOD__);
+      throw new Exception('Missing mandatory param name in ' . __METHOD__);
     }
     $this->_apiParams = $params;
   }
@@ -39,46 +39,30 @@ class CRM_Basis_ConfigItems_MembershipType {
     if (!isset($this->_apiParams['label']) || empty($this->_apiParams['label'])) {
       $this->_apiParams['label'] = CRM_Basis_Utils::buildLabelFromName($this->_apiParams['name']);
     }
+    // if financial type, retrieve financial type id
+    if (isset($this->_apiParams['financial_type'])) {
+      $financialTypeId = $this->getFinancialTypeIdWithName($this->_apiParams['financial_type']);
+      if ($financialTypeId) {
+        $this->_apiParams['financial_type_id'] = $financialTypeId;
+        unset($this->_apiParams['financial_type']);
+      }
+    }
+    // if relationshipt_type, retrieve relationship type id with names
+    if (isset($this->_apiParams['relationship_type_name_a_b']) && isset($this->_apiParams['relationship_type_name_b_a'])) {
+      $relationshipTypeId = $this->getRelationshipTypeIdWithNames($this->_apiParams['relationship_type_name_a_b'], $this->_apiParams['relationship_type_name_b_a']);
+      if ($relationshipTypeId) {
+        $this->_apiParams['relationship_type_id'] = $relationshipTypeId;
+        unset($this->_apiParams['relationship_type_name_a_b'], $this->_apiParams['relationship_type_name_b_a']);
+      }
+    }
     $this->_apiParams['is_active'] = 1;
     try {
       civicrm_api3('MembershipType', 'Create', $this->_apiParams);
       //$this->updateNavigationMenuUrl();
-    } catch (CiviCRM_API3_Exception $ex) {
-      throw new Exception('Could not create or update membership type with name '.$this->_apiParams['name']
-        .' in '.__METHOD__.', error from API MembershipType Create: '.$ex->getMessage());
     }
-  }
-
-  /**
-   * Method to check if there is a navigation menu option for the membership type
-   * and if so, update name and url
-   *
-   * @access private
-   */
-  private function updateNavigationMenuUrl() {
-    // todo check if this is still applicable
-    // check if there is a "New <label>" entry in the navigation table
-    $query = "SELECT * FROM civicrm_navigation WHERE label = %1";
-    $label = "New ".$this->_apiParams['label'];
-    $dao = CRM_Core_DAO::executeQuery($query, array(1 => array($label, 'String')));
-    $validParent = array("New Organization", "New Individual", "New Household");
-    $newUrl = 'civicrm/membership/add&ct=Organization&cst='.$this->_apiParams['name'].'&reset=1';
-    $newName = "New ".$this->_apiParams['name'];
-    while ($dao->fetch()) {
-      // parent should be either New Organization, New Individual or New Household
-      if (isset($dao->parent_id)) {
-        $parentQuery = "SELECT name FROM civicrm_navigation WHERE id = %1";
-        $parentName = CRM_Core_DAO::singleValueQuery($parentQuery, array(1 => array($dao->parent_id, 'Integer')));
-        if (in_array($parentName, $validParent)) {
-          $update = "UPDATE civicrm_navigation SET url = %1, name = %2 WHERE id = %3";
-          $params = array(
-            1 => array($newUrl, 'String'),
-            2 => array($newName, 'String'),
-            3 => array($dao->id, 'Integer')
-          );
-          CRM_Core_DAO::executeQuery($update, $params);
-        }
-      }
+    catch (CiviCRM_API3_Exception $ex) {
+      throw new Exception('Could not create or update membership type with name ' . $this->_apiParams['name']
+        . ' in ' . __METHOD__ . ', error from API MembershipType Create: ' . $ex->getMessage());
     }
   }
 
@@ -93,7 +77,8 @@ class CRM_Basis_ConfigItems_MembershipType {
   public function getWithName($membershipTypeName) {
     try {
       return civicrm_api3('MembershipType', 'Getsingle', array('name' => $membershipTypeName));
-    } catch (CiviCRM_API3_Exception $ex) {
+    }
+    catch (CiviCRM_API3_Exception $ex) {
       return FALSE;
     }
   }
@@ -113,7 +98,8 @@ class CRM_Basis_ConfigItems_MembershipType {
         CRM_Core_DAO::executeQuery($sqlMembershipType, array(
           1 => array(0, 'Integer'),
           2 => array($membershipTypeId, 'Integer')));
-      } catch (CiviCRM_API3_Exception $ex) {
+      }
+      catch (CiviCRM_API3_Exception $ex) {
       }
     }
   }
@@ -121,7 +107,7 @@ class CRM_Basis_ConfigItems_MembershipType {
   /**
    * Method to enable membership type
    *
-   *    @param $membershipTypeName
+   * @param $membershipTypeName
    */
   public function enableMembershipType($membershipTypeName) {
     if (!empty($membershipTypeName)) {
@@ -133,7 +119,8 @@ class CRM_Basis_ConfigItems_MembershipType {
         CRM_Core_DAO::executeQuery($sqlMembershipType, array(
           1 => array(1, 'Integer'),
           2 => array($membershipTypeId, 'Integer')));
-      } catch (CiviCRM_API3_Exception $ex) {
+      }
+      catch (CiviCRM_API3_Exception $ex) {
       }
     }
   }
@@ -149,9 +136,47 @@ class CRM_Basis_ConfigItems_MembershipType {
       try {
         // get membership type with name
         $membershipTypeId = civicrm_api3('MembershipType', 'getvalue', array('name' => $membershipTypeName, 'return' => 'id'));
-        civicrm_api3('MembershipType', 'delete', array('id' => $membershipTypeId,));
-      } catch (CiviCRM_API3_Exception $ex) {
+        civicrm_api3('MembershipType', 'delete', array('id' => $membershipTypeId));
+      }
+      catch (CiviCRM_API3_Exception $ex) {
       }
     }
   }
+
+  /**
+   * Method to get the financial type id with name
+   *
+   * @param $name
+   * @return bool|int
+   */
+  public function getFinancialTypeIdWithName($name) {
+    $query = "SELECT id FROM civicrm_financial_type WHERE name = %1";
+    $financialTypeId = CRM_Core_DAO::singleValueQuery($query, array(
+        1 => array($name, 'String'),
+    ));
+    if ($financialTypeId) {
+      return $financialTypeId;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Method to get the relationship type id with name_a_b and name_b_a
+   *
+   * @param string $nameAB
+   * @param string $nameBA
+   * @return bool|int
+   */
+  public function getRelationshipTypeIdWithNames($nameAB, $nameBA) {
+    $query = "SELECT id FROM civicrm_relationship_type WHERE name_a_b = %1 AND name_b_a = %2";
+    $relationshipTypeId = CRM_Core_DAO::singleValueQuery($query, array(
+        1 => array($nameAB, 'String'),
+        2 => array($nameBA, 'String'),
+    ));
+    if ($relationshipTypeId) {
+      return $relationshipTypeId;
+    }
+    return FALSE;
+  }
+
 }

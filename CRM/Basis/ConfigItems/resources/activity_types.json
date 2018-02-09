@@ -1,35 +1,30 @@
 {
   "mediwe_ziekteattest":
   {
-    "value": 200,
-    "component_id": 7,
+    "component": "CiviCase",
     "name": "mediwe_ziekteattest",
     "label":"Ziekte attest"
   },
   "mediwe_huisbezoek":
   {
-    "value": 300,
-    "component_id": 7,
+    "component": "CiviCase",
     "name": "mediwe_huisbezoek",
     "label":"Huisbezoek"
   },
   "mediwe_convocatie":
   {
-    "value": 310,
-    "component_id": 7,
+    "component": "CiviCase",
     "name": "mediwe_convocatie",
     "label":"Convocatie op kabinet"
   },
   "mediwe_onderzoek_ao":
   {
-    "value": 400,
-    "component_id": 7,
+    "component": "CiviCase",
     "name": "mediwe_onderzoek_ao",
     "label":"Onderzoek arbeidsongeval"
   },
   "mediwe_belafspraak_arts":
   {
-    "value": 500,
     "name": "mediwe_belafspraak_arts",
     "label":"Dagelijkse belafspraak met arts"
   }

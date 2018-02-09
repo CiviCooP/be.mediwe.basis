@@ -3,30 +3,30 @@
   {
     "name": "mediwe_klant",
     "label":"Mediwe Klant",
-    "parent_id":3
+    "parent":"Organization"
   },
   "mediwe_controle_arts":
   {
     "name": "mediwe_controle_arts",
     "label":"Controlearts",
-    "parent_id":3
+    "parent":"Organization"
   },
   "mediwe_inspecteur":
   {
     "name": "mediwe_inspecteur",
     "label":"Inspecteur",
-    "parent_id":3
+    "parent":"Organization"
   },
   "mediwe_gebruiker":
   {
     "name": "mediwe_gebruiker",
     "label":"Gebruiker zorgfonds",
-    "parent_id":1
+    "parent":"Individual"
   },
   "mediwe_klant_medewerker":
   {
     "name": "mediwe_klant_medewerker",
     "label":"KlantMedewerker",
-    "parent_id":1
+    "parent":"Individual"
   }
 }
