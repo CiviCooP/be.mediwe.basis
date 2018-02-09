@@ -27,7 +27,7 @@ class CRM_Basis_ConfigItems_CustomGroup {
     if (!isset($params['name']) || empty($params['name']) || !isset($params['extends']) ||
       empty($params['extends'])) {
       throw new Exception(ts('When trying to create a Custom Group name and extends are mandatory parameters
-      and can not be empty in '.__METHOD__));
+      and can not be empty in ' . __METHOD__));
     }
     $this->buildApiParams($params);
   }
@@ -50,9 +50,10 @@ class CRM_Basis_ConfigItems_CustomGroup {
     }
     try {
       $customGroup = civicrm_api3('CustomGroup', 'Create', $this->_apiParams);
-    } catch (CiviCRM_API3_Exception $ex) {
+    }
+    catch (CiviCRM_API3_Exception $ex) {
       throw new Exception(ts('Could not create or update custom group with name ' . $this->_apiParams['name']
-        . ' to extend ' . $this->_apiParams['extends'] . ' in '.__METHOD__.', error from API CustomGroup Create: ') .
+        . ' to extend ' . $this->_apiParams['extends'] . ' in ' . __METHOD__ . ', error from API CustomGroup Create: ') .
         $ex->getMessage());
     }
     return $customGroup['values'][$customGroup['id']];
@@ -79,7 +80,8 @@ class CRM_Basis_ConfigItems_CustomGroup {
         CRM_Core_DAO::executeQuery($sqlGroup, array(
           1 => array(0, 'Integer'),
           2 => array($customGroupId, 'Integer')));
-      } catch (CiviCRM_API3_Exception $ex) {}
+      }
+      catch (CiviCRM_API3_Exception $ex) {}
     }
   }
 
@@ -101,7 +103,8 @@ class CRM_Basis_ConfigItems_CustomGroup {
         }
         // and delete custom group
         civicrm_api3('CustomGroup', 'delete', array('id' => $customGroup['id']));
-      } catch (CiviCRM_API3_Exception $ex) {}
+      }
+      catch (CiviCRM_API3_Exception $ex) {}
     }
   }
 
@@ -126,7 +129,8 @@ class CRM_Basis_ConfigItems_CustomGroup {
         CRM_Core_DAO::executeQuery($sqlGroup, array(
           1 => array(1, 'Integer'),
           2 => array($customGroupId, 'Integer')));
-      } catch (CiviCRM_API3_Exception $ex) {
+      }
+      catch (CiviCRM_API3_Exception $ex) {
       }
     }
   }
@@ -140,7 +144,8 @@ class CRM_Basis_ConfigItems_CustomGroup {
   public function getWithName($name) {
     try {
       return civicrm_api3('CustomGroup', 'Getsingle', array('name' => $name));
-    } catch (CiviCRM_API3_Exception $ex) {
+    }
+    catch (CiviCRM_API3_Exception $ex) {
       return FALSE;
     }
   }
@@ -154,7 +159,8 @@ class CRM_Basis_ConfigItems_CustomGroup {
   public function getTableNameWithName($name) {
     try {
       return civicrm_api3('CustomGroup', 'Getvalue', array('name' => $name, 'return' => 'table_name'));
-    } catch (CiviCRM_API3_Exception $ex) {
+    }
+    catch (CiviCRM_API3_Exception $ex) {
       return FALSE;
     }
   }
@@ -176,12 +182,23 @@ class CRM_Basis_ConfigItems_CustomGroup {
       case "Activity":
         $this->setActivityTypeForCustomGroup();
         break;
+
+      case "Case":
+        $this->setCaseTypeForCustomGroup();
+        break;
+
       case "Individual":
         $this->setContactTypeForCustomGroup();
         break;
+
+      case "Membership":
+        $this->setMembershipTypeForCustomGroup();
+        break;
+
       case "Organization":
         $this->setContactTypeForCustomGroup();
         break;
+
       case "Household":
         $this->setContactTypeForCustomGroup();
         break;
@@ -202,7 +219,8 @@ class CRM_Basis_ConfigItems_CustomGroup {
           }
           unset ($activityType);
         }
-      } else {
+      }
+      else {
         $activityType = new CRM_Basis_ConfigItems_ActivityType();
         $found = $activityType->getWithNameAndOptionGroupId($this->_apiParams['extends_entity_column_value'], $activityType->getOptionGroupId());
         if (isset($found['value'])) {
@@ -228,7 +246,8 @@ class CRM_Basis_ConfigItems_CustomGroup {
           }
           unset ($contactType);
         }
-      } else {
+      }
+      else {
         $contactType = new CRM_Basis_ConfigItems_ContactType();
         $found = $contactType->getWithName($this->_apiParams['extends_entity_column_value']);
         if (isset($found['name'])) {
@@ -236,6 +255,60 @@ class CRM_Basis_ConfigItems_CustomGroup {
         }
       }
     }
-
   }
+
+  /**
+   * Method to set the entity_column_value to specify what case type to use
+   */
+  private function setCaseTypeForCustomGroup() {
+    if (isset($this->_apiParams['extends_entity_column_value']) && !empty($this->_apiParams['extends_entity_column_value'])) {
+      if (is_array($this->_apiParams['extends_entity_column_value'])) {
+        foreach ($this->_apiParams['extends_entity_column_value'] as $extendsValue) {
+          $caseType = new CRM_Basis_ConfigItems_CaseType();
+          $found = $caseType->getWithName($extendsValue);
+          if (isset($found['name'])) {
+            if (!in_array($found['name'], $this->_apiParams['extends_entity_column_value'])) {
+              $this->_apiParams['extends_entity_column_value'][] = $found['name'];
+            }
+          }
+          unset ($caseType);
+        }
+      }
+      else {
+        $caseType = new CRM_Basis_ConfigItems_CaseType();
+        $found = $caseType->getWithName($this->_apiParams['extends_entity_column_value']);
+        if (isset($found['name'])) {
+          $this->_apiParams['extends_entity_column_value'] = $found['name'];
+        }
+      }
+    }
+  }
+
+  /**
+   * Method to set the entity_column_value to specify what membership type to use
+   */
+  private function setMembershipTypeForCustomGroup() {
+    if (isset($this->_apiParams['extends_entity_column_value']) && !empty($this->_apiParams['extends_entity_column_value'])) {
+      if (is_array($this->_apiParams['extends_entity_column_value'])) {
+        foreach ($this->_apiParams['extends_entity_column_value'] as $extendsValue) {
+          $membershipType = new CRM_Basis_ConfigItems_MembershipType();
+          $found = $membershipType->getWithName($extendsValue);
+          if (isset($found['name'])) {
+            if (!in_array($found['name'], $this->_apiParams['extends_entity_column_value'])) {
+              $this->_apiParams['extends_entity_column_value'][] = $found['name'];
+            }
+          }
+          unset ($membershipType);
+        }
+      }
+      else {
+        $membershipType = new CRM_Basis_ConfigItems_MembershipType();
+        $found = $membershipType->getWithName($this->_apiParams['extends_entity_column_value']);
+        if (isset($found['name'])) {
+          $this->_apiParams['extends_entity_column_value'] = $found['name'];
+        }
+      }
+    }
+  }
+
 }

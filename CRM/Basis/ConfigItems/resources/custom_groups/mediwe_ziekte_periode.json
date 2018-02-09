@@ -3,7 +3,7 @@
     "name":"mediwe_ziekte_periode",
     "title":"Ziekteperiode",
     "extends": "Case",
-    "extends_entity_column_value": ["3"],
+    "extends_entity_column_value": ["dossier_ziektemelding"],
     "style":"Inline",
     "is_multiple":0,
     "is_active":1,

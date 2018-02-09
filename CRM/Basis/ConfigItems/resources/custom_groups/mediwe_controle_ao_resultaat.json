@@ -3,7 +3,7 @@
     "name":"mediwe_controle_ao_resultaat",
     "title":"Medische controle AO: resultaat",
     "extends": "Activity",
-    "extends_entity_column_value": ["400"],
+    "extends_entity_column_value": ["mediwe_onderzoek_ao"],
     "style":"Inline",
     "is_multiple":0,
     "is_active":1,

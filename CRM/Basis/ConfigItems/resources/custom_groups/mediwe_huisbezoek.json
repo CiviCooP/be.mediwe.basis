@@ -3,7 +3,7 @@
     "name":"mediwe_huisbezoek",
     "title":"Huisbezoek",
     "extends": "Activity",
-    "extends_entity_column_value": ["300"],
+    "extends_entity_column_value": ["mediwe_huisbezoek"],
     "style":"Inline",
     "is_multiple":0,
     "is_active":1,

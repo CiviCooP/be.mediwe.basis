@@ -3,7 +3,7 @@
     "name":"mediwe_medisch_attest",
     "title":"Medisch attest",
     "extends": "Activity",
-    "extends_entity_column_value": ["200"],
+    "extends_entity_column_value": ["mediwe_ziekteattest"],
     "style":"Inline",
     "is_multiple":0,
     "is_active":1,

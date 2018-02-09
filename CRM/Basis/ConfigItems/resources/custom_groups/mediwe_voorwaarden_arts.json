@@ -3,7 +3,7 @@
     "name":"mediwe_voorwaarden_arts",
     "title":"Voorwaarden verloning arts",
     "extends": "Membership",
-    "extends_entity_column_value": ["4"],
+    "extends_entity_column_value": ["Controlearts"],
     "style":"Inline",
     "is_multiple":0,
     "is_active":1,
