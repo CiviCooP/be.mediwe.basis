@@ -212,6 +212,26 @@
         "option_group": "mediwe_controle_resultaat",
         "is_searchable": 0,
         "is_active": 1
+      },
+      "mmc_memo_mediwe": {
+        "name": "mmc_memo_mediwe",
+        "label": "PostIt Mediwe",
+        "data_type": "Memo",
+        "html_type": "TextArea",
+        "note_rows": 4,
+        "is_searchable": 0,
+        "is_active": 1,
+        "is_required": 0
+      },
+      "mmc_memo_klant": {
+        "name": "mmc_memo_klant",
+        "label": "PostIt Klant",
+        "data_type": "Memo",
+        "html_type": "TextArea",
+        "note_rows": 4,
+        "is_searchable": 0,
+        "is_active": 1,
+        "is_required": 0
       }
      }
     }
