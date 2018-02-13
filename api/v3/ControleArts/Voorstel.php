@@ -13,24 +13,28 @@ function _civicrm_api3_controle_arts_Voorstel_spec(&$spec) {
   $spec['postcode'] = array(
     'name' => 'postcode',
     'title' => 'postcode',
+    'description' => 'postcode van de controle arts',
     'api.required' => 1,
     'type' => CRM_Utils_Type::T_INT,
   );
   $spec['voorstel_datum'] = array(
     'name' => 'voorstel_datum',
     'title' => 'voorstel_datum',
+    'description' => 'datum waarop de medische controle plaats moet vinden',
     'api.required' => 0,
     'type' => CRM_Utils_Type::T_STRING,
   );
   $spec['limiet'] = array(
     'name' => 'limiet',
     'title' => 'limiet',
+    'descirption' => 'maximum aantal resultaten',
     'api.required' => 0,
     'type' => CRM_Utils_Type::T_INT,
   );
   $spec['huisbezoek_id'] = array(
     'name' => 'huisbezoek_id',
     'title' => 'huisbezoek_id',
+    'description' => 'id van het huisbezoek',
     'api.required' => 0,
     'type' => CRM_Utils_Type::T_INT,
   );

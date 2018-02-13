@@ -2390,27 +2390,24 @@ class CRM_Basis_Config {
     }
 
   /**
-   * Method to save repeating custoim field data
+   * Method to save repeating custom field data
    *
    * @param object $customFields (dao)
    * @param integer $entity_id
    * @param array $array(id, fieldname/value)
    * @param array $array_key array of key values to be used for search existing values
    * @return int
+   * @throws
    */
   public function setRepeatingData($customFields, $entity_id, $array, $array_key) {
-
     $rv = false;
     $newline = -1;
-
     $params = array(
       'sequential' => 1,
       'entity_id' => $entity_id,
     );
-
     $count = 0;
     foreach ($array as $data) {
-
       // get existing ids
       $get_params = [
         'sequential' => 1,
@@ -2420,10 +2417,8 @@ class CRM_Basis_Config {
         if (isset($data[$key])) {
           $get_params[$key] = $data[$key];
         }
-
       }
       $existing_data = $this->getRepeatingData($customFields, $get_params);
-
       foreach ($existing_data as $existing) {
         $array[$count]['id'] = $existing['id'];
       }
@@ -2431,9 +2426,7 @@ class CRM_Basis_Config {
         $array[$count]['id'] = $newline;
         $newline = $newline - 1;
       }
-
       foreach ($customFields as $field) {
-
         if (isset($data[$field['name']])) {
           $key = "custom_" . $field['id'] . ":" . $array[$count]['id'];
           if ($field['data_type'] == 'Date') {
@@ -2448,13 +2441,10 @@ class CRM_Basis_Config {
       }
       $count = $count + 1;
     }
-
     if (count($params) > 2) {
       $rv = civicrm_api3('CustomValue', 'create', $params);
     }
-
     return $rv;
-
   }
 
   public function getRepeatingData($customFields, $params) {

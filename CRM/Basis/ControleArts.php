@@ -525,6 +525,7 @@ class CRM_Basis_ControleArts {
    * @throws API_Exception
    */
   private function saveControleArts($params, $data) {
+    // todo mag wel iets kleiner, wellicht adres, mail en phone in aparte methods
     $config = CRM_Basis_Config::singleton();
     foreach ($data as $key => $value) {
       $params[$key] = $value;
