@@ -264,21 +264,23 @@ class CRM_Basis_ConfigItems_CustomGroup {
     if (isset($this->_apiParams['extends_entity_column_value']) && !empty($this->_apiParams['extends_entity_column_value'])) {
       if (is_array($this->_apiParams['extends_entity_column_value'])) {
         foreach ($this->_apiParams['extends_entity_column_value'] as $extendsValue) {
+          $newValues = array();
           $caseType = new CRM_Basis_ConfigItems_CaseType();
           $found = $caseType->getWithName($extendsValue);
-          if (isset($found['name'])) {
-            if (!in_array($found['name'], $this->_apiParams['extends_entity_column_value'])) {
-              $this->_apiParams['extends_entity_column_value'][] = $found['name'];
+          if (isset($found['id'])) {
+            if (!in_array($found['id'], $newValues)) {
+              $newValues[] = $found['id'];
             }
           }
+          $this->_apiParams['extends_entity_column_value'] = $newValues;
           unset ($caseType);
         }
       }
       else {
         $caseType = new CRM_Basis_ConfigItems_CaseType();
         $found = $caseType->getWithName($this->_apiParams['extends_entity_column_value']);
-        if (isset($found['name'])) {
-          $this->_apiParams['extends_entity_column_value'] = $found['name'];
+        if (isset($found['id'])) {
+          $this->_apiParams['extends_entity_column_value'] = $found['id'];
         }
       }
     }
@@ -295,7 +297,7 @@ class CRM_Basis_ConfigItems_CustomGroup {
           $membershipType = new CRM_Basis_ConfigItems_MembershipType();
           $found = $membershipType->getWithName($extendsValue);
           if (isset($found['id'])) {
-            if (!in_array($found['id'], $this->_apiParams['extends_entity_column_value'])) {
+            if (!in_array($found['id'], $newValues)) {
               $newValues[] = $found['id'];
             }
           }
