@@ -681,7 +681,7 @@
   },
   "mediwe_reden_ziekte_kort": {
     "name": "mediwe_reden_ziekte_kort",
-    "title": "Reden ziekte",
+    "title": "Reden ziekte (kort)",
     "is_active": 1,
     "is_reserved": 0,
     "option_values": {

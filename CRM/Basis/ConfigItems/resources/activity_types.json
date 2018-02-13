@@ -14,7 +14,7 @@
   "mediwe_convocatie":
   {
     "component": "CiviCase",
-    "name": "mediwe_huisbezoek",
+    "name": "mediwe_convocatie",
     "label":"Convocatie op kabinet"
   },
   "mediwe_onderzoek_ao":
