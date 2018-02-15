@@ -1,6 +1,6 @@
 <?php
 /**
- * Ziektemelding.Create API specification (optional)
+ * Ziektemelding.Delete API specification (optional)
  * This is used for documentation and validation.
  *
  * @param array $spec description of fields supported by this API call

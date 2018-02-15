@@ -176,6 +176,7 @@ function _civicrm_api3_ziektemelding_Update_spec(&$spec) {
  */
 function civicrm_api3_ziektemelding_Update($params) {
   $ziektemelding = new CRM_Basis_Ziektemelding();
-  $returnValues = $ziektemelding->update($params);
+  // use create with id for update
+  $returnValues = $ziektemelding->create($params);
   return civicrm_api3_create_success($returnValues, $params, 'Ziektemelding', 'Update');
 }

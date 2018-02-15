@@ -62,8 +62,6 @@ class CRM_Basis_ConfigItems_ContactType {
    * @access private
    */
   private function updateNavigationMenuUrl() {
-    // todo check if this is still applicable
-    // check if there is a "New <label>" entry in the navigation table
     $query = "SELECT * FROM civicrm_navigation WHERE label = %1";
     $label = "New " . $this->_apiParams['label'];
     $dao = CRM_Core_DAO::executeQuery($query, array(1 => array($label, 'String')));
