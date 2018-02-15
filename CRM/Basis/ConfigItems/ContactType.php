@@ -68,7 +68,8 @@ class CRM_Basis_ConfigItems_ContactType {
     $label = "New " . $this->_apiParams['label'];
     $dao = CRM_Core_DAO::executeQuery($query, array(1 => array($label, 'String')));
     $validParent = array("New Organization", "New Individual", "New Household");
-    $newUrl = 'civicrm/membership/add&ct=Organization&cst=' . $this->_apiParams['name'] . '&reset=1';
+    $contactTypeName = $this->getContactTypeNameWithId($this->_apiParams['parent_id']);
+    $newUrl = CRM_Utils_System::url('civicrm/contact/add', 'ct=' . $contactTypeName . '&cst=' . $this->_apiParams['name'] . '&reset=1', TRUE);
     $newName = "New " . $this->_apiParams['name'];
     while ($dao->fetch()) {
       // parent should be either New Organization, New Individual or New Household
@@ -178,6 +179,23 @@ class CRM_Basis_ConfigItems_ContactType {
     ));
     if ($contactTypeId) {
       return $contactTypeId;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Method to get the contact type name with od
+   *
+   * @param $contactTypeId
+   * @return bool|string
+   */
+  public function getContactTypeNameWithId($contactTypeId) {
+    $query = "SELECT name FROM civicrm_contact_type WHERE id = %1";
+    $contactTypeName = CRM_Core_DAO::singleValueQuery($query, array(
+        1 => array($contactTypeId, 'Integer'),
+    ));
+    if ($contactTypeName) {
+      return $contactTypeName;
     }
     return FALSE;
   }
