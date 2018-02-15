@@ -33,6 +33,7 @@ Als gevolg hanteren we bij de ontwikkeling de volgende uitgangspunten:
 
 1. We ontwikkelen altijd API's voor alle voorkomende entiteiten en functionaliteiten. De achtergrond moet blijven dat we de data in CiviCRM via de API kunnen benaderen en onderhouden. Van de buitenkant moeten verschillende communicatiekanalen (de interne user interface (CiviCRM), de website, de app, toekomstige webservices etc.) via de API op dezelfde wijze contact kunnen leggen met de data in CiviCRM.
 1. Tijdens de ontwikkeling documenteren we de zaken die we belangrijk vinden zodat toekomstige ontwikkeling en onderhoud door meerdere mensen uitgevoerd kan worden.
+1. We ontwikkelen volgens de [CiviCRM Coding Style](https://docs.civicrm.org/dev/en/latest/standards/php/) en gebruiken we indien mogelijk *civilint* om deze te controleren.
 
 
 
