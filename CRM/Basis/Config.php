@@ -1609,7 +1609,7 @@ class CRM_Basis_Config {
    * @return mixed|array
    */
   public function getKlantOrganisatieCustomGroup($key = NULL) {
-    if (!empty($key) && isset($this->_klantExpertsysteemCustomGroup[$key])) {
+    if (!empty($key) && isset($this->_klantOrganisatieCustomGroup[$key])) {
       return $this->_klantOrganisatieCustomGroup[$key];
     } else {
       return $this->_klantOrganisatieCustomGroup;
@@ -2390,96 +2390,12 @@ class CRM_Basis_Config {
     }
 
   /**
-   * Method to save repeating custom field data
-   *
-   * @param object $customFields (dao)
-   * @param integer $entity_id
-   * @param array $array(id, fieldname/value)
-   * @param array $array_key array of key values to be used for search existing values
-   * @return int
-   * @throws
-   */
-  public function setRepeatingData($customFields, $entity_id, $array, $array_key) {
-    $rv = false;
-    $newline = -1;
-    $params = array(
-      'sequential' => 1,
-      'entity_id' => $entity_id,
-    );
-    $count = 0;
-    foreach ($array as $data) {
-      // get existing ids
-      $get_params = [
-        'sequential' => 1,
-        'entity_id' => $entity_id,
-      ];
-      foreach ($array_key as $key) {
-        if (isset($data[$key])) {
-          $get_params[$key] = $data[$key];
-        }
-      }
-      $existing_data = $this->getRepeatingData($customFields, $get_params);
-      foreach ($existing_data as $existing) {
-        $array[$count]['id'] = $existing['id'];
-      }
-      if (!isset($array[$count]['id'])) {
-        $array[$count]['id'] = $newline;
-        $newline = $newline - 1;
-      }
-      foreach ($customFields as $field) {
-        if (isset($data[$field['name']])) {
-          $key = "custom_" . $field['id'] . ":" . $array[$count]['id'];
-          if ($field['data_type'] == 'Date') {
-            if ($this->apidate($data[$field['name']]) != "") {
-              $params[$key] = $this->apidate($data[$field['name']]);
-            }
-          }
-          else {
-            $params[$key] = $data[$field['name']];
-          }
-        }
-      }
-      $count = $count + 1;
-    }
-    if (count($params) > 2) {
-      $rv = civicrm_api3('CustomValue', 'create', $params);
-    }
-    return $rv;
-  }
-
-  public function getRepeatingData($customFields, $params) {
-
-    $my_array = array();
-
-    foreach ($customFields as $field) {
-      $key = 'return.custom_' . $field['id'];
-      $params[$key] = "1";
-    }
-    $values = civicrm_api3('CustomValue', 'get', $params)['values'];
-
-    foreach ($customFields as $field) {
-      foreach ($values as $value) {
-        if ($value['id'] == $field['id']) {
-          foreach ($value as $key => $value) {
-            if (is_numeric($key)) {
-              $my_array[$key]['id'] = $key;
-              $my_array[$key][$field['name']] = $value;
-            }
-          }
-        }
-      }
-    }
-
-    return $my_array;
-  }
-
-  /**
    * Method to reformat date values for civiCRM api
    *
    * @param string $date
    * @return string
    */
-  private function apidate($date)
+  private function apiDate($date)
   {
     if (substr($date, 0, 4) == 1900 || substr($date, 0, 4) == 0 ) {
       $rv = "";

@@ -82,7 +82,7 @@ class CRM_Basis_Klant {
    * @return bool
    */
   public function exists($params) {
-    // ensure that contact sub type is set
+    // ensure that contact sub type is set correctly
     $params['contact_sub_type'] = $this->_klantContactSubTypeName;
     try {
       $count = civicrm_api3('Contact', 'getcount', $params);
@@ -142,13 +142,14 @@ class CRM_Basis_Klant {
   private function saveKlant($params) {
     $config = CRM_Basis_Config::singleton();
     // rename klant custom fields for api  ($customFields, $data, &$params)
-    $this->addToParamsCustomFields($config->getKlantBoekhoudingCustomGroup('custom_fields'), $params);
-    $this->addToParamsCustomFields($config->getKlantExpertsysteemCustomGroup('custom_fields'), $params);
-    $this->addToParamsCustomFields($config->getKlantProcedureCustomGroup('custom_fields'), $params);
-    $this->addToParamsCustomFields($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
+    $this->replaceCustomFieldsParams($config->getKlantBoekhoudingCustomGroup('custom_fields'), $params);
+    $this->replaceCustomFieldsParams($config->getKlantExpertsysteemCustomGroup('custom_fields'), $params);
+    $this->replaceCustomFieldsParams($config->getKlantProcedureCustomGroup('custom_fields'), $params);
+    $this->replaceCustomFieldsParams($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
     try {
       $createdContact = civicrm_api3('Contact', 'create', $params);
       $klant = reset($createdContact['values']);
+      // return ziet er raar uit?
       return $klant;
     }
     catch (CiviCRM_API3_Exception $ex) {
@@ -162,12 +163,13 @@ class CRM_Basis_Klant {
    * @param $customFields
    * @param $params
    */
-  private function addToParamsCustomFields($customFields, &$params) {
+  private function replaceCustomFieldsParams($customFields, &$params) {
     foreach ($customFields as $field) {
       $fieldName = $field['name'];
       if (isset($params[$fieldName])) {
         $customFieldName = 'custom_' . $field['id'];
         $params[$customFieldName] = $params[$fieldName];
+        unset($params[$fieldName]);
       }
     }
   }
