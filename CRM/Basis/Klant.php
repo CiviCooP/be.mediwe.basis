@@ -60,18 +60,11 @@ class CRM_Basis_Klant {
    *
    * @param $params
    * @return array
-   * @throws API_Exception
    */
   public function update($params) {
     $exists = $this->exists(array('id' => $params['id']));
     if ($exists) {
-      try {
-        return $this->saveKlant($params);
-      }
-      catch (CiviCRM_API3_Exception $ex) {
-        throw new API_Exception(ts('Could not create a Mediwe Klant in ' . __METHOD__
-          . ', contact your system administrator! Error from API Address create: ' . $ex->getMessage()));
-      }
+      return $this->saveKlant($params);
     }
   }
 
@@ -147,10 +140,8 @@ class CRM_Basis_Klant {
     $this->replaceCustomFieldsParams($config->getKlantProcedureCustomGroup('custom_fields'), $params);
     $this->replaceCustomFieldsParams($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
     try {
-      $createdContact = civicrm_api3('Contact', 'create', $params);
-      $klant = reset($createdContact['values']);
-      // return ziet er raar uit?
-      return $klant;
+      $contact = civicrm_api3('Contact', 'create', $params);
+      return $contact['values'][$contact['id']];
     }
     catch (CiviCRM_API3_Exception $ex) {
       throw new API_Exception(ts('Could not create a contact in ' . __METHOD__
