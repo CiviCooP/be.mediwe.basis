@@ -2322,33 +2322,6 @@ class CRM_Basis_Config {
             $this->_mediweTeamContactId = 1;
         }
     }
-    
-    /**
-     * Method to place the custom fields in the entity array based on the
-     *
-     * @param object $customGroup
-     * @param array $entity;
-     * @return array
-     */
-    public function addDaoData($customGroup, $entity) {
-        $table_name = $customGroup['table_name'];
-
-        $fields = $customGroup['custom_fields'];
-        $sql = 'SELECT * FROM '. $table_name . ' WHERE entity_id = %1';
-        $dao = CRM_Core_DAO::executeQuery($sql, array(
-            1 => array($entity['id'], 'Integer',),
-        ));
-
-        if (!$dao->fetch()) {
-            $dao = array();
-            $dao['entity_id'] = $entity['id'];
-            foreach ($fields as $field) {
-                $columnName = $field['column_name'];
-                $dao[$columnName] = false;
-            }
-        }
-        return $this->_placeEntityCustomFields($fields, $dao, $entity);
-    }
 
     /**
      * Method to place the  custom fields in the entity array based on the

@@ -109,7 +109,7 @@ class CRM_Basis_Klant {
     try {
       $klanten = civicrm_api3('Contact', 'get', $params)['values'];
       if ($klanten) {
-        $this->getKlantAllFields($klanten);
+        $this->getKlantCustomFields($klanten);
       }
     }
     catch (CiviCRM_API3_Exception $ex) {
@@ -179,16 +179,48 @@ class CRM_Basis_Klant {
    *
    * @param $klanten
    */
-  private function getKlantAllFields(&$klanten) {
+  private function getKlantCustomFields(&$klanten) {
     $config = CRM_Basis_Config::singleton();
     foreach ($klanten as $rowId => $klant) {
       if (isset($klant['id'])) {
-        $klanten[$rowId] = $config->addDaoData($config->getKlantBoekhoudingCustomGroup(), $klant);
-        $klanten[$rowId] = $config->addDaoData($config->getKlantOrganisatieCustomGroup(), $klant);
-        $klanten[$rowId] = $config->addDaoData($config->getKlantExpertsysteemCustomGroup(), $klant);
-        $klanten[$rowId] = $config->addDaoData($config->getKlantProcedureCustomGroup(), $klant);
+        $boekhouding = $this->addSingleDaoData($config->getKlantBoekhoudingCustomGroup(), $klant['id']);
+        $organisatie = $this->addSingleDaoData($config->getKlantOrganisatieCustomGroup(), $klant['id']);
+        $expert = $this->addSingleDaoData($config->getKlantExpertsysteemCustomGroup(), $klant['id']);
+        $klantProcedure = $this->addSingleDaoData($config->getKlantProcedureCustomGroup(), $klant['id']);
+        $klanten[$rowId] = array_merge($klant, $boekhouding, $organisatie, $expert, $klantProcedure);
       }
     }
+  }
+
+  /**
+   * Method om enkelvoudige custom velden toe te voegen aan klant
+   *
+   * @param $customGroup
+   * @param $klantId
+   * @return array
+   */
+  public function addSingleDaoData($customGroup, $klantId) {
+    $result = array();
+    $tableName = $customGroup['table_name'];
+    if (!empty($tableName)) {
+      $customFields = $customGroup['custom_fields'];
+      $sql = 'SELECT * FROM ' . $tableName . ' WHERE entity_id = %1';
+      $dao = CRM_Core_DAO::executeQuery($sql, array(
+        1 => array($klantId, 'Integer'),
+      ));
+      if ($dao->fetch()) {
+        $data = CRM_Basis_Utils::moveDaoToArray($dao);
+      }
+      foreach ($customFields as $customFieldId => $customField) {
+        if (isset($data[$customField['column_name']])) {
+          $result[$customField['name']] = $data[$customField['column_name']];
+        }
+        else {
+          $result[$customField['name']] = NULL;
+        }
+      }
+    }
+    return $result;
   }
 
   /**
