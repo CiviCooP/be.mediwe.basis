@@ -233,6 +233,13 @@ function _civicrm_api3_klant_Get_spec(&$spec) {
     'api.required' => 0,
     'type' => CRM_Utils_Type::T_STRING,
   );
+  $spec['limit'] = array(
+    'name' => 'limit',
+    'title' => 'limit',
+    'description' => 'maximaal aantal klanten ophalen (standaard = 25)',
+    'api.required' => 0,
+    'type' => CRM_Utils_Type::T_INT,
+  );
 }
 
 /**
