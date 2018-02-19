@@ -43,7 +43,16 @@ class CRM_Basis_Acties_OpdrachtEmailArts {
       $apiParams['contact_id'] = $this->_params['contact_id_a'];
       $apiParams['template_id'] = $templateId;
       $apiParams['case_id'] = $this->_params['case_id'];
+
+
+      $smarty = CRM_Core_Smarty::singleton();
+      $smarty->assign('naam_werknemer','Ben Lee User');
+
+
       civicrm_api3('Email', 'Send', $apiParams);
+
+
+
     }
     else {
       Civi::log()
