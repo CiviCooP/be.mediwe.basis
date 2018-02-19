@@ -9,7 +9,10 @@ Mediwe heeft een enkel basisproces: het doen van medische controles bij zieke we
 
 Er worden een aantal [Contact Types](contacttypes.md) (*contact subtypes*) in CiviCRM gebruikt om de soorten van contacten die belangrijk zijn voor het proces van Mediwe te kenmerken. Dit zijn Klant, KlantMedewerker, Controlearts, Inspecteur en Zorgfonds gebruiker.
 
-CiviCase wordt gebruikt om verschillende [Dossier Types](dossiertypes.md) vast te kunnen leggen.
+CiviCase wordt gebruikt om verschillende Dossier Types vast te kunnen leggen:
+
+* [Dossier Ziektemelding](ziektemelding.md)
+* [Dossier Medische Controle](medische_controle.md)
 
 Er zijn een aantal zogenaamde [CiviRules](org_civicoop_civirules.md) in gebruik om delen van de procesgang te automatiseren.
 

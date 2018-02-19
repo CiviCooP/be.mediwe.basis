@@ -29,7 +29,6 @@ class CRM_Basis_Config {
   private $_vraagtControleAanRelationshipTypeId = NULL;
   private $_artsRelationshipTypeId = NULL;
 
-
   // properties for membership types
   private $_maandelijksMembershipType = array();
   private $_voorafbetaaldMembershipType = array();
@@ -44,7 +43,6 @@ class CRM_Basis_Config {
   private $_consultatieAoActivityType = array();
   private $_ziekteattestActivityType = array();
   private $_belAfspraakArtsActivityType = array();
-
 
     // properties for custom groups
   private $_klantBoekhoudingCustomGroup = array();
@@ -116,12 +114,14 @@ class CRM_Basis_Config {
     $this->setCustomGroups('mediwe_werkgebied', '_werkgebiedCustomGroup');
     $this->setCustomGroups('mediwe_leverancier', '_leverancierCustomGroup');
     $this->setCustomGroups('mediwe_voorwaarden_arts', '_voorwaardenArtsCustomGroup');
-
     // set custom groups and custom fields voor klanten
     $this->setCustomGroups('mediwe_facturatie', '_klantBoekhoudingCustomGroup');
     $this->setCustomGroups('mediwe_expertsysteem', '_klantExpertsysteemCustomGroup');
     $this->setCustomGroups('mediwe_interne_organisatie', '_klantOrganisatieCustomGroup');
     $this->setCustomGroups('mediwe_controle_procedure_klant', '_klantProcedureCustomGroup');
+    // set custom groups and custom fields voor klant medewerkers
+    $this->setCustomGroups('mediwe_klant_medewerker', '_klantMedewerkerMedewerkerCustomGroup');
+    $this->setCustomGroups('mediwe_tellers_expertsysteem', '_klantMedewerkerExpertsysteemTellersCustomGroup');
 
     $this->setCustomGroups('mijnmediwe_voorwaarden', '_voorwaardenMijnmediweCustomGroup');
     $this->setCustomGroups('mediwe_voorwaarden_controle', '_voorwaardenControleCustomGroup');

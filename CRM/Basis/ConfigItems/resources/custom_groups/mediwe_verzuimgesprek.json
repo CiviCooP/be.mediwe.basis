@@ -1,17 +1,17 @@
 {
-  "mediwe_gesprekken": {
-    "name": "mediwe_gesprekken",
+  "mediwe_verzuimgesprekken": {
+    "name": "mediwe_verzuimgesprekken",
     "title": "Verzuimgesprekken",
-    "extends": "Organization",
-    "extends_entity_column_value": ["mediwe_klant"],
-    "style": "Tab",
-    "is_multiple": 1,
-    "is_active": 1,
-    "is_reserved": 0,
-    "collapse_display": 0,
+    "extends": "Activity",
+    "extends_entity_column_value": ["mediwe_verzuimgesprek"],
+    "style":"Inline",
+    "is_multiple":0,
+    "is_active":1,
+    "is_reserved":0,
+    "collapse_display":0,
     "fields": {
-      "mg_nummer": {
-        "name": "mg_nummer",
+      "mvg_nummer": {
+        "name": "mvg_nummer",
         "label": "Nummer",
         "data_type": "Int",
         "html_type": "Text",
@@ -21,8 +21,8 @@
         "is_required": 1,
         "weight": 1
       },
-      "mg_vraag": {
-        "name": "mg_vraag",
+      "mvg_vraag": {
+        "name": "mvg_vraag",
         "label": "Vraag",
         "data_type": "String",
         "html_type": "Text",

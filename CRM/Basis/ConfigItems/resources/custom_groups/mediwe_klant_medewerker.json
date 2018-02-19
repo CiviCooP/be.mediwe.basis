@@ -89,7 +89,7 @@
       },
       "mkm_functie": {
         "name": "mkm_functie",
-        "label": "Functie",
+        "label": "Functie omschrijving",
         "data_type": "String",
         "html_type": "Text",
         "is_searchable": 1,

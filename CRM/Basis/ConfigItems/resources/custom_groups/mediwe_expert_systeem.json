@@ -1,0 +1,172 @@
+{
+  "mediwe_expert_systeem": {
+    "name": "mediwe_expert_systeem",
+    "title": "Expertsysteem",
+    "extends": "Organization",
+    "extends_entity_column_value": ["mediwe_klant"],
+    "style": "Tab",
+    "is_multiple": 1,
+    "is_active": 1,
+    "is_reserved": 0,
+    "collapse_display": 0,
+    "fields": {
+      "mes_periode": {
+        "name": "mes_periode",
+        "label": "Periode",
+        "data_type": "String",
+        "html_type": "Select",
+        "option_group": "mediwe_periode_expertsysteem",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 1,
+        "weight": 1
+      },
+      "mes_populatie": {
+        "name": "mes_populatie",
+        "label": "Populatie",
+        "data_type": "String",
+        "html_type": "Select",
+        "option_group": "mediwe_populatie",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 1,
+        "weight": 2
+      },
+      "mes_actie_": {
+        "name": "mes_actie",
+        "label": "Actie Expertsysteem",
+        "data_type": "String",
+        "html_type": "Select",
+        "option_group": "mediwe_actie_expertsysteem",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 1,
+        "weight": 3
+      },
+      "mes_ziekteperiodes": {
+        "name": "mes_ziekteperiodes",
+        "label": "Ziekteperiodes",
+        "data_type": "Int",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 4
+      },
+      "mes_ziekte_op_maandag": {
+        "name": "mes_ziekte_op_maandag",
+        "label": "Ziekte op maandag",
+        "data_type": "Int",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 5
+      },
+      "mes_ziektedagen": {
+        "name": "mes_ziektedagen",
+        "label": "Ziektedagen",
+        "data_type": "Int",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 7
+      },
+      "mes_bradford": {
+        "name": "mes_bradford",
+        "label": "Bradford",
+        "data_type": "Int",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 8
+      },
+      "mes_zonder_attest": {
+        "name": "mes_zonder_attest",
+        "label": "Ziekteperiodes zonder attest",
+        "data_type": "Int",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 9
+      },
+      "mes_random_frequentie": {
+        "name": "mes_random_frequentie",
+        "label": "Random frequentie",
+        "data_type": "Int",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 10
+      },
+      "mes_korte_ziekteperiodes": {
+        "name": "mes_korte_ziekteperiodes",
+        "label": "Korte ziekteperiodes",
+        "data_type": "Int",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 6
+      },
+      "mes_ziekteperiode_van": {
+        "name": "mes_ziekteperiode_van",
+        "label": "Ziekteperiode van",
+        "data_type": "Date",
+        "html_type": "Select Date",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 11
+      },
+      "mes_ziekteperiode_tot": {
+        "name": "mes_ziekteperiode_tot",
+        "label": "Ziekteperiode tot",
+        "data_type": "Date",
+        "html_type": "Select Date",
+        "is_searchable": 0,
+        "is_view": 0,
+        "is_active": 1,
+        "is_required": 0,
+        "weight": 12
+      },
+      "mes_afgekeurde_ziekte": {
+        "name": "mes_afgekeurde_ziekte",
+        "label": "Na afgekeurde ziekte",
+        "data_type": "Boolean",
+        "html_type": "Radio",
+        "is_searchable": 1,
+        "is_required": 0,
+        "is_view": 0,
+        "weight": 49,
+        "is_active": 1
+      },
+      "mes_verlenging_ziekte": {
+        "name": "mes_verlenging_ziekte",
+        "label": "Na verlenging ziekte",
+        "data_type": "Boolean",
+        "html_type": "Radio",
+        "is_searchable": 1,
+        "is_required": 0,
+        "is_view": 0,
+        "weight": 49,
+        "is_active": 1
+      }
+    }
+  }
+}

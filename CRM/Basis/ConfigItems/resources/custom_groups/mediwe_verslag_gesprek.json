@@ -1,7 +1,7 @@
 {
     "mediwe_verslag_gesprek":{
     "name":"mediwe_verslag_gesprek",
-    "title":"Verzuimgesprek verslag",
+    "title":"Verslag gesprek",
     "extends": "Activity",
     "extends_entity_column_value": ["mediwe_ziekteattest"],
     "style":"Inline",

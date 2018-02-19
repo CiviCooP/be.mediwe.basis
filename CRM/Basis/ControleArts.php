@@ -377,6 +377,11 @@ class CRM_Basis_ControleArts {
     // ensure that contact sub type is set
     $params['contact_sub_type'] = $this->_controleArtsContactSubTypeName;
     $params['sequential'] = 1;
+    // zet limiet indien ingevuld
+    if (isset($params['limit'])) {
+      $params['options'] = array('limit' => $params['limit']);
+      unset($params['limit']);
+    }
     try {
       $contacts = civicrm_api3('Contact', 'get', $params);
       $controleArts = $contacts['values'];
@@ -434,11 +439,24 @@ class CRM_Basis_ControleArts {
    * @param $data
    */
   public function saveVakantiePeriodes($contactId, $data) {
+    // todo nakijken wat er gebeurt als er al meerdere vakantieperiodes voor het contact staan en er meerdere toegevoegd worden
+    if (isset($data['mvp_vakantie_van'])) {
+      $holiday = array(
+        'mvp_vakantie_van' => $data['mvp_vakantie_van'],
+        'mvp_vakantie_tot' => $data['mvp_vakantie_tot'],
+      );
+      $oldPeriods = $this->getVakantiePeriodesCustomFields($contactId);
+      foreach ($oldPeriods as $period) {
+        if (substr($period['mvp_vakantie_van'], 0, 10) == substr($data['mvp_vakantie_van'], 0, 10)) {
+          $holiday['id'] = $period['id'];
+        }
+      }
+    }
     $config = CRM_Basis_Config::singleton();
-    $config->setRepeatingData(
+    CRM_Basis_Utils::setRepeatingData(
       $config->getVakantieperiodeCustomGroup('custom_fields'),
       $contactId,
-      $data,
+      $holiday,
       array('mvp_vakantie_van')
     );
   }
@@ -448,13 +466,33 @@ class CRM_Basis_ControleArts {
    * @param $contactId
    * @param $data
    */
-  public function saveWerkgebied($contactId, $data) {
+  public function saveWerkgebieden($contactId, $data) {
+    // todo wellicht aparte API, immers toevoegen en vervangen moeten mogelijk zijn?
+    $werkgebiedFields = array('mw_postcode', 'mw_gemeente', 'mw_prioriteit');
+    $werkgebiedPresent = FALSE;
+    $werkgebied = array();
+    foreach ($werkgebiedFields as $werkgebiedField) {
+      if (isset($data[$werkgebiedField])) {
+        $werkgebiedPresent = TRUE;
+        $werkgebied[$werkgebiedField] = $data[$werkgebiedField];
+      } else {
+        $werkgebied[$werkgebiedField] = NULL;
+      }
+    }
+    if ($werkgebiedPresent == TRUE) {
+      $oldRecords = $this->getWerkgebiedenCustomFields($contactId);
+      foreach ($oldRecords as $oldRecord) {
+        if ($oldRecord['mw_postcode'] == $werkgebied['mw_postcode']) {
+          $werkgebied['id'] = $oldRecord['id'];
+        }
+      }
+    }
     $config = CRM_Basis_Config::singleton();
-    $config->setRepeatingData(
+    CRM_Basis_Utils::setRepeatingData(
       $config->getWerkgebiedCustomGroup('custom_fields'),
       $contactId,
-      $data,
-      array('mw_postcode', 'mw_gemeente')
+      $werkgebied,
+      $werkgebiedFields
     );
   }
 
@@ -561,22 +599,9 @@ class CRM_Basis_ControleArts {
       if (isset($data['mobile']) && strlen($data['mobile']) > 5) {
         $this->createPhone($controleArts['id'], "Main", "Mobile", $data['mobile']);
       }
-      if (isset($data['mvp_vakantie_van'])) {
-        $holiday = array(
-          'mvp_vakantie_van' => $data['mvp_vakantie_van'],
-          'mvp_vakantie_tot' => $data['mvp_vakantie_tot'],
-        );
-        $oldPeriods = $this->getVakantiePeriodesCustomFields($controleArts['id']);
-        foreach ($oldPeriods as $period) {
-          if (substr($period['mvp_vakantie_van'], 0, 10) == substr($data['mvp_vakantie_van'], 0, 10)) {
-            $holiday['id'] = $period['id'];
-          }
-        }
-        $this->saveVakantiePeriodes($controleArts['id'], array($holiday));
-      }
-      if (isset($data['regios'])) {
-        $this->saveWerkgebied($controleArts['id'], $data['regios']);
-      }
+      // save vakantieperiodes
+      $this->saveVakantiePeriodes($controleArts['id'], $data);
+      $this->saveWerkgebieden($controleArts['id'], $data);
       return $controleArts;
     }
     catch (CiviCRM_API3_Exception $ex) {
@@ -890,6 +915,7 @@ class CRM_Basis_ControleArts {
       if ($arts && !isset($arts['count'])) {
         $params['id'] = reset($arts)['contact_id'];
       }
+      // todo check hoe met regios om te gaan in migratie. Hebben we er meer? Dit vraagt eigenlijk ook om werkgebied API
       // zoek de regio data op
       $sqlRegio = " SELECT * FROM mediwe_joomla.jos_mediwe_doctor_regions WHERE id_doctor = %1";
       $daoRegio = CRM_Core_DAO::executeQuery($sqlRegio, array(1 => array($idDoctor, 'Integer')));

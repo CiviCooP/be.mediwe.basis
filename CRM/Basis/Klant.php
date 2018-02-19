@@ -9,7 +9,7 @@
  * @date 31 May 2017
  * @license AGPL-3.0
  */
-class CRM_Basis_Klant {
+class CRM_Basis_Klant extends CRM_Basis_MediweContact {
   private $_klantContactSubTypeName = NULL;
   private $_klantLocationType = NULL;
 
@@ -66,6 +66,9 @@ class CRM_Basis_Klant {
     if ($exists) {
       return $this->saveKlant($params);
     }
+    else {
+      CRM_Core_Error::debug_log_message('Trying to update klant that does not exist (id ' . $params['id'] . ' in ' . __METHOD__);
+    }
   }
 
   /**
@@ -99,6 +102,11 @@ class CRM_Basis_Klant {
     // ensure that contact sub type is set
     $params['contact_sub_type'] = $this->_klantContactSubTypeName;
     $params['sequential'] = 1;
+    // zet limiet indien ingevuld
+    if (isset($params['limit'])) {
+      $params['options'] = array('limit' => $params['limit']);
+      unset($params['limit']);
+    }
     try {
       $klanten = civicrm_api3('Contact', 'get', $params)['values'];
       if ($klanten) {
@@ -150,22 +158,6 @@ class CRM_Basis_Klant {
   }
 
   /**
-   * Method om custom velden aan een params array toe te voegen
-   * @param $customFields
-   * @param $params
-   */
-  private function replaceCustomFieldsParams($customFields, &$params) {
-    foreach ($customFields as $field) {
-      $fieldName = $field['name'];
-      if (isset($params[$fieldName])) {
-        $customFieldName = 'custom_' . $field['id'];
-        $params[$customFieldName] = $params[$fieldName];
-        unset($params[$fieldName]);
-      }
-    }
-  }
-
-  /**
    * Method om custom velden aan klantdata toe te voegen
    *
    * @param $klanten
@@ -181,37 +173,6 @@ class CRM_Basis_Klant {
         $klanten[$rowId] = array_merge($klant, $boekhouding, $organisatie, $expert, $klantProcedure);
       }
     }
-  }
-
-  /**
-   * Method om enkelvoudige custom velden toe te voegen aan klant
-   *
-   * @param $customGroup
-   * @param $klantId
-   * @return array
-   */
-  public function addSingleDaoData($customGroup, $klantId) {
-    $result = array();
-    $tableName = $customGroup['table_name'];
-    if (!empty($tableName)) {
-      $customFields = $customGroup['custom_fields'];
-      $sql = 'SELECT * FROM ' . $tableName . ' WHERE entity_id = %1';
-      $dao = CRM_Core_DAO::executeQuery($sql, array(
-        1 => array($klantId, 'Integer'),
-      ));
-      if ($dao->fetch()) {
-        $data = CRM_Basis_Utils::moveDaoToArray($dao);
-      }
-      foreach ($customFields as $customFieldId => $customField) {
-        if (isset($data[$customField['column_name']])) {
-          $result[$customField['name']] = $data[$customField['column_name']];
-        }
-        else {
-          $result[$customField['name']] = NULL;
-        }
-      }
-    }
-    return $result;
   }
 
   /**

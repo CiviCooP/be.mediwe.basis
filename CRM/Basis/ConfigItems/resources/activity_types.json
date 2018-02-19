@@ -27,5 +27,11 @@
   {
     "name": "mediwe_belafspraak_arts",
     "label":"Dagelijkse belafspraak met arts"
+  },
+  "mediwe_verzuimgesprek":
+  {
+    "component": "CiviCase",
+    "name": "mediwe_verzuimgesprek",
+    "label":"Verzuimgesprek"
   }
 }
