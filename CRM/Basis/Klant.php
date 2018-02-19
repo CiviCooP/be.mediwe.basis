@@ -66,6 +66,9 @@ class CRM_Basis_Klant {
     if ($exists) {
       return $this->saveKlant($params);
     }
+    else {
+      CRM_Core_Error::debug_log_message('Trying to update klant that does not exist (id ' . $params['id'] . ' in ' . __METHOD__);
+    }
   }
 
   /**

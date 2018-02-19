@@ -3,349 +3,339 @@
 /**
  * Class to process KlantMedewerker in Mediwe
  *
- * @author Erik Hommel (CiviCooP) <erik.hommel@civicoop.org>
- * @date 31 May 2017
+ * @author  Erik Hommel (CiviCooP) <erik.hommel@civicoop.org>
+ * @author  Klaas Eikelboom (CiviCooP) <klaas.eikelboom@civicoop.org>
+ * @author  Christophe Deman <christophe.deman@mediwe.be>
+ * @date    31 May 2017
  * @license AGPL-3.0
  */
 class CRM_Basis_KlantMedewerker {
 
   private $_klantMedewerkerContactSubTypeName = NULL;
 
-
   /**
    * CRM_Basis_KlantMedewerker constructor.
    */
   public function __construct() {
-
-      $config = CRM_Basis_Config::singleton();
-
-      $contactSubType = $config->getKlantMedewerkerContactSubType();
-      $this->_klantMedewerkerContactSubTypeName = $contactSubType['name'];
-
+    $config = CRM_Basis_Config::singleton();
+    $this->_klantMedewerkerContactSubTypeName = $config->getKlantMedewerkerContactSubType()['name'];
+    $this->_klantMedewerkerContactTypeName = 'Individual';
   }
 
-    /**
-     * Method to migrate a klant medewerker from the joomla application
-     *
-     * @param $params
-     * @return array
-     */
-    public function migrate($params) {
-
-        $config = CRM_Basis_Config::singleton();
-
-        $domicilie = array();
-        $verblijf = array();
-        $phone = array();
-        $mobile = array();
-        $employer = array();
-
-        $sql = " SELECT *  FROM " . $config->getJoomlaDbName() . ".migratie_klantmedewerker LIMIT 0,100; ";
-
-        $dao = CRM_Core_DAO::executeQuery($sql);
-
-        while ($dao->fetch()) {
-            $params = (array)$dao;
-            $id_personnel = $params['external_identifier'];
-            foreach ($params as $key => $value) {
-                $newkey = $key;
-                if (   substr($key, 0, 1 ) == "_" || $key == 'N' )  {
-                    unset($params[$key]);
-                }
-
-                if (substr($key, 0, 9) == 'domicilie') {
-                    $newkey = substr($key, 10);
-                    $domicilie[$newkey] = $value;
-                    unset($params[$key]);
-                }
-
-                if (substr($key, 0, 8 ) == 'verblijf') {
-                    if ($value) {
-                        $newkey = substr($key, 9);
-                        $verblijf[$newkey] = $value;
-                    }
-                    unset($params[$key]);
-                }
-                
-                if ($key == 'phone') {
-                    $phone['phone'] = $value;
-                    $phone['phone_type_id'] = '1';
-                    $phone['location_type_id'] =  $config->getKlantMedewerkerDomicilieLocationType();
-                }
-                if ($key == 'mobile') {
-                    $mobile['phone'] = $value;
-                    $mobile['phone_type_id'] = '2';
-                    $mobile['location_type_id'] = $config->getKlantMedewerkerDomicilieLocationType();
-                }
-                if (substr($key, 0, 9) == 'employer_') {
-                    $newkey = substr($key, 9);
-                    $employer[$newkey] = $value;
-                }
-
-                if ($value == '1900-01-01 00:00:00') {
-                    $params[$newkey] = false;
-                }
-
-            }
-
-            // create the klantmedewerker
-            $medewerker = $this->create($params);
-
-            if (isset($medewerker['id'])) {
-                $id = $medewerker['id'];
-            }
-
-            // create domicilie adres
-            $domicilie['contact_id'] = $id;
-            $domicilie['location_type_id'] = $config->getKlantMedewerkerDomicilieLocationType();
-
-            $return = civicrm_api3('Adres', 'create', $domicilie);
-            
-            // create verblijf adres
-            if (isset($verblijf['zip'])) {
-                $verblijf['contact_id'] = $id;
-                $verblijf['location_type_id'] = $config->getKlantMedewerkerVerblijfLocationType();
-                $return = civicrm_api3('Adres', 'create', $verblijf);                
-            }
-            
-            // create phone
-            $phone['contact_id'] = $id;
-            if ($phone['phone']) {
-                $return = civicrm_api3('Telefoon', 'create', $phone);
-            }
-            else {
-                unset($phone['phone']);
-                $return = civicrm_api3('Telefoon', 'get', $phone);
-                if ($return['count'] == 1) {
-                    $return = civicrm_api3('Telefoon', 'delete', array('id' => $return['id']));
-                }
-            }
-            
-            // create mobile
-            $mobile['contact_id'] = $id;
-            if ($mobile['phone']) {
-                $return = civicrm_api3('Telefoon', 'create', $mobile);
-            }
-            else {
-                unset($mobile['phone']);
-                $return = civicrm_api3('Telefoon', 'get', $mobile);
-                if ($return['count'] == 1) {
-                    $return = civicrm_api3('Telefoon', 'delete', array('id' => $return['id']));
-                }
-            }
-
-
-            // add employer relationship
-            $employer_id = reset(civicrm_api3('Klant', 'get', $employer )['values'])['contact_id'];
-
-            if ($employer_id) {
-                $employerRelation = array();
-                $employerRelation['contact_id_a'] = $id;
-                $employerRelation['relationship_type_id'] = $config->getIsWerknemerVanRelationshipTypeId();
-
-                // get the existing relation
-                $return = reset(civicrm_api3('Relatie', 'get', $employerRelation)['values']);
-
-                if (isset($return['id'])) {
-                    $return['contact_id_b'] = $employer_id;
-                    $employerRelation = $return;
-                }
-                else {
-                    $employerRelation['contact_id_b'] = $employer_id;
-                    $employerRelation['is_active'] = 1;
-                }
-
-                // create the relationship
-                $return = civicrm_api3('Relationship', 'create', $employerRelation);
-            }
-
-          // confirm migration
-          $sql = "INSERT INTO " . $config->getJoomlaDbName() . ".migration_personnel (`id`) VALUES  ($id_personnel);";
-          CRM_Core_DAO::executeQuery($sql);
-
+  /**
+   * Method to migrate a klant medewerker from the joomla application
+   *
+   * @param  $params
+   */
+  public function migrate($params) {
+    $config = CRM_Basis_Config::singleton();
+    $domicilie = array();
+    $verblijf = array();
+    $phone = array();
+    $mobile = array();
+    $employer = array();
+    $sql = " SELECT *  FROM " . $config->getJoomlaDbName() . ".migratie_klantmedewerker LIMIT 0,100";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+    while ($dao->fetch()) {
+      $params = CRM_Basis_Utils::moveDaoToArray($dao);
+      $idPersonnel = $params['external_identifier'];
+      foreach ($params as $key => $value) {
+        $newKey = $key;
+        if (substr($key, 0, 9) == 'domicilie') {
+          $newKey = substr($key, 10);
+          $domicilie[$newKey] = $value;
+          unset($params[$key]);
         }
+        if (substr($key, 0, 8) == 'verblijf') {
+          if ($value) {
+            $newKey = substr($key, 9);
+            $verblijf[$newKey] = $value;
+          }
+          unset($params[$key]);
+        }
+        if ($key == 'phone') {
+          $phone['phone'] = $value;
+          $phone['phone_type_id'] = '1';
+          $phone['location_type_id'] = $config->getKlantMedewerkerDomicilieLocationType();
+        }
+        if ($key == 'mobile') {
+          $mobile['phone'] = $value;
+          $mobile['phone_type_id'] = '2';
+          $mobile['location_type_id'] = $config->getKlantMedewerkerDomicilieLocationType();
+        }
+        if (substr($key, 0, 9) == 'employer_') {
+          $newKey = substr($key, 9);
+          $employer[$newKey] = $value;
+        }
+        if ($value == '1900-01-01 00:00:00') {
+          $params[$newKey] = FALSE;
+        }
+      }
+      // create the klantmedewerker
+      $medewerker = $this->create($params);
+      if (isset($medewerker['id'])) {
+        $id = $medewerker['id'];
+      }
+      // create domicilie adres
+      $domicilie['contact_id'] = $id;
+      $domicilie['location_type_id'] = $config->getKlantMedewerkerDomicilieLocationType();
+      civicrm_api3('Adres', 'create', $domicilie);
+      // create verblijf adres
+      if (isset($verblijf['zip'])) {
+        $verblijf['contact_id'] = $id;
+        $verblijf['location_type_id'] = $config->getKlantMedewerkerVerblijfLocationType();
+        civicrm_api3('Adres', 'create', $verblijf);
+      }
+      // create phone
+      $phone['contact_id'] = $id;
+      if ($phone['phone']) {
+        civicrm_api3('Telefoon', 'create', $phone);
+      }
+      else {
+        unset($phone['phone']);
+        $existPhone = civicrm_api3('Telefoon', 'get', $phone);
+        if ($existPhone['count'] == 1) {
+          civicrm_api3('Telefoon', 'delete', array('id' => $existPhone['id']));
+        }
+      }
+      // create mobile
+      $mobile['contact_id'] = $id;
+      if ($mobile['phone']) {
+        civicrm_api3('Telefoon', 'create', $mobile);
+      }
+      else {
+        unset($mobile['phone']);
+        $existMobile = civicrm_api3('Telefoon', 'get', $mobile);
+        if ($existMobile['count'] == 1) {
+          civicrm_api3('Telefoon', 'delete', array('id' => $existMobile['id']));
+        }
+      }
+      // add employer relationship
+      $employerId = reset(civicrm_api3('Klant', 'get', $employer)['values'])['contact_id'];
+      if ($employerId) {
+        $employerRelation = array();
+        $employerRelation['contact_id_a'] = $id;
+        $employerRelation['relationship_type_id'] = $config->getIsWerknemerVanRelationshipTypeId();
+        // get the existing relation
+        $existRelationship = reset(civicrm_api3('Relatie', 'get', $employerRelation)['values']);
+        if (isset($existRelationship['id'])) {
+          $existRelationship['contact_id_b'] = $employerId;
+          $employerRelation = $existRelationship;
+        }
+        else {
+          $employerRelation['contact_id_b'] = $employerId;
+          $employerRelation['is_active'] = 1;
+        }
+        // create the relationship
+        civicrm_api3('Relationship', 'create', $employerRelation);
+      }
+      // confirm migration
+      $sql = "INSERT INTO " . $config->getJoomlaDbName() . ".migration_personnel (id) VALUES (%1)";
+      CRM_Core_DAO::executeQuery($sql, array(1 => array($idPersonnel, 'Integer')));
     }
-
+  }
 
   /**
-   * Method to create a new klant medewerker
+   * Method om klant medewerker toe te voegen
    *
-   * @param $params
-   * @return array
+   * @param  $params
+   * @return array|bool
    */
   public function create($params) {
-
-      // ensure contact_type and contact_sub_type are set correctly
-      $params['contact_type'] = 'Individual';
-      $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
-
-      $medewerker = $this->exists($params);
-
-      if (isset($medewerker['contact_id'])) {
-        $params['id'] = $medewerker['contact_id'];
+    // contact type en sub type goed zetten
+    $params['contact_type'] = $this->_klantMedewerkerContactTypeName;
+    $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
+    if (isset($params['id'])) {
+      return $this->update($params);
+    }
+    else {
+      if ($this->exists($params) === FALSE) {
+        return $this->saveKlantMedewerker($params);
       }
-
-      // if id is set, then update
-      if (isset($params['id']))  {
-          return $this->update($params);
-      } else {
-          return $this->_saveKlantMedewerker($params);
+      else {
+        CRM_Core_Error::debug_log_message(ts('Trying to add klant medewerker that already exists in ' . __METHOD__));
+        return FALSE;
       }
+    }
   }
 
   /**
-   * Method to update a klant medewerker
+   * Method om klant medewerker bij te werken
    *
-   * @param $params
-   * @return array
+   * @param  $params
+   * @return array|bool
    */
   public function update($params) {
-
-      // ensure contact_type and contact_sub_type are set correctly
-      $params['contact_type'] = 'Individual';
-      $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
-
-      if (isset($this->exists($params)['contact_id'])) {
-
-          return $this->_saveKlantMedewerker($params);
-      }
+    // contact type en sub type goed zetten
+    $params['contact_type'] = $this->_klantMedewerkerContactTypeName;
+    $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
+    $exists = $this->exists(array('id' => $params['id']));
+    if ($exists) {
+      return $this->saveKlantMedewerker($params);
+    }
+    else {
+      CRM_Core_Error::debug_log_message('Trying to update klant medewerker that does not exist (id ' . $params['id'] . ' in ' . __METHOD__);
+      return FALSE;
+    }
   }
 
   /**
    * Method to check if a klant medewerker exists
    *
-   * @param $params
+   * @param  $params
    * @return bool
    */
-    public function exists($params) {
-        $medewerker = array();
-
-        $search_args = array();
-        if (isset($params['contact_id'])) {
-            $search_args['contact_id'] = $params['contact_id'];
-        }
-        elseif  (isset($params['external_identifier'])) {
-            $search_args['external_identifier'] = $params['external_identifier'];
-        }
-        else {
-            if (isset($params['mkm_rijksregister_nummer'])) {
-                $search_args['mkm_rijksregister_nummer'] = $params['mkm_rijksregister_nummer'];
-            }
-            if (isset($params['mkm_personeelsnummer'])) {
-                $search_args['mkm_personeelsnummer'] = $params['mkm_personeelsnummer'];
-            }
-            $search_args['display_name'] = $params['display_name'];
-        }
-
-        try {
-            $medewerker = civicrm_api3('Contact', 'getsingle', $search_args);
-            return $medewerker;
-        }
-        catch (CiviCRM_API3_Exception $ex) {
-            return false;
-        }
-    }
-
-  /**
-   * Method to get all klant medewerkers that meet the selection criteria based on incoming $params
-   *
-   * @param $params
-   * @return array
-   */
-    public function get($params) {
-
-        $medewerkers = array();
-        // ensure that contact sub type is set
-        $params['contact_type'] = 'Individual';
-        $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
-        $params['sequential'] = 1;
-
-        try {
-
-            $contacts = civicrm_api3('Contact', 'get', $params);
-            $medewerkers = $contacts['values'];
-
-            $this->_addKlantMedewerkerAllFields($medewerkers);
-
-            return $medewerkers;
-        }
-        catch (CiviCRM_API3_Exception $ex) {
-        }
-
-    }
-
-
-  /**
-   * Method to delete all medewerkers from a klant with klantId (set to is_deleted in CiviCRM)
-   *
-   * @param $klantId
-   * @return array
-   */
-  public function deleteWithId($klantMedewerkerId) {
-      $medewerker = array();
-
-      // ensure that contact sub type is set
-      $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
-      $params['contact_id'] = $klantMedewerkerId;
-      try {
-          if (isset($this->exists($params)['contact_id'])) {
-              $medewerker = civicrm_api3('Contact', 'delete', $params);
-          }
+  public function exists($params) {
+    // contact type en sub type goed zetten
+    $params['contact_type'] = $this->_klantMedewerkerContactTypeName;
+    $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
+    try {
+      $count = civicrm_api3('Contact', 'getcount', $params);
+      if ($count > 0) {
+        return TRUE;
       }
-      catch (CiviCRM_API3_Exception $ex) {
-          throw new API_Exception(ts('Could not delete a contact in '.__METHOD__
-              .', contact your system administrator! Error from API Contact delete: '.$ex->getMessage()));
-      }
-
-      return $medewerker;
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+    }
+    return FALSE;
   }
 
-    private function _saveKlantMedewerker($params) {
-
-        $config = CRM_Basis_Config::singleton();
-
-        // rename klant custom fields for api  ($customFields, $data, &$params)
-        $this->_addToParamsCustomFields($config->getKlantMedewerkerExpertsysteemTellersCustomGroup('custom_fields'),  $params);
-        $this->_addToParamsCustomFields($config->getKlantMedewerkerMedewerkerCustomGroup('custom_fields'),  $params);
-
-        try {
-
-            $createdContact = civicrm_api3('Contact', 'create', $params);
-            return reset($createdContact['values']);
-        }
-        catch (CiviCRM_API3_Exception $ex) {
-            throw new API_Exception(ts('Could not create a contact in '.__METHOD__
-                .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
-        }
-
+  /**
+   * Methodom klant medewerkers op te halen
+   *
+   * @param  $params
+   * @return array
+   */
+  public function get($params) {
+    $medewerkers = array();
+    // contact type en sub type goed zetten
+    $params['contact_type'] = $this->_klantMedewerkerContactTypeName;
+    $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
+    $params['sequential'] = 1;
+    try {
+      $medewerkers = civicrm_api3('Contact', 'get', $params)['values'];
+      if ($medewerkers) {
+        $this->getKlantMedewerkersCustomFields($medewerkers);
+      }
     }
-
-    private function _addToParamsCustomFields($customFields,  &$params) {
-
-        foreach ($customFields as $field) {
-            $fieldName = $field['name'];
-            if (isset($params[$fieldName])) {
-                $customFieldName = 'custom_' . $field['id'];
-                $params[$customFieldName] = $params[$fieldName];
-            }
-        }
+    catch (CiviCRM_API3_Exception $ex) {
+      CRM_Core_Error::debug_log_message(ts('Unexpected problem retrieving contacts with api Contact Get in ' . __METHOD__));
     }
+    return $medewerkers;
+  }
 
-
-    private function _addKlantMedewerkerAllFields(&$contacts) {
-        $config = CRM_Basis_Config::singleton();
-
-        foreach ($contacts as $arrayRowId => $contact) {
-
-            if (isset($contact['id'])) {
-                // tellers custom fields
-                $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantMedewerkerExpertsysteemTellersCustomGroup(), $contacts[$arrayRowId] );
-                // medewerker custom fields
-                $contacts[$arrayRowId] = $config->addDaoData( $config->getKlantMedewerkerMedewerkerCustomGroup(), $contacts[$arrayRowId] );
-
-            }
-        }
-
+  /**
+   * Method om klant op te slaan
+   *
+   * @param  $params
+   * @return array
+   * @throws API_Exception
+   */
+  private function saveKlantMedewerker($params) {
+    $config = CRM_Basis_Config::singleton();
+    // rename klant medewerker custom fields for api  ($customFields, $data, &$params)
+    $this->replaceCustomFieldsParams($config->getKlantMedewerkerMedewerkerCustomGroup('custom_fields'), $params);
+    $this->replaceCustomFieldsParams($config->getKlantMedewerkerExpertsysteemTellersCustomGroup('custom_fields'), $params);
+    try {
+      $contact = civicrm_api3('Contact', 'create', $params);
+      return $contact['values'][$contact['id']];
     }
+    catch (CiviCRM_API3_Exception $ex) {
+      throw new API_Exception(ts('Could not create a contact in ' . __METHOD__
+        . ', contact your system administrator! Error from API Contact create: ' . $ex->getMessage()
+      ));
+    }
+  }
+
+  /**
+   * Method om custom velden aan een params array toe te voegen
+   * @param $customFields
+   * @param $params
+   */
+  private function replaceCustomFieldsParams($customFields, &$params) {
+    foreach ($customFields as $field) {
+      $fieldName = $field['name'];
+      if (isset($params[$fieldName])) {
+        $customFieldName = 'custom_' . $field['id'];
+        $params[$customFieldName] = $params[$fieldName];
+        unset($params[$fieldName]);
+      }
+    }
+  }
+
+  /**
+   * Method om custom velden aan klant medewerker data toe te voegen
+   *
+   * @param $medewerkers
+   */
+  private function getKlantMedewerkersCustomFields(&$medewerkers) {
+    $config = CRM_Basis_Config::singleton();
+    foreach ($medewerkers as $rowId => $medewerker) {
+      if (isset($medewerker['id'])) {
+        $extra = $this->addSingleDaoData($config->getKlantMedewerkerMedewerkerCustomGroup(), $medewerker['id']);
+        $expert = $this->addSingleDaoData($config->getKlantMedewerkerExpertsysteemTellersCustomGroup(), $medewerker['id']);
+        $medewerkers[$rowId] = array_merge($medewerker, $extra, $expert);
+      }
+    }
+  }
+
+  /**
+   * Method om enkelvoudige custom velden toe te voegen aan klant medewerker
+   *
+   * @param  $customGroup
+   * @param  $medewerkerId
+   * @return array
+   */
+  public function addSingleDaoData($customGroup, $medewerkerId) {
+    $result = array();
+    $tableName = $customGroup['table_name'];
+    if (!empty($tableName)) {
+      $customFields = $customGroup['custom_fields'];
+      $sql = 'SELECT * FROM ' . $tableName . ' WHERE entity_id = %1';
+      $dao = CRM_Core_DAO::executeQuery($sql, array(
+        1 => array($medewerkerId, 'Integer'),
+      ));
+      if ($dao->fetch()) {
+        $data = CRM_Basis_Utils::moveDaoToArray($dao);
+      }
+      foreach ($customFields as $customFieldId => $customField) {
+        if (isset($data[$customField['column_name']])) {
+          $result[$customField['name']] = $data[$customField['column_name']];
+        }
+        else {
+          $result[$customField['name']] = NULL;
+        }
+      }
+    }
+    return $result;
+  }
+
+  /**
+   * Method om klant medewerker met id te verwijderen
+   *
+   * @param  $medewerkerId
+   * @return bool|array
+   * @throws API_Exception
+   */
+  public function deleteWithId($medewerkerId) {
+    // contact type en sub type goed zetten
+    $params['contact_type'] = $this->_klantMedewerkerContactTypeName;
+    $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
+    $params['contact_id'] = $medewerkerId;
+    try {
+      if ($this->exists($params)) {
+        return civicrm_api3('Contact', 'delete', $params);
+      }
+      else {
+        CRM_Core_Error::debug_log_message(ts('Trying to delete klant medewerker ' . $medewerkerId . ' but it does not exist in ' . __METHOD__));
+        return FALSE;
+      }
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+      throw new API_Exception(ts('Could not delete a contact in ' . __METHOD__
+        . ', contact your system administrator! Error from API Contact delete: ' . $ex->getMessage()
+      ));
+    }
+  }
+
 }
-
