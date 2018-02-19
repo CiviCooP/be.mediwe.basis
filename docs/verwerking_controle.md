@@ -3,7 +3,7 @@
 ## Een klant vraagt een medische controle aan
 
 Een klant vraagt een medische controle aan op het publieke deel van de website van Mediwe.
-Daarom is zijn identiteit niet éénduidig gekend.
+Daarom is zijn identiteit niet eenduidig gekend.
 
 De klant geeft ons volgende informatie:
 
@@ -179,9 +179,9 @@ Hiertoe moet nagegaan worden of:
 - De voorgeschreven einddatum verschilt van wat de klant meedeelde, zo ja wordt de datum van de arts overgenomen 
 en wordt een berichtje toegevoegd "de voorgeschreven einddatum zou volgens de controlearts niet dit zijn maar dat".  
 
-In een aantal gevallen zouden we het resultaat dus wél rechtstreeks kunnen versturen naar de klant!
+In een aantal gevallen zouden we het resultaat dus wel rechtstreeks kunnen versturen naar de klant!
 
-De vergoeding van extra kilometers (arts ontvangt 0.35€/km boven 30 km en enkel indien hij dit opgeeft.
+De vergoeding van extra kilometers (arts ontvangt 0.35 euro/km boven 30 km en enkel indien hij dit opgeeft.
 Omdat we dit niet aanmoedigen, wordt dit niet "structureel" voorzien en zal de arts dit meegeven als opmerking.
 
 
