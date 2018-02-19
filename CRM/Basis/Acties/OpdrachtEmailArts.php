@@ -44,9 +44,13 @@ class CRM_Basis_Acties_OpdrachtEmailArts {
       $apiParams['template_id'] = $templateId;
       $apiParams['case_id'] = $this->_params['case_id'];
 
+      $klantmedewerker = civicrm_api3('KlantMedewerker', 'getsingle', array(
+        'id' => $this->_params['contact_id_b'],
+      ));
+
 
       $smarty = CRM_Core_Smarty::singleton();
-      $smarty->assign('naam_werknemer','Ben Lee User');
+      $smarty->assign('klantmedewerker',$klantmedewerker);
 
 
       civicrm_api3('Email', 'Send', $apiParams);
