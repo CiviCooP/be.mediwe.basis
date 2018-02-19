@@ -6,8 +6,8 @@ pages:
 - Home: index.md
 - Configuratie items voor CiviCRM: configitems.md
 - Contact Types: contacttypes.md
-- Dossier Types: dossiertypes.md
-- Verwerking van een controle opdracht: verwerking_controle.md
+- Dossier Type Ziektemelding: ziektemelding.md
+- Dossier Type Medische Controle: medische_controle.md
 - Drupal modules (en themes): drupalmodules.md
 - CiviCRM extensies: civiextensions.md
 - Automatische Acties: automatische_acties.md

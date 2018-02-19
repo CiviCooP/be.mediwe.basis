@@ -41,6 +41,10 @@ class CRM_Basis_ConfigItems_CustomField {
       }
       unset($this->_apiParams['option_group']);
     }
+    // if no column name, default to name
+    if (!isset($this->_apiParams['column_name'])) {
+      $this->_apiParams['column_name'] = $this->_apiParams['name'];
+    }
   }
 
   /**

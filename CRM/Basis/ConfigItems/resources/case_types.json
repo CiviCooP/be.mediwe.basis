@@ -13,6 +13,9 @@
         {
           "name": "mediwe_ziekteattest",
           "max_instances": "1"
+        },
+        {
+          "name": "mediwe_verzuimgesprek",
         }
       ],
       "caseRoles": [

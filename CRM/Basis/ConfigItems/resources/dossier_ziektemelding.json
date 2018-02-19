@@ -3,9 +3,13 @@
     "Open Case":{
       "name":"Open Case",
       "max_instances":1
-    },"mediwe_ziekteattest":{
+    },
+    "mediwe_ziekteattest":{
       "name":"mediwe_ziekteattest",
       "max_instances":1
+    },
+    "mediwe_verzuimgesprek":{
+      "name":"mediwe_verzuimgesprek"
     }
   },
   "caseRoles":{
