@@ -16,7 +16,7 @@ sudo pip install mkdocs mkdocs-material pygments pymdown-extensions
 De documentatie in een leesbare lay-out kan lokaal bekeken worden door de mkdocs webserver op te starten.
 
 ```
-mkdocs service
+mkdocs serve
 ```
 
 Een html versie van de lay-out wordt gegeneerd met
