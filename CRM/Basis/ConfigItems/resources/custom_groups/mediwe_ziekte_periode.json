@@ -10,16 +10,16 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
-         "mzp_reden_ziekte": {
-           "name": "mzp_reden_ziekte",
-           "label": "Reden",
-           "data_type": "String",
-           "html_type": "Select",
-           "option_group": "mediwe_reden_ziekte",
-           "is_searchable": 1,
-           "is_active": 1,
-           "is_required": 0
-         },
+       "mzp_reden_ziekte": {
+         "name": "mzp_reden_ziekte",
+         "label": "Reden",
+         "data_type": "String",
+         "html_type": "Select",
+         "option_group": "mediwe_reden_ziekte",
+         "is_searchable": 1,
+         "is_active": 1,
+         "is_required": 0
+       },
       "mzp_vermoedelijke_reden": {
         "name": "mzp_vermoedelijke_reden",
         "label": "Vermoedelijke reden",
@@ -40,72 +40,72 @@
         "is_active": 1,
         "is_required": 0
       },
-        "mzp_is_verlenging": {
-          "name": "mzp_is_verlenging",
-          "label": "Verlenging",
-          "data_type": "Boolean",
-          "html_type": "Radio",
-          "is_searchable": 0,
-          "is_active": 1,
-          "is_required": 0
-        },
-        "mzp_is_prive_ongeval": {
-          "name": "mzp_is_prive_ongeval",
-          "label": "Privé ongeval",
-          "data_type": "Boolean",
-          "html_type": "Radio",
-          "is_searchable": 0,
-          "is_active": 1,
-          "is_required": 0
-        },
-        "mzp_mag_huis_verlaten": {
-          "name": "mzp_mag_huis_verlaten",
-          "label": "Mag het huis verlaten",
-          "data_type": "Boolean",
-          "html_type": "Radio",
-          "is_searchable": 0,
-          "is_active": 1,
-          "is_required": 0
-        },
-        "mzp_is_ziekenhuisopname": {
-          "name": "mzp_is_ziekenhuisopname",
-          "label": "Ziekenhuisopname",
-          "data_type": "Boolean",
-          "html_type": "Radio",
-          "is_searchable": 0,
-          "is_active": 1,
-          "is_required": 0
-        },
-        "mzp_ziekenhuisopname_van": {
-          "name": "mzp_ziekenhuisopname_van",
-          "label": "Begin datum opname",
-          "data_type": "Date",
-          "html_type": "Select Date",
-          "date_format": "dd/mm/yy",
-          "is_searchable": 1,
-          "is_active": 1,
-          "is_required": 0
-        },
-        "mzp_ziekenhuisopname_tot": {
-          "name": "mzp_ziekenhuisopname_tot",
-          "label": "Eind datum opname",
-          "data_type": "Date",
-          "html_type": "Select Date",
-          "date_format": "dd/mm/yy",
-          "is_searchable": 1,
-          "is_active": 1,
-          "is_required": 0
-        },
-        "mzp_behandelende_arts": {
-          "name": "mzp_behandelende_arts",
-          "label": "Behandelende arts",
-          "data_type": "String",
-          "html_type": "Text",
-          "is_searchable": 1,
-          "is_search_range":0,
-          "is_required":0,
-          "is_active": 1
-        },
+      "mzp_is_verlenging": {
+        "name": "mzp_is_verlenging",
+        "label": "Verlenging",
+        "data_type": "Boolean",
+        "html_type": "Radio",
+        "is_searchable": 0,
+        "is_active": 1,
+        "is_required": 0
+      },
+      "mzp_is_prive_ongeval": {
+        "name": "mzp_is_prive_ongeval",
+        "label": "Privé ongeval",
+        "data_type": "Boolean",
+        "html_type": "Radio",
+        "is_searchable": 0,
+        "is_active": 1,
+        "is_required": 0
+      },
+      "mzp_mag_huis_verlaten": {
+        "name": "mzp_mag_huis_verlaten",
+        "label": "Mag het huis verlaten",
+        "data_type": "Boolean",
+        "html_type": "Radio",
+        "is_searchable": 0,
+        "is_active": 1,
+        "is_required": 0
+      },
+      "mzp_is_ziekenhuisopname": {
+        "name": "mzp_is_ziekenhuisopname",
+        "label": "Ziekenhuisopname",
+        "data_type": "Boolean",
+        "html_type": "Radio",
+        "is_searchable": 0,
+        "is_active": 1,
+        "is_required": 0
+      },
+      "mzp_ziekenhuisopname_van": {
+        "name": "mzp_ziekenhuisopname_van",
+        "label": "Begin datum opname",
+        "data_type": "Date",
+        "html_type": "Select Date",
+        "date_format": "dd/mm/yy",
+        "is_searchable": 1,
+        "is_active": 1,
+        "is_required": 0
+      },
+      "mzp_ziekenhuisopname_tot": {
+        "name": "mzp_ziekenhuisopname_tot",
+        "label": "Eind datum opname",
+        "data_type": "Date",
+        "html_type": "Select Date",
+        "date_format": "dd/mm/yy",
+        "is_searchable": 1,
+        "is_active": 1,
+        "is_required": 0
+      },
+      "mzp_behandelende_arts": {
+        "name": "mzp_behandelende_arts",
+        "label": "Behandelende arts",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_required":0,
+        "is_active": 1
+      },
       "mzp_is_zonder_attest": {
         "name": "mzp_is_zonder_attest",
         "label": "Ziekte zonder attest",
@@ -152,6 +152,6 @@
         "is_active": 1,
         "is_required": 0
       }
-      }
     }
+  }
 }
