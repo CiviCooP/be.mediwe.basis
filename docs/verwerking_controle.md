@@ -46,15 +46,15 @@ Maar hierop bestaan tal van varianten:
 
 * Huisbezoek binnen opgegeven 4 aaneensluitende uren
 
-** Indien afwezig binnen die uren, geen convocatie op het kabinet meer
-** Indien afwezig binnen die uren, wel een convocatie op het kabinet van de arts
-** Indien afwezig binnen die uren, opnieu een huisbezoek op dag + 1 ("hercontrole")
+    * Indien afwezig binnen die uren, geen convocatie op het kabinet meer
+    * Indien afwezig binnen die uren, wel een convocatie op het kabinet van de arts
+    * Indien afwezig binnen die uren, opnieu een huisbezoek op dag + 1 ("hercontrole")
 
 Zo de arts het bezoek toch buiten die uren uitvoert:
 
-** Dat mag niet, liever helemaal geen controle in dat geval
-** Indien afwezig convocatie op het kabinet van de arts
-** Indien afwezig hercontrole aan huis
+    * Dat mag niet, liever helemaal geen controle in dat geval
+    * Indien afwezig convocatie op het kabinet van de arts
+    * Indien afwezig hercontrole aan huis
 
 * Huisbezoek gevolgd door een hercontrole indien afwezig
 
