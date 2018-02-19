@@ -45,16 +45,14 @@ voor onderzoek aan te bieden op het kabinet van de controlearts.
 Maar hierop bestaan tal van varianten:
 
 * Huisbezoek binnen opgegeven 4 aaneensluitende uren
+    * Indien afwezig binnen die uren, geen convocatie op het kabinet meer
+    * Indien afwezig binnen die uren, wel een convocatie op het kabinet van de arts
+    * Indien afwezig binnen die uren, opnieu een huisbezoek op dag + 1 ("hercontrole")
 
-** Indien afwezig binnen die uren, geen convocatie op het kabinet meer
-** Indien afwezig binnen die uren, wel een convocatie op het kabinet van de arts
-** Indien afwezig binnen die uren, opnieu een huisbezoek op dag + 1 ("hercontrole")
-
-Zo de arts het bezoek toch buiten die uren uitvoert:
-
-** Dat mag niet, liever helemaal geen controle in dat geval
-** Indien afwezig convocatie op het kabinet van de arts
-** Indien afwezig hercontrole aan huis
+* Zo de arts het bezoek toch buiten die uren uitvoert:
+    * Dat mag niet, liever helemaal geen controle in dat geval
+    * Indien afwezig convocatie op het kabinet van de arts
+    * Indien afwezig hercontrole aan huis
 
 * Huisbezoek gevolgd door een hercontrole indien afwezig
 
@@ -182,7 +180,7 @@ en wordt een berichtje toegevoegd "de voorgeschreven einddatum zou volgens de co
 In een aantal gevallen zouden we het resultaat dus wel rechtstreeks kunnen versturen naar de klant!
 
 De vergoeding van extra kilometers (arts ontvangt 0.35 euro/km boven 30 km en enkel indien hij dit opgeeft.
-Omdat we dit niet aanmoedigen, wordt dit niet "structureel" voorzien en zal de arts dit meegeven als opmerking.
+Omdat we dit niet aanmoedigen, wordt dit niet "structureel" voorzien en zal de arts dit meegeven als opmerking).
 
 
 ### Resultaten komen binnen via fax
