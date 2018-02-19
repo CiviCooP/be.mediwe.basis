@@ -123,8 +123,8 @@ function _civicrm_api3_klant_medewerker_Get_spec(&$spec) {
   );
   $spec['mkm_functie'] = array(
     'name' => 'mkm_functie',
-    'title' => 'Functie',
-    'description' => 'Functie',
+    'title' => 'Functie omschrijving',
+    'description' => 'Functie omschrijving',
     'api.required' => 0,
     'type' => CRM_Utils_Type::T_STRING,
   );

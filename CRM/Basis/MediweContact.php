@@ -9,18 +9,15 @@
  * @date    31 May 2017
  * @license AGPL-3.0
  */
-class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
+class CRM_Basis_KlantMedewerker {
 
   private $_klantMedewerkerContactSubTypeName = NULL;
-  private $_klantMedewerkerContactTypeName = NULL;
-  private $_employerRelationshipTypeId = NULL;
 
   /**
    * CRM_Basis_KlantMedewerker constructor.
    */
   public function __construct() {
     $config = CRM_Basis_Config::singleton();
-    $this->_employerRelationshipTypeId = $config->getIsWerknemerVanRelationshipTypeId();
     $this->_klantMedewerkerContactSubTypeName = $config->getKlantMedewerkerContactSubType()['name'];
     $this->_klantMedewerkerContactTypeName = 'Individual';
   }
@@ -241,8 +238,6 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
     $this->replaceCustomFieldsParams($config->getKlantMedewerkerExpertsysteemTellersCustomGroup('custom_fields'), $params);
     try {
       $contact = civicrm_api3('Contact', 'create', $params);
-      // verwerk de klant/medewerker relatie
-      $this->saveWerknemerRelatie($params['klant_id'], $contact['id']);
       return $contact['values'][$contact['id']];
     }
     catch (CiviCRM_API3_Exception $ex) {
@@ -253,64 +248,19 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
   }
 
   /**
-   * Method om werknemer relatie toe te voegen
-   *
-   * @param $klantId
-   * @param $medewerkerId
-   * @return bool
+   * Method om custom velden aan een params array toe te voegen
+   * @param $customFields
+   * @param $params
    */
-  public function saveWerknemerRelatie($klantId, $medewerkerId) {
-    if (empty($klantId) || empty($medewerkerId)) {
-      return FALSE;
-    }
-    //check of de relatie al bestaat
-    $params = array(
-      'contact_id_a' => $medewerkerId,
-      'contact_id_b' => $klantId,
-      'relationship_type_id' => $this->_employerRelationshipTypeId,
-    );
-    try {
-      $relationshipCount = civicrm_api3('Relationship', 'getcount', $params);
-      // voeg toe als niet bestaat
-      if ($relationshipCount == 0) {
-        $params['start_date'] = $this->setWerknemerStartDate($medewerkerId);
-        $params['is_active'] = 1;
-        try {
-          civicrm_api3('Relationship', 'create', $params);
-        } catch (CiviCRM_API3_Exception $ex) {
-          CRM_Core_Error::debug_log_message(ts('Could not employee relationship between ') . $medewerkerId
-            . ts(' and ') . $medewerkerId . ' in ' . __METHOD__);
-        }
+  private function replaceCustomFieldsParams($customFields, &$params) {
+    foreach ($customFields as $field) {
+      $fieldName = $field['name'];
+      if (isset($params[$fieldName])) {
+        $customFieldName = 'custom_' . $field['id'];
+        $params[$customFieldName] = $params[$fieldName];
+        unset($params[$fieldName]);
       }
     }
-    catch (CiviCRM_API3_Exception $ex) {
-      CRM_Core_Error::debug_log_message(ts('Error from api relationship getcount in ' . __METHOD__));
-      return FALSE;
-    }
-    return TRUE;
-  }
-
-  /**
-   * Method om start datum van werknemer relatie te bepalen
-   *
-   * @param $medewerkerId
-   * @return string
-   */
-  private function setWerknemerStartDate($medewerkerId) {
-    // haal eventueel start datum contract op
-    try {
-      $datumInDienst = civicrm_api3('KlantMedewerker', 'getvalue', array(
-        'id' => $medewerkerId,
-        'return' => CRM_Basis_Config::singleton()->getMedewerkerDatumInDienstCustomField('name'),
-      ));
-      $startDate = new DateTime($datumInDienst);
-      return $startDate->format('d-m-Y');
-    }
-    catch (CiviCRM_API3_Exception $ex) {
-    }
-    // als geen start datum contact, gebruik datum vandaag
-    $startDate = new DateTime();
-    return $startDate->format('d-m-Y');
   }
 
   /**
@@ -327,6 +277,37 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
         $medewerkers[$rowId] = array_merge($medewerker, $extra, $expert);
       }
     }
+  }
+
+  /**
+   * Method om enkelvoudige custom velden toe te voegen aan klant medewerker
+   *
+   * @param  $customGroup
+   * @param  $medewerkerId
+   * @return array
+   */
+  public function addSingleDaoData($customGroup, $medewerkerId) {
+    $result = array();
+    $tableName = $customGroup['table_name'];
+    if (!empty($tableName)) {
+      $customFields = $customGroup['custom_fields'];
+      $sql = 'SELECT * FROM ' . $tableName . ' WHERE entity_id = %1';
+      $dao = CRM_Core_DAO::executeQuery($sql, array(
+        1 => array($medewerkerId, 'Integer'),
+      ));
+      if ($dao->fetch()) {
+        $data = CRM_Basis_Utils::moveDaoToArray($dao);
+      }
+      foreach ($customFields as $customFieldId => $customField) {
+        if (isset($data[$customField['column_name']])) {
+          $result[$customField['name']] = $data[$customField['column_name']];
+        }
+        else {
+          $result[$customField['name']] = NULL;
+        }
+      }
+    }
+    return $result;
   }
 
   /**
