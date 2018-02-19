@@ -172,7 +172,7 @@ function basis_civicrm_navigationMenu(&$menu) {
     'label' => E::ts('Mediwe Settings'),
     'name' => 'settingbasis',
     'url' => 'civicrm/admin/setting/basis',
-    'permission' => 'manage CiviCRM',
+    'permission' => 'administer CiviCRM',
     'operator' => 'OR',
     'separator' => 0,
    ));
