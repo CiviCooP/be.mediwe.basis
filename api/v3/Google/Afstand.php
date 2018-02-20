@@ -68,7 +68,7 @@ function civicrm_api3_google_Afstand($params)
         $time = 0;
         $distance = 0;
 
-        if(isset($data['status'])&&$data['status']=='OVER_QUERY_LIMIT'){
+        if(isset($data->status)&&$data->status =='OVER_QUERY_LIMIT'){
             return civicrm_api3_create_error("Google is over zijn dagenlijkse aanvraag tax", $params);
         }
         if (isset($data->rows[0])) {
@@ -83,7 +83,7 @@ function civicrm_api3_google_Afstand($params)
                 }
             }
         }
-        $returnValues[] = array(
+        $returnValues = array(
             'km' => round($distance / 1000, 1),
             'reistijd' => round($time / 60, 1)
         );
