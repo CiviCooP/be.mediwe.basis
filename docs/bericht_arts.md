@@ -89,7 +89,7 @@ Voor elk dossier "Medische controle":
 
 ## Voorbeelden van klantspecifieke teksten
 
-!!! warning
+!!! warning "Vooraf even nadenken!"
     Deze voorbeelden tonen aan dat de meeste klantspecifieke teksten kunnen verdwijnen als we ons datamodel beter uitwerken.
     
 
