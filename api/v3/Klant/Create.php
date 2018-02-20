@@ -226,20 +226,6 @@ function _civicrm_api3_klant_Create_spec(&$spec) {
     'api.required' => 0,
     'type' => CRM_Utils_Type::T_STRING,
   );
-  $spec['mg_nummer'] = array(
-    'name' => 'mg_nummer',
-    'title' => 'Nummer expertsysteem',
-    'description' => 'Nummer expertsysteem',
-    'api.required' => 0,
-    'type' => CRM_Utils_Type::T_INT,
-  );
-  $spec['mg_vraag'] = array(
-    'name' => 'mg_vraag',
-    'title' => 'Vraag expertsysteem',
-    'description' => 'Vraag expertsysteem',
-    'api.required' => 0,
-    'type' => CRM_Utils_Type::T_STRING,
-  );
 }
 
 /**

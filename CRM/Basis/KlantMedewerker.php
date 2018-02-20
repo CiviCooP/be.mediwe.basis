@@ -244,7 +244,8 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
       $this->saveWerknemerRelatie($params['klant_id'], $contact['id']);
       // verwerk de expert tellers
       $this->saveExpertTellers($contact['id'], $params);
-      return $contact['values'][$contact['id']];
+      $medewerker = civicrm_api3('KlantMedewerker', 'getsingle', array('id' => $contact['id']));
+      return $medewerker;
     }
     catch (CiviCRM_API3_Exception $ex) {
       throw new API_Exception(ts('Could not create a contact in ' . __METHOD__
