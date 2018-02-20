@@ -32,6 +32,7 @@ class CRM_Basis_ControleArts {
    * Method om data van voor te stellen artsen op te halen
    *
    * @param $params
+   *
    * @return bool|array
    * @throws API_Exception als er foutieve parameters zijn
    */
@@ -39,13 +40,14 @@ class CRM_Basis_ControleArts {
     // verwerk alleen als valide parameters
     if ($this->validVoorstelParams($params)) {
       // zoek alle artsen binnen postcode, limit en peildatum
-      $postcodeCustom = 'custom_' . CRM_Basis_Config::singleton()->getPostcodeCustomField('id');
-      $contactParams = array(
-        'options' => array(
+      $postcodeCustom = 'custom_' . CRM_Basis_Config::singleton()
+          ->getPostcodeCustomField('id');
+      $contactParams = [
+        'options' => [
           'limit' => $params['limiet'],
-        ),
+        ],
         $postcodeCustom => $params['postcode'],
-      );
+      ];
       try {
         $artsen = civicrm_api3('ControleArts', 'get', $contactParams);
         $result = $this->generateVoorstelArtsenData($artsen['values'], $params);
@@ -65,21 +67,27 @@ class CRM_Basis_ControleArts {
    *
    * @param array $artsen
    * @param array $params
+   *
    * @return array
    */
   private function generateVoorstelArtsenData($artsen, $params) {
-    $result = array();
+    $result = [];
     foreach ($artsen as $artsId => $artsData) {
       // als arts nu op vakantie mag hij achterwege blijven
       if (!isset($artsData['vakantie_periodes']) || !$this->isOpVakantie($artsData['vakantie_periodes'], $params['voorstel_datum'])) {
-        $suggestie = array();
+        $suggestie = [];
         $suggestie['contact_id'] = $artsData['id'];
         $suggestie['naam_arts'] = $artsData['display_name'];
-        $suggestie['gebruikt_app'] = $artsData['custom_' . CRM_Basis_Config::singleton()->getArtsGebruiktAppCustomField('id')];
-        $suggestie['akkoord_percentage'] = $artsData['custom_' . CRM_Basis_Config::singleton()->getArtsPercentageAkkoordCustomField('id')];
-        $suggestie['bellen'] = $artsData['custom_' . CRM_Basis_Config::singleton()->getArtsBelMomentCustomField('id')];
-        $suggestie['opdracht_per'] = $artsData['custom_' . CRM_Basis_Config::singleton()->getArtsOpdrachtPerCustomField('id')];
-        $suggestie['overzicht_middag'] = $artsData['custom_' . CRM_Basis_Config::singleton()->getArtsOverzichtCustomField('id')];
+        $suggestie['gebruikt_app'] = $artsData['custom_' . CRM_Basis_Config::singleton()
+          ->getArtsGebruiktAppCustomField('id')];
+        $suggestie['akkoord_percentage'] = $artsData['custom_' . CRM_Basis_Config::singleton()
+          ->getArtsPercentageAkkoordCustomField('id')];
+        $suggestie['bellen'] = $artsData['custom_' . CRM_Basis_Config::singleton()
+          ->getArtsBelMomentCustomField('id')];
+        $suggestie['opdracht_per'] = $artsData['custom_' . CRM_Basis_Config::singleton()
+          ->getArtsOpdrachtPerCustomField('id')];
+        $suggestie['overzicht_middag'] = $artsData['custom_' . CRM_Basis_Config::singleton()
+          ->getArtsOverzichtCustomField('id')];
         if ($artsData['street_address']) {
           $suggestie['adres'] = $artsData['street_address'];
         }
@@ -109,10 +117,12 @@ class CRM_Basis_ControleArts {
         // toevoegen vakantie periodes
         if (isset($artsData['vakantie_periodes'])) {
           foreach ($artsData['vakantie_periodes'] as $vakantiePeriode) {
-            $suggestie['vakantie_periodes'][] = array(
-              'datum_van' => $vakantiePeriode[CRM_Basis_Config::singleton()->getVakantieVanCustomField('name')],
-              'datum_tot' => $vakantiePeriode[CRM_Basis_Config::singleton()->getVakantieTotCustomField('name')],
-            );
+            $suggestie['vakantie_periodes'][] = [
+              'datum_van' => $vakantiePeriode[CRM_Basis_Config::singleton()
+                ->getVakantieVanCustomField('name')],
+              'datum_tot' => $vakantiePeriode[CRM_Basis_Config::singleton()
+                ->getVakantieTotCustomField('name')],
+            ];
           }
         }
         $result[$artsId] = $suggestie;
@@ -121,13 +131,13 @@ class CRM_Basis_ControleArts {
     return $result;
   }
 
-  public function customFieldId($customField){
+  public function customFieldId($customField) {
     $config = CRM_Basis_Config::singleton();
-    $huisBezoekCustomGroup = $config ->getMedischeControleHuisbezoekCustomGroup();
+    $huisBezoekCustomGroup = $config->getMedischeControleHuisbezoekCustomGroup();
 
-     foreach($huisBezoekCustomGroup['custom_fields'] as $group){
+    foreach ($huisBezoekCustomGroup['custom_fields'] as $group) {
 
-     $fields[$group['name']]=$group['id'];
+      $fields[$group['name']] = $group['id'];
     }
     return $fields[$customField];
   }
@@ -138,10 +148,11 @@ class CRM_Basis_ControleArts {
    * @param $huisbezoekId
    * @param $artsId
    * @param array $artsData
+   *
    * @return array
    */
-  public function getAfstandVoorHuisbezoek($huisbezoekId, $artsId, $artsData = array()) {
-    $result = array();
+  public function getAfstandVoorHuisbezoek($huisbezoekId, $artsId, $artsData = []) {
+    $result = [];
     // fout als artsId en artsData leeg
     if (empty($artsId && empty($artsData))) {
       return $result;
@@ -149,25 +160,25 @@ class CRM_Basis_ControleArts {
     // als artsData leeg, haal gegevens arts op met artsId
     if (empty($artsData)) {
       try {
-        $artsData = civicrm_api3('Address', 'getsingle', array(
-          'return' => array("street_address", "city", "postal_code"),
+        $artsData = civicrm_api3('Address', 'getsingle', [
+          'return' => ["street_address", "city", "postal_code"],
           'contact_id' => $artsId,
           'is_primary' => 1,
-        ));
+        ]);
 
         // haal gegevens huisbezoek op met huisbezoekId
-        $huisbezoek = civicrm_api3('Huisbezoek', 'getsingle', array(
+        $huisbezoek = civicrm_api3('Huisbezoek', 'getsingle', [
           'id' => $huisbezoekId,
-        ));
+        ]);
 
-       $afstand = civicrm_api3('Google', 'afstand', array(
-          'adres' => $huisbezoek['custom_'.$this->customFieldId('mh_huisbezoek_adres')],
-          'postcode' => $huisbezoek['custom_'.$this->customFieldId('mh_huisbezoek_postcode')],
-          'gemeente' => $huisbezoek['custom_'.$this->customFieldId('mh_huisbezoek_gemeente')],
-          'adres_arts' =>$artsData['street_address'],
+        $afstand = civicrm_api3('Google', 'afstand', [
+          'adres' => $huisbezoek['custom_' . $this->customFieldId('mh_huisbezoek_adres')],
+          'postcode' => $huisbezoek['custom_' . $this->customFieldId('mh_huisbezoek_postcode')],
+          'gemeente' => $huisbezoek['custom_' . $this->customFieldId('mh_huisbezoek_gemeente')],
+          'adres_arts' => $artsData['street_address'],
           'postcode_arts' => $artsData['postal_code'],
           'gemeente_arts' => $artsData['city'],
-        ));
+        ]);
 
         if (isset($afstand['values'])) {
           $result = $afstand['values'];
@@ -186,28 +197,30 @@ class CRM_Basis_ControleArts {
    *
    * @param $artsId
    * @param $peilDatum
+   *
    * @return mixed
    */
   private function getHuisbezoekenArtsOpPeilDatum($artsId, $peilDatum) {
     if (!$peilDatum) {
       $peilDatum = new DateTime();
     }
-    $huisbezoekActivityType = CRM_Basis_Config::singleton()->getHuisbezoekActivityType();
+    $huisbezoekActivityType = CRM_Basis_Config::singleton()
+      ->getHuisbezoekActivityType();
     // tel het aantal actieve activiteiten van het type huisbezoek toegewezen aan de arts met datum is peildatum
     try {
-      return civicrm_api3('Activity', 'getcount', array(
+      return civicrm_api3('Activity', 'getcount', [
         'activity_type_id' => $huisbezoekActivityType['value'],
         'assignee_contact_id' => $artsId,
         'is_deleted' => 0,
         'is_test' => 0,
         'is_current_revision' => 1,
-        'activity_date_time' => array(
-          'BETWEEN' => array(
+        'activity_date_time' => [
+          'BETWEEN' => [
             $peilDatum->format('Y-m-d') . ' 00:00:00',
             $peilDatum->format('Y-m-d') . ' 23:59:59',
-          ),
-        ),
-      ));
+          ],
+        ],
+      ]);
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
@@ -218,13 +231,14 @@ class CRM_Basis_ControleArts {
   /**
    * Method om te controleren of de arts op vakantie is.
    *
-   * @param array $vakantiePeriodes (verwacht: id, mvp_vakantie_van (Y-m-d), mvp_vakantie_tot (Y-m-d) - bv. 1:2018-03-05:2018-03-07
+   * @param array $vakantiePeriodes (verwacht: id, mvp_vakantie_van (Y-m-d),
+   *   mvp_vakantie_tot (Y-m-d) - bv. 1:2018-03-05:2018-03-07
    * @param $peilDatum
    * @param int $artsId
    *
    * @return bool
    */
-  public function isOpVakantie($vakantiePeriodes = array(), $peilDatum, $artsId = NULL) {
+  public function isOpVakantie($vakantiePeriodes = [], $peilDatum, $artsId = NULL) {
     // als artsId, vakantieperiodes van arts ophalen
     if (!empty($artsId) && empty($vakantiePeriodes)) {
       $vakantiePeriodes = $this->getVakantiePeriodesCustomFields($artsId);
@@ -250,9 +264,11 @@ class CRM_Basis_ControleArts {
   }
 
   /**
-   * Method om te beoordelen of ik valide parameters for Voorstel heb, en deze aan te vullen waar nodig
+   * Method om te beoordelen of ik valide parameters for Voorstel heb, en deze
+   * aan te vullen waar nodig
    *
    * @param $params
+   *
    * @return bool
    * @throws API_Exception
    */
@@ -279,14 +295,15 @@ class CRM_Basis_ControleArts {
    * Method to create a new controlearts
    *
    * @param $data
+   *
    * @return array
    */
   public function create($data) {
     // ensure contact_type and contact_sub_type are set correctly
-    $params = array(
+    $params = [
       'contact_type' => 'Organization',
       'contact_sub_type' => $this->_controleArtsContactSubTypeName,
-    );
+    ];
     if (isset($data['id'])) {
       $params['id'] = $data['id'];
     }
@@ -308,16 +325,17 @@ class CRM_Basis_ControleArts {
    * Method to update a controlearts
    *
    * @param $data
+   *
    * @return array
    */
   public function update($data) {
-    $controlearts = array();
+    $controlearts = [];
     // ensure contact_type and contact_sub_type are set correctly
-    $params = array(
+    $params = [
       'sequential' => 1,
       'contact_type' => 'Organization',
       'contact_sub_type' => $this->_controleArtsContactSubTypeName,
-    );
+    ];
     if (isset($data['id'])) {
       $params['id'] = $data['id'];
     }
@@ -338,6 +356,7 @@ class CRM_Basis_ControleArts {
    * Method to check if a controlearts exists
    *
    * @param $params
+   *
    * @return bool
    */
   public function exists($params) {
@@ -353,19 +372,21 @@ class CRM_Basis_ControleArts {
   }
 
   /**
-   * Method to get all controleartss that meet the selection criteria based on incoming $params
+   * Method to get all controleartss that meet the selection criteria based on
+   * incoming $params
    *
    * @param $params
+   *
    * @return array
    */
   public function get($params) {
-    $controleArts = array();
+    $controleArts = [];
     // ensure that contact sub type is set
     $params['contact_sub_type'] = $this->_controleArtsContactSubTypeName;
     $params['sequential'] = 1;
     // zet limiet indien ingevuld
     if (isset($params['limit'])) {
-      $params['options'] = array('limit' => $params['limit']);
+      $params['options'] = ['limit' => $params['limit']];
       unset($params['limit']);
     }
     try {
@@ -399,14 +420,17 @@ class CRM_Basis_ControleArts {
 
   /**
    * Method om communicatie custom data te halen
+   *
    * @param $artsId
+   *
    * @return array
    */
   private function getCommunicatieCustomFields($artsId) {
-    $result = array();
+    $result = [];
     if ($artsId) {
-      $queryParams = array(1 => array($artsId['id'], 'Integer'));
-      $select = CRM_Basis_Utils::createCustomDataQuery(CRM_Basis_Config::singleton()->getCommunicatieCustomGroup());
+      $queryParams = [1 => [$artsId['id'], 'Integer']];
+      $select = CRM_Basis_Utils::createCustomDataQuery(CRM_Basis_Config::singleton()
+        ->getCommunicatieCustomGroup());
       if ($select) {
         $query = $select . ' WHERE entity_id = %1';
         $dao = CRM_Core_DAO::executeQuery($query, $queryParams);
@@ -425,11 +449,12 @@ class CRM_Basis_ControleArts {
    * @param $data
    */
   public function saveVakantiePeriodes($contactId, $data) {
-    $vakantiePeriodeFields = CRM_Basis_Config::singleton()->getCustonFieldByCustomGroupName('mediwe_vakantie_periode');
+    $vakantiePeriodeFields = CRM_Basis_Config::singleton()
+      ->getCustonFieldByCustomGroupName('mediwe_vakantie_periode');
     // store in arrays if not arrays
     foreach ($vakantiePeriodeFields as $vakantiePeriodeFieldId => $vakantiePeriodeField) {
       if (isset($data[$vakantiePeriodeField['name']]) && !is_array($data[$vakantiePeriodeField['name']])) {
-        $data[$vakantiePeriodeField['name']] = array($data[$vakantiePeriodeField['name']]);
+        $data[$vakantiePeriodeField['name']] = [$data[$vakantiePeriodeField['name']]];
       }
       if (isset($data[$vakantiePeriodeField['name']])) {
         $customData[$vakantiePeriodeField['name']] = $data[$vakantiePeriodeField['name']];
@@ -445,14 +470,16 @@ class CRM_Basis_ControleArts {
 
   /**
    * Method om werkgebieden op te slaan
+   *
    * @param $contactId
    * @param $data
    */
   public function saveWerkgebieden($contactId, $data) {
-    $werkgebiedFields = CRM_Basis_Config::singleton()->getCustomFieldByCustomGroupName('mediwe_werkgebied');
+    $werkgebiedFields = CRM_Basis_Config::singleton()
+      ->getCustomFieldByCustomGroupName('mediwe_werkgebied');
     foreach ($werkgebiedFields as $werkgebiedFieldId => $werkgebiedField) {
       if (isset($data[$werkgebiedField['name']]) && !is_array($data[$werkgebiedField['name']])) {
-        $data[$werkgebiedField['name']] = array($data[$werkgebiedField['name']]);
+        $data[$werkgebiedField['name']] = [$data[$werkgebiedField['name']]];
       }
       if (isset($data[$werkgebiedField['name']])) {
         $customData[$werkgebiedField['name']] = $data[$werkgebiedField['name']];
@@ -467,19 +494,21 @@ class CRM_Basis_ControleArts {
   }
 
   /**
-   * Method om voorwaarden controlearts op te slaan (voorlopig alleen gebruikt in migratie)
+   * Method om voorwaarden controlearts op te slaan (voorlopig alleen gebruikt
+   * in migratie)
    *
    * @param $oldContactId
    * @param $contactId
+   *
    * @return array
    * @throws CiviCRM_API3_Exception
    */
   public function saveVoorwaarden($oldContactId, $contactId) {
     $config = CRM_Basis_Config::singleton();
-    $saveParams = array(
+    $saveParams = [
       'membership_type_id' => $config->getArtsMembershipType()['id'],
       'contact_id' => $contactId,
-    );
+    ];
     // get existing membership
     try {
       $membership = civicrm_api3('Membership', 'getsingle', $saveParams);
@@ -489,8 +518,8 @@ class CRM_Basis_ControleArts {
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
-    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_controlearts_voorwaarden WHERE contact_id = %1";
-    $dao = CRM_Core_DAO::executeQuery($sql, array(1 => array($oldContactId, 'Integer')));
+    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() . ".migratie_controlearts_voorwaarden WHERE contact_id = %1";
+    $dao = CRM_Core_DAO::executeQuery($sql, [1 => [$oldContactId, 'Integer']]);
     if ($dao->fetch()) {
       $params = CRM_Basis_Utils::moveDaoToArray($dao);
     }
@@ -502,13 +531,15 @@ class CRM_Basis_ControleArts {
   }
 
   /**
-   * Method to delete all medeWorkers from a klant with klantId (set to is_deleted in CiviCRM)
+   * Method to delete all medeWorkers from a klant with klantId (set to
+   * is_deleted in CiviCRM)
    *
    * @param $controleArtsId
+   *
    * @return array
    */
   public function deleteWithId($controleArtsId) {
-    $controleArts = array();
+    $controleArts = [];
     // ensure that contact sub type is set
     $params['contact_sub_type'] = $this->_controleArtsContactSubTypeName;
     $params['contact_id'] = $controleArtsId;
@@ -529,6 +560,7 @@ class CRM_Basis_ControleArts {
    *
    * @param $params
    * @param $data
+   *
    * @return array
    * @throws API_Exception
    */
@@ -602,6 +634,7 @@ class CRM_Basis_ControleArts {
    *
    * @param $contactId
    * @param $data
+   *
    * @return mixed
    * @throws CiviCRM_API3_Exception
    */
@@ -611,10 +644,10 @@ class CRM_Basis_ControleArts {
     $adres = $this->existsAddress($contactId);
     if (!$adres) {
       // todo haal Billing uit Config
-      $adres = array(
+      $adres = [
         'location_type_id' => 'Billing',
         'contact_id' => $contactId,
-      );
+      ];
     }
     $adres['street_address'] = $data['street_address'];
     // todo rekening houden met meerdere supplementals?
@@ -630,15 +663,17 @@ class CRM_Basis_ControleArts {
 
   /**
    * Method om te checken of adres al bestaat
+   *
    * @param $contactId
+   *
    * @return array|bool
    */
   private function existsAddress($contactId) {
     // todo method moet eigenlijk naar class Adres
-    $params = array(
+    $params = [
       'location_type_id' => 'Billing',
       'contact_id' => $contactId,
-    );
+    ];
     try {
       $adres = civicrm_api3('Address', 'getsingle', $params);
       return $adres;
@@ -653,19 +688,21 @@ class CRM_Basis_ControleArts {
    *
    * @param $contactId
    * @param $locationType
+   *
    * @return array|bool
    */
   private function existsEmail($contactId, $locationType) {
     // todo method moet eigenlijk naar class Mail
-    $params = array(
+    $params = [
       'location_type_id' => $locationType,
       'contact_id' => $contactId,
-    );
+    ];
     try {
       $email = civicrm_api3('Email', 'getsingle', $params);
       return $email;
     }
-    catch (CiviCRM_API3_Exception $ex) {
+    catch (CiviCRM_API3_Exception $ex)
+    {
       return FALSE;
     }
   }
@@ -676,6 +713,7 @@ class CRM_Basis_ControleArts {
    * @param $contactId
    * @param $locationType
    * @param $emailAddress
+   *
    * @return mixed
    */
   private function createEmail($contactId, $locationType, $emailAddress) {
@@ -683,11 +721,11 @@ class CRM_Basis_ControleArts {
     // todo wat gebeurt hier precies als er meerdere emailadressen zijn
     $email = $this->existsEmail($contactId, $locationType);
     if (!$email) {
-      $email = array(
+      $email = [
         'sequential' => 1,
         'contact_id' => $contactId,
         'location_type_id' => $locationType,
-      );
+      ];
     }
     $email['email'] = $emailAddress;
     try {
@@ -703,14 +741,15 @@ class CRM_Basis_ControleArts {
    * @param $contactId
    * @param $locationType
    * @param string $phoneType
+   *
    * @return array|bool
    */
   private function existsPhone($contactId, $locationType, $phoneType = "Phone") {
-    $params = array(
+    $params = [
       'location_type_id' => $locationType,
       'contact_id' => $contactId,
       'phone_type_id' => $phoneType,
-    );
+    ];
     try {
       $phone = civicrm_api3('Phone', 'getsingle', $params);
       return $phone;
@@ -727,6 +766,7 @@ class CRM_Basis_ControleArts {
    * @param $locationType
    * @param $phoneType
    * @param $phoneNbr
+   *
    * @return mixed
    * @throws CiviCRM_API3_Exception
    */
@@ -735,12 +775,12 @@ class CRM_Basis_ControleArts {
     // todo wat gebeurt er precies bij meerdere telefoons
     $phone = $this->existsPhone($contactId, $locationType, $phoneType);
     if (!$phone) {
-      $phone = array(
+      $phone = [
         'sequential' => 1,
         'contact_id' => $contactId,
         'location_type_id' => $locationType,
         'phone_type_id' => $phoneType,
-      );
+      ];
     }
     if (!empty($phoneNbr)) {
       $phone['phone'] = $phoneNbr;
@@ -750,15 +790,22 @@ class CRM_Basis_ControleArts {
   }
 
   /**
-   * Method voor migratie om gegevens uit het oude civi te halen met aansluitingsNummer
+   * Method voor migratie om gegevens uit het oude civi te halen met
+   * aansluitingsNummer
    *
    * @param $aansluitingsNummer
+   *
    * @return array
    */
   private function getFromCivi($aansluitingsNummer) {
     $config = CRM_Basis_Config::singleton();
-    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_leveranciersgegevens WHERE ml_aansluitingsnummer = %1";
-    $dao = CRM_Core_DAO::executeQuery($sql, array(1 => array($aansluitingsNummer, 'String')));
+    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() . ".migratie_leveranciersgegevens WHERE ml_aansluitingsnummer = %1";
+    $dao = CRM_Core_DAO::executeQuery($sql, [
+      1 => [
+        $aansluitingsNummer,
+        'String',
+      ],
+    ]);
     if ($dao->fetch()) {
       return CRM_Basis_Utils::moveDaoToArray($dao);
     }
@@ -772,7 +819,12 @@ class CRM_Basis_ControleArts {
    */
   private function migrateTags($oldId, $newId) {
     $config = CRM_Basis_Config::singleton();
-    $dao = CRM_Core_DAO::executeQuery("SELECT * FROM civicrm_tag WHERE id = %1", array(1 => array($oldId, 'Integer')));
+    $dao = CRM_Core_DAO::executeQuery("SELECT * FROM civicrm_tag WHERE id = %1", [
+      1 => [
+        $oldId,
+        'Integer',
+      ],
+    ]);
     if (!$dao->fetch()) {
       $sql = "INSERT INTO `mediwe_civicrm`.`civicrm_tag` (
         `id`,
@@ -795,37 +847,39 @@ class CRM_Basis_ControleArts {
         `is_tagset`,
         `used_for`,
         `created_date`
-      FROM " . $config->getSourceCiviDbName() .  ".`civicrm_tag`";
+      FROM " . $config->getSourceCiviDbName() . ".`civicrm_tag`";
       CRM_Core_DAO::executeQuery($sql);
     }
-    CRM_Core_DAO::executeQuery(" DELETE FROM civicrm_entity_tag WHERE entity_id = %1 AND entity_table = %2", array(
-      1 => array($newId, 'Integer'),
-      2 => array('civicrm_contact', 'String'),
-    ));
+    CRM_Core_DAO::executeQuery(" DELETE FROM civicrm_entity_tag WHERE entity_id = %1 AND entity_table = %2", [
+      1 => [$newId, 'Integer'],
+      2 => ['civicrm_contact', 'String'],
+    ]);
     $sql = "INSERT INTO civicrm_entity_tag (entity_table, entity_id, tag_id)
       SELECT %1, %2, tag_id FROM " . $config->getSourceCiviDbName() . ".civicrm_entity_tag WHERE entity_id = %3 AND entity_table = %1";
-    CRM_Core_DAO::executeQuery($sql, array(
-      1 => array('civicrm_contact', 'String'),
-      2 => array($newId, 'Integer'),
-      3 => array($oldId, 'Integer'),
-    ));
+    CRM_Core_DAO::executeQuery($sql, [
+      1 => ['civicrm_contact', 'String'],
+      2 => [$newId, 'Integer'],
+      3 => [$oldId, 'Integer'],
+    ]);
   }
+
   /**
    * Method om vanuit de oude civicrm te migreren
    *
    * @param $contactId
    * @param $data
+   *
    * @return array
    * @throws CiviCRM_API3_Exception
    */
   private function migrateFromCivi($contactId, $data) {
     $config = CRM_Basis_Config::singleton();
-    $params = array(
+    $params = [
       'sequential' => 1,
       'contact_type' => 'Organization',
       'contact_sub_type' => $this->_controleArtsContactSubTypeName,
       'id' => $contactId,
-    );
+    ];
     // zoek deze klant op in civi produktie
     $civiArts = $this->getFromCivi($data['supplier_aansluitingsnummer']);
     // update de leveranciersgegevens
@@ -844,6 +898,7 @@ class CRM_Basis_ControleArts {
    * Method om vanuit Joomla te migreren
    *
    * @param $params
+   *
    * @throws CiviCRM_API3_Exception
    */
   private function migrateFromJoomla($params) {
@@ -881,21 +936,26 @@ class CRM_Basis_ControleArts {
         }
       }
       // zoek controlearts met dat nummer van joomla
-      $arts = $this->get(array('external_identifier' => $params['external_identifier']));
+      $arts = $this->get(['external_identifier' => $params['external_identifier']]);
       if ($arts && !isset($arts['count'])) {
         $params['id'] = reset($arts)['contact_id'];
       }
       // todo check hoe met regios om te gaan in migratie. Hebben we er meer? Dit vraagt eigenlijk ook om werkgebied API
       // zoek de regio data op
       $sqlRegio = " SELECT * FROM mediwe_joomla.jos_mediwe_doctor_regions WHERE id_doctor = %1";
-      $daoRegio = CRM_Core_DAO::executeQuery($sqlRegio, array(1 => array($idDoctor, 'Integer')));
-      $regios = array();
+      $daoRegio = CRM_Core_DAO::executeQuery($sqlRegio, [
+        1 => [
+          $idDoctor,
+          'Integer',
+        ],
+      ]);
+      $regios = [];
       while ($daoRegio->fetch()) {
-        $regios[] = array(
+        $regios[] = [
           $config->getPostcodeCustomField('name') => $daoRegio->zip,
           $config->getGemeenteCustomField('name') => $daoRegio->city,
           $config->getPrioriteitCustomField('name') => $daoRegio->sequence_nbr,
-        );
+        ];
       }
       $params['regios'] = $regios;
       // voeg de controlearts toe
@@ -907,7 +967,7 @@ class CRM_Basis_ControleArts {
       $this->migrateFromCivi($params['id'], $params);
       // confirm migration
       $sql = "INSERT INTO `mediwe_joomla`.`migration_doctor` (`id`) VALUES  (%1)";
-      CRM_Core_DAO::executeQuery($sql, array(1 => array($idDoctor, 'Integer')));
+      CRM_Core_DAO::executeQuery($sql, [1 => [$idDoctor, 'Integer']]);
     }
   }
 
