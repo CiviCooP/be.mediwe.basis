@@ -65,7 +65,7 @@ omdat dit kan wijzigen en omdat we steeds wensen te weten op welk adres een cont
 
 ## Gegevens over de controle opdracht
 
-!!! warning "Nog uit te werken"
+!!! bug "Nog uit te werken"
     In het huidige systeem is dit onvoldoende "clean" uitgewerkt.
     In het dossier zouden we moeten bewaren wat bij afwezigheid (binnen en buiten 4 wettelijke uren) de volgende
     stap moet zijn en of er wel een volgende stap moet zijn (sommige klanten wensen NIET dat een arts buiten de opgegeven uren
