@@ -253,6 +253,12 @@ function _civicrm_api3_klant_Create_spec(&$spec) {
  */
 function civicrm_api3_klant_Create($params) {
   $klant = new CRM_Basis_Klant();
-  $returnValues = $klant->create($params);
-  return civicrm_api3_create_success($returnValues, $params, 'Klant', 'Create');
+  $created = $klant->create($params);
+  return array(
+    'is_error' => 0,
+    'version' => 3,
+    'count' => 1,
+    'id' => $created['id'],
+    'values' => $created
+  );
 }
