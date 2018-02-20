@@ -44,17 +44,12 @@ De werkgever is de "current employer" van de werknemer.
 ### Gegevens van de activiteit (Huisbezoek of Consultatie)
 
 Een "Hercontrole" is een huisbezoek dat binnen hetzelfde dossier "Medische controle" volgt op een eerder huisbezoek.
-
-!!! warning "Hercontrole"
-    Is dat een ander type activiteit? Hoe modelleren we dat?
-    
+   
 * Soort controle (huisbezoek/consultatie/hercontrole) en datum
 
 ### Gegevens van de ziekteperiode
 
-!!! bug "Niet correct gemodelleerd"
-    De begin- en einddatum van de ziekteperiode ontbreekt.
-    
+   
 * Begin- en einddatum van de ziekteperiode + of het een verlening is
     
 ### Gegevens van het dossier medische controle
@@ -103,5 +98,7 @@ Dit kan "automatisch" opgevangen worden voor alle klanten als we de procedure be
 ## Nieuwe klantspecifieke teksten
 
 !!! warning "Beperking van het huidige systeem"
-    Momenteel bewaren we 
+    Momenteel bewaren we bepaalde visie teksten van onze klanten in het nederlands.
+    Eigenlijk zouden we deze velden moeten weghalen en dit allemaal opslaan in de klantspecifieke teksten (voorstel Klaas).
+    
 
