@@ -9,6 +9,7 @@ pages:
 - Contact Types: contacttypes.md
 - Dossier Type Ziektemelding: ziektemelding.md
 - Dossier Type Medische Controle: medische_controle.md
+- Email naar de controlearts: bericht_arts.md
 - Drupal modules (en themes): drupalmodules.md
 - CiviCRM extensies: civiextensions.md
 - Automatische Acties: automatische_acties.md

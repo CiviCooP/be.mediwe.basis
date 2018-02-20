@@ -110,7 +110,7 @@ Eerder toegewezen opdrachten vertrekken om 8u30 naar de arts.
 
 ### Standaard procedure
 
-Een E-mail bericht vertrekt direct na toewijzing naar de arts.
+Een [E-mail bericht](bericht_arts.md) vertrekt direct na toewijzing naar de arts.
 
 ### Diverse varianten
 
@@ -121,20 +121,6 @@ Daarom voorzien we tal van varianten:
 * Omtrent (= geen vast uur!) 12u een overzicht van de opdrachten mailen of faxen
 * Omtrent de middag artsen opbellen om mee te delen hoeveel en welke opdrachten zij ontvangen hebben
 * De arts raadplegen VOOR de toewijzing
-
-### Inhoud van het mailbericht 
-
-* Naam, email of fax van de geadresseerde arts
-* Naam van de te controleren werknemer
-* Zo geen consultatie: adres van de werknemer
-* Soort controle (huisbezoek/consultatie/hercontrole) en datum
-* Naam van de werkgever, eventueel werkgever specifieke tekst
-* Functie van de werknemer + omschrijving van die functie
-* Begin- en einddatum van de ziekteperiode + of het een verlening is
-* De te volgen procedure: tussen bepaalde uren of niet, wat bij afwezigheid
-* Bij huisbezoek of hercontrole: afstand (km) voor de arts
-* Opmerking van de klant bij de opdracht
-* Later toe te voegen: historiek vorige controles afgelopen 12 maand (datum - ziekteperiode - resultaat)
 
  
 ## Verwerking van resultaten

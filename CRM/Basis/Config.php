@@ -56,7 +56,7 @@ class CRM_Basis_Config {
   private $_communicatieCustomGroup = array();
   private $_werkgebiedCustomGroup = array();
 
-  private $_klantMedewerkerExpertsysteemTellersCustomGroup = array();
+  private $_klantMedewerkerExpertTellersCustomGroup = array();
   private $_klantMedewerkerMedewerkerCustomGroup = array();
 
   private $_voorwaardenControleCustomGroup = array();
@@ -91,6 +91,8 @@ class CRM_Basis_Config {
   // contact id van het mediwe team
   private $_mediweTeamContactId = 1 ;
 
+  private $_allCustomGroups = array();
+
 
   /**
    * CRM_Basis_Config constructor.
@@ -108,23 +110,11 @@ class CRM_Basis_Config {
     $this->setLocationTypes();
     $this->setOptionGroups();
 
-    // set custom groups and custom fields voor controlearts/inspecteur
-    $this->setCustomGroups('mediwe_communicatie_controlearts', '_communicatieCustomGroup');
-    $this->setCustomGroups('mediwe_vakantie_periode', '_vakantiePeriodeCustomGroup');
-    $this->setCustomGroups('mediwe_werkgebied', '_werkgebiedCustomGroup');
-    $this->setCustomGroups('mediwe_leverancier', '_leverancierCustomGroup');
-    $this->setCustomGroups('mediwe_voorwaarden_arts', '_voorwaardenArtsCustomGroup');
-    // set custom groups and custom fields voor klanten
-    $this->setCustomGroups('mediwe_facturatie', '_klantBoekhoudingCustomGroup');
-    $this->setCustomGroups('mediwe_expertsysteem', '_klantExpertsysteemCustomGroup');
-    $this->setCustomGroups('mediwe_interne_organisatie', '_klantOrganisatieCustomGroup');
-    $this->setCustomGroups('mediwe_controle_procedure_klant', '_klantProcedureCustomGroup');
-    // set custom groups and custom fields voor klant medewerkers
-    $this->setCustomGroups('mediwe_klant_medewerker', '_klantMedewerkerMedewerkerCustomGroup');
-    $this->setCustomGroups('mediwe_tellers_expertsysteem', '_klantMedewerkerExpertsysteemTellersCustomGroup');
-
-    $this->setCustomGroups('mijnmediwe_voorwaarden', '_voorwaardenMijnmediweCustomGroup');
-    $this->setCustomGroups('mediwe_voorwaarden_controle', '_voorwaardenControleCustomGroup');
+    // set custom groups and custom fields
+    $this->setAllCustomGroups();
+    foreach ($this->_allCustomGroups as $customGroupName => $customGroupProperty) {
+      $this->setCustomGroups($customGroupName, $customGroupProperty);
+    }
 
     $this->setCasesCustomGroups();
     $this->setMediweTeamContactId();
@@ -980,7 +970,7 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getTellerZiekteOpMaandagCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_klantMedewerkerExpertsysteemTellersCustomGroup, 'mte_maandag_ziektes');
+        $customField = $this->getCustomField($this->_klantMedewerkerExpertTellersCustomGroup, 'mte_maandag_ziektes');
         if (!empty($key) && isset($customField[$key])) {
             return $customField[$key];
         } else {
@@ -1668,10 +1658,10 @@ class CRM_Basis_Config {
      * @return mixed|array
      */
     public function getKlantMedewerkerExpertsysteemTellersCustomGroup($key = NULL) {
-        if (!empty($key) && isset($this->_klantMedewerkerExpertsysteemTellersCustomGroup[$key])) {
-            return $this->_klantMedewerkerExpertsysteemTellersCustomGroup[$key];
+        if (!empty($key) && isset($this->_klantMedewerkerExpertTellersCustomGroup[$key])) {
+            return $this->_klantMedewerkerExpertTellersCustomGroup[$key];
         } else {
-            return $this->_klantMedewerkerExpertsysteemTellersCustomGroup;
+            return $this->_klantMedewerkerExpertTellersCustomGroup;
         }
     }
 
@@ -1983,6 +1973,27 @@ class CRM_Basis_Config {
 
         return $list;
     }
+
+  /**
+   * Method om alle custom groups in property te plaatsen
+   */
+  private function setAllCustomGroups() {
+    $this->_allCustomGroups = array(
+      'mediwe_communicatie_controlearts' => '_communicatieCustomGroup',
+      'mediwe_vakantie_periode' => '_vakantiePeriodeCustomGroup',
+      'mediwe_werkgebied' => '_werkgebiedCustomGroup',
+      'mediwe_leverancier' => '_leverancierCustomGroup',
+      'mediwe_voorwaarden_arts' => '_voorwaardenArtsCustomGroup',
+      'mediwe_facturatie' => '_klantBoekhoudingCustomGroup',
+      'mediwe_expert_systeem' => '_klantExpertsysteemCustomGroup',
+      'mediwe_interne_organisatie' => '_klantOrganisatieCustomGroup',
+      'mediwe_controle_procedure_klant' => '_klantProcedureCustomGroup',
+      'mediwe_klant_medewerker' => '_klantMedewerkerMedewerkerCustomGroup',
+      'mediwe_tellers_expert_teller' => '_klantMedewerkerExpertTellersCustomGroup',
+      'mijnmediwe_voorwaarden' => '_voorwaardenMijnmediweCustomGroup',
+      'mediwe_voorwaarden_controle' => '_voorwaardenControleCustomGroup',
+    );
+  }
 
     /**
      * Method to set the relevant klant location type properties
@@ -2381,6 +2392,20 @@ class CRM_Basis_Config {
     }
 
     return $rv;
+  }
+
+  /**
+   * Method om alle custom fields voor een custom group op te halen met custom group naam
+   *
+   * @param $customGroupName
+   * @return mixed
+   */
+  public function getCustomFieldByCustomGroupName($customGroupName) {
+    if (isset($this->_allCustomGroups[$customGroupName])) {
+      $property = $this->_allCustomGroups[$customGroupName];
+      $customGroup = $this->$property;
+      return $customGroup['custom_fields'];
+    }
   }
 
   /**

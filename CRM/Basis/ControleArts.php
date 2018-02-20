@@ -285,40 +285,6 @@ class CRM_Basis_ControleArts {
   }
 
   /**
-   * Method om alle vakantieperiodes van een contact id op te halen
-   *
-   * @param $contactId
-   * @return array
-   */
-  public function getVakantiePeriodesCustomFields($contactId) {
-    $result = array();
-    $select = CRM_Basis_Utils::createCustomDataQuery(CRM_Basis_Config::singleton()->getVakantieperiodeCustomGroup());
-    $query = $select . ' WHERE entity_id = %1';
-    $dao = CRM_Core_DAO::executeQuery($query, array(1 => array($contactId, 'Integer')));
-    while ($dao->fetch()) {
-      $result[] = CRM_Basis_Utils::moveDaoToArray($dao);
-    }
-    return $result;
-  }
-
-  /**
-   * Method om alle werkgebieden van een contact id op te halen
-   *
-   * @param $contactId
-   * @return array
-   */
-  public function getWerkgebiedenCustomFields($contactId) {
-    $result = array();
-    $select = CRM_Basis_Utils::createCustomDataQuery(CRM_Basis_Config::singleton()->getWerkgebiedCustomGroup());
-    $query = $select . ' WHERE entity_id = %1';
-    $dao = CRM_Core_DAO::executeQuery($query, array(1 => array($contactId, 'Integer')));
-    while ($dao->fetch()) {
-      $result[] = CRM_Basis_Utils::moveDaoToArray($dao);
-    }
-    return $result;
-  }
-
-  /**
    * Method to update a controlearts
    *
    * @param $data
@@ -392,11 +358,11 @@ class CRM_Basis_ControleArts {
         if ($communicatie) {
           $controleArts[$controleArtsId] = array_merge($controleArts[$controleArtsId], $communicatie);
         }
-        $vakanties['vakantie_periodes'] = $this->getVakantiePeriodesCustomFields($controleArtsData['id']);
+        $vakanties['vakantie_periodes'] = CRM_Basis_RepeatingCustomData::get('mediwe_vakantie_periode', $controleArtsData['id']);
         if ($vakanties) {
           $controleArts[$controleArtsId] = array_merge($controleArts[$controleArtsId], $vakanties);
         }
-        $werkgebieden['werkgebieden'] = $this->getWerkgebiedenCustomFields($controleArtsData['id']);
+        $werkgebieden['werkgebieden'] = CRM_Basis_RepeatingCustomData::get('mediwe_werkgebied', $controleArtsData['id']);
         if ($werkgebieden) {
           $controleArts[$controleArtsId] = array_merge($controleArts[$controleArtsId], $werkgebieden);
         }
@@ -439,26 +405,22 @@ class CRM_Basis_ControleArts {
    * @param $data
    */
   public function saveVakantiePeriodes($contactId, $data) {
-    // todo nakijken wat er gebeurt als er al meerdere vakantieperiodes voor het contact staan en er meerdere toegevoegd worden
-    if (isset($data['mvp_vakantie_van'])) {
-      $holiday = array(
-        'mvp_vakantie_van' => $data['mvp_vakantie_van'],
-        'mvp_vakantie_tot' => $data['mvp_vakantie_tot'],
-      );
-      $oldPeriods = $this->getVakantiePeriodesCustomFields($contactId);
-      foreach ($oldPeriods as $period) {
-        if (substr($period['mvp_vakantie_van'], 0, 10) == substr($data['mvp_vakantie_van'], 0, 10)) {
-          $holiday['id'] = $period['id'];
-        }
+    $vakantiePeriodeFields = CRM_Basis_Config::singleton()->getCustonFieldByCustomGroupName('mediwe_vakantie_periode');
+    // store in arrays if not arrays
+    foreach ($vakantiePeriodeFields as $vakantiePeriodeFieldId => $vakantiePeriodeField) {
+      if (isset($data[$vakantiePeriodeField['name']]) && !is_array($data[$vakantiePeriodeField['name']])) {
+        $data[$vakantiePeriodeField['name']] = array($data[$vakantiePeriodeField['name']]);
+      }
+      if (isset($data[$vakantiePeriodeField['name']])) {
+        $customData[$vakantiePeriodeField['name']] = $data[$vakantiePeriodeField['name']];
+      }
+      else {
+        $customData[$vakantiePeriodeField['name']] = NULL;
       }
     }
-    $config = CRM_Basis_Config::singleton();
-    CRM_Basis_Utils::setRepeatingData(
-      $config->getVakantieperiodeCustomGroup('custom_fields'),
-      $contactId,
-      $holiday,
-      array('mvp_vakantie_van')
-    );
+    if ($customData) {
+      CRM_Basis_RepeatingCustomData::save('mediwe_vakantie_periode', $contactId, $customData);
+    }
   }
 
   /**
@@ -467,33 +429,21 @@ class CRM_Basis_ControleArts {
    * @param $data
    */
   public function saveWerkgebieden($contactId, $data) {
-    // todo wellicht aparte API, immers toevoegen en vervangen moeten mogelijk zijn?
-    $werkgebiedFields = array('mw_postcode', 'mw_gemeente', 'mw_prioriteit');
-    $werkgebiedPresent = FALSE;
-    $werkgebied = array();
-    foreach ($werkgebiedFields as $werkgebiedField) {
-      if (isset($data[$werkgebiedField])) {
-        $werkgebiedPresent = TRUE;
-        $werkgebied[$werkgebiedField] = $data[$werkgebiedField];
-      } else {
-        $werkgebied[$werkgebiedField] = NULL;
+    $werkgebiedFields = CRM_Basis_Config::singleton()->getCustomFieldByCustomGroupName('mediwe_werkgebied');
+    foreach ($werkgebiedFields as $werkgebiedFieldId => $werkgebiedField) {
+      if (isset($data[$werkgebiedField['name']]) && !is_array($data[$werkgebiedField['name']])) {
+        $data[$werkgebiedField['name']] = array($data[$werkgebiedField['name']]);
+      }
+      if (isset($data[$werkgebiedField['name']])) {
+        $customData[$werkgebiedField['name']] = $data[$werkgebiedField['name']];
+      }
+      else {
+        $customData[$werkgebiedField['name']] = NULL;
       }
     }
-    if ($werkgebiedPresent == TRUE) {
-      $oldRecords = $this->getWerkgebiedenCustomFields($contactId);
-      foreach ($oldRecords as $oldRecord) {
-        if ($oldRecord['mw_postcode'] == $werkgebied['mw_postcode']) {
-          $werkgebied['id'] = $oldRecord['id'];
-        }
-      }
+    if ($customData) {
+      CRM_Basis_RepeatingCustomData::save('mediwe_werkgebied', $contactId, $customData);
     }
-    $config = CRM_Basis_Config::singleton();
-    CRM_Basis_Utils::setRepeatingData(
-      $config->getWerkgebiedCustomGroup('custom_fields'),
-      $contactId,
-      $werkgebied,
-      $werkgebiedFields
-    );
   }
 
   /**
