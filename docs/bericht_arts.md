@@ -77,7 +77,8 @@ Een "Hercontrole" is een huisbezoek dat binnen hetzelfde dossier "Medische contr
 * De omschrijving van de functie van de werknemer uit het dossier medische controle (mmc_job_beschrijving)
 * De te volgen procedure: tussen bepaalde uren of niet, wat bij afwezigheid    
 * Bij huisbezoek of hercontrole: afstand (km) voor de arts
-* Opmerking van de klant bij de opdracht
+* Bericht voor de controlearts (mmc_opmerking_controlearts)
+* Mag deze info gedeeld worden met de werknemer? (mmc_info_delen_patient)
 
 ### Historiek van medische controles van de voorbije 12 maand
 
@@ -99,4 +100,9 @@ Dit kan "automatisch" opgevangen worden voor alle klanten als we de procedure be
 * De convocatie op het kabinet moet altijd op dag + 1 (modelleren?)
 * Geen huisbezoek na 17u, zo niet geen controle (voor deze klant geldt dit enkel op vrijdagen!)
 * Tip van de week vanwege Mediwe
+
+## Nieuwe klantspecifieke teksten
+
+!!! warning "Beperking van het huidige systeem"
+    Momenteel bewaren we 
 
