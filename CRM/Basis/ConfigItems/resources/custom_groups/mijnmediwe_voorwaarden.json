@@ -10,6 +10,19 @@
     "is_reserved":0,
     "collapse_display":0,
     "fields": {
+      "mmv_type_contract": {
+        "name": "mmv_mijnmediwe_module",
+        "label": "Module",
+        "data_type": "String",
+        "html_type": "Select",
+        "option_group": "module_mijn_mediwe",
+        "is_searchable": 1,
+        "is_search_range":0,
+        "is_view": 0,
+        "is_required":0,
+        "weight": 4,
+        "is_active": 1
+      },
         "mmv_prijs_per_jaar": {
            "name": "mmv_prijs_per_jaar",
            "label": "Prijs per jaar",

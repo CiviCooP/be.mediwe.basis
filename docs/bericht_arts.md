@@ -28,10 +28,9 @@ De werknemer is de "Client" waaraan het dossier "Medische Controle" gekoppeld is
 
 !!! warning "De bradford niet altijd tonen"
     De bradford heeft slechts zin als we beschikken over alle ziekteperiodes van de werknemer.
-    Dit is: als de klant een lidmaatschap "Mijn Mediwe" heeft van het subtype "Uitgebreid".
+    Dit is: als de klant een lidmaatschap "Mijn Mediwe" heeft van het subtype "Uitgebreid" of "Expert".
 
-!!! bug "Subtype Mijn Mediwe lidmaatschap is nog niet voorzien"
-    In het huidig systeem zijn er 2 subtypes: Basis - Uitgebreid.    
+    In het huidig systeem zijn er 3 subtypes: Basis - Uitgebreid - Expert    
 
 ### Gegevens van de werkgever
 
