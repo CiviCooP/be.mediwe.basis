@@ -4,8 +4,6 @@ De inhoud van het bericht is identiek of je dit nu mailt of via de fax verstuurt
 
 ## Inhoud van het mailbericht 
 
-
-
 * Later toe te voegen: historiek vorige controles afgelopen 12 maand (datum - ziekteperiode - resultaat)
 
 ### Gegevens van de geadresseerde arts
@@ -88,4 +86,17 @@ Voor elk dossier "Medische controle":
 * De datum van de controle (mmc_controle_datum)
 * De ziekteperiode + of dit een verlenging was (=niveau dossier "Ziekteperiode")
 * Het eindresultaat van de controle (mmc_resultaat)
+
+## Voorbeelden van klantspecifieke teksten
+
+!!! warning
+    Deze voorbeelden tonen aan dat de meeste klantspecifieke teksten kunnen verdwijnen als we ons datamodel beter uitwerken.
+    
+
+* Indien huisbezoek niet mogelijk tussen 9u en 18u, geen controle.
+Dit kan "automatisch" opgevangen worden voor alle klanten als we de procedure beter modelleren in onze data.
+* Bepaalde tekst over "visie" van het bedrijf net onder de naam van het bedrijf.
+* De convocatie op het kabinet moet altijd op dag + 1 (modelleren?)
+* Geen huisbezoek na 17u, zo niet geen controle (voor deze klant geldt dit enkel op vrijdagen!)
+* Tip van de week vanwege Mediwe
 
