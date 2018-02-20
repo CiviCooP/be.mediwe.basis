@@ -53,6 +53,9 @@ class CRM_Basis_Acties_DagelijkseBelAfspraak {
   }
 
 
+  /**
+   * @throws \CiviCRM_API3_Exception
+   */
   public function actie() {
     $config = CRM_Basis_Config::singleton();
     $belmoment = civicrm_api3('Contact', 'getvalue', [
@@ -60,7 +63,6 @@ class CRM_Basis_Acties_DagelijkseBelAfspraak {
         'return' => 'custom_' . $config->getArtsBelMomentCustomField('id'),
       ]
     );
-
     try
     {
       $naamOnderzochte = civicrm_api3('Contact', 'getvalue', [
