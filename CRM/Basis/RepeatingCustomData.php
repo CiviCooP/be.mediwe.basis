@@ -11,10 +11,12 @@ class CRM_Basis_RepeatingCustomData {
 
   private $_customGroupName = array();
   private $_entityId = NULL;
+  private $_entityTable = NULL;
 
   public function __construct($customGroupName, $entityId) {
     $this->_customGroupName = $customGroupName;
     $this->_entityId = $entityId;
+    $this->_entityTable = 'civicrm_contact';
   }
 
   /**
@@ -26,10 +28,53 @@ class CRM_Basis_RepeatingCustomData {
    * @return bool
    */
   public static function save($customGroupName, $entityId, $data) {
+    $apiParamsSets = array();
     if (empty($customGroupName) || empty($data) || empty($entityId)) {
       return FALSE;
     }
     $repeatingCustomData = new CRM_Basis_RepeatingCustomData($customGroupName, $entityId);
+    // als mediwe_werkgebied: haal eventueel sleutel op voor update
+    if ($customGroupName == 'mediwe_werkgebied') {
+      $apiKey = $repeatingCustomData->getWerkgebiedUpdateKey($entityId, $data);
+    }
+    $customFields = $repeatingCustomData->getSaveCustomFieldIds();
+    foreach ($data as $customFieldName => $dataValues) {
+      foreach ($dataValues as $key => $value) {
+        if ($apiKey) {
+          $apiParamsSets[$key][$customFields[$customFieldName] . ':' . $apiKey] = $value;
+        }
+        else {
+          $apiParamsSets[$key][$customFields[$customFieldName]] = $value;
+        }
+      }
+    }
+    foreach ($apiParamsSets as $apiParams) {
+      $apiParams['entity_id'] = $entityId;
+      $apiParams['entity_table'] = $repeatingCustomData->_entityTable;
+      try {
+        civicrm_api3('CustomValue', 'create', $apiParams);
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+        CRM_Core_Error::debug_log_message(ts('Could not add repeating custom values in custom group with name ' . $customGroupName . ' in ' . __METHOD__));
+      }
+    }
+  }
+  private function getWerkgebiedUpdateKey {
+    return FALSE;
+  }
+
+  /**
+   * Method om custom velden voor de custom groep op te halen en terug te geven in patroon naam => id
+   *
+   * @return array
+   */
+  private function getSaveCustomFieldIds() {
+    $result = array();
+    $customFields = CRM_Basis_Config::singleton()->getCustomFieldByCustomGroupName($this->_customGroupName);
+    foreach ($customFields as $customFieldId => $customField) {
+      $result[$customField['name']] = 'custom_'.$customFieldId;
+    }
+    return $result;
   }
 
   /**
@@ -61,7 +106,7 @@ class CRM_Basis_RepeatingCustomData {
   private function setGetParams() {
     $result = array(
       'options' => array('limit' => 0),
-      'entity_table' => 'civicrm_contact',
+      'entity_table' => $this->_entityTable,
       'entity_id' => $this->_entityId,
     );
     // ophalen custom velden in custom groep zodat die als terug te geven velden in parameter array gestopt kunnen worden
