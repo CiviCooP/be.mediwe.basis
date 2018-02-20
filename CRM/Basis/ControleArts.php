@@ -285,40 +285,6 @@ class CRM_Basis_ControleArts {
   }
 
   /**
-   * Method om alle vakantieperiodes van een contact id op te halen
-   *
-   * @param $contactId
-   * @return array
-   */
-  public function getVakantiePeriodesCustomFields($contactId) {
-    $result = array();
-    $select = CRM_Basis_Utils::createCustomDataQuery(CRM_Basis_Config::singleton()->getVakantieperiodeCustomGroup());
-    $query = $select . ' WHERE entity_id = %1';
-    $dao = CRM_Core_DAO::executeQuery($query, array(1 => array($contactId, 'Integer')));
-    while ($dao->fetch()) {
-      $result[] = CRM_Basis_Utils::moveDaoToArray($dao);
-    }
-    return $result;
-  }
-
-  /**
-   * Method om alle werkgebieden van een contact id op te halen
-   *
-   * @param $contactId
-   * @return array
-   */
-  public function getWerkgebiedenCustomFields($contactId) {
-    $result = array();
-    $select = CRM_Basis_Utils::createCustomDataQuery(CRM_Basis_Config::singleton()->getWerkgebiedCustomGroup());
-    $query = $select . ' WHERE entity_id = %1';
-    $dao = CRM_Core_DAO::executeQuery($query, array(1 => array($contactId, 'Integer')));
-    while ($dao->fetch()) {
-      $result[] = CRM_Basis_Utils::moveDaoToArray($dao);
-    }
-    return $result;
-  }
-
-  /**
    * Method to update a controlearts
    *
    * @param $data
@@ -392,11 +358,11 @@ class CRM_Basis_ControleArts {
         if ($communicatie) {
           $controleArts[$controleArtsId] = array_merge($controleArts[$controleArtsId], $communicatie);
         }
-        $vakanties['vakantie_periodes'] = $this->getVakantiePeriodesCustomFields($controleArtsData['id']);
+        $vakanties['vakantie_periodes'] = CRM_Basis_RepeatingCustomData::get('mediwe_vakantie_periode', $controleArtsData['id']);
         if ($vakanties) {
           $controleArts[$controleArtsId] = array_merge($controleArts[$controleArtsId], $vakanties);
         }
-        $werkgebieden['werkgebieden'] = $this->getWerkgebiedenCustomFields($controleArtsData['id']);
+        $werkgebieden['werkgebieden'] = CRM_Basis_RepeatingCustomData::get('mediwe_werkgebied', $controleArtsData['id']);
         if ($werkgebieden) {
           $controleArts[$controleArtsId] = array_merge($controleArts[$controleArtsId], $werkgebieden);
         }
