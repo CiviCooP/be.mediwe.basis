@@ -11,10 +11,7 @@ De inhoud van het bericht is identiek of je dit nu mailt of via de fax verstuurt
 ### Gegevens van de geadresseerde arts
 
 De controlearts is de arts die toegekend werd aan de activiteit "Huisbezoek" of "Consultatie".
-Deze wordt ook gekopieerd in de rol "Controlerende arts" in het dossier "Medische controle".
-
-!!! warning "Rol van de controlearts"
-    Wat is de naam van deze rol?
+Deze wordt ook gekopieerd in de rol "Onderzocht door controlearts" in het dossier "Medische controle".
 
 Deze gegevens zijn noodzakelijk uiteraard om de bestemmeling van het bericht te kennen.
 Voor het versturen per fax zien de medewerkers in het bericht wie de bestemmeling is.
@@ -34,7 +31,9 @@ De werknemer is de "Client" waaraan het dossier "Medische Controle" gekoppeld is
 !!! warning "De bradford niet altijd tonen"
     De bradford heeft slechts zin als we beschikken over alle ziekteperiodes van de werknemer.
     Dit is: als de klant een lidmaatschap "Mijn Mediwe" heeft van het subtype "Uitgebreid".
-    
+
+!!! bug "Subtype Mijn Mediwe lidmaatschap is nog niet voorzien"
+    In het huidig systeem zijn er 2 subtypes: Basis - Uitgebreid.    
 
 ### Gegevens van de werkgever
 
@@ -56,7 +55,7 @@ Een "Hercontrole" is een huisbezoek dat binnen hetzelfde dossier "Medische contr
 
 ### Gegevens van de ziekteperiode
 
-!!! warning "Niet correct gemodelleerd"
+!!! bug "Niet correct gemodelleerd"
     De begin- en einddatum van de ziekteperiode ontbreekt.
     
 * Begin- en einddatum van de ziekteperiode + of het een verlening is
@@ -68,6 +67,13 @@ Een "Hercontrole" is een huisbezoek dat binnen hetzelfde dossier "Medische contr
     In het dossier zouden we moeten bewaren wat bij afwezigheid (binnen en buiten 4 wettelijke uren) de volgende
     stap moet zijn en of er wel een volgende stap moet zijn (sommige klanten wensen NIET dat een arts buiten de opgegeven uren
     bij een medewerker op bezoek komt om die 2de stap te ontwijken).
+    
+    Elementen:
+     * Verplichte thuis aanwezigheid van ... tot ... (of geen verplichting)
+     * Mag controle buiten deze uren? (Ja/Neen)
+     * Wat als afwezig binnen deze uren? (geen vervolg - consultatie - hercontrole)
+     * Wat als afwezig buiten deze uren? (niet van toepassing - consultatie - hercontrole)
+     * Wat als afwezig zo er geen uren gelden? (Consultatie of hercontrole)
 
 * De datum van de controle (mmc_controle_datum)
 * De omschrijving van de functie van de werknemer uit het dossier medische controle (mmc_job_beschrijving)
