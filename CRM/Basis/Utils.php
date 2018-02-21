@@ -27,7 +27,6 @@ class CRM_Basis_Utils {
     return implode(' ', $nameParts);
   }
 
-gi
   /**
    * Method to retrieve the group id with group name
    *
