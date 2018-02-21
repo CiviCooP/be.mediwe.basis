@@ -9,11 +9,12 @@ Daarom is zijn identiteit niet eenduidig gekend.
 
 De klant geeft ons volgende informatie:
 
-* De gegevens van de te controleren medewerker: naam, adres
+* De gegevens van de te controleren medewerker: naam, woonadres en eventueel adres waarde controle plaats gaat vinden (verblijfsadres)
 * De gegevens over de ziekteperiode
 * De facturatiegegevens van het bedrijf
 * Contact gegevens van de aanvrager (naam, telefoon, email)
 * E-mail adressen wie bevestiging van de aanvraag ontvangt en wie het resultaat ontvangt (telkens max. 3 adressen)
+* De eerste actie van de medische controle
 
 De verwerking verloopt in volgende stappen:
 
@@ -184,35 +185,47 @@ De medische controle komt in principe binnen met de API **MedischeControle** **c
 5. Verwerken dossier: er wordt een nieuw dossier medische controle aangemaakt. Indien er al een actief dossier medische controle bestaat voor de combinatie klant, medewerker en datum wordt een fout gemeld.   
 
 #### Verwerken klant
-* indien het BTW nummer van de klant ingevuld is, zoek de klant met de API **Klant getvalue**. Als de klant niet gevonden wordt, maak een nieuwe klant aan met API **Klant create**. Als de klant gevonden wordt met het BTW nummer en de naam klant vanuit de API is niet gelijk aan de naam van de klant in de database, voeg dan ook de naam klant vanuit de API toe als contact identity *mediwe_synoniem_klant*.
+* indien het BTW nummer dat van de API komt niet leeg is, controleer of dit valide is. Een BTW nummer is valide als het minimaal 10 tekens bevat. 
+* indien het BTW nummer van de klant ingevuld en valide is, zoek de klant met de API **Klant vindmetbtw**. Als de klant niet gevonden wordt, maak een nieuwe klant aan met API **Klant create**. Als de klant gevonden wordt met het BTW nummer en de naam klant vanuit de API is niet gelijk aan de naam van de klant in de database, voeg dan ook de naam klant vanuit de API toe als contact identity *mediwe_synoniem_klant*.
+
+!!! note
+
+    De API **Klant vindmetbtw** moet eerst de BTW uit de parameters herleiden tot alleen cijfers. Dus een input van BE 123.456-78 wordt 12345678. Vervolgens moet dat vergeleken worden met het opgeslagen custom veld. Er wordt een verborgen custom veld bij klant opgeslagen met alleen de cijfers van de BTW. Dit wordt bijgewerkt als het veld BTW nummer wijzigt. De API zal alle gegevens van de klant retourneren.
+
 * indien het BTW nummer niet ingevuld:
     * probeer als eerste de klant uniek te vinden met de naam via de API **Klant getvalue** of **getsingle**. Als dat lukt, gebruik deze klant.
     * als klant niet gevonden, gebruik dan de API **Contact findbyidentity** om de klant te vinden met de ingegeven naam. Als op die manier een klant gevonden wordt, gebruik die klant
     
-    
-!!!! question
+!!! note
+
+    Bij het opzoeken op naam zal de *Contact Identities* extensie gebruikt worden om ook op synoniemen te kunnen zoeken. Daartoe zal een nieuw _identity type_ gebruikt worden (*name* is *mediwe_synoniem_klant* en label * klant bekend als*). 
+
+* als de klant uiteindelijk niet gevonden wordt, moet er een nieuwe klant aangemaat worden met de API **Klant create**. 
+   
+!!! question
 
     Wellicht is het handig de *Extended Contact Matcher* extensie te gebruiken?
     
-    
-!!!! note
-
-    Bijj het opzoeken op naam zal de *Contact Identities* extensie gebruikt worden om ook op synoniemen te kunnen zoeken. Daartoe zal een nieuw _identity type_ gebruikt worden (*name* is *mediwe_synoniem_klant* en label * klant bekend als*). 
- 
-Eventueel worden ook automatisch synoniemen toegevoegd. Als de klant niet gevonden wordt zal een nieuwe klant toegevoegd worden.
-
-
 #### Verwerken klant medewerker
-* het personeelsnummer van de medewerker als dit ingevuld is
-* het rijksregisternummer van de klant als dit ingevuld is
-* de voor- en achternaam van de klant als dit ingevuld is 
-Indien er geen medewerker gevonden wordt zal een nieuwe klantmedewerker toegevoegd worden.
 
 !!! warning "Let op!"
 
     De medewerker bestaat altijd in de context van de klant. Als Pietje Puk eerst bij BedrijfA en daarna bij BedrijfB heeft gewerkt en beide bedrijven zijn Mediwe klanten dan zal Pietje Puk twee keer voorkomen! Bij het zoeken naar de klant medewerker zal dus ook gezocht worden binnen de subgroep die gedefinieerd wordt door alle contacten die een werknemer relatie met de klant hebben. Als er sprake is van een nieuwe klant zal er dus per definitie ook sprake zijn van een nieuwe medewerker.
 
-     
+* indien er bij de vorige stap een nieuwe klant is toegevoegd, is de medewerker per definitie ook een nieuwe medewerker. Dus kan dan ook de medewerker toegevoegd worden met de API **KlantMedewerker create**.
+* indien er geen nieuwe klant was en het personeelsnummer van de medewerker ingevuld (minimaal 3 tekens) is, zoek dan de medewerker met de API **KlantMedewerker getvalue** of **getsingle**. Wordt de medewerker niet gevonden, voeg dan een medewerker toe met de API **KlantMedewerker create**.
+* indien we nog geen medewerker hebben en het rijksregisternummer was ingevuld (minimaal 10 tekens), zoek dan de medewerker met de API **KlantMedewerker getvalue** of ** getsinge**. Wordt de medewerker niet gevonden, voeg dan een medewerker toe met de API **KlantMedewerker create**.
+* indien we nog steeds geen medewerker hebben, gebruik de voornaam, achternaam en postcode (van de woonplaats) van de medewerker om deze te zoeken met de API **KlantMedewerker getsingle** of **getvalue**. Mocht er nog geen unieke medewerker gevonden zijn, maar een nieuwe medewerker aan met de API **KlantMedewerker create**. 
+* Indien er geen medewerker gevonden wordt zal een nieuwe klantmedewerker toegevoegd worden.
+
+!!! note
+
+    De **KlantMedewerker create** API zal ook automatisch een werknemer/werkgever relatie toevoegen tussen de klant en de medewerker.
+
+#### Verwerken contactpersoon
+* indien er sprake was van een nieuwe klant, voeg de contactpersoon toe met de **Contact create** API. Voeg ook een relatie van het type *is administratief contactpersoon voor/heeft als administratief contactpersoon* tussen de klant en de contactpersoon toe met de **Relationship create** API.
+* indien het e-mailadres van de contactpersoon ingevuld is (minimaal 5 tekens met een valide emailadres), gebruik dit emailadres om met de **Contact get** API alle contacten op te halen met dit e-mailadres. Controleer vervolgens of één van de gevonden contacten een relatie van het type *is administratief contactpersoon voor* heeft met de klant. Als er geen uniek contactpersoon gevonden is, voeg contactpersoon en relatie toe.
+* indien nog niet gevonden of toegevoegd, zoek met voornaam en achternaam met de **Contact get** API. Controleer vervolgens of één van de gevonden contacten een relatie van het type *is administratief contactpersoon voor* heeft met de klant. Als er geen uniek contactpersoon gevonden is, voeg contactpersoon en relatie toe.
 
 
 

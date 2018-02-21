@@ -865,7 +865,6 @@ class CRM_Basis_ControleArts {
       if ($arts && !isset($arts['count'])) {
         $params['id'] = reset($arts)['contact_id'];
       }
-      // todo check hoe met regios om te gaan in migratie. Hebben we er meer? Dit vraagt eigenlijk ook om werkgebied API
       // zoek de regio data op
       $sqlRegio = " SELECT * FROM mediwe_joomla.jos_mediwe_doctor_regions WHERE id_doctor = %1";
       $daoRegio = CRM_Core_DAO::executeQuery($sqlRegio, array(1 => array($idDoctor, 'Integer')));
