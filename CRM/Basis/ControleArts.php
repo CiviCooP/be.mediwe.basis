@@ -418,7 +418,7 @@ class CRM_Basis_ControleArts {
     $result = [];
     if ($artsId) {
       $queryParams = [1 => [$artsId['id'], 'Integer']];
-      $select = CRM_Basis_SingleCustomData::createCustomDataQuery(CRM_Basis_Config::singleton()
+      $select = CRM_Basis_Utils::createCustomDataQuery(CRM_Basis_Config::singleton()
         ->getCommunicatieCustomGroup());
       if ($select) {
         $query = $select . ' WHERE entity_id = %1';
@@ -439,7 +439,7 @@ class CRM_Basis_ControleArts {
    */
   public function saveVakantiePeriodes($contactId, $data) {
     $vakantiePeriodeFields = CRM_Basis_Config::singleton()
-      ->getCustomFieldByCustomGroupName('mediwe_vakantie_periode');
+      ->getCustonFieldByCustomGroupName('mediwe_vakantie_periode');
     // store in arrays if not arrays
     foreach ($vakantiePeriodeFields as $vakantiePeriodeFieldId => $vakantiePeriodeField) {
       if (isset($data[$vakantiePeriodeField['name']]) && !is_array($data[$vakantiePeriodeField['name']])) {

@@ -16,9 +16,10 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
   /**
    * CRM_Basis_Klant method to migrate data from existing systems.
    */
-  public function migrate($id = false) {
+  public function migrate($params) {
     set_time_limit(0);
-    $this->migrateFromJoomla($id);
+
+    $this->migrateFromJoomla($params);
   }
 
   /**
@@ -102,6 +103,11 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     // ensure that contact sub type is set
     $params['contact_sub_type'] = $this->_klantContactSubTypeName;
     $params['sequential'] = 1;
+
+    $config = CRM_Basis_Config::singleton();
+    CRM_Basis_SingleCustomData::fixCustomSearchFields($config->getKlantOrganisatieCustomGroup(),$params);
+
+
     // zet limiet indien ingevuld
     if (isset($params['limit'])) {
       $params['options'] = array('limit' => $params['limit']);
@@ -232,9 +238,8 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
    */
   private function getFromCivi($externalIdentifier) {
     $config = CRM_Basis_Config::singleton();
-    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() . ".migratie_facturatie_adressen WHERE external_identifier = %1 AND location_type_id = %2";
+    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() . ".migratie_facturatie_adressen WHERE external_identifier = '$externalIdentifier' AND location_type_id = %1";
     $dao = CRM_Core_DAO::executeQuery($sql, array(
-      1 => array($externalIdentifier, 'Integer'),
       2 => array(5, 'Integer'),
     ));
     if ($dao->fetch()) {
@@ -306,7 +311,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     $params['id'] = $newId;
     unset($params['contact_id']);
     // update de facturatiegegevens
-    $this->addToParamsCustomFields($config->getKlantBoekhoudingCustomGroup('custom_fields'), $params);
+    $this->replaceCustomFieldsParams($config->getKlantBoekhoudingCustomGroup('custom_fields'), $params);
     civicrm_api3('Klant', 'create', $params);
   }
 
@@ -412,7 +417,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     if ($dao->fetch()) {
       $params = CRM_Basis_Utils::moveDaoToArray($dao);
       // convert names of custom fields
-      $this->addToParamsCustomFields($config->getVoorwaardenMijnMediweCustomGroup('custom_fields'), $saveParams);
+      $this->replaceCustomFieldsParams($config->getVoorwaardenMijnMediweCustomGroup('custom_fields'), $saveParams);
       // create membership
       $createdMembership = civicrm_api3('Membership', 'create', $saveParams);
     }
@@ -462,7 +467,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
 
     }
     // convert names of custom fields
-    $this->addToParamsCustomFields($config->getVoorwaardenControleCustomGroup('custom_fields'), $saveParams);
+    $this->replaceCustomFieldsParams($config->getVoorwaardenControleCustomGroup('custom_fields'), $saveParams);
     // create membership
     $createdMembership = civicrm_api3('Membership', 'create', $saveParams);
     return $createdMembership;
@@ -533,97 +538,115 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
    * @throws API_Exception
    * @throws CiviCRM_API3_Exception
    */
-  private function migrateFromJoomla($id = false) {
-    $config = CRM_Basis_Config::singleton();
-    switch ($id) {
-      case false:
-        $sql = " SELECT * FROM mediwe_joomla.migratie_customer LIMIT 0, 100";
-        break;
-      default:
-        $sql = " SELECT * FROM mediwe_joomla.migratie_customer WHERE source_contact = " . $id . ";";
-        break;
+  private function migrateFromJoomla($params) {
+
+    if (!is_array($params)) {
+      $sql = " SELECT * FROM mediwe_joomla.migratie_customer LIMIT 0, 100";
+      $dao = CRM_Core_DAO::executeQuery($sql);
     }
 
-    $dao = CRM_Core_DAO::executeQuery($sql);
-    while ($dao->fetch()) {
-      $adres = array();
-      $mesData = array();
-      $params = CRM_Basis_Utils::moveDaoToArray($dao);
-      $idCompany = $params['source_contact'];
-      foreach ($params as $key => $value) {
-        if ($key == 'email') {
-          if (strpos($value, '@') == FALSE) {
-            unset($params[$key]);
-            $params['phone'] = $value;
-          }
-        }
-        // split data of repeating group
-        if (substr($key, 0, 3) == "mes") {
-          $mesData[0][$key] = $value;
+    if ($dao) {
+      while ($dao->fetch()) {
+        $params = CRM_Basis_Utils::moveDaoToArray($dao);
+        $this->doMigrate($params);
+      }
+
+      // migrate billing addresses pointing to another customer
+      $this->migrateMasterAddressesFromCivi();
+
+      // confirm migration
+      $config = CRM_Basis_Config::singleton();
+
+      $sql = "INSERT INTO " . $config->getJoomlaDbName() . ".migration_customer (id) VALUES (%1)";
+      CRM_Core_DAO::executeQuery($sql, array(1 => array($params['source_contact'], 'Integer')));
+    }
+    else {
+      $this->doMigrate($params);
+    }
+
+  }
+
+
+  private function doMigrate($params) {
+
+    $config = CRM_Basis_Config::singleton();
+
+    $adres = array();
+    $mesData = array();
+
+    foreach ($params as $key => $value) {
+      if ($key == 'email') {
+        if (strpos($value, '@') == FALSE) {
           unset($params[$key]);
+          $params['phone'] = $value;
         }
       }
-      // zoek klant met dat nummer van joomla
-      $klant = $this->get(array('external_identifier' => $params['external_id']));
-      if (!isset($klant['count'])) {
-        $params['id'] = reset($klant)['contact_id'];
-      }
-      // update de controle procedure gegevens
-      $this->addToParamsCustomFields($config->getKlantProcedureCustomGroup('custom_fields'), $params);
-      // update de interne organisatie gegevens
-      $this->addToParamsCustomFields($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
-      // voeg de klant toe
-      $klant = $this->create($params);
-      // update de expert systeem gegevens (repeating!)
-      CRM_Basis_RepeatingCustomData::setRepeatingData(
-        $config->getKlantExpertsysteemCustomGroup('custom_fields'), $klant['id'], $mesData, [
-        'mes_periode',
-        'mes_populatie',
-        'mes_actie'
-      ]);
-      $adres['contact_id'] = $klant['id'];
-      $adres['is_billing'] = 1;
-      $adres['location_type_id'] = $this->_klantLocationType['name'];
-      $return = civicrm_api3('Adres', 'get', $adres);
-      if (isset($return['count']) && $return['count'] > 0) {
-        $adres['id'] = $return['values']['id'];
-      }
-      $adres['street_address'] = $params['street_address'];
-      $adres['supplemental_address_1'] = $params['supplemental_address_1'];
-      $adres['postal_code'] = $params['postal_code'];
-      $adres['city'] = $params['city'];
-      try {
-        civicrm_api3('Adres', 'create', $adres);
-      }
-      catch (CiviCRM_API3_Exception $ex) {
-        throw new API_Exception(ts('Could not create a Mediwe adres in ' . __METHOD__
-          . ', contact your system administrator! Error from API Adres create: ' . $ex->getMessage()));
-      }
-      // zoek deze klant op in civi produktie
-      $civiCustomer = $this->getFromCivi($params['external_id']);
-      if (isset($civi_customer['contact_id'])) {
-        $oldId = $civiCustomer['contact_id'];
-        // migrate tags from civi production
-        $this->migrateTags($oldId, $klant['id']);
-        // migrate notes from civi production
-        $this->migrateNotes($oldId, $klant['id']);
-        // migrate billing email addresses
-        $this->migrateBillingMail($oldId, $klant['id']);
-        // migrate accounting data
-        $this->migrateInvoicingInfo($oldId, $klant['id']);
-        // migrate Mijn Mediwe contracten
-        $this->migratieMijnMediweContracten($oldId, $klant['id']);
-        // migrate Controle contracten
-        $this->migratieControleContracten($oldId, $klant['id']);
-        // migratie relaties is klant via
-        $this->migrateIsKlantVia($oldId, $klant['id']);
+      // split data of repeating group
+      if (substr($key, 0, 3) == "mes") {
+        $mesData[0][$key] = $value;
+        unset($params[$key]);
       }
     }
-    // migrate billing addresses pointing to another customer
-    $this->migrateMasterAddressesFromCivi();
-    // confirm migration
-    $sql = "INSERT INTO " . $config->getJoomlaDbName() . ".migration_customer (id) VALUES (%1)";
-    CRM_Core_DAO::executeQuery($sql, array(1 => array($idCompany, 'Integer')));
+
+
+    // zoek klant met dat nummer van joomla
+    $klant = $this->get(array('external_identifier' => $params['external_identifier']));
+    if (!isset($klant['count'])) {
+      $params['id'] = reset($klant)['contact_id'];
+    }
+    // update de controle procedure gegevens
+    $this->replaceCustomFieldsParams($config->getKlantProcedureCustomGroup('custom_fields'), $params);
+    // update de interne organisatie gegevens
+    $this->replaceCustomFieldsParams($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
+    // voeg de klant toe
+    $klant = $this->create($params);
+
+
+    // update de expert systeem gegevens (repeating!)
+    CRM_Basis_Utils::setRepeatingData(
+      $config->getKlantExpertsysteemCustomGroup('custom_fields'), $klant['id'], $mesData, array('mes_periode', 'mes_populatie', 'mes_actie'));
+    $adres['contact_id'] = $klant['id'];
+    $adres['is_billing'] = 1;
+    $adres['location_type_id'] = $this->_klantLocationType['name'];
+    $return = civicrm_api3('Adres', 'get', $adres);
+    if (isset($return['count']) && $return['count'] > 0) {
+      $adres['id'] = $return['values']['id'];
+    }
+    $adres['street_address'] = $params['street_address'];
+    $adres['supplemental_address_1'] = $params['supplemental_address_1'];
+    $adres['postal_code'] = $params['postal_code'];
+    $adres['city'] = $params['city'];
+    try {
+      civicrm_api3('Adres', 'create', $adres);
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+      throw new API_Exception(ts('Could not create a Mediwe adres in ' . __METHOD__
+        . ', contact your system administrator! Error from API Adres create: ' . $ex->getMessage()));
+    }
+
+    // zoek deze klant op in civi produktie
+    $civiCustomer = $this->getFromCivi($params['external_identifier']);
+
+    if (isset($civiCustomer['contact_id'])) {
+      $oldId = $civiCustomer['contact_id'];
+
+      // migrate tags from civi production
+      $this->migrateTags($oldId, $klant['id']);
+
+      // migrate notes from civi production
+      $this->migrateNotes($oldId, $klant['id']);
+      // migrate billing email addresses
+      $this->migrateBillingMail($oldId, $klant['id']);
+      // migrate accounting data
+      $this->migrateInvoicingInfo($oldId, $klant['id']);
+      // migrate Mijn Mediwe contracten
+      $this->migratieMijnMediweContracten($oldId, $klant['id']);
+      // migrate Controle contracten
+      $this->migratieControleContracten($oldId, $klant['id']);
+      // migratie relaties is klant via
+      $this->migrateIsKlantVia($oldId, $klant['id']);
+    }
+
   }
 
 }

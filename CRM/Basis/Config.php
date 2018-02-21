@@ -106,8 +106,7 @@ class CRM_Basis_Config {
    */
   function __construct() {
 
-
-  $this->_joomlaDbName = "mediwe_joomla";
+  $this->_joomlaDbName = "mediwe_joomla_dev";
   $this->_sourceCiviDbName = "mediwe_civicrm";
 
     $this->setContactSubTypes();

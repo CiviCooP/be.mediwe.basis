@@ -36,9 +36,8 @@ class CRM_Basis_ConfigItems_ConfigItems
     $this->setOptionGroups();
 
     $this->setActivityTypes();
-    $this->setCaseStatus();
 
-    // cases after load activity and relationship types + case status as some will be required for the case types
+    // cases after load activity and relationship types as some will be required for the case types
     $this->setCaseTypes();
 
     // customData as last one because it might need one of the previous ones (option group, relationship types, activity types)
@@ -154,26 +153,6 @@ class CRM_Basis_ConfigItems_ConfigItems
     foreach ($activityTypes as $name => $activityTypeParams) {
       $activityType = new CRM_Basis_ConfigItems_ActivityType();
       $activityType->create($activityTypeParams);
-    }
-  }
-
-  /**
-   * Method to create case status
-   *
-   * @throws Exception when resource file not found
-   * @access protected
-   */
-  protected function setCaseStatus() {
-    $jsonFile = $this->_resourcesPath . 'case_status.json';
-    if (!file_exists($jsonFile)) {
-      throw new Exception(ts('Could not load case_status configuration file for extension,
-      activity your system administrator!'));
-    }
-    $caseStatusJson = file_get_contents($jsonFile);
-    $caseStatuses = json_decode($caseStatusJson, true);
-    foreach ($caseStatuses as $name => $caseStatusParams) {
-      $caseStatus = new CRM_Basis_ConfigItems_CaseStatus();
-      $caseStatus->create($caseStatusParams);
     }
   }
 

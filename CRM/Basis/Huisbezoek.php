@@ -173,9 +173,8 @@ class CRM_Basis_Huisbezoek {
     $config = CRM_Basis_Config::singleton();
     foreach ($huisbezoeken as $rowId => $huisbezoek) {
       if (isset($huisbezoek['id'])) {
-        $extra = CRM_Basis_SingleCustomData::addSingleDaoData($config->getMedischeControleHuisbezoekCustomGroup(), $huisbezoek['id']);
+        $extra = CRM_Basis_Utils::addSingleDaoData($config->getMedischeControleHuisbezoekCustomGroup(), $huisbezoek['id']);
         $huisbezoeken[$rowId] = array_merge($huisbezoek, $extra);
-        CRM_Basis_SingleCustomData::stripCustomFieldsResult($config->getMedischeControleHuisbezoekCustomGroup(),$huisbezoeken[$rowId]);
       }
     }
   }

@@ -23,6 +23,13 @@ function _civicrm_api3_klant_migrate_spec(&$spec) {
  */
 function civicrm_api3_klant_migrate($params) {
   $klant = new CRM_Basis_Klant();
+
   $returnValues = $klant->migrate($params);
-  return civicrm_api3_create_success($returnValues, $params, 'Klant', 'Migrate');
+  return array(
+    'is_error' => 0,
+    'version' => 3,
+    'count' => 1,
+    'id' => $returnValues['id'],
+    'values' => $returnValues
+  );
 }

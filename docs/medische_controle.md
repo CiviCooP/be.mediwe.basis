@@ -166,11 +166,6 @@ In het beste geval wordt de opdracht uitgesteld tot een andere dag.
 In het slechtste geval wordt de opdracht geannuleerd.
 
 ## Status van het dossier
-
-!!! note
-
-    Het idee is dat deze statuswijzigingen zoveel mogelijk automatisch met CiviRules gezet worden. Dat wordt nu even geparkeerd.
-
 **Aangevraagd** - als het dossier aangemaakt wordt. *(name = mediwe_aangevraagd)*
 
 **Gepland** - als dat de mail naar de controlearts verstuurd wordt. *(name = mediwe_gepland)*
@@ -181,9 +176,9 @@ In het slechtste geval wordt de opdracht geannuleerd.
 
 **Gefactureerd** - als de factuur gemaakt is. *(name = mediwe_gefactureerd)*
 
-!!! warning "Let op!"
+!!! note
 
-    De case statussen worden automatisch toegevoegd aan CiviCRM en aan de definitie van het dossiertype middels het laden van de Coniguratie Items. Echter, de standaard dossier statussen Ongoing, Urgent en Resolved worden daarmee niet uit de definitie gehaald. Dat zal **handmatig** moeten gedaan worden bij iedere nieuwe lading van de Configuratie Items. 
+    Het idee is dat deze statuswijzigingen zoveel mogelijk automatisch met CiviRules gezet worden. Dat wordt nu even geparkeerd.
 
 ## Activiteiten in het dossier
 **Open Dossier** legt het moment vast dat het dossier aangemaakt wordt.
@@ -266,9 +261,8 @@ De medische controle komt in principe binnen met de API **MedischeControle** **c
 
 #### Verwerken dossier
 Er moet een nieuw dossier van het type *Medische Controle* toegevoegd. De waarden die gebruikt worden:
-
 * dossiertype (*case_type_id*) = *dossier_medische_controle*
-* onderwerp (*subject*) = 'Medische Controle ' + naam medewerker + datum controle
+* onderwerp (*subject*) = 'Medische Controle ' <naam medewerker> <datum controle>
 * begindatum (*start_date*) = datum controle
 * status (*status_id*) = *mediwe_aangevraagd*
 
