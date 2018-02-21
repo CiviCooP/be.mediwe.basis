@@ -230,37 +230,5 @@ class CRM_Basis_Utils {
     return $myArray;
   }
 
-  /**
-   * Method om enkelvoudige custom velden toe voegen onder de functionele
-   * naam. (Dit voorkomt dat custom_ gebruikt moet worden
-   *
-   * @param  $customGroup
-   * @param  $entityId
-   *
-   * @return array
-   */
-  public static function addSingleDaoData($customGroup, $entityId) {
-    $result = [];
-    $tableName = $customGroup['table_name'];
-    if (!empty($tableName)) {
-      $customFields = $customGroup['custom_fields'];
-      $sql = 'SELECT * FROM ' . $tableName . ' WHERE entity_id = %1';
-      $dao = CRM_Core_DAO::executeQuery($sql, [
-        1 => [$entityId, 'Integer'],
-      ]);
-      if ($dao->fetch()) {
-        $data = CRM_Basis_Utils::moveDaoToArray($dao);
-      }
-      foreach ($customFields as $customFieldId => $customField) {
-        if (isset($data[$customField['column_name']])) {
-          $result[$customField['name']] = $data[$customField['column_name']];
-        }
-        else {
-          $result[$customField['name']] = NULL;
-        }
-      }
-    }
-    return $result;
-  }
 
 }

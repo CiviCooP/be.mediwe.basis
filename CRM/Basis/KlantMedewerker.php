@@ -350,7 +350,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
     $config = CRM_Basis_Config::singleton();
     foreach ($medewerkers as $rowId => $medewerker) {
       if (isset($medewerker['id'])) {
-        $extra = CRM_Basis_Utils::addSingleDaoData($config->getKlantMedewerkerMedewerkerCustomGroup(), $medewerker['id']);
+        $extra = CRM_Basis_SingleCustomData::addSingleDaoData($config->getKlantMedewerkerMedewerkerCustomGroup(), $medewerker['id']);
         $expert = CRM_Basis_RepeatingCustomData::get('mediwe_expert_teller', $medewerker['id']);
         $medewerkers[$rowId] = array_merge($medewerker, $extra, $expert);
       }
