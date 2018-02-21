@@ -16,9 +16,9 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
   /**
    * CRM_Basis_Klant method to migrate data from existing systems.
    */
-  public function migrate() {
+  public function migrate($id = false) {
     set_time_limit(0);
-    $this->migrateFromJoomla();
+    $this->migrateFromJoomla($id);
   }
 
   /**
@@ -533,9 +533,17 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
    * @throws API_Exception
    * @throws CiviCRM_API3_Exception
    */
-  private function migrateFromJoomla() {
+  private function migrateFromJoomla($id = false) {
     $config = CRM_Basis_Config::singleton();
-    $sql = " SELECT * FROM mediwe_joomla.migratie_customer LIMIT 0, 100";  // WHERE external_id = '03/00126'
+    switch ($id) {
+      case false:
+        $sql = " SELECT * FROM mediwe_joomla.migratie_customer LIMIT 0, 100";
+        break;
+      default:
+        $sql = " SELECT * FROM mediwe_joomla.migratie_customer WHERE source_contact = " . $id . ";";
+        break;
+    }
+
     $dao = CRM_Core_DAO::executeQuery($sql);
     while ($dao->fetch()) {
       $adres = array();
