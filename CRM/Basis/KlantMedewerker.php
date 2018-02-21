@@ -238,12 +238,14 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
     $config = CRM_Basis_Config::singleton();
     // rename klant medewerker custom fields for api ($customFields, $data, &$params)
     $this->replaceCustomFieldsParams($config->getKlantMedewerkerMedewerkerCustomGroup('custom_fields'), $params);
-    $this->replaceCustomFieldsParams($config->getKlantMedewerkerExpertsysteemTellersCustomGroup('custom_fields'), $params);
     try {
       $contact = civicrm_api3('Contact', 'create', $params);
       // verwerk de klant/medewerker relatie
       $this->saveWerknemerRelatie($params['klant_id'], $contact['id']);
-      return $contact['values'][$contact['id']];
+      // verwerk de expert tellers
+      $this->saveExpertTellers($contact['id'], $params);
+      $medewerker = civicrm_api3('KlantMedewerker', 'getsingle', array('id' => $contact['id']));
+      return $medewerker;
     }
     catch (CiviCRM_API3_Exception $ex) {
       throw new API_Exception(ts('Could not create a contact in ' . __METHOD__
@@ -291,6 +293,32 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
   }
 
   /**
+   * Method om expert tellers op te slaan
+   *
+   * @param int $contactId
+   * @param $data
+   */
+  public function saveExpertTellers($contactId, $data) {
+    $expertTellersFields = CRM_Basis_Config::singleton()->getCustomFieldByCustomGroupName('mediwe_expert_systeem');
+    // store in arrays if not arrays
+    foreach ($expertTellersFields as $expertTellersFieldId => $expertTellersField) {
+      if (isset($data[$expertTellersField['name']]) && !is_array($data[$expertTellersField['name']])) {
+        $data[$expertTellersField['name']] = array($data[$expertTellersField['name']]);
+      }
+      if (isset($data[$expertTellersField['name']])) {
+        $customData[$expertTellersField['name']] = $data[$expertTellersField['name']];
+      }
+      else {
+        $customData[$expertTellersField['name']] = NULL;
+      }
+    }
+    if ($customData) {
+      CRM_Basis_RepeatingCustomData::save('mediwe_expert_tellers', $contactId, $customData);
+    }
+  }
+
+
+  /**
    * Method om start datum van werknemer relatie te bepalen
    *
    * @param $medewerkerId
@@ -323,7 +351,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
     foreach ($medewerkers as $rowId => $medewerker) {
       if (isset($medewerker['id'])) {
         $extra = $this->addSingleDaoData($config->getKlantMedewerkerMedewerkerCustomGroup(), $medewerker['id']);
-        $expert = $this->addSingleDaoData($config->getKlantMedewerkerExpertsysteemTellersCustomGroup(), $medewerker['id']);
+        $expert = CRM_Basis_RepeatingCustomData::get('mediwe_expert_teller', $medewerker['id']);
         $medewerkers[$rowId] = array_merge($medewerker, $extra, $expert);
       }
     }

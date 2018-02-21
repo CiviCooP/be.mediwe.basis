@@ -16,9 +16,9 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
   /**
    * CRM_Basis_Klant method to migrate data from existing systems.
    */
-  public function migrate() {
+  public function migrate($id = false) {
     set_time_limit(0);
-    $this->migrateFromJoomla();
+    $this->migrateFromJoomla($id);
   }
 
   /**
@@ -144,16 +144,42 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     $config = CRM_Basis_Config::singleton();
     // rename klant custom fields for api  ($customFields, $data, &$params)
     $this->replaceCustomFieldsParams($config->getKlantBoekhoudingCustomGroup('custom_fields'), $params);
-    $this->replaceCustomFieldsParams($config->getKlantExpertsysteemCustomGroup('custom_fields'), $params);
     $this->replaceCustomFieldsParams($config->getKlantProcedureCustomGroup('custom_fields'), $params);
     $this->replaceCustomFieldsParams($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
     try {
       $contact = civicrm_api3('Contact', 'create', $params);
-      return $contact['values'][$contact['id']];
+      $this->saveExpertSysteem($contact['id'], $params);
+      $klant = civicrm_api3('Klant', 'getsingle', array('id' => $contact['id']));
+      return $klant;
     }
     catch (CiviCRM_API3_Exception $ex) {
       throw new API_Exception(ts('Could not create a contact in ' . __METHOD__
        . ', contact your system administrator! Error from API Contact create: ' . $ex->getMessage()));
+    }
+  }
+
+  /**
+   * Method om expert systeem op te slaan
+   *
+   * @param int $contactId
+   * @param $data
+   */
+  public function saveExpertSysteem($contactId, $data) {
+    $expertSysteemFields = CRM_Basis_Config::singleton()->getCustomFieldByCustomGroupName('mediwe_expert_systeem');
+    // store in arrays if not arrays
+    foreach ($expertSysteemFields as $expertSysteemFieldId => $expertSysteemField) {
+      if (isset($data[$expertSysteemField['name']]) && !is_array($data[$expertSysteemField['name']])) {
+        $data[$expertSysteemField['name']] = array($data[$expertSysteemField['name']]);
+      }
+      if (isset($data[$expertSysteemField['name']])) {
+        $customData[$expertSysteemField['name']] = $data[$expertSysteemField['name']];
+      }
+      else {
+        $customData[$expertSysteemField['name']] = NULL;
+      }
+    }
+    if ($customData) {
+      CRM_Basis_RepeatingCustomData::save('mediwe_expert_tellers', $contactId, $customData);
     }
   }
 
@@ -168,8 +194,8 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
       if (isset($klant['id'])) {
         $boekhouding = $this->addSingleDaoData($config->getKlantBoekhoudingCustomGroup(), $klant['id']);
         $organisatie = $this->addSingleDaoData($config->getKlantOrganisatieCustomGroup(), $klant['id']);
-        $expert = $this->addSingleDaoData($config->getKlantExpertsysteemCustomGroup(), $klant['id']);
         $klantProcedure = $this->addSingleDaoData($config->getKlantProcedureCustomGroup(), $klant['id']);
+        $expert = CRM_Basis_RepeatingCustomData::get('mediwe_expert_systeem', $klant['id']);
         $klanten[$rowId] = array_merge($klant, $boekhouding, $organisatie, $expert, $klantProcedure);
       }
     }
@@ -507,9 +533,17 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
    * @throws API_Exception
    * @throws CiviCRM_API3_Exception
    */
-  private function migrateFromJoomla() {
+  private function migrateFromJoomla($id = false) {
     $config = CRM_Basis_Config::singleton();
-    $sql = " SELECT * FROM mediwe_joomla.migratie_customer LIMIT 0, 100";  // WHERE external_id = '03/00126'
+    switch ($id) {
+      case false:
+        $sql = " SELECT * FROM mediwe_joomla.migratie_customer LIMIT 0, 100";
+        break;
+      default:
+        $sql = " SELECT * FROM mediwe_joomla.migratie_customer WHERE source_contact = " . $id . ";";
+        break;
+    }
+
     $dao = CRM_Core_DAO::executeQuery($sql);
     while ($dao->fetch()) {
       $adres = array();

@@ -226,20 +226,6 @@ function _civicrm_api3_klant_Create_spec(&$spec) {
     'api.required' => 0,
     'type' => CRM_Utils_Type::T_STRING,
   );
-  $spec['mg_nummer'] = array(
-    'name' => 'mg_nummer',
-    'title' => 'Nummer expertsysteem',
-    'description' => 'Nummer expertsysteem',
-    'api.required' => 0,
-    'type' => CRM_Utils_Type::T_INT,
-  );
-  $spec['mg_vraag'] = array(
-    'name' => 'mg_vraag',
-    'title' => 'Vraag expertsysteem',
-    'description' => 'Vraag expertsysteem',
-    'api.required' => 0,
-    'type' => CRM_Utils_Type::T_STRING,
-  );
 }
 
 /**
@@ -253,6 +239,12 @@ function _civicrm_api3_klant_Create_spec(&$spec) {
  */
 function civicrm_api3_klant_Create($params) {
   $klant = new CRM_Basis_Klant();
-  $returnValues = $klant->create($params);
-  return civicrm_api3_create_success($returnValues, $params, 'Klant', 'Create');
+  $created = $klant->create($params);
+  return array(
+    'is_error' => 0,
+    'version' => 3,
+    'count' => 1,
+    'id' => $created['id'],
+    'values' => $created
+  );
 }

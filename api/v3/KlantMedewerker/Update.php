@@ -321,6 +321,12 @@ function _civicrm_api3_klant_medewerker_Update_spec(&$spec) {
  */
 function civicrm_api3_klant_medewerker_Update($params) {
   $klantMedewerker = new CRM_Basis_KlantMedewerker();
-  $returnValues = $klantMedewerker->update($params);
-  return civicrm_api3_create_success($returnValues, $params, 'KlantMedewerker', 'Update');
+  $updated = $klantMedewerker->create($params);
+  return array(
+    'is_error' => 0,
+    'version' => 3,
+    'count' => 1,
+    'id' => $updated['id'],
+    'values' => $updated
+  );
 }
