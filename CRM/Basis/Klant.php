@@ -26,7 +26,6 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
    * CRM_Basis_Klant constructor.
    */
   public function __construct() {
-
     $config = CRM_Basis_Config::singleton();
     $contactSubType = $config->getKlantContactSubType();
     $this->_klantContactSubTypeName = $contactSubType['name'];
@@ -194,9 +193,9 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     $config = CRM_Basis_Config::singleton();
     foreach ($klanten as $rowId => $klant) {
       if (isset($klant['id'])) {
-        $boekhouding = CRM_Basis_Utils::addSingleDaoData($config->getKlantBoekhoudingCustomGroup(), $klant['id']);
-        $organisatie = CRM_Basis_Utils::addSingleDaoData($config->getKlantOrganisatieCustomGroup(), $klant['id']);
-        $klantProcedure = CRM_Basis_Utils::addSingleDaoData($config->getKlantProcedureCustomGroup(), $klant['id']);
+        $boekhouding = CRM_Basis_SingleCustomData::addSingleDaoData($config->getKlantBoekhoudingCustomGroup(), $klant['id']);
+        $organisatie = CRM_Basis_SingleCustomData::addSingleDaoData($config->getKlantOrganisatieCustomGroup(), $klant['id']);
+        $klantProcedure = CRM_Basis_SingleCustomData::addSingleDaoData($config->getKlantProcedureCustomGroup(), $klant['id']);
         $expert = CRM_Basis_RepeatingCustomData::get('mediwe_expert_systeem', $klant['id']);
         $klanten[$rowId] = array_merge($klant, $boekhouding, $organisatie, $expert, $klantProcedure);
       }
@@ -233,10 +232,11 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
    * CRM_Basis_Klant get billing addresses from previous civicrm application (for migration only)
    */
   private function getFromCivi($externalIdentifier) {
-
-    $sql = "SELECT * FROM mediwe_civicrm.migratie_facturatie_adressen WHERE external_identifier = '$externalIdentifier' AND location_type_id = 5";
-
-    $dao = CRM_Core_DAO::executeQuery($sql);
+    $config = CRM_Basis_Config::singleton();
+    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() . ".migratie_facturatie_adressen WHERE external_identifier = '$externalIdentifier' AND location_type_id = %1";
+    $dao = CRM_Core_DAO::executeQuery($sql, array(
+      2 => array(5, 'Integer'),
+    ));
     if ($dao->fetch()) {
       return CRM_Basis_Utils::moveDaoToArray($dao);
     }
@@ -560,6 +560,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     }
 
   }
+
 
   private function doMigrate($params) {
 
