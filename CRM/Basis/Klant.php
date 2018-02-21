@@ -240,7 +240,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     $config = CRM_Basis_Config::singleton();
     $sql = "SELECT * FROM " . $config->getSourceCiviDbName() . ".migratie_facturatie_adressen WHERE external_identifier = '$externalIdentifier' AND location_type_id = %1";
     $dao = CRM_Core_DAO::executeQuery($sql, array(
-      2 => array(5, 'Integer'),
+      1 => array(5, 'Integer'),
     ));
     if ($dao->fetch()) {
       return CRM_Basis_Utils::moveDaoToArray($dao);
