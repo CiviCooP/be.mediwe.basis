@@ -42,5 +42,22 @@
         }
       }
     }
+  },
+  "statuses":{
+    "mediwe_aangevraagd":{
+      "name":"mediwe_aangevraagd"
+    },
+    "mediwe_gepland":{
+      "name":"mediwe_gepland"
+    },
+    "mediwe_afwezig":{
+      "name":"mediwe_afwezig"
+    },
+    "mediwe_uitgevoerd":{
+      "name":"mediwe_uitgevoerd"
+    },
+    "mediwe_gefactureerd":{
+      "name":"mediwe_gefactureerd"
+    }
   }
 }
