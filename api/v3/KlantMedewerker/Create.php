@@ -74,8 +74,8 @@ function _civicrm_api3_klant_medewerker_Create_spec(&$spec) {
   );
   $spec['job_title'] = array(
     'name' => 'job_title',
-    'title' => 'Functie omschrijving',
-    'description' => 'Functie omschrijving',
+    'title' => 'Functie',
+    'description' => 'Functie',
     'api.required' => 0,
     'type' => CRM_Utils_Type::T_STRING,
   );
@@ -144,8 +144,8 @@ function _civicrm_api3_klant_medewerker_Create_spec(&$spec) {
   );
   $spec['mkm_functie'] = array(
     'name' => 'mkm_functie',
-    'title' => 'Functie',
-    'description' => 'Functie',
+    'title' => 'Functie omschrijving',
+    'description' => 'Functie omschrijving',
     'api.required' => 0,
     'type' => CRM_Utils_Type::T_STRING,
   );

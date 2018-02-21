@@ -169,8 +169,50 @@ In het slechtste geval wordt de opdracht geannuleerd.
 ## Rollen in het dossier
 
 ## Technische beschrijving
-De medische controle komt in principe binnen met de API *MedischeControle* *create*.
+De medische controle komt in principe binnen met de API **MedischeControle** **create**.
 
+!!! note
+
+    De API Medische Controle kent ook de mogelijke actions **get** , **delete** en **update**. Deze worden aan het eind van dit hoofdstuk verder beschreven.
+    
+### Korte beschrijving CiviCRM acties
+
+1. Verwerken klant: controleren of de klant al bestaat. Zo niet, nieuwe klant toevoegen.
+2. Verwerken klant medewerker: bij bekende klant moet er gecontroleerd worden of de te controleren medewerker al bestaat (als medewerker van de klant!). Zo niet, klant medewerker toevoegen. Bij een nieuwe klant wordt de klant medewerker altijd toegevoegd.
+3. Verwerken contactpersoon: bij bekende klant moet er gecontroleerd worden of de contactpersoon al bestaat. Zo niet, wordt de contactpersoon toegevoegd. Bij een nieuwe klant wordt de contactpersoon altijd toegevoegd.
+4. Verwerken aanvrager: bij bekende klant moet er gecontroleerd worden of de aanvrager al bestaat. Zo niet, wordt de aanvrager toegevoegd. Bij een nieuwe klant wordt de aanvrager altijd toegevoegd.
+5. Verwerken dossier: er wordt een nieuw dossier medische controle aangemaakt. Indien er al een actief dossier medische controle bestaat voor de combinatie klant, medewerker en datum wordt een fout gemeld.   
+
+#### Verwerken klant
+* indien het BTW nummer van de klant ingevuld is, zoek de klant met de API **Klant getvalue**. Als de klant niet gevonden wordt, maak een nieuwe klant aan met API **Klant create**. Als de klant gevonden wordt met het BTW nummer en de naam klant vanuit de API is niet gelijk aan de naam van de klant in de database, voeg dan ook de naam klant vanuit de API toe als contact identity *mediwe_synoniem_klant*.
+* indien het BTW nummer niet ingevuld:
+    * probeer als eerste de klant uniek te vinden met de naam via de API **Klant getvalue** of **getsingle**. Als dat lukt, gebruik deze klant.
+    * als klant niet gevonden, gebruik dan de API **Contact findbyidentity** om de klant te vinden met de ingegeven naam. Als op die manier een klant gevonden wordt, gebruik die klant
+    
+    
+!!!! question
+
+    Wellicht is het handig de *Extended Contact Matcher* extensie te gebruiken?
+    
+    
+!!!! note
+
+    Bijj het opzoeken op naam zal de *Contact Identities* extensie gebruikt worden om ook op synoniemen te kunnen zoeken. Daartoe zal een nieuw _identity type_ gebruikt worden (*name* is *mediwe_synoniem_klant* en label * klant bekend als*). 
+ 
+Eventueel worden ook automatisch synoniemen toegevoegd. Als de klant niet gevonden wordt zal een nieuwe klant toegevoegd worden.
+
+
+#### Verwerken klant medewerker
+* het personeelsnummer van de medewerker als dit ingevuld is
+* het rijksregisternummer van de klant als dit ingevuld is
+* de voor- en achternaam van de klant als dit ingevuld is 
+Indien er geen medewerker gevonden wordt zal een nieuwe klantmedewerker toegevoegd worden.
+
+!!! warning "Let op!"
+
+    De medewerker bestaat altijd in de context van de klant. Als Pietje Puk eerst bij BedrijfA en daarna bij BedrijfB heeft gewerkt en beide bedrijven zijn Mediwe klanten dan zal Pietje Puk twee keer voorkomen! Bij het zoeken naar de klant medewerker zal dus ook gezocht worden binnen de subgroep die gedefinieerd wordt door alle contacten die een werknemer relatie met de klant hebben. Als er sprake is van een nieuwe klant zal er dus per definitie ook sprake zijn van een nieuwe medewerker.
+
+     
 
 
 
