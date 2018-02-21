@@ -5,6 +5,7 @@ theme: material
 pages:
 - Home: index.md
 - Configuratie items voor CiviCRM: configitems.md
+- Tekst fragmenten: tekst_fragmenten.md
 - Contact Types: contacttypes.md
 - Dossier Type Ziektemelding: ziektemelding.md
 - Dossier Type Medische Controle: medische_controle.md

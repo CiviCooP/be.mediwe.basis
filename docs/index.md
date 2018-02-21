@@ -16,6 +16,8 @@ CiviCase wordt gebruikt om verschillende Dossier Types vast te kunnen leggen:
 
 Er zijn een aantal zogenaamde [CiviRules](org_civicoop_civirules.md) in gebruik om delen van de procesgang te automatiseren.
 
+## Een [tekst fragment](tekst_fragmenten.md) is een herbruikbare tekst voor bijvoorbeeld een email, die per klant aangepast kan worden.
+
 ## Configuratie Items
 Met [Configuratie items voor CiviCRM](configitems.md) worden allerlei basis zaken in CiviCRM bedoeld zoals contact subtypen, types activiteiten, dossiertypes, groepen etc. die automatisch aangemaakt worden bij installatie. Deze kunnen op een later tijdstip ook weer bijgewerkt worden.
 
