@@ -99,9 +99,8 @@ class CRM_Basis_Config {
    */
   function __construct() {
 
-
-  $this->_joomlaDbName = "mediwe_joomla";
-  $this->_sourceCiviDbName = "mediwe_old_civicrm";
+  $this->_joomlaDbName = "mediwe_joomla_dev";
+  $this->_sourceCiviDbName = "mediwe_civicrm";
 
     $this->setContactSubTypes();
     $this->setRelationshipTypes();
@@ -120,8 +119,6 @@ class CRM_Basis_Config {
     $this->setMediweTeamContactId();
     $this->setCaseTypes();
 
-    $this->_joomlaDbName = "mediwe_joomla";
-    $this->_sourceCiviDbName = "mediwe_old_civicrm";
     try {
       $this->_mobielPhoneTypeId = civicrm_api3('OptionValue', 'getvalue', array(
         'option_group_id' => 'phone_type',
