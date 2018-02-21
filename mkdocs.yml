@@ -10,6 +10,11 @@ pages:
 - Dossier Type Ziektemelding: ziektemelding.md
 - Dossier Type Medische Controle: medische_controle.md
 - Email naar de controlearts: bericht_arts.md
+- Email dat een resultaat binnenkwam met de app: resultaat_app.md
+- Bevestigingsmail naar de klant: bevestiging_klant.md
+- Andere mailberichten naar de klant: andere_mails_klant.md
+- SMS berichten naar medewerkers: sms_medewerker.md
+- Dagelijkse mail voor app gebruikers: app_link_mail.md
 - Drupal modules (en themes): drupalmodules.md
 - CiviCRM extensies: civiextensions.md
 - Automatische Acties: automatische_acties.md
