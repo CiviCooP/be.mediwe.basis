@@ -18,9 +18,9 @@ class CRM_Basis_SingleCustomData {
    * @param $result
    */
   public static function stripCustomFieldsResult($customFields, &$result) {
-    foreach($customFields['custom_fields'] as $fieldId => $field){
-      if(isset($result['custom_'.$fieldId])&&isset($result[$field['name']])){
-        unset($result['custom_'.$fieldId]);
+    foreach ($customFields['custom_fields'] as $fieldId => $field) {
+      if (isset($result['custom_' . $fieldId]) && isset($result[$field['name']])) {
+        unset($result['custom_' . $fieldId]);
       }
     }
   }
@@ -74,17 +74,20 @@ class CRM_Basis_SingleCustomData {
     if (!empty($query)) {
       try {
         CRM_Core_DAO::executeQuery($query, $queryParams);
-      } catch (Exception $ex) {
+      }
+      catch (Exception $ex) {
         throw new Exception(ts('Unable to add custom data in ' . __METHOD__ . ', error message :') . $ex->getMessage());
       }
     }
-  }/**
+  }
+
+  /**
    * Method om select en from voor custom group samen te stellen
    *
    * @param  $customGroupArray
    *
    * @return string
- */
+   */
   public static function createCustomDataQuery($customGroupArray) {
     if (!$customGroupArray['custom_fields']) {
       $select = 'SELECT *';
