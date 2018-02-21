@@ -102,6 +102,11 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     // ensure that contact sub type is set
     $params['contact_sub_type'] = $this->_klantContactSubTypeName;
     $params['sequential'] = 1;
+
+    $config = CRM_Basis_Config::singleton();
+    CRM_Basis_SingleCustomData::fixCustomSearchFields($config->getKlantOrganisatieCustomGroup(),$params);
+
+
     // zet limiet indien ingevuld
     if (isset($params['limit'])) {
       $params['options'] = array('limit' => $params['limit']);

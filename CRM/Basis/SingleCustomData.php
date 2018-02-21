@@ -103,4 +103,10 @@ class CRM_Basis_SingleCustomData {
     return $result;
   }
 
+  public static function fixCustomSearchFields($customGroup,&$params){
+
+    //foreach($customGroup['custom_fields'] as $fieldId => $)
+
+  }
+
 }
