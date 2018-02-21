@@ -105,7 +105,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     $params['sequential'] = 1;
 
     $config = CRM_Basis_Config::singleton();
-    CRM_Basis_SingleCustomData::fixCustomSearchFields($config->getKlantOrganisatieCustomGroup(),$params);
+    CRM_Basis_SingleCustomData::fixCustomSearchFields($config->getKlantBoekhoudingCustomGroup(),$params);
 
 
     // zet limiet indien ingevuld
