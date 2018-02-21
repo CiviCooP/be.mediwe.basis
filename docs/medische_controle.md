@@ -227,5 +227,25 @@ De medische controle komt in principe binnen met de API **MedischeControle** **c
 * indien het e-mailadres van de contactpersoon ingevuld is (minimaal 5 tekens met een valide emailadres), gebruik dit emailadres om met de **Contact get** API alle contacten op te halen met dit e-mailadres. Controleer vervolgens of één van de gevonden contacten een relatie van het type *is administratief contactpersoon voor* heeft met de klant. Als er geen uniek contactpersoon gevonden is, voeg contactpersoon en relatie toe.
 * indien nog niet gevonden of toegevoegd, zoek met voornaam en achternaam met de **Contact get** API. Controleer vervolgens of één van de gevonden contacten een relatie van het type *is administratief contactpersoon voor* heeft met de klant. Als er geen uniek contactpersoon gevonden is, voeg contactpersoon en relatie toe.
 
+#### Verwerken dossier
+Er moet een nieuw dossier van het type *Medische Controle* toegevoegd. De waarden die gebruikt worden:
+* dossiertype (*case_type_id*) = *dossier_medische_controle*
+* onderwerp (*subject*) = 'Medische Controle ' <naam medewerker> <datum controle>
+* begindatum (*start_date*) = datum controle
+* status (*status_id*) = *mediwe_aangevraagd*
+
+#### Return
+De volgende waarden zullen door de API MedischeControle create teruggegeven worden:
+* is_error = 0 of 1
+* count = 1
+* version = 3
+* id = case_id
+* values:
+>* case_id
+>* klant_id
+>* medewerker_id
+>* start_date
+
+
 
 
