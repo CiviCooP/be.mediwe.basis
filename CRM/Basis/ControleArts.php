@@ -439,7 +439,7 @@ class CRM_Basis_ControleArts {
    */
   public function saveVakantiePeriodes($contactId, $data) {
     $vakantiePeriodeFields = CRM_Basis_Config::singleton()
-      ->getCustonFieldByCustomGroupName('mediwe_vakantie_periode');
+      ->getCustomFieldByCustomGroupName('mediwe_vakantie_periode');
     // store in arrays if not arrays
     foreach ($vakantiePeriodeFields as $vakantiePeriodeFieldId => $vakantiePeriodeField) {
       if (isset($data[$vakantiePeriodeField['name']]) && !is_array($data[$vakantiePeriodeField['name']])) {
