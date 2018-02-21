@@ -33,24 +33,28 @@ class CRM_Basis_RepeatingCustomData {
       return FALSE;
     }
     $repeatingCustomData = new CRM_Basis_RepeatingCustomData($customGroupName, $entityId);
-    // als mediwe_werkgebied: haal eventueel sleutel op voor update
-    if ($customGroupName == 'mediwe_werkgebied') {
-      $apiKey = $repeatingCustomData->getWerkgebiedUpdateKey($entityId, $data);
-    }
     $customFields = $repeatingCustomData->getSaveCustomFieldIds();
     foreach ($data as $customFieldName => $dataValues) {
       foreach ($dataValues as $key => $value) {
-        if ($apiKey) {
-          $apiParamsSets[$key][$customFields[$customFieldName] . ':' . $apiKey] = $value;
-        }
-        else {
+        if ($value) {
           $apiParamsSets[$key][$customFields[$customFieldName]] = $value;
         }
       }
     }
+
     foreach ($apiParamsSets as $apiParams) {
+      // add empty fields if required
+      foreach ($customFields as $customFieldName => $customFieldId) {
+        if (!isset($apiParams[$customFieldId])) {
+          $apiParams[$customFieldId] = NULL;
+        }
+      }
       $apiParams['entity_id'] = $entityId;
       $apiParams['entity_table'] = $repeatingCustomData->_entityTable;
+      // check of er sprake is van een update van werkgebied
+      if ($customGroupName == 'mediwe_werkgebied') {
+        $repeatingCustomData->checkWerkgebiedUpdate($apiParams);
+      }
       try {
         civicrm_api3('CustomValue', 'create', $apiParams);
       }
@@ -59,7 +63,58 @@ class CRM_Basis_RepeatingCustomData {
       }
     }
   }
-  private function getWerkgebiedUpdateKey {
+
+  /**
+   * Method om te kijken of er al een werkgebied is voor postcode/gemeente combinatie en als dat zo is de id van de regel terug te geven
+   *
+   * @param array $apiParams
+   * @return bool/int
+   */
+  private function checkWerkgebiedUpdate(&$apiParams) {
+    // alleen als postcode en gemeente
+    $postCodeCustomField = CRM_Basis_Config::singleton()->getPostcodeCustomField();
+    $postCodeCustomId = 'custom_' . $postCodeCustomField['id'];
+    $gemeenteCustomField = CRM_Basis_Config::singleton()->getGemeenteCustomField();
+    $gemeenteCustomId = 'custom_' . $gemeenteCustomField['id'];
+    if (isset($apiParams[$postCodeCustomId]) && isset($apiParams[$gemeenteCustomId])) {
+      $whereClauses = array();
+      $index = 1;
+      $query = "SELECT id FROM " . CRM_Basis_Config::singleton()->getWerkgebiedCustomGroup('table_name') .
+        " WHERE entity_id = %1 AND ";
+      $queryParams = array(
+        1 => array($this->_entityId, 'Integer'),
+      );
+      if (!empty($apiParams[$postCodeCustomId])) {
+        $index++;
+        $whereClauses[$index] = $postCodeCustomField['column_name'] . ' = %' . $index;
+        $queryParams[$index] = array($apiParams[$postCodeCustomId], 'String');
+      }
+      else {
+        $whereClauses[$index] = $postCodeCustomField['column_name'] . ' IS NULL';
+      }
+      if (!empty($apiParams[$gemeenteCustomId])) {
+        $index++;
+        $whereClauses[$index] = $gemeenteCustomField['column_name'] . ' = %' . $index;
+        $queryParams[$index] = array($apiParams[$gemeenteCustomId], 'String');
+      }
+      else {
+        $whereClauses[$index] = $gemeenteCustomField['column_name'] . ' IS NULL';
+      }
+      if (!empty($whereClauses)) {
+        $prioriteitCustomId = 'custom_' . CRM_Basis_Config::singleton()->getPrioriteitCustomField('id');
+        $query .= implode(' AND ', $whereClauses);
+        $werkgebiedId = CRM_Core_DAO::singleValueQuery($query, $queryParams);
+        if ($werkgebiedId) {
+          $apiParams = array(
+            'entity_id' => $this->_entityId,
+            'entity_table' => $this->_entityTable,
+            $postCodeCustomId . ':' . $werkgebiedId => $apiParams[$postCodeCustomId],
+            $gemeenteCustomId . ':' . $werkgebiedId => $apiParams[$gemeenteCustomId],
+            $prioriteitCustomId . ':' . $werkgebiedId => $apiParams[$prioriteitCustomId],
+          );
+        }
+      }
+    }
     return FALSE;
   }
 
@@ -72,7 +127,7 @@ class CRM_Basis_RepeatingCustomData {
     $result = array();
     $customFields = CRM_Basis_Config::singleton()->getCustomFieldByCustomGroupName($this->_customGroupName);
     foreach ($customFields as $customFieldId => $customField) {
-      $result[$customField['name']] = 'custom_'.$customFieldId;
+      $result[$customField['name']] = 'custom_' . $customFieldId;
     }
     return $result;
   }

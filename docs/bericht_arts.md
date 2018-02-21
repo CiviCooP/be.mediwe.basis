@@ -28,10 +28,9 @@ De werknemer is de "Client" waaraan het dossier "Medische Controle" gekoppeld is
 
 !!! warning "De bradford niet altijd tonen"
     De bradford heeft slechts zin als we beschikken over alle ziekteperiodes van de werknemer.
-    Dit is: als de klant een lidmaatschap "Mijn Mediwe" heeft van het subtype "Uitgebreid".
+    Dit is: als de klant een lidmaatschap "Mijn Mediwe" heeft van het subtype "Uitgebreid" of "Expert".
 
-!!! bug "Subtype Mijn Mediwe lidmaatschap is nog niet voorzien"
-    In het huidig systeem zijn er 2 subtypes: Basis - Uitgebreid.    
+    In het huidig systeem zijn er 3 subtypes: Basis - Uitgebreid - Expert    
 
 ### Gegevens van de werkgever
 
@@ -77,7 +76,8 @@ Een "Hercontrole" is een huisbezoek dat binnen hetzelfde dossier "Medische contr
 * De omschrijving van de functie van de werknemer uit het dossier medische controle (mmc_job_beschrijving)
 * De te volgen procedure: tussen bepaalde uren of niet, wat bij afwezigheid    
 * Bij huisbezoek of hercontrole: afstand (km) voor de arts
-* Opmerking van de klant bij de opdracht
+* Bericht voor de controlearts (mmc_opmerking_controlearts)
+* Mag deze info gedeeld worden met de werknemer? (mmc_info_delen_patient)
 
 ### Historiek van medische controles van de voorbije 12 maand
 
@@ -99,4 +99,9 @@ Dit kan "automatisch" opgevangen worden voor alle klanten als we de procedure be
 * De convocatie op het kabinet moet altijd op dag + 1 (modelleren?)
 * Geen huisbezoek na 17u, zo niet geen controle (voor deze klant geldt dit enkel op vrijdagen!)
 * Tip van de week vanwege Mediwe
+
+## Nieuwe klantspecifieke teksten
+
+!!! warning "Beperking van het huidige systeem"
+    Momenteel bewaren we 
 
