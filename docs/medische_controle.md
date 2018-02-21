@@ -165,9 +165,41 @@ In dat geval wordt de klant opgebeld voor overleg.
 In het beste geval wordt de opdracht uitgesteld tot een andere dag.
 In het slechtste geval wordt de opdracht geannuleerd.
 
+## Status van het dossier
+**Aangevraagd** - als het dossier aangemaakt wordt. *(name = mediwe_aangevraagd)*
+
+**Gepland** - als dat de mail naar de controlearts verstuurd wordt. *(name = mediwe_gepland)*
+
+**Afwezig** - als teruggemeld wordt dat de medewerker afwezig was. *(name = mediwe_afwezig)*
+
+**Uitgevoerd** - als het resultaat van de controle teruggemeld wordt. *(name = mediwe_uitgevoerd)*
+
+**Gefactureerd** - als de factuur gemaakt is. *(name = mediwe_gefactureerd)*
+
+!!! note
+
+    Het idee is dat deze statuswijzigingen zoveel mogelijk automatisch met CiviRules gezet worden. Dat wordt nu even geparkeerd.
+
 ## Activiteiten in het dossier
+**Open Dossier** legt het moment vast dat het dossier aangemaakt wordt.
+
+**Huisbezoek** wordt automatisch aangemaakt als het dossier aangemaakt wordt. De medewerker van Mediwe vult de datum van de activiteit en de controlearts (*Toegewezen aan*) in. Als dat gedaan wordt, dan wordt automatisch de dossierrelatie _Onderzocht door controlearts_ toegevoegd met de toegewezen controlearts.
+Indien de medewerker afwezig was kan er een nieuwe activiteit Huisbezoek aangemaakt worden door een medewerker van Mediwe.
+
+**Convocatie op kabinet** wordt handmatig toegevoegd door een medewerker Mediwe.
+
+**Onderzoek arbeidsongeval** wordt handmatig toegevoegd door een medewerker Mediwe.
+
+Verder kunnen alle standaard CiviCRM dossieractiviteiten toegevoegd worden.
+
+!!! note
+
+    Bij deze dossieractiviteiten is het uiteindelijke doel zoveel mogelijk van deze activiteiten automatisch te laten verrichten, waarschijnlijk met CiviRules.
 
 ## Rollen in het dossier
+De standaard rol **Case Coordinator (Dossiermanager)** kan gebruikt worden.
+
+Mediwe specifiek is er de rol **Onderzocht door controlearts**.
 
 ## Technische beschrijving
 De medische controle komt in principe binnen met de API **MedischeControle** **create**.
@@ -236,11 +268,13 @@ Er moet een nieuw dossier van het type *Medische Controle* toegevoegd. De waarde
 
 #### Return
 De volgende waarden zullen door de API MedischeControle create teruggegeven worden:
+
 * is_error = 0 of 1
 * count = 1
 * version = 3
 * id = case_id
 * values:
+
 >* case_id
 >* klant_id
 >* medewerker_id
