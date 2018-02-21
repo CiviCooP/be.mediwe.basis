@@ -418,7 +418,7 @@ class CRM_Basis_ControleArts {
     $result = [];
     if ($artsId) {
       $queryParams = [1 => [$artsId['id'], 'Integer']];
-      $select = CRM_Basis_Utils::createCustomDataQuery(CRM_Basis_Config::singleton()
+      $select = CRM_Basis_SingleCustomData::createCustomDataQuery(CRM_Basis_Config::singleton()
         ->getCommunicatieCustomGroup());
       if ($select) {
         $query = $select . ' WHERE entity_id = %1';

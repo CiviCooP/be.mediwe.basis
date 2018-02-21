@@ -27,28 +27,7 @@ class CRM_Basis_Utils {
     return implode(' ', $nameParts);
   }
 
-  /**
-   * Generic method to add custom data using CRM_Core_DAO::executeQuery
-   *
-   * @param  array $params
-   * @throws Exception when unable to execute query
-   * @access public
-   * @static
-   */
-  public static function addCustomData($params) {
-    $queryData = new CRM_Basis_ConfigItems_CustomDataQuery($params);
-    $query = $queryData->getQuery();
-    $queryParams = $queryData->getQueryParams();
-    if (!empty($query)) {
-      try {
-        CRM_Core_DAO::executeQuery($query, $queryParams);
-      }
-      catch (Exception $ex) {
-        throw new Exception(ts('Unable to add custom data in ' . __METHOD__ . ', error message :') . $ex->getMessage());
-      }
-    }
-  }
-
+gi
   /**
    * Method to retrieve the group id with group name
    *
@@ -110,26 +89,6 @@ class CRM_Basis_Utils {
     return $columns;
   }
 
-  /**
-   * Method om select en from voor custom group samen te stellen
-   *
-   * @param  $customGroupArray
-   * @return string
-   */
-  public static function createCustomDataQuery($customGroupArray) {
-    if (!$customGroupArray['custom_fields']) {
-      $select = 'SELECT *';
-    }
-    else {
-      $columns = array();
-      foreach ($customGroupArray['custom_fields'] as $customFieldId => $customField) {
-        $columns[] = $customField['column_name'] . ' AS ' . $customField['name'];
-      }
-      $select = 'SELECT ' . implode(", ", $columns);
-    }
-    $result = $select . ' FROM ' . $customGroupArray['table_name'];
-    return $result;
-  }
 
   /**
    * Method to select a list of email templates (purpose use it in a settings form
