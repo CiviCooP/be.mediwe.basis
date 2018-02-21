@@ -412,7 +412,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
-    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_mijnmediwe_voorwaarden WHERE contact_id = %1";
+    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_mijnmediwe_voorwaarden WHERE owner_membership_id IS NULL AND status IN (1,2) AND contact_id = %1 LIMIT 0,1;";
     $dao = CRM_Core_DAO::executeQuery($sql, array(1 => array($oldContactId, 'Integer')));
     if ($dao->fetch()) {
       $params = CRM_Basis_Utils::moveDaoToArray($dao);
@@ -450,7 +450,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
-    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_controle_voorwaarden WHERE contact_id = %1";
+    $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_controle_voorwaarden WHERE owner_membership_id IS NULL AND status IN (1,2) AND contact_id = %1 LIMIT 0,1;";
     $dao = CRM_Core_DAO::executeQuery($sql, array(1 => array($oldContactId, 'Integer')));
     if ($dao->fetch()) {
       $params = CRM_Basis_Utils::moveDaoToArray($dao);
