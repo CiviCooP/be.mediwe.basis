@@ -575,8 +575,12 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
       // voeg de klant toe
       $klant = $this->create($params);
       // update de expert systeem gegevens (repeating!)
-      CRM_Basis_Utils::setRepeatingData(
-        $config->getKlantExpertsysteemCustomGroup('custom_fields'), $klant['id'], $mesData, array('mes_periode', 'mes_populatie', 'mes_actie'));
+      CRM_Basis_RepeatingCustomData::setRepeatingData(
+        $config->getKlantExpertsysteemCustomGroup('custom_fields'), $klant['id'], $mesData, [
+        'mes_periode',
+        'mes_populatie',
+        'mes_actie'
+      ]);
       $adres['contact_id'] = $klant['id'];
       $adres['is_billing'] = 1;
       $adres['location_type_id'] = $this->_klantLocationType['name'];
