@@ -35,11 +35,11 @@ class CRM_Basis_VakantiePeriode {
       }
     }
     $config = CRM_Basis_Config::singleton();
-    CRM_Basis_Utils::setRepeatingData(
+    CRM_Basis_RepeatingCustomData::setRepeatingData(
       $config->getVakantieperiodeCustomGroup('custom_fields'),
       $contactId,
       $holiday,
-      array('mvp_vakantie_van')
+      ['mvp_vakantie_van']
     );
   }
 
