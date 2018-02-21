@@ -166,6 +166,11 @@ In het beste geval wordt de opdracht uitgesteld tot een andere dag.
 In het slechtste geval wordt de opdracht geannuleerd.
 
 ## Status van het dossier
+
+!!! note
+
+    Het idee is dat deze statuswijzigingen zoveel mogelijk automatisch met CiviRules gezet worden. Dat wordt nu even geparkeerd.
+
 **Aangevraagd** - als het dossier aangemaakt wordt. *(name = mediwe_aangevraagd)*
 
 **Gepland** - als dat de mail naar de controlearts verstuurd wordt. *(name = mediwe_gepland)*
@@ -176,9 +181,9 @@ In het slechtste geval wordt de opdracht geannuleerd.
 
 **Gefactureerd** - als de factuur gemaakt is. *(name = mediwe_gefactureerd)*
 
-!!! note
+!!! warning "Let op!"
 
-    Het idee is dat deze statuswijzigingen zoveel mogelijk automatisch met CiviRules gezet worden. Dat wordt nu even geparkeerd.
+    De case statussen worden automatisch toegevoegd aan CiviCRM en aan de definitie van het dossiertype middels het laden van de Coniguratie Items. Echter, de standaard dossier statussen Ongoing, Urgent en Resolved worden daarmee niet uit de definitie gehaald. Dat zal **handmatig** moeten gedaan worden bij iedere nieuwe lading van de Configuratie Items. 
 
 ## Activiteiten in het dossier
 **Open Dossier** legt het moment vast dat het dossier aangemaakt wordt.
