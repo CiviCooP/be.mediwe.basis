@@ -261,8 +261,9 @@ De medische controle komt in principe binnen met de API **MedischeControle** **c
 
 #### Verwerken dossier
 Er moet een nieuw dossier van het type *Medische Controle* toegevoegd. De waarden die gebruikt worden:
+
 * dossiertype (*case_type_id*) = *dossier_medische_controle*
-* onderwerp (*subject*) = 'Medische Controle ' <naam medewerker> <datum controle>
+* onderwerp (*subject*) = 'Medische Controle ' + naam medewerker + datum controle
 * begindatum (*start_date*) = datum controle
 * status (*status_id*) = *mediwe_aangevraagd*
 
