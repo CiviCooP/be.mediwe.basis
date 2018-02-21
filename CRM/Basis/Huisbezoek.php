@@ -140,21 +140,40 @@ class CRM_Basis_Huisbezoek {
   }
 
   /**
-   * Method to get all huisbezoekes that meet the selection criteria based on incoming $params
+   * Method to get all huisbezoekes that meet the selection criteria based on
+   * incoming $params
    *
    * @param $params
+   *
    * @return array
    */
   public function get($params) {
-    $huisbezoek = array();
+    $huisbezoeken = [];
     try {
-        // ensure activity type is set correctly
-        $params['activity_type_id'] = $this->_huisbezoekActivityTypeName;
-        $huisbezoek = civicrm_api3('Activity', 'get', $params)['values'];
+      // ensure activity type is set correctly
+      $params['activity_type_id'] = $this->_huisbezoekActivityTypeName;
+      $huisbezoeken = civicrm_api3('Activity', 'get', $params)['values'];
+      if ($huisbezoeken) {
+        $this->getHuisbezoekCustomFields($huisbezoeken);
+      }
+    } catch (CiviCRM_API3_Exception $ex) {
     }
-    catch (CiviCRM_API3_Exception $ex) {
+    return $huisbezoeken;
+  }
+
+  /**
+   * Method om custom velden aan een huisbezoek toe te voegen
+   *
+   * @param $medewerkers
+   */
+  private function getHuisbezoekCustomFields(&$huisbezoeken) {
+    $config = CRM_Basis_Config::singleton();
+    foreach ($huisbezoeken as $rowId => $huisbezoek) {
+      if (isset($huisbezoek['id'])) {
+        $extra = $this->addSingleDaoData($config->getMedischeControleHuisbezoekCustomGroup(), $huisbezoek['id']);
+        $huisbezoeken[$rowId] = array_merge($huisbezoek, $extra);
+      }
     }
-    return $huisbezoek;
   }
 
   /**
@@ -269,4 +288,34 @@ class CRM_Basis_Huisbezoek {
       }
   }
 
+  /**
+   * Method om enkelvoudige custom velden toe te voegen aan mediwe contact
+   *
+   * @param  $customGroup
+   * @param  $entityId
+   * @return array
+   */
+  protected function addSingleDaoData($customGroup, $entityId) {
+    $result = array();
+    $tableName = $customGroup['table_name'];
+    if (!empty($tableName)) {
+      $customFields = $customGroup['custom_fields'];
+      $sql = 'SELECT * FROM ' . $tableName . ' WHERE entity_id = %1';
+      $dao = CRM_Core_DAO::executeQuery($sql, array(
+        1 => array($entityId, 'Integer'),
+      ));
+      if ($dao->fetch()) {
+        $data = CRM_Basis_Utils::moveDaoToArray($dao);
+      }
+      foreach ($customFields as $customFieldId => $customField) {
+        if (isset($data[$customField['column_name']])) {
+          $result[$customField['name']] = $data[$customField['column_name']];
+        }
+        else {
+          $result[$customField['name']] = NULL;
+        }
+      }
+    }
+    return $result;
+  }
 }
