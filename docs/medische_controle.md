@@ -9,11 +9,12 @@ Daarom is zijn identiteit niet eenduidig gekend.
 
 De klant geeft ons volgende informatie:
 
-* De gegevens van de te controleren medewerker: naam, adres
+* De gegevens van de te controleren medewerker: naam, woonadres en eventueel adres waarde controle plaats gaat vinden (verblijfsadres)
 * De gegevens over de ziekteperiode
 * De facturatiegegevens van het bedrijf
 * Contact gegevens van de aanvrager (naam, telefoon, email)
 * E-mail adressen wie bevestiging van de aanvraag ontvangt en wie het resultaat ontvangt (telkens max. 3 adressen)
+* De eerste actie van de medische controle
 
 De verwerking verloopt in volgende stappen:
 
@@ -164,12 +165,121 @@ In dat geval wordt de klant opgebeld voor overleg.
 In het beste geval wordt de opdracht uitgesteld tot een andere dag.
 In het slechtste geval wordt de opdracht geannuleerd.
 
+## Status van het dossier
+**Aangevraagd** - als het dossier aangemaakt wordt. *(name = mediwe_aangevraagd)*
+
+**Gepland** - als dat de mail naar de controlearts verstuurd wordt. *(name = mediwe_gepland)*
+
+**Afwezig** - als teruggemeld wordt dat de medewerker afwezig was. *(name = mediwe_afwezig)*
+
+**Uitgevoerd** - als het resultaat van de controle teruggemeld wordt. *(name = mediwe_uitgevoerd)*
+
+**Gefactureerd** - als de factuur gemaakt is. *(name = mediwe_gefactureerd)*
+
+!!! note
+
+    Het idee is dat deze statuswijzigingen zoveel mogelijk automatisch met CiviRules gezet worden. Dat wordt nu even geparkeerd.
+
 ## Activiteiten in het dossier
+**Open Dossier** legt het moment vast dat het dossier aangemaakt wordt.
+
+**Huisbezoek** wordt automatisch aangemaakt als het dossier aangemaakt wordt. De medewerker van Mediwe vult de datum van de activiteit en de controlearts (*Toegewezen aan*) in. Als dat gedaan wordt, dan wordt automatisch de dossierrelatie _Onderzocht door controlearts_ toegevoegd met de toegewezen controlearts.
+Indien de medewerker afwezig was kan er een nieuwe activiteit Huisbezoek aangemaakt worden door een medewerker van Mediwe.
+
+**Convocatie op kabinet** wordt handmatig toegevoegd door een medewerker Mediwe.
+
+**Onderzoek arbeidsongeval** wordt handmatig toegevoegd door een medewerker Mediwe.
+
+Verder kunnen alle standaard CiviCRM dossieractiviteiten toegevoegd worden.
+
+!!! note
+
+    Bij deze dossieractiviteiten is het uiteindelijke doel zoveel mogelijk van deze activiteiten automatisch te laten verrichten, waarschijnlijk met CiviRules.
 
 ## Rollen in het dossier
+De standaard rol **Case Coordinator (Dossiermanager)** kan gebruikt worden.
+
+Mediwe specifiek is er de rol **Onderzocht door controlearts**.
 
 ## Technische beschrijving
-De medische controle komt in principe binnen met de API *MedischeControle* *create*.
+De medische controle komt in principe binnen met de API **MedischeControle** **create**.
+
+!!! note
+
+    De API Medische Controle kent ook de mogelijke actions **get** , **delete** en **update**. Deze worden aan het eind van dit hoofdstuk verder beschreven.
+    
+### Korte beschrijving CiviCRM acties
+
+1. Verwerken klant: controleren of de klant al bestaat. Zo niet, nieuwe klant toevoegen.
+2. Verwerken klant medewerker: bij bekende klant moet er gecontroleerd worden of de te controleren medewerker al bestaat (als medewerker van de klant!). Zo niet, klant medewerker toevoegen. Bij een nieuwe klant wordt de klant medewerker altijd toegevoegd.
+3. Verwerken contactpersoon: bij bekende klant moet er gecontroleerd worden of de contactpersoon al bestaat. Zo niet, wordt de contactpersoon toegevoegd. Bij een nieuwe klant wordt de contactpersoon altijd toegevoegd.
+4. Verwerken aanvrager: bij bekende klant moet er gecontroleerd worden of de aanvrager al bestaat. Zo niet, wordt de aanvrager toegevoegd. Bij een nieuwe klant wordt de aanvrager altijd toegevoegd.
+5. Verwerken dossier: er wordt een nieuw dossier medische controle aangemaakt. Indien er al een actief dossier medische controle bestaat voor de combinatie klant, medewerker en datum wordt een fout gemeld.   
+
+#### Verwerken klant
+* indien het BTW nummer dat van de API komt niet leeg is, controleer of dit valide is. Een BTW nummer is valide als het minimaal 10 tekens bevat. 
+* indien het BTW nummer van de klant ingevuld en valide is, zoek de klant met de API **Klant vindmetbtw**. Als de klant niet gevonden wordt, maak een nieuwe klant aan met API **Klant create**. Als de klant gevonden wordt met het BTW nummer en de naam klant vanuit de API is niet gelijk aan de naam van de klant in de database, voeg dan ook de naam klant vanuit de API toe als contact identity *mediwe_synoniem_klant*.
+
+!!! note
+
+    De API **Klant vindmetbtw** moet eerst de BTW uit de parameters herleiden tot alleen cijfers. Dus een input van BE 123.456-78 wordt 12345678. Vervolgens moet dat vergeleken worden met het opgeslagen custom veld. Er wordt een verborgen custom veld bij klant opgeslagen met alleen de cijfers van de BTW. Dit wordt bijgewerkt als het veld BTW nummer wijzigt. De API zal alle gegevens van de klant retourneren.
+
+* indien het BTW nummer niet ingevuld:
+    * probeer als eerste de klant uniek te vinden met de naam via de API **Klant getvalue** of **getsingle**. Als dat lukt, gebruik deze klant.
+    * als klant niet gevonden, gebruik dan de API **Contact findbyidentity** om de klant te vinden met de ingegeven naam. Als op die manier een klant gevonden wordt, gebruik die klant
+    
+!!! note
+
+    Bij het opzoeken op naam zal de *Contact Identities* extensie gebruikt worden om ook op synoniemen te kunnen zoeken. Daartoe zal een nieuw _identity type_ gebruikt worden (*name* is *mediwe_synoniem_klant* en label * klant bekend als*). 
+
+* als de klant uiteindelijk niet gevonden wordt, moet er een nieuwe klant aangemaat worden met de API **Klant create**. 
+   
+!!! question
+
+    Wellicht is het handig de *Extended Contact Matcher* extensie te gebruiken?
+    
+#### Verwerken klant medewerker
+
+!!! warning "Let op!"
+
+    De medewerker bestaat altijd in de context van de klant. Als Pietje Puk eerst bij BedrijfA en daarna bij BedrijfB heeft gewerkt en beide bedrijven zijn Mediwe klanten dan zal Pietje Puk twee keer voorkomen! Bij het zoeken naar de klant medewerker zal dus ook gezocht worden binnen de subgroep die gedefinieerd wordt door alle contacten die een werknemer relatie met de klant hebben. Als er sprake is van een nieuwe klant zal er dus per definitie ook sprake zijn van een nieuwe medewerker.
+
+* indien er bij de vorige stap een nieuwe klant is toegevoegd, is de medewerker per definitie ook een nieuwe medewerker. Dus kan dan ook de medewerker toegevoegd worden met de API **KlantMedewerker create**.
+* indien er geen nieuwe klant was en het personeelsnummer van de medewerker ingevuld (minimaal 3 tekens) is, zoek dan de medewerker met de API **KlantMedewerker getvalue** of **getsingle**. Wordt de medewerker niet gevonden, voeg dan een medewerker toe met de API **KlantMedewerker create**.
+* indien we nog geen medewerker hebben en het rijksregisternummer was ingevuld (minimaal 10 tekens), zoek dan de medewerker met de API **KlantMedewerker getvalue** of ** getsinge**. Wordt de medewerker niet gevonden, voeg dan een medewerker toe met de API **KlantMedewerker create**.
+* indien we nog steeds geen medewerker hebben, gebruik de voornaam, achternaam en postcode (van de woonplaats) van de medewerker om deze te zoeken met de API **KlantMedewerker getsingle** of **getvalue**. Mocht er nog geen unieke medewerker gevonden zijn, maar een nieuwe medewerker aan met de API **KlantMedewerker create**. 
+* Indien er geen medewerker gevonden wordt zal een nieuwe klantmedewerker toegevoegd worden.
+
+!!! note
+
+    De **KlantMedewerker create** API zal ook automatisch een werknemer/werkgever relatie toevoegen tussen de klant en de medewerker.
+
+#### Verwerken contactpersoon
+* indien er sprake was van een nieuwe klant, voeg de contactpersoon toe met de **Contact create** API. Voeg ook een relatie van het type *is administratief contactpersoon voor/heeft als administratief contactpersoon* tussen de klant en de contactpersoon toe met de **Relationship create** API.
+* indien het e-mailadres van de contactpersoon ingevuld is (minimaal 5 tekens met een valide emailadres), gebruik dit emailadres om met de **Contact get** API alle contacten op te halen met dit e-mailadres. Controleer vervolgens of één van de gevonden contacten een relatie van het type *is administratief contactpersoon voor* heeft met de klant. Als er geen uniek contactpersoon gevonden is, voeg contactpersoon en relatie toe.
+* indien nog niet gevonden of toegevoegd, zoek met voornaam en achternaam met de **Contact get** API. Controleer vervolgens of één van de gevonden contacten een relatie van het type *is administratief contactpersoon voor* heeft met de klant. Als er geen uniek contactpersoon gevonden is, voeg contactpersoon en relatie toe.
+
+#### Verwerken dossier
+Er moet een nieuw dossier van het type *Medische Controle* toegevoegd. De waarden die gebruikt worden:
+
+* dossiertype (*case_type_id*) = *dossier_medische_controle*
+* onderwerp (*subject*) = 'Medische Controle ' + naam medewerker + datum controle
+* begindatum (*start_date*) = datum controle
+* status (*status_id*) = *mediwe_aangevraagd*
+
+#### Return
+De volgende waarden zullen door de API MedischeControle create teruggegeven worden:
+
+* is_error = 0 of 1
+* count = 1
+* version = 3
+* id = case_id
+* values:
+
+>* case_id
+>* klant_id
+>* medewerker_id
+>* start_date
 
 
 

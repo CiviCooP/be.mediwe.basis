@@ -5,7 +5,7 @@
  *
  * @author Erik Hommel (CiviCooP) <erik.hommel@civicoop.org>
  * @author Klaas Eikelboom (CiviCooP) <klaas.eikelboom@civicoop.org>
- * @author Chirstophe Deman <christophe.deman@mediwe.be>
+ * @author Christophe Deman <christophe.deman@mediwe.be>
  * @date 31 May 2017
  * @license AGPL-3.0
  */
