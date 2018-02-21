@@ -74,6 +74,13 @@ class CRM_Basis_Config {
   private $_ziektemeldingCaseType = array();
   private $_medischeControleCaseType = array();
 
+  // properties for case status
+  private $_aangevraagdCaseStatus = array();
+  private $_geplandCaseStatus = array();
+  private $_afwezigCaseStatus = array();
+  private $_uitgevoerdCaseStatus = array();
+  private $_gefactureerdCaseStatus = array();
+
   // properties for option groups
   private $_medischeControleSoortOptionGroup = array();
   private $_ziekteMeldingRedenKortOptionGroup = array();
@@ -119,6 +126,7 @@ class CRM_Basis_Config {
     $this->setCasesCustomGroups();
     $this->setMediweTeamContactId();
     $this->setCaseTypes();
+    $this->setCaseStatus();
 
     $this->_joomlaDbName = "mediwe_joomla";
     $this->_sourceCiviDbName = "mediwe_old_civicrm";
@@ -130,6 +138,81 @@ class CRM_Basis_Config {
       ));
     }
     catch (CiviCRM_API3_Exception $ex) {
+    }
+  }
+
+  /**
+   * Getter voor aangevraagd case status
+   *
+   * @param null $key
+   * @return array|mixed
+   */
+  public function getAangevraagdCaseStatus($key = NULL) {
+    if (!empty($key) && isset($this->_aangevraagdCaseStatus[$key])) {
+      return $this->_aangevraagdCaseStatus[$key];
+    }
+    else {
+      return $this->_aangevraagdCaseStatus;
+    }
+  }
+
+  /**
+   * Getter voor afwezig case status
+   *
+   * @param null $key
+   * @return array|mixed
+   */
+  public function getAfwezigCaseStatus($key = NULL) {
+    if (!empty($key) && isset($this->_afwezigCaseStatus[$key])) {
+      return $this->_afwezigCaseStatus[$key];
+    }
+    else {
+      return $this->_afwezigCaseStatus;
+    }
+  }
+
+  /**
+   * Getter voor gefactureerd case status
+   *
+   * @param null $key
+   * @return array|mixed
+   */
+  public function getGefactureerdCaseStatus($key = NULL) {
+    if (!empty($key) && isset($this->_gefactureerdCaseStatus[$key])) {
+      return $this->_gefactureerdCaseStatus[$key];
+    }
+    else {
+      return $this->_gefactureerdCaseStatus;
+    }
+  }
+
+  /**
+   * Getter voor gepland case status
+   *
+   * @param null $key
+   * @return array|mixed
+   */
+  public function getGeplandCaseStatus($key = NULL) {
+    if (!empty($key) && isset($this->_geplandCaseStatus[$key])) {
+      return $this->_geplandCaseStatus[$key];
+    }
+    else {
+      return $this->_geplandCaseStatus;
+    }
+  }
+
+  /**
+   * Getter voor uitgevoerd case status
+   *
+   * @param null $key
+   * @return array|mixed
+   */
+  public function getUitgevoerdCaseStatus($key = NULL) {
+    if (!empty($key) && isset($this->_uitgevoerdCaseStatus[$key])) {
+      return $this->_uitgevoerdCaseStatus[$key];
+    }
+    else {
+      return $this->_uitgevoerdCaseStatus;
     }
   }
 
@@ -2049,6 +2132,42 @@ class CRM_Basis_Config {
     catch (CiviCRM_API3_Exception $ex) {
     }
   }
+
+  /**
+   * Method om case status properties te zetten
+   */
+  private function setCaseStatus() {
+    try {
+      $caseStatusValues = civicrm_api3('OptionValue', 'get', array(
+        'sequential' => 1,
+        'option_group_id' => 'case_status',
+        'name' => array('LIKE' => 'mediwe_%'),
+        'options' => array('limit' => 0),
+      ));
+      foreach ($caseStatusValues['values'] as $caseStatus) {
+        switch($caseStatus['name']) {
+          case 'mediwe_aangevraagd':
+            $this->_aangevraagdCaseStatus = $caseStatus;
+            break;
+          case 'mediwe_afwezig':
+            $this->_afwezigCaseStatus = $caseStatus;
+            break;
+          case 'mediwe_gefactureerd':
+            $this->_gefactureerdCaseStatus = $caseStatus;
+            break;
+          case 'mediwe_gepland':
+            $this->_geplandCaseStatus = $caseStatus;
+            break;
+          case 'mediwe_uitgevoerd':
+            $this->_uitgevoerdCaseStatus = $caseStatus;
+            break;
+        }
+      }
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+    }
+  }
+
 
 
     /**
