@@ -131,17 +131,6 @@ class CRM_Basis_ControleArts {
     return $result;
   }
 
-  public function customFieldId($customField) {
-    $config = CRM_Basis_Config::singleton();
-    $huisBezoekCustomGroup = $config->getMedischeControleHuisbezoekCustomGroup();
-
-    foreach ($huisBezoekCustomGroup['custom_fields'] as $group) {
-
-      $fields[$group['name']] = $group['id'];
-    }
-    return $fields[$customField];
-  }
-
   /**
    * Method om afstand voor huisbezoek te bepalen
    *
@@ -171,14 +160,14 @@ class CRM_Basis_ControleArts {
           'id' => $huisbezoekId,
         ]);
 
-        $afstand = civicrm_api3('Google', 'afstand', [
-          'adres' => $huisbezoek['custom_' . $this->customFieldId('mh_huisbezoek_adres')],
-          'postcode' => $huisbezoek['custom_' . $this->customFieldId('mh_huisbezoek_postcode')],
-          'gemeente' => $huisbezoek['custom_' . $this->customFieldId('mh_huisbezoek_gemeente')],
+        $afstand = civicrm_api3('Google', 'afstand', array(
+          'adres' => $huisbezoek['mh_huisbezoek_adres'],
+          'postcode' => $huisbezoek['mh_huisbezoek_postcode'],
+          'gemeente' => $huisbezoek['mh_huisbezoek_gemeente'],
           'adres_arts' => $artsData['street_address'],
           'postcode_arts' => $artsData['postal_code'],
           'gemeente_arts' => $artsData['city'],
-        ]);
+        ));
 
         if (isset($afstand['values'])) {
           $result = $afstand['values'];
