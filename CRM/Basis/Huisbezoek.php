@@ -173,7 +173,7 @@ class CRM_Basis_Huisbezoek {
     $config = CRM_Basis_Config::singleton();
     foreach ($huisbezoeken as $rowId => $huisbezoek) {
       if (isset($huisbezoek['id'])) {
-        $extra = $this->addSingleDaoData($config->getMedischeControleHuisbezoekCustomGroup(), $huisbezoek['id']);
+        $extra = CRM_Basis_Utils::addSingleDaoData($config->getMedischeControleHuisbezoekCustomGroup(), $huisbezoek['id']);
         $huisbezoeken[$rowId] = array_merge($huisbezoek, $extra);
       }
     }
@@ -290,38 +290,6 @@ class CRM_Basis_Huisbezoek {
       throw new API_Exception(ts('Could not create a contact in ' . __METHOD__
         . ', contact your system administrator! Error from API Activity create: ' . $ex->getMessage()));
     }
-  }
-
-  /**
-   * Method om enkelvoudige custom velden toe te voegen aan mediwe contact
-   *
-   * @param  $customGroup
-   * @param  $entityId
-   *
-   * @return array
-   */
-  protected function addSingleDaoData($customGroup, $entityId) {
-    $result = [];
-    $tableName = $customGroup['table_name'];
-    if (!empty($tableName)) {
-      $customFields = $customGroup['custom_fields'];
-      $sql = 'SELECT * FROM ' . $tableName . ' WHERE entity_id = %1';
-      $dao = CRM_Core_DAO::executeQuery($sql, [
-        1 => [$entityId, 'Integer'],
-      ]);
-      if ($dao->fetch()) {
-        $data = CRM_Basis_Utils::moveDaoToArray($dao);
-      }
-      foreach ($customFields as $customFieldId => $customField) {
-        if (isset($data[$customField['column_name']])) {
-          $result[$customField['name']] = $data[$customField['column_name']];
-        }
-        else {
-          $result[$customField['name']] = NULL;
-        }
-      }
-    }
-    return $result;
   }
 
 }

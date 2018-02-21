@@ -27,35 +27,4 @@ abstract class CRM_Basis_MediweContact {
     }
   }
 
-  /**
-   * Method om enkelvoudige custom velden toe te voegen aan mediwe contact
-   *
-   * @param  $customGroup
-   * @param  $entityId
-   * @return array
-   */
-  protected function addSingleDaoData($customGroup, $entityId) {
-    $result = array();
-    $tableName = $customGroup['table_name'];
-    if (!empty($tableName)) {
-      $customFields = $customGroup['custom_fields'];
-      $sql = 'SELECT * FROM ' . $tableName . ' WHERE entity_id = %1';
-      $dao = CRM_Core_DAO::executeQuery($sql, array(
-        1 => array($entityId, 'Integer'),
-      ));
-      if ($dao->fetch()) {
-        $data = CRM_Basis_Utils::moveDaoToArray($dao);
-      }
-      foreach ($customFields as $customFieldId => $customField) {
-        if (isset($data[$customField['column_name']])) {
-          $result[$customField['name']] = $data[$customField['column_name']];
-        }
-        else {
-          $result[$customField['name']] = NULL;
-        }
-      }
-    }
-    return $result;
-  }
-
 }

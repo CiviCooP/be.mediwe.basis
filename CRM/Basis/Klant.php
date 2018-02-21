@@ -192,9 +192,9 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     $config = CRM_Basis_Config::singleton();
     foreach ($klanten as $rowId => $klant) {
       if (isset($klant['id'])) {
-        $boekhouding = $this->addSingleDaoData($config->getKlantBoekhoudingCustomGroup(), $klant['id']);
-        $organisatie = $this->addSingleDaoData($config->getKlantOrganisatieCustomGroup(), $klant['id']);
-        $klantProcedure = $this->addSingleDaoData($config->getKlantProcedureCustomGroup(), $klant['id']);
+        $boekhouding = CRM_Basis_Utils::addSingleDaoData($config->getKlantBoekhoudingCustomGroup(), $klant['id']);
+        $organisatie = CRM_Basis_Utils::addSingleDaoData($config->getKlantOrganisatieCustomGroup(), $klant['id']);
+        $klantProcedure = CRM_Basis_Utils::addSingleDaoData($config->getKlantProcedureCustomGroup(), $klant['id']);
         $expert = CRM_Basis_RepeatingCustomData::get('mediwe_expert_systeem', $klant['id']);
         $klanten[$rowId] = array_merge($klant, $boekhouding, $organisatie, $expert, $klantProcedure);
       }
