@@ -322,6 +322,6 @@ function civicrm_api3_klant_medewerker_Create($params) {
     'version' => 3,
     'count' => 1,
     'id' => $created['id'],
-    'values' => $created
+    'values' => $created,
   );
 }
