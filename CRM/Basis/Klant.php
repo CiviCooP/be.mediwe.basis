@@ -149,9 +149,9 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
   private function saveKlant($params) {
     $config = CRM_Basis_Config::singleton();
     // rename klant custom fields for api  ($customFields, $data, &$params)
-    $this->replaceCustomFieldsParams($config->getKlantBoekhoudingCustomGroup('custom_fields'), $params);
-    $this->replaceCustomFieldsParams($config->getKlantProcedureCustomGroup('custom_fields'), $params);
-    $this->replaceCustomFieldsParams($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
+    CRM_Basis_SingleCustomData::replaceCustomFieldsParams($config->getKlantBoekhoudingCustomGroup('custom_fields'), $params);
+    CRM_Basis_SingleCustomData::replaceCustomFieldsParams($config->getKlantProcedureCustomGroup('custom_fields'), $params);
+    CRM_Basis_SingleCustomData::replaceCustomFieldsParams($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
     try {
       $contact = civicrm_api3('Contact', 'create', $params);
       $this->saveExpertSysteem($contact['id'], $params);
@@ -311,7 +311,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     $params['id'] = $newId;
     unset($params['contact_id']);
     // update de facturatiegegevens
-    $this->replaceCustomFieldsParams($config->getKlantBoekhoudingCustomGroup('custom_fields'), $params);
+    CRM_Basis_SingleCustomData::replaceCustomFieldsParams($config->getKlantBoekhoudingCustomGroup('custom_fields'), $params);
     civicrm_api3('Klant', 'create', $params);
   }
 
@@ -417,7 +417,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     if ($dao->fetch()) {
       $params = CRM_Basis_Utils::moveDaoToArray($dao);
       // convert names of custom fields
-      $this->replaceCustomFieldsParams($config->getVoorwaardenMijnMediweCustomGroup('custom_fields'), $saveParams);
+      CRM_Basis_SingleCustomData::replaceCustomFieldsParams($config->getVoorwaardenMijnMediweCustomGroup('custom_fields'), $saveParams);
       // create membership
       $createdMembership = civicrm_api3('Membership', 'create', $saveParams);
     }
@@ -467,7 +467,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
 
     }
     // convert names of custom fields
-    $this->replaceCustomFieldsParams($config->getVoorwaardenControleCustomGroup('custom_fields'), $saveParams);
+    CRM_Basis_SingleCustomData::replaceCustomFieldsParams($config->getVoorwaardenControleCustomGroup('custom_fields'), $saveParams);
     // create membership
     $createdMembership = civicrm_api3('Membership', 'create', $saveParams);
     return $createdMembership;
@@ -595,9 +595,9 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
       $params['id'] = reset($klant)['contact_id'];
     }
     // update de controle procedure gegevens
-    $this->replaceCustomFieldsParams($config->getKlantProcedureCustomGroup('custom_fields'), $params);
+    CRM_Basis_SingleCustomData::replaceCustomFieldsParams($config->getKlantProcedureCustomGroup('custom_fields'), $params);
     // update de interne organisatie gegevens
-    $this->replaceCustomFieldsParams($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
+    CRM_Basis_SingleCustomData::replaceCustomFieldsParams($config->getKlantOrganisatieCustomGroup('custom_fields'), $params);
     // voeg de klant toe
     $klant = $this->create($params);
 

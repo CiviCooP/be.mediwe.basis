@@ -277,7 +277,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
   private function saveKlantMedewerker($params) {
     $config = CRM_Basis_Config::singleton();
     // rename klant medewerker custom fields for api ($customFields, $data, &$params)
-    $this->replaceCustomFieldsParams($config->getKlantMedewerkerMedewerkerCustomGroup('custom_fields'), $params);
+    CRM_Basis_SingleCustomData::replaceCustomFieldsParams($config->getKlantMedewerkerMedewerkerCustomGroup('custom_fields'), $params);
     try {
       $contact = civicrm_api3('Contact', 'create', $params);
       // verwerk de klant/medewerker relatie
