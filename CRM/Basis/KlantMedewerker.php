@@ -229,6 +229,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
       $medewerkers = civicrm_api3('Contact', 'get', $params)['values'];
       if ($medewerkers) {
         $this->getKlantMedewerkersCustomFields($medewerkers);
+        $this->getKlantMedewerkersKlantIds($medewerkers);
       }
     }
     catch (CiviCRM_API3_Exception $ex) {
@@ -257,8 +258,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
       $this->saveExpertTellers($contact['id'], $params);
       $medewerker = civicrm_api3('KlantMedewerker', 'getsingle', ['id' => $contact['id']]);
       return $medewerker;
-    }
-    catch (CiviCRM_API3_Exception $ex) {
+    } catch (CiviCRM_API3_Exception $ex) {
       throw new API_Exception(ts('Could not create a contact in ' . __METHOD__
         . ', contact your system administrator! Error from API Contact create: ' . $ex->getMessage()
       ));
@@ -369,7 +369,23 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
         $extra = CRM_Basis_SingleCustomData::addSingleDaoData($config->getKlantMedewerkerMedewerkerCustomGroup(), $medewerker['id']);
         $expert = CRM_Basis_RepeatingCustomData::get('mediwe_expert_teller', $medewerker['id']);
         $medewerkers[$rowId] = array_merge($medewerker, $extra, $expert);
-        CRM_Basis_SingleCustomData::stripCustomFieldsResult($config->getKlantMedewerkerMedewerkerCustomGroup(),  $medewerkers[$rowId]);
+        CRM_Basis_SingleCustomData::stripCustomFieldsResult($config->getKlantMedewerkerMedewerkerCustomGroup(), $medewerkers[$rowId]);
+      }
+    }
+  }
+
+  /**
+   * Methode om het klant id toe te voegen aan de medewerker
+   *
+   * @param $medewerkers
+   */
+  private function getKlantMedewerkersKlantIds(&$medewerkers) {
+    foreach ($medewerkers as $rowId => $medewerker) {
+      if (isset($medewerker['id'])) {
+        $klantId = $this->findKlantId($medewerker['id']);
+        if (isset($klantId)) {
+          $medewerkers[$rowId]['klant_id'] = $klantId;
+        }
       }
     }
   }
@@ -401,6 +417,30 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
         . ', contact your system administrator! Error from API Contact delete: ' . $ex->getMessage()
       ));
     }
+  }
+
+  /**
+   * Methode om het klant id op te zoeken aan de hand van de werkgevers
+   * releatie
+   * Let wel niet actief, afgesloten, of werknemers relaties in de toekomst
+   * worden niet meegenomen. Mocht een werknemer bij meerdere werkgevers in
+   * dienst zijn dan wordt een willekeurige werkgever gekozen.
+   *
+   * @param $medewerkerId
+   *
+   * @return null|string
+   */
+  public function findKlantId($medewerkerId) {
+    $config = CRM_Basis_Config::singleton();
+    return CRM_Core_DAO::singleValueQuery("
+    SELECT contact_id_b FROM civicrm_relationship rel
+    WHERE  rel.relationship_type_id = {$config->getIsWerknemerVanRelationshipTypeId()}
+    AND    is_active = 1
+    AND    (start_date is null or start_date <= CURRENT_DATE())
+    AND    (end_date is null or end_date >= CURRENT_DATE())
+    AND    contact_id_a = %1", [
+      1 => [$medewerkerId, 'Integer'],
+    ]);
   }
 
 }
