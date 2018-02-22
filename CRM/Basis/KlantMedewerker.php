@@ -9,7 +9,7 @@
  * @date    31 May 2017
  * @license AGPL-3.0
  */
-class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
+class CRM_Basis_KlantMedewerker {
 
   private $_klantMedewerkerContactSubTypeName = NULL;
 
