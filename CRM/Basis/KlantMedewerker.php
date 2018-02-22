@@ -12,7 +12,9 @@
 class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
 
   private $_klantMedewerkerContactSubTypeName = NULL;
+
   private $_klantMedewerkerContactTypeName = NULL;
+
   private $_employerRelationshipTypeId = NULL;
 
   /**
@@ -32,11 +34,11 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
    */
   public function migrate($params) {
     $config = CRM_Basis_Config::singleton();
-    $domicilie = array();
-    $verblijf = array();
-    $phone = array();
-    $mobile = array();
-    $employer = array();
+    $domicilie = [];
+    $verblijf = [];
+    $phone = [];
+    $mobile = [];
+    $employer = [];
     $sql = " SELECT *  FROM " . $config->getJoomlaDbName() . ".migratie_klantmedewerker LIMIT 0,100";
     $dao = CRM_Core_DAO::executeQuery($sql);
     while ($dao->fetch()) {
@@ -98,7 +100,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
         unset($phone['phone']);
         $existPhone = civicrm_api3('Telefoon', 'get', $phone);
         if ($existPhone['count'] == 1) {
-          civicrm_api3('Telefoon', 'delete', array('id' => $existPhone['id']));
+          civicrm_api3('Telefoon', 'delete', ['id' => $existPhone['id']]);
         }
       }
       // create mobile
@@ -110,13 +112,13 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
         unset($mobile['phone']);
         $existMobile = civicrm_api3('Telefoon', 'get', $mobile);
         if ($existMobile['count'] == 1) {
-          civicrm_api3('Telefoon', 'delete', array('id' => $existMobile['id']));
+          civicrm_api3('Telefoon', 'delete', ['id' => $existMobile['id']]);
         }
       }
       // add employer relationship
       $employerId = reset(civicrm_api3('Klant', 'get', $employer)['values'])['contact_id'];
       if ($employerId) {
-        $employerRelation = array();
+        $employerRelation = [];
         $employerRelation['contact_id_a'] = $id;
         $employerRelation['relationship_type_id'] = $config->getIsWerknemerVanRelationshipTypeId();
         // get the existing relation
@@ -134,7 +136,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
       }
       // confirm migration
       $sql = "INSERT INTO " . $config->getJoomlaDbName() . ".migration_personnel (id) VALUES (%1)";
-      CRM_Core_DAO::executeQuery($sql, array(1 => array($idPersonnel, 'Integer')));
+      CRM_Core_DAO::executeQuery($sql, [1 => [$idPersonnel, 'Integer']]);
     }
   }
 
@@ -142,6 +144,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
    * Method om klant medewerker toe te voegen
    *
    * @param  $params
+   *
    * @return array|bool
    */
   public function create($params) {
@@ -166,13 +169,14 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
    * Method om klant medewerker bij te werken
    *
    * @param  $params
+   *
    * @return array|bool
    */
   public function update($params) {
     // contact type en sub type goed zetten
     $params['contact_type'] = $this->_klantMedewerkerContactTypeName;
     $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
-    $exists = $this->exists(array('id' => $params['id']));
+    $exists = $this->exists(['id' => $params['id']]);
     if ($exists) {
       return $this->saveKlantMedewerker($params);
     }
@@ -186,6 +190,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
    * Method to check if a klant medewerker exists
    *
    * @param  $params
+   *
    * @return bool
    */
   public function exists($params) {
@@ -207,10 +212,11 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
    * Methodom klant medewerkers op te halen
    *
    * @param  $params
+   *
    * @return array
    */
   public function get($params) {
-    $medewerkers = array();
+    $medewerkers = [];
     $config = CRM_Basis_Config::singleton();
 
     // contact type en sub type goed zetten
@@ -218,7 +224,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
     $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
     $params['sequential'] = 1;
 
-    CRM_Basis_SingleCustomData::fixCustomSearchFields($config->getKlantMedewerkerMedewerkerCustomGroup(),$params);
+    CRM_Basis_SingleCustomData::fixCustomSearchFields($config->getKlantMedewerkerMedewerkerCustomGroup(), $params);
     try {
       $medewerkers = civicrm_api3('Contact', 'get', $params)['values'];
       if ($medewerkers) {
@@ -235,6 +241,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
    * Method om klant op te slaan
    *
    * @param  $params
+   *
    * @return array
    * @throws API_Exception
    */
@@ -248,7 +255,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
       $this->saveWerknemerRelatie($params['klant_id'], $contact['id']);
       // verwerk de expert tellers
       $this->saveExpertTellers($contact['id'], $params);
-      $medewerker = civicrm_api3('KlantMedewerker', 'getsingle', array('id' => $contact['id']));
+      $medewerker = civicrm_api3('KlantMedewerker', 'getsingle', ['id' => $contact['id']]);
       return $medewerker;
     }
     catch (CiviCRM_API3_Exception $ex) {
@@ -263,6 +270,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
    *
    * @param $klantId
    * @param $medewerkerId
+   *
    * @return bool
    */
   public function saveWerknemerRelatie($klantId, $medewerkerId) {
@@ -270,11 +278,11 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
       return FALSE;
     }
     //check of de relatie al bestaat
-    $params = array(
+    $params = [
       'contact_id_a' => $medewerkerId,
       'contact_id_b' => $klantId,
       'relationship_type_id' => $this->_employerRelationshipTypeId,
-    );
+    ];
     try {
       $relationshipCount = civicrm_api3('Relationship', 'getcount', $params);
       // voeg toe als niet bestaat
@@ -283,7 +291,8 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
         $params['is_active'] = 1;
         try {
           civicrm_api3('Relationship', 'create', $params);
-        } catch (CiviCRM_API3_Exception $ex) {
+        }
+        catch (CiviCRM_API3_Exception $ex) {
           CRM_Core_Error::debug_log_message(ts('Could not employee relationship between ') . $medewerkerId
             . ts(' and ') . $medewerkerId . ' in ' . __METHOD__);
         }
@@ -303,11 +312,12 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
    * @param $data
    */
   public function saveExpertTellers($contactId, $data) {
-    $expertTellersFields = CRM_Basis_Config::singleton()->getCustomFieldByCustomGroupName('mediwe_expert_systeem');
+    $expertTellersFields = CRM_Basis_Config::singleton()
+      ->getCustomFieldByCustomGroupName('mediwe_expert_systeem');
     // store in arrays if not arrays
     foreach ($expertTellersFields as $expertTellersFieldId => $expertTellersField) {
       if (isset($data[$expertTellersField['name']]) && !is_array($data[$expertTellersField['name']])) {
-        $data[$expertTellersField['name']] = array($data[$expertTellersField['name']]);
+        $data[$expertTellersField['name']] = [$data[$expertTellersField['name']]];
       }
       if (isset($data[$expertTellersField['name']])) {
         $customData[$expertTellersField['name']] = $data[$expertTellersField['name']];
@@ -326,15 +336,17 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
    * Method om start datum van werknemer relatie te bepalen
    *
    * @param $medewerkerId
+   *
    * @return string
    */
   private function setWerknemerStartDate($medewerkerId) {
     // haal eventueel start datum contract op
     try {
-      $datumInDienst = civicrm_api3('KlantMedewerker', 'getvalue', array(
+      $datumInDienst = civicrm_api3('KlantMedewerker', 'getvalue', [
         'id' => $medewerkerId,
-        'return' => CRM_Basis_Config::singleton()->getMedewerkerDatumInDienstCustomField('name'),
-      ));
+        'return' => CRM_Basis_Config::singleton()
+          ->getMedewerkerDatumInDienstCustomField('name'),
+      ]);
       $startDate = new DateTime($datumInDienst);
       return $startDate->format('d-m-Y');
     }
@@ -365,6 +377,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
    * Method om klant medewerker met id te verwijderen
    *
    * @param  $medewerkerId
+   *
    * @return bool|array
    * @throws API_Exception
    */
