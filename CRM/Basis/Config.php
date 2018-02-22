@@ -1156,96 +1156,227 @@ class CRM_Basis_Config {
         }
     }
 
-
-    /**
-     * Getter for venice custom field from leverancier CustomGroup custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getVeniceCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_venice');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
+  /**
+   * Getter voor leverancier venice nummer
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getLevVeniceCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_venice');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
     }
-
-    /**
-     * Getter for vat custom field from leverancierCustomGroup custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getBtwCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_btw_nummer');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
+    else {
+      return $customField;
     }
+  }
 
-    /**
-     * Getter for subject_to_vat custom field from leverancierCustomGroup custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getBtwPlichtigCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_btw_plichtig');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
+  /**
+   * Getter voor klant venice nummer
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getKlantVeniceCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_leverancierCustomGroup, 'mf_venice');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
     }
+    else {
+      return $customField;
+    }
+  }
 
-    /**
-     * Getter for account custom field from leverancierCustomGroup custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getIbanCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_iban');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
+  /**
+   * Getter voor klant btw veld
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getKlantBtwCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'mf_btw_nummer');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
     }
+    else {
+      return $customField;
+    }
+  }
 
-    /**
-     * Getter for Eigen_referentie custom field from leverancierCustomGroup custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getBestelNummerCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_bestelnummer');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
+  /**
+   * Getter voor leverancier btw veld
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getLevBtwCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_btw_nummer');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
     }
+    else {
+      return $customField;
+    }
+  }
 
-    /**
-     * Getter for CSV_bestand_bij_factuur custom field from leverancierCustomGroup custom group
-     *
-     * @param null $key
-     * @return mixed|array
-     */
-    public function getCsvBestandBijFactuurCustomField($key = NULL) {
-        $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_csv_toevoegen');
-        if (!empty($key) && isset($customField[$key])) {
-            return $customField[$key];
-        } else {
-            return $customField;
-        }
+  /**
+   * Getter voor klant btw cijfers veld
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getKlantBtwCijfersCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'mf_btw_nummer_cijfers');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
     }
+    else {
+      return $customField;
+    }
+  }
+
+  /**
+   * Getter voor leverancier btw veld
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getLevBtwCijfersCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_btw_nummer_cijfers');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
+    }
+    else {
+      return $customField;
+    }
+  }
+
+  /**
+   * Getter voor leverancier btw plichtig veld
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getLevBtwPlichtigCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_btw_plichtig');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
+    }
+    else {
+      return $customField;
+    }
+  }
+
+  /**
+   * Getter voor klant btw plichtig veld
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getKlantBtwPlichtigCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'mf_btw_plichtig');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
+    }
+    else {
+      return $customField;
+    }
+  }
+
+  /**
+   * Getter voor leverancier iban
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getLevIbanCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_iban');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
+    }
+    else {
+      return $customField;
+    }
+  }
+
+  /**
+   * Getter voor klant iban
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getKlantIbanCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'mf_iban');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
+    }
+    else {
+      return $customField;
+    }
+  }
+
+  /**
+   * Getter voor leverancier bestelnummer
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getLevBestelNummerCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_bestelnummer');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
+    }
+    else {
+      return $customField;
+    }
+  }
+
+  /**
+   * Getter voor klant bestelnummer
+   *
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getKlantBestelNummerCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'mf_bestelnummer');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
+    }
+    else {
+      return $customField;
+    }
+  }
+
+  /**
+   * Getter voor leverancier csv bestand bij factuur
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getLevCsvBestandBijFactuurCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_leverancierCustomGroup, 'ml_csv_toevoegen');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
+    }
+    else {
+      return $customField;
+    }
+  }
+
+  /**
+   * Getter voor klant csv bestand bij factuur
+   * @param null $key
+   * @return mixed|array
+   */
+  public function getKlantCsvBestandBijFactuurCustomField($key = NULL) {
+    $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'mf_csv_toevoegen');
+    if (!empty($key) && isset($customField[$key])) {
+      return $customField[$key];
+    }
+    else {
+      return $customField;
+    }
+  }
 
     /**
      * Getter for level1 custom field from klantOrganisatie custom group

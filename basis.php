@@ -4,6 +4,17 @@ require_once 'basis.civix.php';
 use CRM_Basis_ExtensionUtil as E;
 
 /**
+ * Implements hook_civicrm_custom)(.
+ * @param $op
+ * @param $groupId
+ * @param $entityId
+ * @param $params
+ */
+function basis_civicrm_custom($op, $groupId, $entityId, &$params) {
+  CRM_Basis_Klant::custom($op, $groupId, $entityId, $params);
+}
+
+/**
  * Implements hook_civicrm_searchColumns().
  *
  * @param $objectName

@@ -9,7 +9,7 @@
  * @date 31 May 2017
  * @license AGPL-3.0
  */
-class CRM_Basis_Klant extends CRM_Basis_MediweContact {
+class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
   private $_klantContactSubTypeName = NULL;
   private $_klantLocationType = NULL;
 
@@ -601,7 +601,6 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
     // voeg de klant toe
     $klant = $this->create($params);
 
-
     // update de expert systeem gegevens (repeating!)
     CRM_Basis_RepeatingCustomData::setRepeatingData(
       $config->getKlantExpertsysteemCustomGroup('custom_fields'), $klant['id'], $mesData, array('mes_periode', 'mes_populatie', 'mes_actie'));
@@ -647,6 +646,30 @@ class CRM_Basis_Klant extends CRM_Basis_MediweContact {
       $this->migrateIsKlantVia($oldId, $klant['id']);
     }
 
+  }
+
+  /**
+   * Method om de civicrm_custom hook te verwerken
+   *
+   * @param $op
+   * @param $groupId
+   * @param $entityId
+   * @param $params
+   */
+  public static function custom ($op, $groupId, $entityId, &$params) {
+    // bij edit en create als boekhoudingsgroep, zet btw nummer om in alleen cijfers en sla deze op
+    switch ($groupId) {
+      case CRM_Basis_Config::singleton()->getKlantBoekhoudingCustomGroup('id'):
+        if ($op == 'create' || $op == 'edit') {
+          $klant = new CRM_Basis_Klant();
+          $klant->verwerkBtwNummerCustomField(
+            CRM_Basis_Config::singleton()->getKlantBtwCustomField('id'),
+            CRM_Basis_Config::singleton()->getKlantBtwCijfersCustomField('id'),
+            $entityId, $params
+          );
+        }
+        break;
+    }
   }
 
 }
