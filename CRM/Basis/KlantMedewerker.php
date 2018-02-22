@@ -225,8 +225,36 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
     $params['sequential'] = 1;
 
     CRM_Basis_SingleCustomData::fixCustomSearchFields($config->getKlantMedewerkerMedewerkerCustomGroup(), $params);
+
+    if(isset($params['klant_id'])&&isset($params['id'])){
+      // zowel een id als een klant_id - als het klopt dan mag hij verder
+      $klantId = $this->findKlantId($params['id']);
+      if($klantId==$params['klant_id']){
+        // het klopt, hij mag verder zoeken met dit ene id
+        $contactIds = array($params['id']);
+      } else {
+        // klopt niet met elkaar, verlaat de aktie met een leeg resultaat
+        return $medewerkers;
+      }
+    } elseif (isset($params['klant_id'])){
+      // nu is alleen het klant_id gezet, haal de werknemers op, en zoek
+      // met hen verder
+      $contactIds = $this->getKlantMedewerkersKlantIds($params['klant_id']);
+    } else {
+      // geen klant_id gezet, laat de contactIds leeg, is verderop
+      // het signaal voor een gewone get.
+      $contactIds = [];
+    }
+
     try {
-      $medewerkers = civicrm_api3('Contact', 'get', $params)['values'];
+      if(empty($contactIds)) {
+        $medewerkers = civicrm_api3('Contact', 'get', $params)['values'];
+      } else {
+        foreach($contactIds as $contactId){
+          $params['id'] = $contactId;
+          $medewerkers = array_merge($medewerkers,civicrm_api3('Contact', 'get', $params)['values']);
+        }
+      }
       if ($medewerkers) {
         $this->getKlantMedewerkersCustomFields($medewerkers);
         $this->getKlantMedewerkersKlantIds($medewerkers);
@@ -428,7 +456,7 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
    *
    * @param $medewerkerId
    *
-   * @return null|string
+   * @return null|integer
    */
   public function findKlantId($medewerkerId) {
     $config = CRM_Basis_Config::singleton();
@@ -441,6 +469,36 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
     AND    contact_id_a = %1", [
       1 => [$medewerkerId, 'Integer'],
     ]);
+  }
+
+  /**
+   * Methode om de medewerkers te vinden met het klantid. Hier word rekening
+   * gehouden met begin, einddatum en het actief zijn.
+   *
+   * @param $klantId
+   *
+   * @return array
+   */
+  public function findMedewerkersByKlantId($klantId) {
+
+    $result = [];
+
+    $config = CRM_Basis_Config::singleton();
+    $sql = "SELECT contact_id_a FROM civicrm_relationship rel
+    WHERE  rel.relationship_type_id = {$config->getIsWerknemerVanRelationshipTypeId()}
+    AND    is_active = 1
+    AND    (start_date is null or start_date <= CURRENT_DATE())
+    AND    (end_date is null or end_date >= CURRENT_DATE())
+    AND    contact_id_b = %1";
+
+    $dao = CRM_Core_DAO::executeQuery($sql, [
+      1 => [$klantId, 'Integer'],
+    ]);
+
+    while ($dao->fetch()) {
+      $result[] = $dao->contact_id_a;
+    }
+    return $result;
   }
 
 }
