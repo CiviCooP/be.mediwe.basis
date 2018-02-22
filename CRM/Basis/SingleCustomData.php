@@ -107,10 +107,10 @@ class CRM_Basis_SingleCustomData {
    * @param $customGroup
    * @param $params
    */
-  public static function fixCustomSearchFields($customGroup,&$params){
-    foreach($customGroup['custom_fields'] as $fieldId => $field){
-      if(key_exists($field['name'],$params)){
-        $params['custom_'.$field['id']] = $params[$field['name']];
+  public static function fixCustomSearchFields($customGroup, &$params) {
+    foreach ($customGroup['custom_fields'] as $fieldId => $field) {
+      if (array_key_exists($field['name'], $params)) {
+        $params['custom_' . $field['id']] = $params[$field['name']];
         unset($params[$field['name']]);
       }
     }
