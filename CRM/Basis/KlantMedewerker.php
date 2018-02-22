@@ -211,10 +211,14 @@ class CRM_Basis_KlantMedewerker extends CRM_Basis_MediweContact {
    */
   public function get($params) {
     $medewerkers = array();
+    $config = CRM_Basis_Config::singleton();
+
     // contact type en sub type goed zetten
     $params['contact_type'] = $this->_klantMedewerkerContactTypeName;
     $params['contact_sub_type'] = $this->_klantMedewerkerContactSubTypeName;
     $params['sequential'] = 1;
+
+    CRM_Basis_SingleCustomData::fixCustomSearchFields($config->getKlantMedewerkerMedewerkerCustomGroup(),$params);
     try {
       $medewerkers = civicrm_api3('Contact', 'get', $params)['values'];
       if ($medewerkers) {
