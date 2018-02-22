@@ -45,6 +45,17 @@
         "weight": 27,
         "is_active": 1
       },
+      "ml_btw_nummer_cijfers": {
+        "name": "ml_btw_nummer_cijfers",
+        "label": "BTW nummer in cijfers",
+        "data_type": "String",
+        "html_type": "Text",
+        "is_searchable": 0,
+        "is_required": 0,
+        "is_view": 1,
+        "is_active": 0,
+        "weight": 35
+      },
       "ml_btw_plichtig": {
         "name": "ml_btw_plichtig",
         "label": "BTW plichtig",
