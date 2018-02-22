@@ -38,5 +38,25 @@
     "contact_type_a": "Organization",
     "contact_type_b": "Individual",
     "is_active": 1
+  },
+  "commercieel_contactpersoon":
+  {
+    "name_a_b": "is_commercieel_contactpersoon",
+    "label_a_b":"Is commercieel contactpersoon voor",
+    "name_b_a": "heeft_commercieel_contactperoon",
+    "label_b_a":"Heeft als commercieel contactpersoon",
+    "contact_type_a": "Individual",
+    "contact_type_b": "Organization",
+    "is_active": 1
+  },
+  "administratief_contactpersoon":
+  {
+    "name_a_b": "is_administratief_contactpersoon",
+    "label_a_b":"Is administratief contactpersoon voor",
+    "name_b_a": "heeft_administratief_contactperoon",
+    "label_b_a":"Heeft als administratief contactpersoon",
+    "contact_type_a": "Individual",
+    "contact_type_b": "Organization",
+    "is_active": 1
   }
 }

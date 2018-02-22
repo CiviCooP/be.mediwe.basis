@@ -72,6 +72,13 @@ function _civicrm_api3_medische_controle_Create_spec(&$spec) {
     'api.required' => 0,
     'type' => CRM_Utils_Type::T_STRING,
   );
+  $spec['medewerker_id'] = array(
+    'name' => 'medewerker_id',
+    'title' => 'Contact ID van de medewerker',
+    'description' => 'Contact ID van de medewerker',
+    'api.required' => 0,
+    'type' => CRM_Utils_Type::T_STRING,
+  );
   $spec['voornaam_medewerker'] = array(
     'name' => 'voornaam',
     'title' => 'Voornaam van de medewerker',

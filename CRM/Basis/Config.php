@@ -28,6 +28,8 @@ class CRM_Basis_Config {
   private $_ziektemeldingRelationshipTypeId = NULL;
   private $_vraagtControleAanRelationshipTypeId = NULL;
   private $_artsRelationshipTypeId = NULL;
+  private $_adminContactRelationshipTypeId = NULL;
+  private $_commContactRelationshipTypeId = NULL;
 
   // properties for membership types
   private $_maandelijksMembershipType = array();
@@ -136,6 +138,24 @@ class CRM_Basis_Config {
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
+  }
+
+  /**
+   * Getter voor administratief contactpersoon relationship type id
+   *
+   * @return null
+   */
+  public function getAdminContactRelationshipTypeId() {
+    return $this->_adminContactRelationshipTypeId;
+  }
+
+  /**
+   * Getter voor commercieel contactpersoon relationship type id
+   *
+   * @return null
+   */
+  public function getCommContactRelationshipTypeId() {
+    return $this->_commContactRelationshipTypeId;
   }
 
   /**
@@ -2190,39 +2210,49 @@ class CRM_Basis_Config {
     }
 
 
-    /**
-     * Method to set the relevant relationship type properties
-     */
-    private function setRelationshipTypes() {
-        try {
-            $relationshipTypes = civicrm_api3('RelationshipType','get', array(
-                'options' => array('limit' => 0)));
+  /**
+   * Method to set the relevant relationship type properties
+   */
+  private function setRelationshipTypes() {
+    try {
+      $relationshipTypes = civicrm_api3('RelationshipType','get', array(
+        'options' => array('limit' => 0)));
+      foreach ($relationshipTypes['values'] as $relationshipTypeId => $relationshipType) {
+        switch ($relationshipType['name_a_b']) {
+          case 'is_klant_via':
+            $this->_isKlantViaRelationshipTypeId = $relationshipType['id'];
+            break;
 
+          case 'Employee of':
+            $this->_isWerknemerVanRelationshipTypeId = $relationshipType['id'];
+            break;
 
+          case 'ziektemelding':
+            $this->_ziektemeldingRelationshipTypeId = $relationshipType['id'];
+            break;
 
-            foreach ($relationshipTypes['values'] as $relationshipTypeId => $relationshipType) {
-                switch ($relationshipType['name_a_b']) {
-                    case 'is_klant_via':
-                        $this->_isKlantViaRelationshipTypeId = $relationshipType['id'];
-                        break;
-                    case 'Employee of':
-                        $this->_isWerknemerVanRelationshipTypeId = $relationshipType['id'];
-                        break;
-                    case 'ziektemelding':
-                        $this->_ziektemeldingRelationshipTypeId = $relationshipType['id'];
-                        break;
-                    case 'vraagt_controle_aan':
-                        $this->_vraagtControleAanRelationshipTypeId = $relationshipType['id'];
-                        break;
-                  case 'controlearts':
-                    $this->_artsRelationshipTypeId = $relationshipType['id'];
-                    break;
-                }
-            }
+          case 'vraagt_controle_aan':
+            $this->_vraagtControleAanRelationshipTypeId = $relationshipType['id'];
+          break;
+
+          case 'controlearts':
+            $this->_artsRelationshipTypeId = $relationshipType['id'];
+            break;
+
+          case 'is_commercieel_contactpersoon':
+            $this->_commContactRelationshipTypeId = $relationshipType['id'];
+            break;
+
+          case 'is_administratief_contactpersoon':
+            $this->_adminContactRelationshipTypeId = $relationshipType['id'];
+            break;
+
         }
-        catch (CiviCRM_API3_Exception $ex) {
-        }
+      }
     }
+    catch (CiviCRM_API3_Exception $ex) {
+    }
+  }
 
     /**
      * Method to set the relevant relationship type properties

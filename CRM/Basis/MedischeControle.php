@@ -4,393 +4,159 @@
  * Class to process MedischeControle in Mediwe
  *
  * @author Erik Hommel (CiviCooP) <erik.hommel@civicoop.org>
- * @date 31 May 2017
+ * @author Klaas Eikelboom (CiviCooP) <klaas.eikelboom@civicoop.org>
+ * @author Christophe Deman <christophe.deman@mediwe.be>
+ * @date 22 Feb 2018
  * @license AGPL-3.0
  */
 class CRM_Basis_MedischeControle {
 
-    private $_medischeControleCaseTypeName = NULL;
-    private $_medischeControleCaseTypeId = NULL;
+  private $_todaysDate = NULL;
 
   /**
    * CRM_Basis_Klant constructor.
    */
-   public function __construct()
-   {
-     $config = CRM_Basis_Config::singleton();
-     $medischeControleCaseType = $config->getMedischeControleCaseType();
-     $this->_medischeControleCaseTypeName = $medischeControleCaseType['name'];
-     $this->_medischeControleCaseTypeId = $medischeControleCaseType['id'];
-   }
+  public function __construct() {
+    $this->_todaysDate = new DateTime();
+  }
 
   /**
-   * Method to create a new medischeControle
+   * Method om medische controle toe te voegen
    *
    * @param $params
-   * @return array
-   * @throws API_Exception when error from api Case Create
+   * @return array|bool
    */
   public function create($params) {
-
-      // ensure mandatory data
-      if (!isset($params['mmc_controle_datum'])) {
-          throw new Exception('Controledatum ziekte ontbreekt!');
-      }
-
-      // create/update ziektemelding
-      $ziektemelding = new CRM_Basis_Ziektemelding();
-      $melding = $ziektemelding->create($params);
-      $params['mmc_ziekte_id'] = $melding['id'];
-
-      // ensure case type is set correctly
-      $params['case_type_id'] = $this->_medischeControleCaseTypeName;
-
-      // get the employee
-      $params['contact_id'] = $melding['employee_id'];
-
-      // get the employer
-      $params['employer_id'] = $melding['employer_id'];
-
-      if (!isset($params['id'])) {
-          // exists looks for overlapping periods for this employee
-          $exists = $this->exists($params);
-          if (!$exists) {
-              unset($params['id']);
-              return $this->_saveMedischeControle($params);
-          } else {
-              $params['id'] = $exists->id;
-          }
-      }
-
+    // ensure mandatory data
+    if (!isset($params['mmc_controle_datum'])) {
+      CRM_Core_Error::createError(ts('Controledatum ziekte ontbreekt in ' . __METHOD__));
+      return FALSE;
+    }
+    $params['case_type_id'] = CRM_Basis_Config::singleton()->getmedischeControleCaseType()['id'];
+    if (isset($params['id'])) {
       return $this->update($params);
+    }
+    else {
+      if ($this->exists($params)) {
+        CRM_Core_Error::createError(ts('Probeert medische controle toe te voegen die al bestaat in ' . __METHOD__));
+        return FALSE;
+      }
+      else {
+        return $this->saveMedischeControle($params);
+      }
+    }
   }
 
   /**
-   * Method to update an medischeControle
+   * Method om medische controle bij te werken
    *
    * @param $params
-   * @return array
+   * @return array|bool
    */
   public function update($params) {
-
-
-
-       try {
-            return $this->_saveMedischeControle($params);
-        }
-        catch (CiviCRM_API3_Exception $ex) {
-            throw new API_Exception(ts('Could not create an medischeControle in '.__METHOD__
-                .', contact your system administrator! Error from API Case create: '.$ex->getMessage()));
-        }
+    if (!$params['id']) {
+      CRM_Core_Error::debug_log_message(ts('Poging medische controle dossier bij te werken zonder een ID mee te geven in ') > __METHOD__);
+      return FALSE;
+    }
+    return $this->saveMedischeControle($params);
   }
 
   /**
-   * Method to check if an medischeControle exists
+   * Method om te checken of medische controle al bestaat
    *
    * @param $params
    * @return bool
    */
   public function exists($params) {
-      $medischeControle = array();
-
-      if (isset($params['id'])) {
-          return $params['id'];
+    if (isset($params['id'])) {
+      return $params['id'];
+    }
+    else {
+      if (isset($params['medewerker_id']) && isset($params['mcc_controle_datum'])) {
+        $controleDatum = new DateTime($params['mcc_controle_datum']);
+        $sql = "SELECT ca.id FROM civicrm_case ca INNER JOIN civicrm_case_contact cc ON ca.id = cc.case_id
+        WHERE ca.case_type_id = %1 AND ca.is_deleted = %2 AND cc.contact_id = %3 AND ca.start_date = %4";
+        return CRM_Core_DAO::singleValueQuery($sql, array(
+          1 => array(CRM_Basis_Config::singleton()->getmedischeControleCaseType()['id'], 'Integer'),
+          2 => array(0, 'Integer'),
+          3 => array($params['medewerker_id'], 'Integer'),
+          4 => array($controleDatum->format('Ymd'), 'String'),
+        ));
       }
-      else {
-          $sql =    "
-                    SELECT 
-                      ca.*
-                    FROM 
-                      civicrm_case ca
-                    INNER JOIN
-                      civicrm_case_contact cc 
-                    ON 
-                      ca.id = cc.case_id 
-                    WHERE
-                      ca.case_type_id =  " . $this->_medischeControleCaseTypeId . " 
-                    AND
-                      ca.is_deleted = 0  
-                    AND
-                      cc.contact_id = " . $params['contact_id'] . "
-                    AND 
-                        ca.start_date =  '" . $params['mmc_controle_datum'] . "'      
-                ";
-      }
-
-      $dao = CRM_Core_DAO::executeQuery($sql);
-
-      if ($dao->fetch()) {
-          return $dao->id;
-      }
-      else {
-          return false;
-      }
+    }
+    return FALSE;
   }
 
   /**
-   * Method to get all medischeControlees that meet the selection criteria based on incoming $params
+   * Method om medische controles op te halen
    *
    * @param $params
    * @return array
    */
   public function get($params) {
     $medischeControles = array();
-
     try {
-
       $medischeControles = civicrm_api3('Case', 'get', $params)['values'];
-      $this->_addMedischeControleAllFields($medischeControles);
+      // custom velden ophalen
     }
     catch (CiviCRM_API3_Exception $ex) {
     }
-
     return $medischeControles;
   }
 
   /**
-   * Method to delete an medischeControle with id (set to is_deleted in CiviCRM)
+   * Method om medische controle met id te verwijderen
    *
    * @param $medischeControleId
-   * @return array
+   * @return array|bool
    */
-  public function deleteWithId($medischeControleid) {
-      $medischeControle = array();
-
-      $params['id'] = $medischeControleid;
-      try {
-          if ($this->exists($params)) {
-              $medischeControle = civicrm_api3('Case', 'delete', $params);
-          }
-      }
-      catch (CiviCRM_API3_Exception $ex) {
-          throw new API_Exception(ts('Could not create an medischeControle in '.__METHOD__
-              .', contact your system administrator! Error from API Case delete: '.$ex->getMessage()));
-      }
-
-      return $medischeControle;
+  public function deleteWithId($medischeControleId) {
+    if (!isset($params['id'])) {
+      CRM_Core_Error::debug_log_message(ts('Poging om medische controle te verwijderen zonder id in ') . __METHOD__);
+      return FALSE;
+    }
+    try {
+      civicrm_api3('Case', 'delete', array('id' => $medischeControleId));
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+      CRM_Core_Error::debug_log_message(ts('Fout bij verwijderen medische controle dossier met ID ') . $medischeControleId . ts(' in ') . __METHOD__);
+      return FALSE;
+    }
   }
 
-    private function _saveCustomFields($customGroup, $data, $case_id) {
-
-        $id = 0;
-
-        // get record
-        $table = $customGroup['table_name'];
-
-        $sql = "SELECT * FROM $table WHERE entity_id = $case_id";
-
-        $dao = CRM_Core_DAO::executeQuery($sql);
-        if ($dao->fetch()) {
-            $id = $dao->id;
-        }
-        else {
-            $sql = "INSERT INTO $table (entity_id) VALUES($case_id);";
-            CRM_Core_DAO::executeQuery($sql);
-            $sql = "SELECT * FROM $table WHERE entity_id = $case_id";
-            $dao = CRM_Core_DAO::executeQuery($sql);
-            if ($dao->fetch()) {
-                $id = $dao->id;
-            }
-        }
-
-
-
-        $sql = "UPDATE $table SET ";
-        $count = 0;
-        $customFields = $customGroup['custom_fields'];
-        foreach ($customFields as $field) {
-            $fieldName = $field['column_name'];
-
-            if (isset($data[$field['name']])) {
-                if (isset($data[$field['name']]) ) {
-                    $count += 1;
-                    $value = $data[$field['name']];
-                    if ($value == 'null') {
-                        $sql .= " $fieldName = NULL,";
-                    }
-                    else {
-                        $sql .= " $fieldName = '" . $value . "',";
-                    }
-                }
-            }
-        }
-
-        $sql = substr($sql, 0, -1);
-        if ($count != 0 ) {
-            $sql .= " WHERE id = $id;";
-            CRM_Core_DAO::executeQuery($sql);
-        }
-
+  /**
+   * Method om medische controle op te slaan
+   *
+   * @param $data
+   * @return mixed
+   * @throws API_Exception
+   */
+  private function saveMedischeControle($data) {
+    $config = CRM_Basis_Config::singleton();
+    $params = array();
+    foreach ($data as $key => $value) {
+      if ($value) {
+        $params[$key] = $value;
+      }
     }
-
-
-
-  private function _getEmployer($data) {
-
-      $params_employer = array();
-
-      foreach ($data as $key => $value) {
-          if (substr($key, 0, 8) == "employer" && $value){
-              $mykey = substr($key, 9);
-              $params_employer[$mykey] = $value;
-          }
+    // maak eventueel ook een ziektemelding aan
+    // haal of maak de klant
+    // haal of maak de klantmedewerker
+    // haal of maak de contactpersoon
+    try {
+      $params['subject'] = "Medische controle van " . $params['mmc_controle_datum'];
+      $params['start_date'] = $params['mmc_controle_datum'];
+      if (isset($params['end_date'])) {
+        unset($params['end_date']);
       }
-
-      $employer = civicrm_api3('Klant', 'Get', $params_employer);
-
-      if ($employer['count'] == 0) {
-          $employer = civicrm_api3('Klant', 'Create', $params_employer);
-          return $employer['values'];
-      }
-      else {
-          return $employer['values'][0];
-      }
-
-
+      $createdCase = civicrm_api3('Case', 'create', $params);
+      // custom data voor medische controle opslaan
+      return $createdCase['values'];
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+      throw new API_Exception(ts('Could not create a contact in ' . __METHOD__
+         . ', contact your system administrator! Error from API Contact create: ' . $ex->getMessage()));
+    }
   }
-
-    private function _getEmployee($data) {
-    
-        $params_employee = array();
-    
-        foreach ($data as $key => $value) {
-            if (substr($key, 0, 8) == "employee" && $value ){
-                $mykey = substr($key, 9);
-                $params_employee[$mykey] = $value;
-            }
-        }
-
-
-        $employee = civicrm_api3('KlantMedewerker', 'Get', $params_employee);
-
-        if ($employee['count'] == 0) {
-            $employee = civicrm_api3('KlantMedewerker', 'Create', $params_employee);
-            return $employee['values'];
-        }
-        else {
-            return $employee['values'][0];
-        }
-    }
-
-    private function _addEmployerRelation($case_id, $data) {
-
-        $config = CRM_Basis_Config::singleton();
-
-        $params = array(
-            'sequential' => 1,
-            'contact_id_a' => $data['employer_id'],
-            'contact_id_b' => $data['contact_id'],
-            'relationship_type_id' => $config->getVraagtControleAanRelationshipType()['id'],
-            'case_id' => $case_id,
-        );
-
-        try {
-            $result = civicrm_api3('Relationship', 'getsingle', array(
-                'sequential' => 1,
-                'relationship_type_id' => $config->getVraagtControleAanRelationshipType()['id'],
-                'case_id' => $case_id,
-            ));
-            $params['id'] = $result['id'];
-        }
-        catch (Exception $e) {
-           $result = false;
-        }
-
-        $result = civicrm_api3('Relationship', 'create', $params );
-
-        return $result;
-    }
-    
-  private function _saveMedischeControle($data) {
-
-      $config = CRM_Basis_Config::singleton();
-      
-      $params = array();
-
-      foreach ($data as $key => $value) {
-          if ($value) {
-              $params[$key] = $value;
-          }
-      }
-
-      // check ziektemelding
-      if (!isset($params['mmc_ziekte_id'])) {
-
-          $ziektemelding = new CRM_Basis_Ziektemelding();
-          $melding = $ziektemelding->create($params);
-          $params['mmc_ziekte_id'] = $melding['id'];
-
-          // ensure case type is set correctly
-          $params['case_type_id'] = $this->_medischeControleCaseTypeName;
-
-          // get the employee
-          $params['contact_id'] = $melding['employee_id'];
-
-          // get the employer
-          $params['employer_id'] = $melding['employer_id'];
-
-      }
-
-      if (!$params['id']) {
-          unset($params['id']);
-      }
-
-      try {
-
-          // save the medical control
-
-          $params['subject'] = "Medische controle van " . $params['mmc_controle_datum'];
-          $params['start_date'] = $params['mmc_controle_datum'];
-          if (isset($params['end_date'])) {
-              unset($params['end_date']);
-          }
-
-          $createdCase = civicrm_api3('Case', 'create', $params);
-
-          //  custom fields for api  ($customFields, $data, &$params)
-          $this->_saveCustomFields($config->getMedischeControleCustomGroup(), $data, $createdCase['id']);
-
-          // add/update employer role in this case
-          $params_relation = array();
-          $params_relation['contact_id'] = $params['contact_id'];
-          $params_relation['employer_id'] = $params['employer_id'];
-          $this->_addEmployerRelation($createdCase['id'], $params_relation);
-
-          return $createdCase['values'];
-      }
-      catch (CiviCRM_API3_Exception $ex) {
-          throw new API_Exception(ts('Could not create a contact in '.__METHOD__
-              .', contact your system administrator! Error from API Contact create: '.$ex->getMessage()));
-      }
-  }
-
-    private function _addMedischeControleAllFields(&$controles)
-    {
-        $config = CRM_Basis_Config::singleton();
-        $ziektemelding = new CRM_Basis_Ziektemelding();
-
-        foreach ($controles as $arrayRowId => $medischeControle) {
-
-            if (isset($medischeControle['id'])) {
-                // medische controle custom fields
-                $controles[$arrayRowId] = $config->addDaoData($config->getMedischeControleCustomGroup(), $controles[$arrayRowId]);
-
-                // gegevens ziektemelding
-                $illness_id = $controles[$arrayRowId]['mmc_ziekte_id'];
-                $illness = $ziektemelding->get( array ( 'id' => $illness_id ))[$illness_id];
-
-                foreach ($illness as $key => $value) {
-                    if (substr($key, 0, 8) != 'employee') {
-                        $newkey = "illness_" . $key;
-                    }
-                    else {
-                        $newkey = $key;
-                    }
-
-                    $controles[$arrayRowId][$newkey] = $value;
-                }
-            }
-        }
-    }
 
 }
