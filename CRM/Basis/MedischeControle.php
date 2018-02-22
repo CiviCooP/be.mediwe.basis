@@ -29,13 +29,14 @@ class CRM_Basis_MedischeControle {
   public function create($params) {
     // ensure mandatory data
     if (!isset($params['mmc_controle_datum'])) {
-      CRM_Core_Error::createError(ts('Controledatum ziekte ontbreekt in ' .__METHOD__ ));
+      CRM_Core_Error::createError(ts('Controledatum ziekte ontbreekt in ' . __METHOD__));
       return FALSE;
     }
     $params['case_type_id'] = CRM_Basis_Config::singleton()->getmedischeControleCaseType()['id'];
     if (isset($params['id'])) {
       return $this->update($params);
-    } else {
+    }
+    else {
       if ($this->exists($params)) {
         CRM_Core_Error::createError(ts('Probeert medische controle toe te voegen die al bestaat in ' . __METHOD__));
         return FALSE;
@@ -157,4 +158,5 @@ class CRM_Basis_MedischeControle {
          . ', contact your system administrator! Error from API Contact create: ' . $ex->getMessage()));
     }
   }
+
 }
