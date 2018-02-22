@@ -371,6 +371,6 @@ function civicrm_api3_medische_controle_Create($params) {
     'version' => 3,
     'count' => 1,
     'id' => $created['id'],
-    'values' => $created
+    'values' => $created,
   );
 }

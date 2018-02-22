@@ -252,6 +252,6 @@ function civicrm_api3_klant_Update($params) {
     'version' => 3,
     'count' => 1,
     'id' => $updated['id'],
-    'values' => $updated
+    'values' => $updated,
   );
 }
