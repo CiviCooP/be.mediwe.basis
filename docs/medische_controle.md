@@ -20,7 +20,7 @@ De verwerking verloopt in volgende stappen:
 
 ### De klant opzoeken
 In de meeste gevallen zal het BTW nummer bepalend zijn om de klant terug te vinden.
-Helaas hebben diverse organisaties (bvb. overheidsinstzllingen) GEEN BTW nummer.
+Helaas hebben diverse organisaties (bvb. overheidsinstellingen) GEEN BTW nummer.
 In dat geval zullen we gebruik maken van de naam en het adres van de instelling.
 Misschien kan de domeinnaam van de opgegeven e-mail adressen een goed hulpmiddel zijn?
 

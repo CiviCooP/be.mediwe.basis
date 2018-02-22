@@ -5,3 +5,4 @@
 |be.mediwe.smartfragments   |Drupal module mediwe_textfragments|``` drush cvapi Extension.download key="be.mediwe.smartfragments" url="https://github.com/CiviCooP/be.mediwe.smartfragments/archive/master.zip"```|
 |org.civicoop.civirules|geen|``` drush cvapi Extension.download key="org.civicoop.civirules" url="https://github.com/CiviCooP/org.civicoop.civirules/archive/1.17.zip" install="1"```|
 |org.civicoop.emailapi |org.civicoop.civirules|``` drush cvapi Extension.download key="org.civicoop.emailapi" url="https://github.com/CiviCooP/org.civicoop.emailapi/archive/V1.12.zip" install="1"```|
+|de.systopia.identitytracker |geen|``` drush cvapi Extension.download key="de.systopia.identitytracker" url="https://github.com/systopia/de.systopia.identitytracker/releases/download/1.2.beta1/de.systopia.identitytracker-1.2.beta1.zip" install="1"```|
