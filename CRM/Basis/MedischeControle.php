@@ -144,7 +144,7 @@ class CRM_Basis_MedischeControle {
     // haal of maak de klantmedewerker
     // haal of maak de contactpersoon
     try {
-      $params['subject'] = "Medische controle van " . $params['mmc_controle_datum'];
+      $params['subject'] = $this->setDefaultSubject($params['medewerker_id'], $params['mmc_controle_datum']);
       $params['start_date'] = $params['mmc_controle_datum'];
       if (isset($params['end_date'])) {
         unset($params['end_date']);
@@ -157,6 +157,33 @@ class CRM_Basis_MedischeControle {
       throw new API_Exception(ts('Could not create a contact in ' . __METHOD__
          . ', contact your system administrator! Error from API Contact create: ' . $ex->getMessage()));
     }
+  }
+
+  /**
+   * Method om default subject voor case samen te stellen
+   *
+   * @param $medewerkerId
+   * @param $controleDatum
+   * @return string
+   */
+  private function setDefaultSubject($medewerkerId, $controleDatum) {
+    $subject = "Medische controle";
+    if (!empty($medewerkerId)) {
+      try {
+        $name = civicrm_api3('Contact', 'getvalue', array(
+          'id' => $medewerkerId,
+          'return' => 'display_name',
+        ));
+        $subject .= ' van ' . (string) $name;
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+      }
+    }
+    if (!empty($controleDatum)) {
+      $datum = new DateTime($controleDatum);
+      $subject .= ' op ' . $datum->format('d-m-Y');
+    }
+    return $subject;
   }
 
 }
