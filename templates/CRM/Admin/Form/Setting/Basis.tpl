@@ -6,6 +6,10 @@
             <td class="label">{$form.mediwe_opdrachtemailarts_template_id.label}</td>
             <td>{$form.mediwe_opdrachtemailarts_template_id.html}</td>
         </tr>
+        <tr>
+            <td class="label">{$form.mediwe_location_type_id.label}</td>
+            <td>{$form.mediwe_location_type_id.html}</td>
+        </tr>
     </table>
 
     <div class="crm-submit-buttons">

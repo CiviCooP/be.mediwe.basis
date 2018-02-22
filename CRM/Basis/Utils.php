@@ -145,5 +145,19 @@ class CRM_Basis_Utils {
     return $result;
   }
 
+  /**
+   * Method to select a list of  location types for adress email of phone
+   *
+   * @return array
+   */
+  public static function locationTypes() {
+    $result = array();
+    $dao = CRM_Core_DAO::executeQuery("select id,display_name from civicrm_location_type where is_active=1");
+    while ($dao->fetch()) {
+      $result[$dao->id] = $dao->display_name;
+    }
+    return $result;
+  }
+
 
 }
