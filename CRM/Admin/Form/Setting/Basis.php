@@ -14,6 +14,7 @@ class CRM_Admin_Form_Setting_Basis extends CRM_Admin_Form_Setting
     protected $_settings =  array(
         'mediwe_opdrachtemailarts_template_id' => self::MEDIWE_PREFERENCES_NAME,
         'mediwe_location_type_id' => self::MEDIWE_PREFERENCES_NAME,
+        'mediwe_belgisch_btw_formaat' => self::MEDIWE_PREFERENCES_NAME,
     );
 
     public function buildQuickForm()
