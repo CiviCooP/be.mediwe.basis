@@ -726,12 +726,13 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
    * @param $params
    */
   public static function custom ($op, $groupId, $entityId, &$params) {
-    // bij edit en create als boekhoudingsgroep, zet btw nummer om in alleen cijfers en sla deze op
     switch ($groupId) {
+      // bij edit en create als boekhoudingsgroep, zet btw nummer om in alleen cijfers en sla deze op
+      // en formatteer btw nummer als nodig
       case CRM_Basis_Config::singleton()->getKlantBoekhoudingCustomGroup('id'):
         if ($op == 'create' || $op == 'edit') {
           $klant = new CRM_Basis_Klant();
-          $klant->verwerkBtwNummerCustomField(
+          $klant->verwerkBtwNummer(
             CRM_Basis_Config::singleton()->getKlantBtwCustomField('id'),
             CRM_Basis_Config::singleton()->getKlantBtwCijfersCustomField('id'),
             $entityId, $params

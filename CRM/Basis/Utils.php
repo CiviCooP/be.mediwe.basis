@@ -159,5 +159,24 @@ class CRM_Basis_Utils {
     return $result;
   }
 
+  /**
+   * Method om land voor contact op te halen (country_id primaire adres)
+   * 
+   * @param $contactId
+   * @return array|bool
+   */
+  public static function getLandIdContact($contactId) {
+    $params = array(
+      'contact_id' => $contactId,
+      'is_primary' => 1,
+      'return' => 'country_id',
+    );
+    try {
+      return civicrm_api3('Address', 'getvalue', $params);
+    }
+    catch (CiviCRM_API3_Exception $ex) {
+      return FALSE;
+    }
+  }
 
 }
