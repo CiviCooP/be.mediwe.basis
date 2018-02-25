@@ -740,7 +740,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
     $btwCijfers = $this->btwNummerInCijfers($btwNummer);
     // vind met sql omdat custom field inactief is
     $query = "SELECT entity_id 
-      FROM " . CRM_Basis_Config::singleton()->getKlantBoekhoudingCustomGroup('table_name') ." 
+      FROM " . CRM_Basis_Config::singleton()->getKlantBoekhoudingCustomGroup('table_name') . " 
       WHERE " . CRM_Basis_Config::singleton()->getKlantBtwCijfersCustomField('column_name') . " = %1";
     $dao = CRM_Core_DAO::executeQuery($query, array(
       1 => array($btwCijfers, 'Integer'),
@@ -754,7 +754,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
         $klanten[$dao->entity_id] = $found;
       }
       catch (CiviCRM_API3_Exception $ex) {
-        CRM_Core_Error::debug_log_message(ts('Onverwacht klant niet gevonden met id ') . $dao->entity_id . ' in '. __METHOD__);
+        CRM_Core_Error::debug_log_message(ts('Onverwacht klant niet gevonden met id ') . $dao->entity_id . ' in ' . __METHOD__);
       }
     }
     return $klanten;
