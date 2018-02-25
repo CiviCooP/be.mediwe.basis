@@ -161,7 +161,7 @@ class CRM_Basis_Utils {
 
   /**
    * Method om land voor contact op te halen (country_id primaire adres)
-   * 
+   *
    * @param $contactId
    * @return array|bool
    */
