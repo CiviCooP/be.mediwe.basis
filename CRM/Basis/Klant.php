@@ -105,9 +105,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
     $params['sequential'] = 1;
 
     $config = CRM_Basis_Config::singleton();
-    CRM_Basis_SingleCustomData::fixCustomSearchFields($config->getKlantBoekhoudingCustomGroup(),$params);
-
-
+    CRM_Basis_SingleCustomData::fixCustomSearchFields($config->getKlantBoekhoudingCustomGroup(), $params);
     // zet limiet indien ingevuld
     if (isset($params['limit'])) {
       $params['options'] = array('limit' => $params['limit']);
@@ -396,9 +394,8 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
    */
   private function migratieMijnMediweContracten($oldContactId, $contactId) {
     $config = CRM_Basis_Config::singleton();
-    $membership = false;
+    $membership = FALSE;
     $createdMembership = FALSE;
-
     $sql = "SELECT * FROM " . $config->getSourceCiviDbName() .  ".migratie_mijnmediwe_voorwaarden WHERE  contact_id = %1 LIMIT 0,1;";
     $dao = CRM_Core_DAO::executeQuery($sql, array(1 => array($oldContactId, 'Integer')));
     while ($dao->fetch()) {
@@ -409,7 +406,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
       $params = array(
         'sequential' => 1,
         'membership_type_id' => $config->getMijnMediweMembershipType()['id'],
-        'owner_membership_id' =>  array('IS NULL' => 1),
+        'owner_membership_id' => array('IS NULL' => 1),
         'mmv_prijs_per_jaar' => $oldParams['mmv_prijs_per_jaar'],
         'contact_id' => $contactId,
       );
@@ -466,7 +463,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
       $params = array(
         'sequential' => 1,
         'membership_type_id' => $oldParams['membership_type_id'],
-        'owner_membership_id' =>  array('IS NULL' => 1),
+        'owner_membership_id' => array('IS NULL' => 1),
         'contact_id' => $contactId,
       );
 
@@ -533,14 +530,11 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
 
           $params['contact_id_b'] = $klantB['id'];
 
-
           try {
             civicrm_api3('Relationship', 'create', $params);
           }
           catch (CiviCRM_API3_Exception $ex) {
           }
-
-
         }
         else {
           // de hoofdrelatie werd nog niet gemigreerd, geen relatie toevoegen
@@ -596,8 +590,6 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
       catch (CiviCRM_API3_Exception $ex) {
       }
     }
-
-
   }
 
   /**
@@ -631,10 +623,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
     else {
       $this->doMigrate($params);
     }
-
   }
-
-
   private function doMigrate($params) {
 
     $config = CRM_Basis_Config::singleton();
@@ -655,8 +644,6 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
         unset($params[$key]);
       }
     }
-
-
     // zoek klant met dat nummer van joomla
     $klant = $this->get(array('external_identifier' => $params['external_identifier']));
     if (!isset($klant['count'])) {
@@ -725,7 +712,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
    * @param $entityId
    * @param $params
    */
-  public static function custom ($op, $groupId, $entityId, &$params) {
+  public static function custom($op, $groupId, $entityId, &$params) {
     switch ($groupId) {
       // bij edit en create als boekhoudingsgroep, zet btw nummer om in alleen cijfers en sla deze op
       // en formatteer btw nummer als nodig
