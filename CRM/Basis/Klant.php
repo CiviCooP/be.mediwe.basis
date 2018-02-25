@@ -728,4 +728,32 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
     }
   }
 
+  /**
+   * Method om alle klanten met een gelijk btw nummer (alleen cijfers) te vinden
+   * 
+   * @param $btwNummer
+   * @return array
+   */
+  public function vindMetBtw($btwNummer) {
+    $klanten = array();
+    // herleid tot alleen cijfers
+    $btwCijfers = $this->btwNummerInCijfers($btwNummer);
+    // vind met sql omdat custom field inactief is
+    $query = "SELECT entity_id 
+      FROM " . CRM_Basis_Config::singleton()->getKlantBoekhoudingCustomGroup('table_name') ." 
+      WHERE " . CRM_Basis_Config::singleton()->getKlantBtwCijfersCustomField('column_name') . " = %1";
+    $dao = CRM_Core_DAO::executeQuery($query, array(
+      1 => array($btwCijfers, 'Integer'),
+    ));
+    while ($dao->fetch()) {
+      try {
+        $klanten[$dao->entity_id] = civicrm_api3('Klant', 'getsingle', array('id' => $dao->entity_id));
+      }
+      catch (CiviCRM_API3_Exception $ex) {
+        CRM_Core_Error::debug_log_message(ts('Onverwacht klant niet gevonden met id ') . $dao->entity_id . ' in '. __METHOD__);
+      }
+    }
+    return $klanten;
+  }
+
 }

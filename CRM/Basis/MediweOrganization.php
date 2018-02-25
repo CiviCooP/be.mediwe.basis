@@ -82,7 +82,7 @@ abstract class CRM_Basis_MediweOrganization {
    * @param $btwNummer
    * @return string
    */
-  private function btwNummerInCijfers($btwNummer) {
+  public function btwNummerInCijfers($btwNummer) {
     $cijfers = array();
     for ($i = 0; $i < strlen($btwNummer); $i++) {
       if (is_numeric(substr($btwNummer, $i, 1))) {
@@ -127,7 +127,7 @@ abstract class CRM_Basis_MediweOrganization {
    * @param $btwNummer
    * @return bool
    */
-  protected function checkBtwFormatteren($countryId, $btwNummer) {
+  private function checkBtwFormatteren($countryId, $btwNummer) {
     // ja als btw nummer begint met BE of be
     if (strtolower(substr($btwNummer, 0, 2)) == 'be') {
       return TRUE;
