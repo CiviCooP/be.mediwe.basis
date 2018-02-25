@@ -175,7 +175,7 @@ class CRM_Basis_Utils {
       return civicrm_api3('Address', 'getvalue', $params);
     }
     catch (CiviCRM_API3_Exception $ex) {
-      return FALSE;
+      return NULL;
     }
   }
 

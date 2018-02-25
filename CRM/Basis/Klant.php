@@ -697,7 +697,6 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
       $this->migratieMijnMediweContracten($oldId, $klant['id']);
       // migrate Controle contracten
       $this->migratieControleContracten($oldId, $klant['id']);
-
       // migratie relaties is klant via
       $this->migrateIsKlantVia($oldId, $klant['id']);
     }
@@ -720,7 +719,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
         if ($op == 'create' || $op == 'edit') {
           $klant = new CRM_Basis_Klant();
           $klant->verwerkBtwNummer(
-            CRM_Basis_Config::singleton()->getKlantBtwCustomField('id'),
+            CRM_Basis_Config::singleton()->getKlantBtwCustomField(),
             CRM_Basis_Config::singleton()->getKlantBtwCijfersCustomField('id'),
             $entityId, $params
           );

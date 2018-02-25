@@ -14,16 +14,23 @@ abstract class CRM_Basis_MediweOrganization {
   /**
    * Method om BTW nummer te verwerken
    *
-   * @param $btwCustomFieldId
-   * @param $btwCijfersCustomFieldId
-   * @param $entityId
-   * @param $data
+   * @param array $btwCustomField
+   * @param int $btwCijfersCustomFieldId
+   * @param int $entityId
+   * @param array $data
    */
-  protected function verwerkBtwNummer($btwCustomFieldId, $btwCijfersCustomFieldId, $entityId, $data) {
-    foreach ($data as $dataRow) {
-      if (isset($dataRow['custom_field_id']) && $dataRow['custom_field_id'] == $btwCustomFieldId) {
+  protected function verwerkBtwNummer($btwCustomField, $btwCijfersCustomFieldId, $entityId, &$data) {
+    foreach ($data as $dataRowId => $dataRow) {
+      if (isset($dataRow['custom_field_id']) && $dataRow['custom_field_id'] == $btwCustomField['id']) {
         // alleen cijfers
         $btwCijfers = $this->btwNummerInCijfers($dataRow['value']);
+        // sla geformatteerd veld op indien nodig
+        if ($this->checkBtwFormatteren(CRM_Basis_Utils::getLandIdContact($entityId), $dataRow['value']) == TRUE) {
+          $formattedBtw = $this->formatBtwBelgisch($btwCijfers);
+          if ($formattedBtw) {
+            $this->updateFormattedBtw($btwCustomField, $formattedBtw, $entityId);
+          }
+        }
         try {
           civicrm_api3('CustomValue', 'create', array(
             'entity_table' => 'civicrm_contact',
@@ -35,23 +42,36 @@ abstract class CRM_Basis_MediweOrganization {
           CRM_Core_Error::debug_log_message(ts('Fout bij het opslaan van het numeriek BTW nummer voor contact ')
             . $entityId . ts(' met BTW nummer ') . $dataRow['value'] . ts(' in ') . __METHOD__);
         }
-        // vervolgens opmaken in Belgisch formaat indien nodig
-        $entityCountryId = CRM_Basis_Utils::getLandIdContact($entityId);
-        if ($this->checkBtwFormatteren($entityCountryId, $dataRow['value'])) {
-          $formattedBtw = $this->formatBtwBelgisch($dataRow['value']);
-          try {
-            civicrm_api3('CustomValue', 'create', array(
-              'entity_table' => 'civicrm_contact',
-              'entity_id' => $entityId,
-              'custom_' . $btwCustomFieldId => $formattedBtw,
-            ));
-          }
-          catch (CiviCRM_API3_Exception $ex) {
-            CRM_Core_Error::debug_log_message(ts('Fout bij het opslaan van het geformatteerd BTW nummer voor contact ')
-              . $entityId . ts(' met BTW nummer ') . $dataRow['value'] . ts(' in ') . __METHOD__);
-          }
-        }
       }
+    }
+  }
+
+  /**
+   * Method om geformatteerd BTW nummer op te slaan (met SQL omdat update via API Custom Value de custom loop
+   * weer op zou roepen -> oneindige loop
+   * 
+   * @param $customField
+   * @param $formattedBtw
+   * @param $entityId
+   */
+  private function updateFormattedBtw($customField, $formattedBtw, $entityId) {
+    // gebruik custom_group_id van custom field om tabelnaam te halen
+    $klantCustomGroupId = CRM_Basis_Config::singleton()->getKlantBoekhoudingCustomGroup('id');
+    $leverancierCustomGroupId = CRM_Basis_Config::singleton()->getLeverancierCustomGroup('id');
+    switch ($customField['custom_group_id']) {
+      case $klantCustomGroupId:
+        $tableName = CRM_Basis_Config::singleton()->getKlantBoekhoudingCustomGroup('table_name');
+        break;
+      case $leverancierCustomGroupId:
+        $tableName = CRM_Basis_Config::singleton()->getLeverancierCustomGroup('table_name');
+        break;
+    }
+    if ($tableName) {
+      $query = 'UPDATE ' . $tableName . ' SET ' . $customField['column_name'] . ' = %1 WHERE entity_id = %2';
+      CRM_Core_DAO::executeQuery($query, array(
+        1 => array($formattedBtw, 'String'),
+        2 => array($entityId, 'Integer'),
+      ));
     }
   }
 
@@ -74,15 +94,14 @@ abstract class CRM_Basis_MediweOrganization {
   /**
    * Method om btw nummer in belgisch formaat volgens instellingen op te maken
    *
-   * @param string $inputBtw
+   * @param string $btwCijfers
    * @return string
    */
-  public function formatBtwBelgisch($inputBtw) {
-    // herleidt tot alleen cijfers en gebruik alleen eerste 10 cijfers
-    $btwCijfers = substr($this->btwNummerInCijfers($inputBtw), 0, 10);
+  public function formatBtwBelgisch($btwCijfers) {
+    $btwCijfers = substr($btwCijfers, 0, 10);
     // doe niets als cijfers minder dan 10
     if (strlen($btwCijfers) < 10) {
-      return $inputBtw;
+      return FALSE;
     }
     $btwDigits = array();
     // stop de format delen ertussen volgens het formaat in de instellingen
@@ -111,6 +130,9 @@ abstract class CRM_Basis_MediweOrganization {
     // ja als btw nummer begint met BE of be
     if (strtolower(substr($btwNummer, 0, 2)) == 'be') {
       return TRUE;
+    }
+    if (empty($countryId)) {
+      return FALSE;
     }
     // ja als land België
     try {
