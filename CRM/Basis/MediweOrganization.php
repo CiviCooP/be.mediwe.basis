@@ -49,7 +49,7 @@ abstract class CRM_Basis_MediweOrganization {
   /**
    * Method om geformatteerd BTW nummer op te slaan (met SQL omdat update via API Custom Value de custom loop
    * weer op zou roepen -> oneindige loop
-   * 
+   *
    * @param $customField
    * @param $formattedBtw
    * @param $entityId
@@ -62,6 +62,7 @@ abstract class CRM_Basis_MediweOrganization {
       case $klantCustomGroupId:
         $tableName = CRM_Basis_Config::singleton()->getKlantBoekhoudingCustomGroup('table_name');
         break;
+
       case $leverancierCustomGroupId:
         $tableName = CRM_Basis_Config::singleton()->getLeverancierCustomGroup('table_name');
         break;
