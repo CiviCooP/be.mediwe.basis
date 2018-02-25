@@ -730,7 +730,7 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
 
   /**
    * Method om alle klanten met een gelijk btw nummer (alleen cijfers) te vinden
-   * 
+   *
    * @param $btwNummer
    * @return array
    */
@@ -747,7 +747,11 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
     ));
     while ($dao->fetch()) {
       try {
-        $klanten[$dao->entity_id] = civicrm_api3('Klant', 'getsingle', array('id' => $dao->entity_id));
+        $found = civicrm_api3('Klant', 'getsingle', array(
+          'id' => $dao->entity_id,
+          'sequential' => 1,
+          ));
+        $klanten[$dao->entity_id] = $found;
       }
       catch (CiviCRM_API3_Exception $ex) {
         CRM_Core_Error::debug_log_message(ts('Onverwacht klant niet gevonden met id ') . $dao->entity_id . ' in '. __METHOD__);
