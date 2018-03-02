@@ -422,8 +422,12 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
       $oldParams['contact_id'] = $contactId;
       $oldParams['membership_type_id'] = $config->getMijnMediweMembershipType()['id'];
 
+      CRM_Basis_SingleCustomData::replaceCustomFieldsParams($config->getVoorwaardenMijnMediweCustomGroup('custom_fields'), $oldParams);
+
       // create membership
       $createdMembership = civicrm_api3('Membership', 'create', $oldParams);
+
+
     }
 
     return $createdMembership;
@@ -478,6 +482,8 @@ class CRM_Basis_Klant extends CRM_Basis_MediweOrganization {
       }
 
       $oldParams['contact_id'] = $contactId;
+
+      CRM_Basis_SingleCustomData::replaceCustomFieldsParams($config->getVoorwaardenControleCustomGroup('custom_fields'), $oldParams);
 
       // create membership
       $createdMembership = civicrm_api3('Membership', 'create', $oldParams);
