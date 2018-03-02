@@ -117,7 +117,7 @@ class CRM_Basis_Config {
     $this->setMembershipTypes();
     $this->setLocationTypes();
     $this->setOptionGroups();
-
+    
     // set custom groups and custom fields
     $this->setAllCustomGroups();
     foreach ($this->_allCustomGroups as $customGroupName => $customGroupProperty) {
@@ -2208,6 +2208,7 @@ class CRM_Basis_Config {
   /**
    * Method om alle custom groups in property te plaatsen
    */
+  
   private function setAllCustomGroups() {
     $this->_allCustomGroups = array(
       'mediwe_communicatie_controlearts' => '_communicatieCustomGroup',
@@ -2221,8 +2222,14 @@ class CRM_Basis_Config {
       'mediwe_controle_procedure_klant' => '_klantProcedureCustomGroup',
       'mediwe_klant_medewerker' => '_klantMedewerkerMedewerkerCustomGroup',
       'mediwe_tellers_expert_teller' => '_klantMedewerkerExpertTellersCustomGroup',
-      'mijnmediwe_voorwaarden' => '_voorwaardenMijnmediweCustomGroup',
+      'mijnmediwe_voorwaarden' => '_voorwaardenMijnMediweCustomGroup',
       'mediwe_voorwaarden_controle' => '_voorwaardenControleCustomGroup',
+      'mediwe_ziekte_periode' => '_ziektemeldingZiekteperiodeCustomGroup',
+      'mediwe_medisch_attest' => '_ziektemeldingZiekteAttestCustomGroup',
+      'mediwe_medische_controle' => '_medischeControleCustomGroup',
+      'mediwe_controle_ao_resultaat' => '_medischeControleResultaatAoCustomGroup',
+      'mediwe_controle_resultaat' => '_medischeControleResultaatCustomGroup',
+      'mediwe_huisbezoek' => '_medischeControleHuisbezoekCustomGroup',
     );
   }
 
