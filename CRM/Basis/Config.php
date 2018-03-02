@@ -98,7 +98,7 @@ class CRM_Basis_Config {
   //mobiel telefoon type id
   private $_mobielPhoneTypeId = NULL;
   // contact id van het mediwe team
-  private $_mediweTeamContactId = 1 ;
+  private $_mediweTeamContactId = 1;
 
   private $_allCustomGroups = array();
 
@@ -106,7 +106,7 @@ class CRM_Basis_Config {
   /**
    * CRM_Basis_Config constructor.
    */
-  function __construct() {
+  public function __construct() {
 
     $this->_joomlaDbName = "mediwe_joomla_dev";
     $this->_sourceCiviDbName = "mediwe_civicrm";
@@ -251,7 +251,8 @@ class CRM_Basis_Config {
   public function getBelMomentOptionGroup($key = NULL) {
     if (!empty($key) && isset($this->_belMomentOptionGroup[$key])) {
       return $this->_belMomentOptionGroup['id'];
-    } else {
+    }
+    else {
       return $this->_belMomentOptionGroup;
     }
   }
@@ -265,7 +266,8 @@ class CRM_Basis_Config {
   public function getOpdrachtWijzeOptionGroup($key = NULL) {
     if (!empty($key) && isset($this->_opdrachtWijzeOptionGroup[$key])) {
       return $this->_opdrachtWijzeOptionGroup['id'];
-    } else {
+    }
+    else {
       return $this->_opdrachtWijzeOptionGroup;
     }
   }
@@ -320,7 +322,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'customer_venice');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -336,7 +339,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'customer_detail_CSV');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -351,7 +355,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'customer_reference');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -366,7 +371,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'customer_account');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -381,7 +387,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'customer_block_invoicing');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -396,7 +403,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'customer_vat');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -411,7 +419,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantBoekhoudingCustomGroup, 'customer_subject_to_vat');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -426,7 +435,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_gebruikt_app');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -441,7 +451,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_bel_moment');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -456,7 +467,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_opdracht');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -471,7 +483,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_overzicht');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -486,7 +499,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_opmerkingen');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -500,7 +514,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_communicatieCustomGroup, 'mcc_arts_percentage_akkoord');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -515,7 +530,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'mes_periode');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -530,7 +546,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'mes_populatie');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -545,7 +562,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_action');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -561,7 +579,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_on_monday');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -576,7 +595,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_days');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -591,7 +611,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_bradford');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -606,7 +627,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_no_certificate');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -621,7 +643,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_random_frequency');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -636,7 +659,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_short_periods');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -651,7 +675,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_period_from');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -666,7 +691,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_period_till');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -681,7 +707,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_after_negative_result');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -696,7 +723,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'expert_system_after_extension');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -711,7 +739,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'counter_period');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -726,7 +755,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'periods_count');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -742,7 +772,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_rijksregister_nummer');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -757,7 +788,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_personeelsnummer');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -772,7 +804,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_partner');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -787,7 +820,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_niveau1');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -802,7 +836,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_niveau2');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -817,7 +852,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_niveau3');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -832,7 +868,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_code_niveau2');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -847,7 +884,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_functie');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -862,7 +900,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_statuut');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -877,7 +916,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_contract');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -892,7 +932,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_contract_omschrijving');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -907,7 +948,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_ploegensysteem');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -922,7 +964,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_bezetting');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -937,7 +980,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_kostenplaats');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -952,7 +996,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_datum_in_dienst');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -967,7 +1012,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_datum_uit_dienst');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -982,7 +1028,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_opmerkingen');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -997,7 +1044,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_vrij_veld1');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1012,7 +1060,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_is_controlevrij');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1027,7 +1076,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_controlevrij_tot');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1042,7 +1092,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_steeds_aangewezen');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1057,7 +1108,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerMedewerkerCustomGroup, 'mkm_aangewezen_tot');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1073,7 +1125,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantMedewerkerExpertTellersCustomGroup, 'mte_maandag_ziektes');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1088,7 +1141,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'days_count');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1103,7 +1157,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'counters_bradford');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1118,11 +1173,11 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'periods_no_certificate_count');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
-
 
 
   /**
@@ -1135,7 +1190,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'short_periods_count');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1151,7 +1207,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantExpertsysteemCustomGroup, 'counters_percentage');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1388,7 +1445,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_niveau1');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1403,7 +1461,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_niveau2');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1418,7 +1477,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_niveau3');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1433,7 +1493,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_email_goedkeuring');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1448,7 +1509,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_aanspreking_goedkeuring');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1463,7 +1525,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_max_dagen_kort');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1478,7 +1541,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantOrganisatieCustomGroup, 'mio_max_maanden_nieuw');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1493,7 +1557,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_opmerkingen');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1509,7 +1574,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_vrij_veld');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1524,7 +1590,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_sector_omschrijving');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1539,7 +1606,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_sector_id');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1554,7 +1622,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_fte_berekeningswijze');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1569,7 +1638,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_huis_niet_verlaten_van');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1584,7 +1654,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_huis_niet_verlaten_tot');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1599,7 +1670,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_controle_procedure');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1614,7 +1686,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_verzuimbeleid_visie');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1629,7 +1702,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_doel_controle');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1644,7 +1718,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_klantProcedureCustomGroup, 'mcpk_sms_medewerker');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1659,7 +1734,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_vakantiePeriodeCustomGroup, 'mvp_vakantie_van');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1674,7 +1750,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_vakantiePeriodeCustomGroup, 'mvp_vakantie_tot');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1689,7 +1766,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_werkgebiedCustomGroup, 'mw_postcode');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1704,7 +1782,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_werkgebiedCustomGroup, 'mw_gemeente');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1719,7 +1798,8 @@ class CRM_Basis_Config {
     $customField = $this->getCustomField($this->_werkgebiedCustomGroup, 'mw_prioriteit');
     if (!empty($key) && isset($customField[$key])) {
       return $customField[$key];
-    } else {
+    }
+    else {
       return $customField;
     }
   }
@@ -1734,7 +1814,8 @@ class CRM_Basis_Config {
   public function getVakantieperiodeCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_vakantiePeriodeCustomGroup[$key])) {
       return $this->_vakantiePeriodeCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_vakantiePeriodeCustomGroup;
     }
   }
@@ -1748,7 +1829,8 @@ class CRM_Basis_Config {
   public function getArtsVoorwaardenCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_voorwaardenArtsCustomGroup[$key])) {
       return $this->_voorwaardenArtsCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_voorwaardenArtsCustomGroup;
     }
   }
@@ -1762,7 +1844,8 @@ class CRM_Basis_Config {
   public function getLeverancierCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_leverancierCustomGroup[$key])) {
       return $this->_leverancierCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_leverancierCustomGroup;
     }
   }
@@ -1776,7 +1859,8 @@ class CRM_Basis_Config {
   public function getWerkgebiedCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_werkgebiedCustomGroup[$key])) {
       return $this->_werkgebiedCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_werkgebiedCustomGroup;
     }
   }
@@ -1790,7 +1874,8 @@ class CRM_Basis_Config {
   public function getCommunicatieCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_communicatieCustomGroup[$key])) {
       return $this->_communicatieCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_communicatieCustomGroup;
     }
   }
@@ -1804,7 +1889,8 @@ class CRM_Basis_Config {
   public function getKlantBoekhoudingCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_klantBoekhoudingCustomGroup[$key])) {
       return $this->_klantBoekhoudingCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_klantBoekhoudingCustomGroup;
     }
   }
@@ -1818,7 +1904,8 @@ class CRM_Basis_Config {
   public function getKlantExpertsysteemCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_klantExpertsysteemCustomGroup[$key])) {
       return $this->_klantExpertsysteemCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_klantExpertsysteemCustomGroup;
     }
   }
@@ -1832,7 +1919,8 @@ class CRM_Basis_Config {
   public function getKlantOrganisatieCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_klantOrganisatieCustomGroup[$key])) {
       return $this->_klantOrganisatieCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_klantOrganisatieCustomGroup;
     }
   }
@@ -1847,7 +1935,8 @@ class CRM_Basis_Config {
 
     if (!empty($key) && isset($this->_klantProcedureCustomGroup[$key])) {
       return $this->_klantProcedureCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_klantProcedureCustomGroup;
     }
   }
@@ -1862,7 +1951,8 @@ class CRM_Basis_Config {
 
     if (!empty($key) && isset($this->_voorwaardenControleCustomGroup[$key])) {
       return $this->_voorwaardenControleCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_voorwaardenControleCustomGroup;
     }
   }
@@ -1877,7 +1967,8 @@ class CRM_Basis_Config {
 
     if (!empty($key) && isset($this->_voorwaardenMijnMediweCustomGroup[$key])) {
       return $this->_voorwaardenMijnMediweCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_voorwaardenMijnMediweCustomGroup;
     }
   }
@@ -1891,7 +1982,8 @@ class CRM_Basis_Config {
   public function getKlantMedewerkerExpertsysteemTellersCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_klantMedewerkerExpertTellersCustomGroup[$key])) {
       return $this->_klantMedewerkerExpertTellersCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_klantMedewerkerExpertTellersCustomGroup;
     }
   }
@@ -1905,7 +1997,8 @@ class CRM_Basis_Config {
   public function getKlantMedewerkerMedewerkerCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_klantMedewerkerMedewerkerCustomGroup[$key])) {
       return $this->_klantMedewerkerMedewerkerCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_klantMedewerkerMedewerkerCustomGroup;
     }
   }
@@ -1919,7 +2012,8 @@ class CRM_Basis_Config {
   public function getZiektemeldingZiekteperiodeCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_ziektemeldingZiekteperiodeCustomGroup[$key])) {
       return $this->_ziektemeldingZiekteperiodeCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_ziektemeldingZiekteperiodeCustomGroup;
     }
   }
@@ -1933,7 +2027,8 @@ class CRM_Basis_Config {
   public function getMedischeControleCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_medischeControleCustomGroup[$key])) {
       return $this->_medischeControleCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_medischeControleCustomGroup;
     }
   }
@@ -1947,7 +2042,8 @@ class CRM_Basis_Config {
   public function getMedischeControleHuisbezoekCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_medischeControleHuisbezoekCustomGroup[$key])) {
       return $this->_medischeControleHuisbezoekCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_medischeControleHuisbezoekCustomGroup;
     }
   }
@@ -1961,7 +2057,8 @@ class CRM_Basis_Config {
   public function getMedischeControleResultaatCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_medischeControleResultaatCustomGroup[$key])) {
       return $this->_medischeControleResultaatCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_medischeControleResultaatCustomGroup;
     }
   }
@@ -1975,7 +2072,8 @@ class CRM_Basis_Config {
   public function getMedischeControleResultaatAoCustomGroup($key = NULL) {
     if (!empty($key) && isset($this->_medischeControleResultaatAoCustomGroup[$key])) {
       return $this->_medischeControleResultaatAoCustomGroup[$key];
-    } else {
+    }
+    else {
       return $this->_medischeControleResultaatAoCustomGroup;
     }
   }
@@ -1996,8 +2094,6 @@ class CRM_Basis_Config {
   public function getKlantMedewerkerVerblijfLocationType() {
     return $this->_klantMedewerkerLocationTypes['verblijf'];
   }
-
-
 
   /**
    * Getter for klant contact sub type
@@ -2113,8 +2209,7 @@ class CRM_Basis_Config {
    *
    * @return array
    */
-  public function getBelAfspraakArtsActivityType()
-  {
+  public function getBelAfspraakArtsActivityType() {
     return $this->_belAfspraakArtsActivityType;
   }
 
@@ -2196,7 +2291,7 @@ class CRM_Basis_Config {
 
     $list = array();
 
-    foreach($optionGroup['option_values'] as $option) {
+    foreach ($optionGroup['option_values'] as $option) {
       $key = $option['value'];
       $value = $option['label'];
       $list[$key] = $value;
@@ -2208,7 +2303,6 @@ class CRM_Basis_Config {
   /**
    * Method om alle custom groups in property te plaatsen
    */
-
   private function setAllCustomGroups() {
     $this->_allCustomGroups = array(
       'mediwe_communicatie_controlearts' => '_communicatieCustomGroup',
@@ -2238,7 +2332,7 @@ class CRM_Basis_Config {
    */
   private function setLocationTypes() {
     try {
-      $locationTypes = civicrm_api3('LocationType','get', array(
+      $locationTypes = civicrm_api3('LocationType', 'get', array(
         'options' => array('limit' => 0)));
 
       foreach ($locationTypes['values'] as $locationTypeId => $locationType) {
@@ -2246,9 +2340,11 @@ class CRM_Basis_Config {
           case 'Billing':
             $this->_klantLocationTypes[] = $locationType;
             break;
+
           case 'Home':
             $this->_klantMedewerkerLocationTypes['domicilie'] = $locationTypeId;
             break;
+
           case 'Other':
             $this->_klantMedewerkerLocationTypes['verblijf'] = $locationTypeId;
             break;
@@ -2265,19 +2361,22 @@ class CRM_Basis_Config {
    */
   private function setContactSubTypes() {
     try {
-      $contactTypes = civicrm_api3('ContactType','get', array(
+      $contactTypes = civicrm_api3('ContactType', 'get', array(
         'options' => array('limit' => 0)));
       foreach ($contactTypes['values'] as $contactTypeId => $contactType) {
         switch ($contactType['name']) {
           case 'mediwe_klant':
             $this->_klantContactSubType = $contactType;
             break;
+
           case 'mediwe_klant_medewerker':
             $this->_klantMedewerkerContactSubType = $contactType;
             break;
+
           case 'mediwe_controle_arts':
             $this->_artsContactSubType = $contactType;
             break;
+
           case 'mediwe_inspecteur':
             $this->_inspecteurContactSubType = $contactType;
             break;
@@ -2300,19 +2399,23 @@ class CRM_Basis_Config {
         'options' => array('limit' => 0),
       ));
       foreach ($caseStatusValues['values'] as $caseStatus) {
-        switch($caseStatus['name']) {
+        switch ($caseStatus['name']) {
           case 'mediwe_aangevraagd':
             $this->_aangevraagdCaseStatus = $caseStatus;
             break;
+
           case 'mediwe_afwezig':
             $this->_afwezigCaseStatus = $caseStatus;
             break;
+
           case 'mediwe_gefactureerd':
             $this->_gefactureerdCaseStatus = $caseStatus;
             break;
+
           case 'mediwe_gepland':
             $this->_geplandCaseStatus = $caseStatus;
             break;
+
           case 'mediwe_uitgevoerd':
             $this->_uitgevoerdCaseStatus = $caseStatus;
             break;
@@ -2323,20 +2426,19 @@ class CRM_Basis_Config {
     }
   }
 
-
-
   /**
    * Method to set the relevant contact sub type properties
    */
   private function setCaseTypes() {
     try {
-      $caseTypes = civicrm_api3('CaseType','get', array(
+      $caseTypes = civicrm_api3('CaseType', 'get', array(
         'options' => array('limit' => 0)));
       foreach ($caseTypes['values'] as $caseTypeId => $caseType) {
         switch ($caseType['name']) {
           case 'dossier_ziektemelding':
             $this->_ziektemeldingCaseType = $caseType;
             break;
+
           case 'dossier_medische_controle':
             $this->_medischeControleCaseType = $caseType;
             break;
@@ -2353,7 +2455,7 @@ class CRM_Basis_Config {
    */
   private function setRelationshipTypes() {
     try {
-      $relationshipTypes = civicrm_api3('RelationshipType','get', array(
+      $relationshipTypes = civicrm_api3('RelationshipType', 'get', array(
         'options' => array('limit' => 0)));
       foreach ($relationshipTypes['values'] as $relationshipTypeId => $relationshipType) {
         switch ($relationshipType['name_a_b']) {
@@ -2405,15 +2507,19 @@ class CRM_Basis_Config {
           case "mediwe_ziekteattest":
             $this->_ziekteattestActivityType = $activityType;
             break;
+
           case "mediwe_huisbezoek":
             $this->_huisbezoekActivityType = $activityType;
             break;
+
           case "mediwe_convocatie":
             $this->_consultatieActivityType = $activityType;
             break;
+
           case "mediwe_onderzoek_ao":
             $this->_consultatieAoActivityType = $activityType;
             break;
+
           case "mediwe_belafspraak_arts":
             $this->_belAfspraakArtsActivityType = $activityType;
             break;
@@ -2430,25 +2536,30 @@ class CRM_Basis_Config {
    */
   private function setMembershipTypes() {
     try {
-      $membershipTypes = civicrm_api3('MembershipType','get', array(
+      $membershipTypes = civicrm_api3('MembershipType', 'get', array(
         'options' => array('limit' => 0)));
       foreach ($membershipTypes['values'] as $membershipTypeId => $membershipType) {
         switch ($membershipType['name']) {
           case 'Maandelijks':
             $this->_maandelijksMembershipType = $membershipType;
             break;
+
           case 'Voorafbetaald':
             $this->_voorafbetaaldMembershipType = $membershipType;
             break;
+
           case 'Mijn Mediwe':
             $this->_mijnMediweMembershipType = $membershipType;
             break;
+
           case 'Controlearts':
             $this->_artsMembershipType = $membershipType;
             break;
+
           case 'Zorgfonds':
             $this->_zorgfondsMembershipType = $membershipType;
             break;
+
           case 'Inspecteur':
             $this->_inspecteurMembershipType = $membershipType;
             break;
@@ -2475,8 +2586,8 @@ class CRM_Basis_Config {
       $this->$propertyName = $customGroup;
     }
     catch (CiviCRM_API3_Exception $ex) {
-      CRM_Core_Error::createError('Unable to set the property '.$propertyName.' for custom group with name '
-        .$customGroupName. ' in '.__METHOD__.', extension be.mediwe.basis will not function properly. Contact your system administrator');
+      CRM_Core_Error::createError('Unable to set the property ' . $propertyName . ' for custom group with name '
+        . $customGroupName . ' in ' . __METHOD__ . ', extension be.mediwe.basis will not function properly. Contact your system administrator');
     }
   }
 
@@ -2486,25 +2597,30 @@ class CRM_Basis_Config {
    */
   private function setOptionGroups() {
     try {
-      $optionGroups = civicrm_api3('OptionGroup','get', array(
+      $optionGroups = civicrm_api3('OptionGroup', 'get', array(
         'options' => array('limit' => 0)));
       foreach ($optionGroups['values'] as $optionGroupId => $optionGroup) {
         switch ($optionGroup['name']) {
           case 'mediwe_control_type':
             $this->_medischeControleSoortOptionGroup = $optionGroup;
             break;
+
           case 'reason_illness_short':
             $this->_ziekteMeldingRedenKortOptionGroup = $optionGroup;
             break;
+
           case 'reason_illness':
             $this->_ziekteMeldingRedenOptionGroup = $optionGroup;
             break;
+
           case 'mediwe_control_criterium':
             $this->_medischeControleCriteriumOptionGroup = $optionGroup;
             break;
+
           case 'mediwe_bellen_moment':
             $this->_belMomentOptionGroup = $optionGroup;
             break;
+
           case 'mediwe_opdracht_wijze':
             $this->_opdrachtWijzeOptionGroup = $optionGroup;
             break;
@@ -2523,7 +2639,8 @@ class CRM_Basis_Config {
 
     if (!empty($key) && isset($this->_medischeControleSoortOptionGroup[$key])) {
       return $this->_medischeControleSoortOptionGroup[$key];
-    } else {
+    }
+    else {
       return $this->_medischeControleSoortOptionGroup;
     }
   }
@@ -2535,7 +2652,8 @@ class CRM_Basis_Config {
 
     if (!empty($key) && isset($this->_medischeControleCriteriumOptionGroup[$key])) {
       return $this->_medischeControleCriteriumOptionGroup[$key];
-    } else {
+    }
+    else {
       return $this->_medischeControleCriteriumOptionGroup;
     }
   }
@@ -2547,7 +2665,8 @@ class CRM_Basis_Config {
 
     if (!empty($key) && isset($this->_ziekteMeldingRedenKortOptionGroup[$key])) {
       return $this->_ziekteMeldingRedenKortOptionGroup[$key];
-    } else {
+    }
+    else {
       return $this->_ziekteMeldingRedenKortOptionGroup;
     }
   }
@@ -2558,7 +2677,8 @@ class CRM_Basis_Config {
   public function getZiekteMeldingRedenOptionGroup($key = NULL) {
     if (!empty($key) && isset($this->_ziekteMeldingRedenOptionGroup[$key])) {
       return $this->_ziekteMeldingRedenOptionGroup[$key];
-    } else {
+    }
+    else {
       return $this->_ziekteMeldingRedenOptionGroup;
     }
   }
@@ -2568,7 +2688,7 @@ class CRM_Basis_Config {
    */
   private function setCasesCustomGroups() {
     try {
-      $customGroups = civicrm_api3('CustomGroup','get', array(
+      $customGroups = civicrm_api3('CustomGroup', 'get', array(
         'options' => array('limit' => 0)));
       foreach ($customGroups['values'] as $customGroupId => $customGroup) {
         $customFields = civicrm_api3('CustomField', 'get', array(
@@ -2579,18 +2699,23 @@ class CRM_Basis_Config {
           case 'mediwe_illness':
             $this->_ziektemeldingZiekteperiodeCustomGroup = $customGroup;
             break;
+
           case 'mediwe_medisch_attest':
             $this->_ziektemeldingZiekteAttestCustomGroup = $customGroup;
             break;
+
           case 'mediwe_medische_controle':
             $this->_medischeControleCustomGroup = $customGroup;
             break;
+
           case 'mediwe_huisbezoek':
             $this->_medischeControleHuisbezoekCustomGroup = $customGroup;
             break;
+
           case 'mediwe_controle_ao_resultaat':
             $this->_medischeControleResultaatAoCustomGroup = $customGroup;
             break;
+
           case 'mediwe_controle_resultaat':
             $this->_medischeControleResultaatCustomGroup = $customGroup;
             break;
@@ -2605,15 +2730,14 @@ class CRM_Basis_Config {
    * Method plece the MediWe team id in the custom Config
    *
    */
-
-  public function setMediweTeamContactId()
-  {
+  public function setMediweTeamContactId() {
     try {
       $this->_mediweTeamContactId = civicrm_api3('Domain', 'getvalue', array(
         'return' => "contact_id",
         'id' => 1,
       ));;
-    } catch (CiviCRM_API3_Exception $ex) {
+    }
+    catch (CiviCRM_API3_Exception $ex) {
       $this->_mediweTeamContactId = 1;
     }
   }
@@ -2621,8 +2745,9 @@ class CRM_Basis_Config {
   /**
    * Method to place the  custom fields in the entity array based on the
    *
+   * @param array $fields
    * @param object $daoData (dao)
-   * @param array $entityArray;
+   * @param array $entityArray
    * @return array
    */
   private function _placeEntityCustomFields($fields, $daoData, $entityArray) {
@@ -2652,8 +2777,7 @@ class CRM_Basis_Config {
   /**
    * @return int
    */
-  public function getMediweTeamContactId()
-  {
+  public function getMediweTeamContactId() {
     return $this->_mediweTeamContactId;
   }
 
@@ -2663,9 +2787,8 @@ class CRM_Basis_Config {
    * @param string $date
    * @return string
    */
-  private function apiDate($date)
-  {
-    if (substr($date, 0, 4) == 1900 || substr($date, 0, 4) == 0 ) {
+  private function apiDate($date) {
+    if (substr($date, 0, 4) == 1900 || substr($date, 0, 4) == 0) {
       $rv = "";
     }
     else {
@@ -2705,4 +2828,5 @@ class CRM_Basis_Config {
     }
     return self::$_singleton;
   }
+
 }
