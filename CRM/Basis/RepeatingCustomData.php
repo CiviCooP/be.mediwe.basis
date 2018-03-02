@@ -35,9 +35,11 @@ class CRM_Basis_RepeatingCustomData {
     $repeatingCustomData = new CRM_Basis_RepeatingCustomData($customGroupName, $entityId);
     $customFields = $repeatingCustomData->getSaveCustomFieldIds();
     foreach ($data as $customFieldName => $dataValues) {
-      foreach ($dataValues as $key => $value) {
-        if ($value) {
-          $apiParamsSets[$key][$customFields[$customFieldName]] = $value;
+      if (!empty($dataValues)) {
+        foreach ($dataValues as $key => $value) {
+          if ($value) {
+            $apiParamsSets[$key][$customFields[$customFieldName]] = $value;
+          }
         }
       }
     }
