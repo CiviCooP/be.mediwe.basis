@@ -2220,7 +2220,7 @@ class CRM_Basis_Config {
       'mediwe_interne_organisatie' => '_klantOrganisatieCustomGroup',
       'mediwe_controle_procedure_klant' => '_klantProcedureCustomGroup',
       'mediwe_klant_medewerker' => '_klantMedewerkerMedewerkerCustomGroup',
-      'mediwe_tellers_expert_teller' => '_klantMedewerkerExpertTellersCustomGroup',
+      'mediwe_expert_tellers' => '_klantMedewerkerExpertTellersCustomGroup',
       'mijnmediwe_voorwaarden' => '_voorwaardenMijnmediweCustomGroup',
       'mediwe_voorwaarden_controle' => '_voorwaardenControleCustomGroup',
     );
