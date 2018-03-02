@@ -21,12 +21,47 @@ class CRM_Basis_MedischeControle {
   }
 
   /**
+   * Method valideert de params voor de create. Het gaat hierbij om de velden
+   * waarmee zowel een klant als een medewerjer gevonden kan worden.
+   *
+   * @ param $params
+   */
+  public function validateCreate($params) {
+    /* validatie van de klant gegevens */
+    if ((isset($params['mf_btw_nummer']) && strlen($params['mf_btw_nummer']) >= 10)
+      || isset($params['klant_id'])
+      || isset($params['klant_external_identifier'])
+      || isset($params['klant_naam'])
+    ) {
+       // een van de velden is kennelijk gevuld - we hoeven niets te doen
+    }
+    else {
+      throw new Exception("Verplicht BTW nr of Klant Id of Klant external identifier if Klant naam");
+    }
+
+    /* validatie van de medewerkers gegevens */
+
+    if ((isset($params['voornaam_medewerker']) && isset($params['achternaam_medewerker']))
+      || isset($params['medewerker_id'])
+      || isset($params['medewerker_external_identifier'])
+    ) {
+      // een van de velden is kennelijk gevuld - we hoeven niets te doen
+    }
+    else {
+      throw new Exception("Verplicht Medewerker Id of Medewerker external identifier of Voor en Achternaam");
+    }
+  }
+
+
+  /**
    * Method om medische controle toe te voegen
    *
    * @param $params
    * @return array|bool
    */
   public function create($params) {
+    $this->validateCreate($params);
+
     // ensure mandatory data
     if (!isset($params['mmc_controle_datum'])) {
       CRM_Core_Error::createError(ts('Controledatum ziekte ontbreekt in ' . __METHOD__));
