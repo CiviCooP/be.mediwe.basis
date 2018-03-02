@@ -209,7 +209,7 @@ class CRM_Basis_KlantMedewerker {
   }
 
   /**
-   * Methodom klant medewerkers op te halen
+   * Methode klant medewerkers op te halen
    *
    * @param  $params
    *

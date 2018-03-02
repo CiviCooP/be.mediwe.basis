@@ -40,51 +40,43 @@ class api_v3_MedischeControle_CreateTest extends CRM_Basis_Test{
   /**
    * De test wordt hier uitvoerd met een btw die lang genoeg is
    *
-   * @expectedException \CiviCRM_API3_Exception
-   * @expectedExceptionMessage Undefined index: medewerker_id
    */
   public function testValidateCreateMetBtw() {
     civicrm_api3('MedischeControle', 'Create',$this->_params+array(
       'mf_btw_nummer' => '1234567890',
-      'medewerker_id' => 12));
+      'medewerker_id' => $this->_medewerkerId));
   }
 
   /**
    * De test wordt hier uitvoerd met een btw die lang genoeg is
    *
-   * @expectedException \CiviCRM_API3_Exception
-   * @expectedExceptionMessage Undefined index: medewerker_id
    */
   public function testValidateCreateMetKlantId() {
     civicrm_api3('MedischeControle', 'Create',$this->_params+array(
       'klant_id' => '212',
-        'medewerker_id' => 12
+        'medewerker_id' => $this->_medewerkerId
       ));
   }
 
   /**
    * De test wordt hier uitvoerd met een btw die lang genoeg is
    *
-   * @expectedException \CiviCRM_API3_Exception
-   * @expectedExceptionMessage Undefined index: medewerker_id
    */
   public function testValidateCreateMetKlantExternalIdentified() {
     civicrm_api3('MedischeControle', 'Create',$this->_params+array(
       'klant_external_identifier' => '1234567890',
-      'medewerker_id' => 12
+      'medewerker_id' => $this->_medewerkerId
       ));
   }
 
   /**
    * De test wordt hier uitvoerd met een btw die lang genoeg is
    *
-   * @expectedException \CiviCRM_API3_Exception
-   * @expectedExceptionMessage Undefined index: medewerker_id
    */
   public function testValidateCreateMetKlantNaam() {
     civicrm_api3('MedischeControle', 'Create',$this->_params+array(
       'klant_naam' => 'Diverse Negosie',
-      'medewerker_id' => 12 ));
+      'medewerker_id' => $this->_medewerkerId ));
   }
 
 }

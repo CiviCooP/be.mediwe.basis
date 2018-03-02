@@ -34,7 +34,7 @@ abstract class CRM_Basis_Test extends \PHPUnit_Framework_TestCase implements Hea
     $this->_medewerkerId = civicrm_api3('KlantMedewerker','Create',array(
       'first_name' => 'Adele',
       'last_name' => 'Jensen',
-      'medewerker_id' => 12,
+      'external_identifier' => 'extmed',
       'klant_id' => $this->_klantId,
     ))['id'];
   }

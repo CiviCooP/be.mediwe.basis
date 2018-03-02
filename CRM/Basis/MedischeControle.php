@@ -160,6 +160,62 @@ class CRM_Basis_MedischeControle {
   }
 
   /**
+   * zoekt een klantmedewerker op of maakt hem aan en zet he
+   *
+   * @param $params
+   * @return integer contact id van de opgezochte of aangemaakte medewerker
+   */
+  public function haalOfMaakKlantMedewerker($params) {
+    /* haal strategie : heb je een medewerkers id dan is dat het contactId
+       zo niet zoek dan met medewerker_external_identifier
+       we zoeken niet met eerst en laatste naam (dat is wellicht te weinig identificerend)
+
+       als de zoektocht niets oplevert dan wordt de medewerker aangemaakt.
+       eventuele meegeleverde medewerker_id en external_identifier worden
+       toegevoegd.
+    */
+
+    if(isset($params['medewerker_id'])){
+      /* verzeker dat het om een valide medewerks id gaat */
+      civicrm_api3('KlantMedewerker','getsingle',array(
+        'id' => $params['medewerker_id'],
+      ));
+      return $params['medewerker_id'];
+    }
+
+    if(isset($params['medewerker_external_identifier'])){
+
+      try {
+        $contactId = civicrm_api3('KlantMedewerker', 'getsingle', [
+          'external_identifier' => $params['medewerker_external_identifier'],
+        ])['id'];
+      }
+      catch (Exception $ex){
+
+      }
+    }
+
+    if(isset($contactId)){
+      return $contactId;
+    }
+
+    // op dit punt is het duidelijk dat de medewerker niet te vinden is
+    // hij moet aangemaakt worden
+
+    $result = civicrm_api3('KlantMedewerker', 'create',array(
+      'first_name' => $params['voornaam_medewerker'],
+      'last_name'  => $params['achternaam_medewerker']
+    ) + $params);
+
+    if($result['is_error']){
+      throw new CiviCRM_API3_Exception($result['message']);
+    }
+    else {
+      return $result['id'];
+    }
+  }
+
+  /**
    * Method om medische controle op te slaan
    *
    * @param $data
@@ -176,17 +232,21 @@ class CRM_Basis_MedischeControle {
     }
     // maak eventueel ook een ziektemelding aan
     // haal of maak de klant
-    // haal of maak de klantmedewerker
-    // haal of maak de contactpersoon
+    $params['contact_id'] = $this->haalOfMaakKlantMedewerker($params);
     try {
-      $params['subject'] = $this->setDefaultSubject($params['medewerker_id'], $params['mmc_controle_datum']);
+      $params['subject'] = $this->setDefaultSubject($params['contact_id'], $params['mmc_controle_datum']);
       $params['start_date'] = $params['mmc_controle_datum'];
       if (isset($params['end_date'])) {
         unset($params['end_date']);
       }
-      $createdCase = civicrm_api3('Case', 'create', $params);
+      // To Do - voor het aanmaken van een Case is een creator_id nodig
+      // weet niet precies wat hij doet maar in geval van twijfel is team mediwe een goede kandidaat
+      $createdCase = civicrm_api3('Case', 'create', $params+array(
+        'creator_id' => $config->getMediweTeamContactId(),
+        'sequential' => 1
+        ));
       // custom data voor medische controle opslaan
-      return $createdCase['values'];
+      return $createdCase['values'][0];
     }
     catch (CiviCRM_API3_Exception $ex) {
       throw new API_Exception(ts('Could not create a contact in ' . __METHOD__
