@@ -160,10 +160,66 @@ class CRM_Basis_MedischeControle {
   }
 
   /**
-   * zoekt een klantmedewerker op of maakt hem aan en zet he
+   * zoekt een klant op of maakt hem aan
+   *
+   * @param $params
+   * @throws \CiviCRM_API3_Exception mocht het klant_id geen klant zijn
+   */
+  public function haalOfMaakKlant($params){
+    // haal strategie - heb je al een klant_id controleer of het echt een klant
+    // is
+    if(isset($params['klant_id'])){
+      civicrm_api3('Klant','getsingle',array(
+        'id' => $params['klant_id'],
+      ));
+      return $params['klant_id'];
+    }
+    /* is er een waarde om te zoeken - eerst btw nummer dan
+       external_identifier
+    */
+    if(isset($params['mf_btw_nummer'])){
+      $searchParams['mf_btw_nummer'] = $params['mf_btw_nummer'];
+    }
+    elseif(isset($params['klant_external_identifier'])){
+      $searchParams['external_identifier'] = $params['klant_external_identifier'];
+    }
+    if(isset($searchParams)){
+      try{
+        $klantId = civicrm_api3('Klant','getsingle',$searchParams)['id'];
+      }
+      catch (CiviCRM_API3_Exception $ex){
+          /* TODO als er een identifier wordt meegegeven waarmee niets gevonden
+             wordt, dan gaan we nu verder en maken de klant aan.
+             Alternatief is terugmelden dat er een onbekende zoekwaarde
+             is meegegeven.
+          */
+      }
+    }
+    if(isset($klantId)){
+      return $klantId;
+    }
+
+    // hier aangekomen hebben we het opgegeven om een klant te vinden
+    // we maken hem dus aan
+
+    $result = civicrm_api3('Klant','Create',array(
+      'organization_name' => $params['klant_naam'],
+    ));
+
+    if($result['is_error']){
+      throw new CiviCRM_API3_Exception($result['message']);
+    }
+    else {
+      return $result['id'];
+    }
+  }
+
+  /**
+   * zoekt een klantmedewerker op of maakt hem aan
    *
    * @param $params
    * @return integer contact id van de opgezochte of aangemaakte medewerker
+   * @throws \CiviCRM_API3_Exception als het niet lukt om een medewerker aan te maken
    */
   public function haalOfMaakKlantMedewerker($params) {
     /* haal strategie : heb je een medewerkers id dan is dat het contactId
@@ -231,8 +287,10 @@ class CRM_Basis_MedischeControle {
       }
     }
     // maak eventueel ook een ziektemelding aan
-    // haal of maak de klant
+
+    $params['klant_id'] = $this->haalOfMaakKlant($params);
     $params['contact_id'] = $this->haalOfMaakKlantMedewerker($params);
+
     try {
       $params['subject'] = $this->setDefaultSubject($params['contact_id'], $params['mmc_controle_datum']);
       $params['start_date'] = $params['mmc_controle_datum'];
