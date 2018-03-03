@@ -1,9 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: klaas
- * Date: 1-3-18
- * Time: 21:32
+ * @author Erik Hommel (CiviCooP) <erik.hommel@civicoop.org>
+ * @author Klaas Eikelboom (CiviCooP) <klaas.eikelboom@civicoop.org>
+ * @author Christophe Deman <christophe.deman@mediwe.be>
+ * @date 22 Feb 2018
+ * @license AGPL-3.0
  */
 
 use Civi\Test\HeadlessInterface;
@@ -15,6 +16,10 @@ abstract class CRM_Basis_Test extends \PHPUnit_Framework_TestCase implements Hea
   protected $_klantId;
   protected $_medewerkerId;
 
+  /**
+   * @return \Civi\Test\CiviEnvBuilder
+   * @throws \CRM_Extension_Exception_ParseException
+   */
   public function setUpHeadless() {
 
     return \Civi\Test::headless()
@@ -22,11 +27,14 @@ abstract class CRM_Basis_Test extends \PHPUnit_Framework_TestCase implements Hea
       ->apply();
   }
 
+  /**
+   * @throws \CiviCRM_API3_Exception
+   */
   public function setUp() {
 
     $this->_klantId = civicrm_api3('Klant','Create',array(
       'organization_name' => 'Diverse Negosie',
-      'external_identifier' => 'extid',
+      'external_identifier' => 'extklantid',
       'mf_btw_nummer' => '1234567890',
       'mf_venice' => '89'
     ))['id'];
